@@ -3,3 +3,6 @@ export { ModernCard } from './ModernCard';
 export { ModernInput } from './ModernInput';
 export { ModernLogo } from './ModernLogo';
 export { ModernPasswordInput } from './ModernPasswordInput';
+export { ModernRecoveryGrid } from './ModernRecoveryGrid';
+export { ModernSecurityWarning } from './ModernSecurityWarning';
+export { ModernWordBox } from './ModernWordBox';

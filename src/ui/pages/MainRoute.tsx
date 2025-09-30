@@ -56,6 +56,11 @@ const ModernCreatePasswordScreen = lazy(() =>
     default: module.ModernCreatePasswordScreen
   }))
 );
+const ModernCreateHDWalletScreen = lazy(() =>
+  import('../../ui-modern/pages/ModernCreateHDWalletScreen').then((module) => ({
+    default: module.ModernCreateHDWalletScreen
+  }))
+);
 import OrdinalsInscriptionScreen from './Ordinals/OrdinalsInscriptionScreen';
 import SendOrdinalsInscriptionScreen from './Ordinals/SendOrdinalsInscriptionScreen';
 import SignOrdinalsTransactionScreen from './Ordinals/SignOrdinalsTransactionScreen';
@@ -114,7 +119,7 @@ export const routes = {
   },
   CreateHDWalletScreen: {
     path: '/account/create-hd-wallet',
-    element: <CreateHDWalletScreen />
+    element: <ModernCreateHDWalletScreen />
   },
   CreateAccountScreen: {
     path: '/account/create',

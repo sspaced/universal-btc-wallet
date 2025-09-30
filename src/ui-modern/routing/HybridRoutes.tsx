@@ -1,84 +1,86 @@
-import { lazy, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { HashRouter, Route, Routes, useNavigate as useNavigateOrigin } from 'react-router-dom';
 
+import { Content, Icon } from '@/ui/components';
+import { ErrorBoundary } from '@/ui/components/ErrorBoundary';
+import AddKeyringScreen from '@/ui/pages/Account/AddKeyringScreen';
+import CreateAccountScreen from '@/ui/pages/Account/CreateAccountScreen';
+import CreateColdWalletScreen from '@/ui/pages/Account/CreateColdWalletScreen';
+import CreateHDWalletScreen from '@/ui/pages/Account/CreateHDWalletScreen';
+import CreateKeystoneWalletScreen from '@/ui/pages/Account/CreateKeystoneWalletScreen';
+import CreatePasswordScreen from '@/ui/pages/Account/CreatePasswordScreen';
+import CreateSimpleWalletScreen from '@/ui/pages/Account/CreateSimpleWalletScreen';
+import SwitchAccountScreen from '@/ui/pages/Account/SwitchAccountScreen';
+import SwitchKeyringScreen from '@/ui/pages/Account/SwitchKeyringScreen';
+import UnlockScreen from '@/ui/pages/Account/UnlockScreen';
+import AlkanesCollectionScreen from '@/ui/pages/Alkanes/AlkanesCollectionScreen';
+import AlkanesNFTScreen from '@/ui/pages/Alkanes/AlkanesNFTScreen';
+import AlkanesTokenScreen from '@/ui/pages/Alkanes/AlkanesTokenScreen';
+import SendAlkanesNFTScreen from '@/ui/pages/Alkanes/SendAlkanesNFTScreen';
+import SendAlkanesScreen from '@/ui/pages/Alkanes/SendAlkanesScreen';
+import ApprovalScreen from '@/ui/pages/Approval/ApprovalScreen';
+import ConnectedSitesScreen from '@/ui/pages/Approval/ConnectedSitesScreen';
+import { InscribeTransferScreen } from '@/ui/pages/Approval/components/InscribeTransfer';
+import BRC20SendScreen from '@/ui/pages/BRC20/BRC20SendScreen';
+import BRC20SingleStepScreen from '@/ui/pages/BRC20/BRC20SingleStepScreen';
+import BRC20TokenScreen from '@/ui/pages/BRC20/BRC20TokenScreen';
+import BabylonStakingScreen from '@/ui/pages/Babylon/BabylonStakingScreen';
+import BabylonTxConfirmScreen from '@/ui/pages/Babylon/BabylonTxConfirmScreen';
+import SendBabyScreen from '@/ui/pages/Babylon/SendBabyScreen';
+// Import des composants existants
 import CAT20TokenScreen from '@/ui/pages/CAT20/CAT20TokenScreen';
 import MergeCAT20HistoryScreen from '@/ui/pages/CAT20/MergeCAT20HistoryScreen';
 import MergeCAT20Screen from '@/ui/pages/CAT20/MergeCAT20Screen';
 import SendCAT20Screen from '@/ui/pages/CAT20/SendCAT20Screen';
+import CAT721CollectionScreen from '@/ui/pages/CAT721/CAT721CollectionScreen';
+import CAT721NFTScreen from '@/ui/pages/CAT721/CAT721NFTScreen';
+import SendCAT721Screen from '@/ui/pages/CAT721/SendCAT721Screen';
+import AppTabScrren from '@/ui/pages/Main/AppTabScreen';
+import BoostScreen from '@/ui/pages/Main/BoostScreen';
+import DiscoverTabScreen from '@/ui/pages/Main/DiscoverTabScreen';
+import SettingsTabScreen from '@/ui/pages/Main/SettingsTabScreen';
+import WalletTabScreen from '@/ui/pages/Main/WalletTabScreen';
+import WelcomeScreen from '@/ui/pages/Main/WelcomeScreen';
+import OrdinalsInscriptionScreen from '@/ui/pages/Ordinals/OrdinalsInscriptionScreen';
+import SendOrdinalsInscriptionScreen from '@/ui/pages/Ordinals/SendOrdinalsInscriptionScreen';
+import SignOrdinalsTransactionScreen from '@/ui/pages/Ordinals/SignOrdinalsTransactionScreen';
+import SplitOrdinalsInscriptionScreen from '@/ui/pages/Ordinals/SplitOrdinalsInscriptionScreen';
+import PhishingScreen from '@/ui/pages/Phishing/PhishingScreen';
+import RunesTokenScreen from '@/ui/pages/Runes/RunesTokenScreen';
+import SendRunesScreen from '@/ui/pages/Runes/SendRunesScreen';
+import AboutUsScreen from '@/ui/pages/Settings/AboutUsScreen';
+import AddressTypeScreen from '@/ui/pages/Settings/AddressTypeScreen';
+import AdvancedScreen from '@/ui/pages/Settings/AdvancedScreen';
+import { LockTimePage } from '@/ui/pages/Settings/AdvancedScreen/LockTimePage';
+import ChangePasswordScreen from '@/ui/pages/Settings/ChangePasswordScreen';
+import ContactsScreen from '@/ui/pages/Settings/ContactsScreen';
+import EditAccountNameScreen from '@/ui/pages/Settings/EditAccountNameScreen';
+import EditContactScreen from '@/ui/pages/Settings/EditContactScreen';
+import EditWalletNameScreen from '@/ui/pages/Settings/EditWalletNameScreen';
+import ExportMnemonicsScreen from '@/ui/pages/Settings/ExportMnemonicsScreen';
+import ExportPrivateKeyScreen from '@/ui/pages/Settings/ExportPrivateKeyScreen';
+import LanguageScreen from '@/ui/pages/Settings/LanguageScreen';
+import NetworkTypeScreen from '@/ui/pages/Settings/NetworkTypeScreen';
+import UpgradeNoticeScreen from '@/ui/pages/Settings/UpgradeNoticeScreen';
+import CosmosSignDemo from '@/ui/pages/Test/CosmosSignDemo';
+import TestScreen from '@/ui/pages/Test/TestScreen';
+import HistoryScreen from '@/ui/pages/Wallet/HistoryScreen';
+import ReceiveScreen from '@/ui/pages/Wallet/ReceiveScreen';
+import TxConfirmScreen from '@/ui/pages/Wallet/TxConfirmScreen';
+import TxCreateScreen from '@/ui/pages/Wallet/TxCreateScreen';
+import TxFailScreen from '@/ui/pages/Wallet/TxFailScreen';
+import TxSuccessScreen from '@/ui/pages/Wallet/TxSuccessScreen';
+import { accountActions } from '@/ui/state/accounts/reducer';
+import { useIsReady, useIsUnlocked } from '@/ui/state/global/hooks';
+import { globalActions } from '@/ui/state/global/reducer';
+import { useAppDispatch } from '@/ui/state/hooks';
+import { settingsActions } from '@/ui/state/settings/reducer';
+import { useWallet } from '@/ui/utils';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { Content, Icon } from '../components';
-import { ErrorBoundary } from '../components/ErrorBoundary';
-import { accountActions } from '../state/accounts/reducer';
-import { useIsReady, useIsUnlocked } from '../state/global/hooks';
-import { globalActions } from '../state/global/reducer';
-import { useAppDispatch } from '../state/hooks';
-import { settingsActions } from '../state/settings/reducer';
-import { useWallet } from '../utils';
-import AddKeyringScreen from './Account/AddKeyringScreen';
-import CreateAccountScreen from './Account/CreateAccountScreen';
-import CreateColdWalletScreen from './Account/CreateColdWalletScreen';
-import CreateHDWalletScreen from './Account/CreateHDWalletScreen';
-import CreateKeystoneWalletScreen from './Account/CreateKeystoneWalletScreen';
-import CreatePasswordScreen from './Account/CreatePasswordScreen';
-import CreateSimpleWalletScreen from './Account/CreateSimpleWalletScreen';
-import SwitchAccountScreen from './Account/SwitchAccountScreen';
-import SwitchKeyringScreen from './Account/SwitchKeyringScreen';
-import UnlockScreen from './Account/UnlockScreen';
-import AlkanesCollectionScreen from './Alkanes/AlkanesCollectionScreen';
-import AlkanesNFTScreen from './Alkanes/AlkanesNFTScreen';
-import AlkanesTokenScreen from './Alkanes/AlkanesTokenScreen';
-import SendAlkanesNFTScreen from './Alkanes/SendAlkanesNFTScreen';
-import SendAlkanesScreen from './Alkanes/SendAlkanesScreen';
-import ApprovalScreen from './Approval/ApprovalScreen';
-import ConnectedSitesScreen from './Approval/ConnectedSitesScreen';
-import { InscribeTransferScreen } from './Approval/components/InscribeTransfer';
-import BRC20SendScreen from './BRC20/BRC20SendScreen';
-import BRC20SingleStepScreen from './BRC20/BRC20SingleStepScreen';
-import BRC20TokenScreen from './BRC20/BRC20TokenScreen';
-import BabylonStakingScreen from './Babylon/BabylonStakingScreen';
-import BabylonTxConfirmScreen from './Babylon/BabylonTxConfirmScreen';
-import SendBabyScreen from './Babylon/SendBabyScreen';
-import CAT721CollectionScreen from './CAT721/CAT721CollectionScreen';
-import CAT721NFTScreen from './CAT721/CAT721NFTScreen';
-import SendCAT721Screen from './CAT721/SendCAT721Screen';
-import AppTabScrren from './Main/AppTabScreen';
-import BoostScreen from './Main/BoostScreen';
-import DiscoverTabScreen from './Main/DiscoverTabScreen';
-import SettingsTabScreen from './Main/SettingsTabScreen';
-import WalletTabScreen from './Main/WalletTabScreen';
-import WelcomeScreen from './Main/WelcomeScreen';
-const ModernWelcomeScreen = lazy(() => import('../../ui-modern/pages/ModernWelcomeScreen').then(module => ({ default: module.ModernWelcomeScreen })));
-import OrdinalsInscriptionScreen from './Ordinals/OrdinalsInscriptionScreen';
-import SendOrdinalsInscriptionScreen from './Ordinals/SendOrdinalsInscriptionScreen';
-import SignOrdinalsTransactionScreen from './Ordinals/SignOrdinalsTransactionScreen';
-import SplitOrdinalsInscriptionScreen from './Ordinals/SplitOrdinalsInscriptionScreen';
-import PhishingScreen from './Phishing/PhishingScreen';
-import RunesTokenScreen from './Runes/RunesTokenScreen';
-import SendRunesScreen from './Runes/SendRunesScreen';
-import AboutUsScreen from './Settings/AboutUsScreen';
-import AddressTypeScreen from './Settings/AddressTypeScreen';
-import AdvancedScreen from './Settings/AdvancedScreen';
-import { LockTimePage } from './Settings/AdvancedScreen/LockTimePage';
-import ChangePasswordScreen from './Settings/ChangePasswordScreen';
-import ContactsScreen from './Settings/ContactsScreen';
-import EditAccountNameScreen from './Settings/EditAccountNameScreen';
-import EditContactScreen from './Settings/EditContactScreen';
-import EditWalletNameScreen from './Settings/EditWalletNameScreen';
-import ExportMnemonicsScreen from './Settings/ExportMnemonicsScreen';
-import ExportPrivateKeyScreen from './Settings/ExportPrivateKeyScreen';
-import LanguageScreen from './Settings/LanguageScreen';
-import NetworkTypeScreen from './Settings/NetworkTypeScreen';
-import UpgradeNoticeScreen from './Settings/UpgradeNoticeScreen';
-import CosmosSignDemo from './Test/CosmosSignDemo';
-import TestScreen from './Test/TestScreen';
-import HistoryScreen from './Wallet/HistoryScreen';
-import ReceiveScreen from './Wallet/ReceiveScreen';
-import TxConfirmScreen from './Wallet/TxConfirmScreen';
-import TxCreateScreen from './Wallet/TxCreateScreen';
-import TxFailScreen from './Wallet/TxFailScreen';
-import TxSuccessScreen from './Wallet/TxSuccessScreen';
-import './index.module.less';
+import { shouldUseModernUI } from '../config/ui-config';
+// Import des composants modernes
+import { ModernWelcomeScreen } from '../pages/ModernWelcomeScreen';
 
 export const routes = {
   BoostScreen: {
@@ -87,7 +89,7 @@ export const routes = {
   },
   WelcomeScreen: {
     path: '/welcome',
-    element: <ModernWelcomeScreen />
+    element: shouldUseModernUI('WelcomeScreen') ? <ModernWelcomeScreen /> : <WelcomeScreen />
   },
   MainScreen: {
     path: '/main',
@@ -466,31 +468,12 @@ const Main = () => {
       }
 
       if (!self.summaryLoaded) {
-        // wallet.getInscriptionSummary().then((data) => {
-        //   dispatch(accountActions.setInscriptionSummary(data));
-        // });
-
-        // wallet.getAppSummary().then((data) => {
-        //   dispatch(accountActions.setAppSummary(data));
-        // });
-
-        // wallet.getBannerList().then((data) => {
-        //   dispatch(accountActions.setBannerList(data));
-        // });
-
-        // wallet.getAppList().then((data) => {
-        //   dispatch(accountActions.setAppList(data));
-        // });
         self.summaryLoaded = true;
       }
 
       if (!self.configLoaded) {
         self.configLoaded = true;
 
-        // already load when reloadAccounts
-        // wallet.getWalletConfig().then((data) => {
-        //   dispatch(settingsActions.updateSettings({ walletConfig: data }));
-        // });
         wallet.getSkippedVersion().then((data) => {
           dispatch(settingsActions.updateSettings({ skippedVersion: data }));
         });

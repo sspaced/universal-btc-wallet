@@ -1,0 +1,201 @@
+{
+  "name": "Universal Wallet",
+  "short_name": "Universal",
+  "description": "Secure Bitcoin wallet with OPI Universal Protocol support. Apple/Revolut-inspired minimalist design.",
+  "version": "1.0.0",
+  "manifest_version": 3,
+
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#3B82F6",
+  "background_color": "#FFFFFF",
+
+  "categories": ["finance", "utilities"],
+  "lang": "en-US",
+
+  "icons": [
+    {
+      "src": "/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": "/screenshots/home-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Universal Wallet home screen on desktop"
+    },
+    {
+      "src": "/screenshots/home-narrow.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Universal Wallet home screen on mobile"
+    },
+    {
+      "src": "/screenshots/send-narrow.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Send Bitcoin transaction screen"
+    }
+  ],
+
+  "features": [
+    "Cross Platform",
+    "Web Monetization"
+  ],
+
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.universalwallet.app",
+      "id": "com.universalwallet.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/universal-wallet/id123456789",
+      "id": "123456789"
+    }
+  ],
+
+  "prefer_related_applications": false,
+
+  "shortcuts": [
+    {
+      "name": "Send Bitcoin",
+      "short_name": "Send",
+      "description": "Send Bitcoin to another wallet",
+      "url": "/send",
+      "icons": [
+        {
+          "src": "/icons/send-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Receive Bitcoin",
+      "short_name": "Receive",
+      "description": "Receive Bitcoin from another wallet",
+      "url": "/receive",
+      "icons": [
+        {
+          "src": "/icons/receive-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Transaction History",
+      "short_name": "History",
+      "description": "View transaction history",
+      "url": "/history",
+      "icons": [
+        {
+          "src": "/icons/history-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "qr_code",
+          "accept": ["image/*"]
+        }
+      ]
+    }
+  },
+
+  "protocol_handlers": [
+    {
+      "protocol": "bitcoin",
+      "url": "/send?uri=%s"
+    }
+  ],
+
+  "file_handlers": [
+    {
+      "action": "/import",
+      "accept": {
+        "application/json": [".json"],
+        "text/plain": [".txt"]
+      }
+    }
+  ],
+
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+
+  "scope_extensions": [
+    {
+      "origin": "https://universalwallet.com"
+    }
+  ]
+}

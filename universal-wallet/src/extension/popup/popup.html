@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal Wallet</title>
+  <style>
+    :root {
+      --apple-blue: #007AFF;
+      --apple-gray: #8E8E93;
+      --apple-dark-gray: #3A3A3C;
+      --apple-light-gray: #F2F2F7;
+      --apple-green: #34C759;
+      --apple-red: #FF3B30;
+      --apple-orange: #FF9500;
+      --system-background: #FFFFFF;
+      --secondary-system-background: #F2F2F7;
+      --tertiary-system-background: #FFFFFF;
+      --system-fill: #78788033;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 400px;
+      height: 600px;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+      background: var(--system-background);
+      color: #000000;
+      overflow: hidden;
+    }
+
+    .container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 20px;
+      text-align: center;
+      background: var(--system-background);
+      border-bottom: 1px solid var(--secondary-system-background);
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 10px;
+      background: var(--apple-blue);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #000000;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--apple-gray);
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: var(--secondary-system-background);
+    }
+
+    .balance-card {
+      background: var(--system-background);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .balance-label {
+      font-size: 14px;
+      color: var(--apple-gray);
+      margin-bottom: 8px;
+    }
+
+    .balance-amount {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #000000;
+    }
+
+    .balance-usd {
+      font-size: 14px;
+      color: var(--apple-gray);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .action-btn {
+      background: var(--apple-blue);
+      border: none;
+      border-radius: 8px;
+      padding: 16px;
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .action-btn:hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
+    }
+
+    .action-icon {
+      font-size: 20px;
+    }
+
+    .transactions {
+      background: var(--system-background);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #000000;
+    }
+
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--secondary-system-background);
+    }
+
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+
+    .transaction-type {
+      font-weight: 500;
+      color: #000000;
+    }
+
+    .transaction-amount {
+      font-weight: 600;
+      color: #000000;
+    }
+
+    .footer {
+      padding: 16px 20px;
+      background: var(--system-background);
+      border-top: 1px solid var(--secondary-system-background);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--apple-gray);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--apple-green);
+      border-radius: 50%;
+    }
+
+    .settings-btn {
+      background: none;
+      border: none;
+      color: var(--apple-gray);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .settings-btn:hover {
+      color: var(--apple-blue);
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--system-background);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--secondary-system-background);
+      border-top: 3px solid var(--apple-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Loading State -->
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <div>Loading Universal Wallet...</div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="hidden">
+      <div class="header">
+        <div class="logo">₿</div>
+        <div class="title">Universal Wallet</div>
+        <div class="subtitle">Secure Bitcoin Wallet</div>
+      </div>
+
+      <div class="content">
+        <div class="balance-card">
+          <div class="balance-label">Total Balance</div>
+          <div class="balance-amount" id="balance">0.00000000 BTC</div>
+          <div class="balance-usd" id="balance-usd">$0.00 USD</div>
+        </div>
+
+        <div class="actions">
+          <button class="action-btn" id="send-btn">
+            <span class="action-icon">📤</span>
+            <span>Send</span>
+          </button>
+          <button class="action-btn" id="receive-btn">
+            <span class="action-icon">📥</span>
+            <span>Receive</span>
+          </button>
+          <button class="action-btn" id="swap-btn">
+            <span class="action-icon">🔄</span>
+            <span>Swap</span>
+          </button>
+          <button class="action-btn" id="history-btn">
+            <span class="action-icon">📊</span>
+            <span>History</span>
+          </button>
+        </div>
+
+        <div class="transactions">
+          <div class="section-title">Recent Transactions</div>
+          <div id="transactions-list">
+            <div class="transaction-item">
+              <div class="transaction-type">Received</div>
+              <div class="transaction-amount">+0.05 BTC</div>
+            </div>
+            <div class="transaction-item">
+              <div class="transaction-type">Sent</div>
+              <div class="transaction-amount">-0.01 BTC</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="status">
+          <div class="status-dot"></div>
+          <span>Connected</span>
+        </div>
+        <button class="settings-btn" id="settings-btn">
+          ⚙️
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

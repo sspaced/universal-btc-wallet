@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://blockstream.info https://mempool.space https://api.opi.network; font-src 'self' data:;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <!-- X-Frame-Options moved to server headers -->
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+
+    <!-- Viewport and responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Universal Wallet">
+
+    <!-- Theme and colors -->
+    <meta name="theme-color" content="#3B82F6">
+    <meta name="msapplication-TileColor" content="#3B82F6">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- SEO and metadata -->
+    <title>Universal Wallet - Secure Bitcoin Wallet</title>
+    <meta name="description" content="Universal Wallet - Secure Bitcoin wallet with OPI Universal Protocol support. Apple/Revolut-inspired minimalist design.">
+    <meta name="keywords" content="bitcoin, wallet, cryptocurrency, secure, universal, protocol, OPI">
+    <meta name="author" content="Universal Wallet Team">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Icons and favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://blockstream.info">
+    <link rel="preconnect" href="https://mempool.space">
+    <link rel="preconnect" href="https://api.opi.network">
+
+    <!-- DNS prefetch for better performance -->
+    <link rel="dns-prefetch" href="https://blockstream.info">
+    <link rel="dns-prefetch" href="https://mempool.space">
+    <link rel="dns-prefetch" href="https://api.opi.network">
+
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <style>
+      html {
+        visibility: hidden;
+        opacity: 0;
+        background-color: #ffffff;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        html {
+          background-color: #111827;
+        }
+      }
+
+      html.loaded {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      /* Loading spinner */
+      .initial-loader {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f4f6;
+        border-top: 4px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .spinner {
+          border-color: #374151;
+          border-top-color: #3b82f6;
+        }
+      }
+    </style>
+
+    <!-- Disable translation for security -->
+    <meta name="google" content="notranslate">
+
+    <!-- Safari specific -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="format-detection" content="address=no">
+
+    <!-- Open Graph tags (disabled for security) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Universal Wallet">
+    <meta property="og:description" content="Secure Bitcoin wallet">
+    <meta property="og:image" content="/og-image.png">
+    <meta property="og:url" content="https://universalwallet.com">
+
+    <!-- Twitter Card tags (disabled for security) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Universal Wallet">
+    <meta name="twitter:description" content="Secure Bitcoin wallet">
+    <meta name="twitter:image" content="/og-image.png">
+  </head>
+  <body>
+    <!-- Initial loading screen -->
+    <div class="initial-loader">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Root container -->
+    <div id="root"></div>
+
+    <!-- No-script fallback -->
+    <noscript>
+      <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #fff; display: flex; align-items: center; justify-content: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <div style="text-align: center; max-width: 400px; padding: 20px;">
+          <h1 style="color: #111827; margin-bottom: 16px;">JavaScript Required</h1>
+          <p style="color: #6b7280; margin-bottom: 24px;">Universal Wallet requires JavaScript to run securely. Please enable JavaScript in your browser settings.</p>
+          <button onclick="window.location.reload()" style="background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;">Reload Page</button>
+        </div>
+      </div>
+    </noscript>
+
+    <!-- Main application script -->
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Remove initial loader once app loads -->
+    <script>
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          document.documentElement.classList.add('loaded');
+          const loader = document.querySelector('.initial-loader');
+          if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 300);
+          }
+        }, 100);
+      });
+
+      // Security: Prevent drag and drop
+      document.addEventListener('dragover', function(e) {
+        e.preventDefault();
+      });
+
+      document.addEventListener('drop', function(e) {
+        e.preventDefault();
+      });
+
+      // Security: Clear clipboard on page unload
+      window.addEventListener('beforeunload', function() {
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText('');
+          }
+        } catch (e) {
+          // Ignore clipboard errors
+        }
+      });
+    </script>
+  </body>
+</html>

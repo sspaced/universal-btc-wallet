@@ -48,7 +48,14 @@ import DiscoverTabScreen from './Main/DiscoverTabScreen';
 import SettingsTabScreen from './Main/SettingsTabScreen';
 import WalletTabScreen from './Main/WalletTabScreen';
 import WelcomeScreen from './Main/WelcomeScreen';
-const ModernWelcomeScreen = lazy(() => import('../../ui-modern/pages/ModernWelcomeScreen').then(module => ({ default: module.ModernWelcomeScreen })));
+const ModernWelcomeScreen = lazy(() =>
+  import('../../ui-modern/pages/ModernWelcomeScreen').then((module) => ({ default: module.ModernWelcomeScreen }))
+);
+const ModernCreatePasswordScreen = lazy(() =>
+  import('../../ui-modern/pages/ModernCreatePasswordScreen').then((module) => ({
+    default: module.ModernCreatePasswordScreen
+  }))
+);
 import OrdinalsInscriptionScreen from './Ordinals/OrdinalsInscriptionScreen';
 import SendOrdinalsInscriptionScreen from './Ordinals/SendOrdinalsInscriptionScreen';
 import SignOrdinalsTransactionScreen from './Ordinals/SignOrdinalsTransactionScreen';
@@ -115,7 +122,7 @@ export const routes = {
   },
   CreatePasswordScreen: {
     path: '/account/create-password',
-    element: <CreatePasswordScreen />
+    element: <ModernCreatePasswordScreen />
   },
   UnlockScreen: {
     path: '/account/unlock',

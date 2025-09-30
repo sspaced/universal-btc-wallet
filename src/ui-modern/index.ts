@@ -5,6 +5,7 @@ import './styles/apple-theme.css';
 export * from './components/common';
 
 // Pages
+export { ModernCreatePasswordScreen } from './pages/ModernCreatePasswordScreen';
 export { ModernWelcomeScreen } from './pages/ModernWelcomeScreen';
 
 // Config

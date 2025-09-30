@@ -13,6 +13,7 @@ export interface ModernButtonProps {
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
   className?: string;
+  style?: React.CSSProperties;
   'data-testid'?: string;
 }
 
@@ -45,6 +46,7 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
   onClick,
   type = 'button',
   className = '',
+  style = {},
   'data-testid': testId,
   ...props
 }) => {
@@ -56,11 +58,13 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    border: '0',
+    border: 'none',
     outline: 'none',
-    opacity: isDisabled ? 0.5 : 1,
+    opacity: isDisabled ? 0.4 : 1,
     cursor: isDisabled ? 'not-allowed' : 'pointer',
-    width: fullWidth ? '100%' : 'auto'
+    width: fullWidth ? '100%' : 'auto',
+    fontWeight: '600',
+    ...style
   };
 
   const handleClick = () => {
@@ -77,9 +81,9 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
       disabled={isDisabled}
       type={type}
       data-testid={testId}
-      whileHover={!isDisabled ? { scale: 1.02 } : {}}
-      whileTap={!isDisabled ? { scale: 0.98 } : {}}
-      transition={{ duration: 0.1 }}
+      whileHover={!isDisabled ? { scale: 1.01 } : {}}
+      whileTap={!isDisabled ? { scale: 0.97 } : {}}
+      transition={{ duration: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
       {...props}>
       {leftIcon && !loading && <span style={{ marginRight: '8px', flexShrink: 0 }}>{leftIcon}</span>}
 

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ConnectHardwareModal } from '../../ui/pages/Main/ConnectHardwareModal';
 import { useNavigate } from '../../ui/pages/MainRoute';
 import { useWallet } from '../../ui/utils';
-import { ModernButton, ModernCard, ModernLogo } from '../components/common';
+import { ModernButton, ModernLogo } from '../components/common';
 import { HardwareIcon, ImportIcon, KeyIcon, LockIcon, PlusIcon, ShieldIcon } from '../components/common/Icons';
 
 // Helper Components
@@ -12,20 +12,34 @@ const FeatureItem: React.FC<{ icon: React.ComponentType<{ className: string }>; 
   icon: Icon,
   text
 }) => (
-  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', width: '80px' }}>
     <div
       style={{
-        width: '32px',
-        height: '32px',
-        borderRadius: '8px',
+        width: '40px',
+        height: '40px',
+        borderRadius: '12px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--apple-gray-5)'
+        backgroundColor: 'rgba(255, 255, 255, 0.1)'
       }}>
-      <Icon style={{ width: '16px', height: '16px', color: 'var(--apple-blue)' }} />
+      <Icon style={{ width: '16px', height: '16px', color: '#ffffff' }} />
     </div>
-    <span style={{ fontSize: '12px', fontWeight: '500', color: 'var(--apple-secondary-label)' }}>{text}</span>
+    <span
+      style={{
+        fontSize: '11px',
+        fontWeight: '500',
+        color: 'rgba(255, 255, 255, 0.7)',
+        letterSpacing: '-0.08px',
+        textAlign: 'center',
+        lineHeight: '1.3',
+        minHeight: '28px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+      {text}
+    </span>
   </div>
 );
 
@@ -58,34 +72,36 @@ export const ModernWelcomeScreen: React.FC = () => {
 
   return (
     <div
+      className="modern-ui-container"
       style={{
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: 'var(--apple-system-background)'
+        backgroundColor: '#000000'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         style={{ width: '100%' }}>
-        <ModernCard padding="xl" style={{ maxWidth: '448px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <div style={{ maxWidth: '448px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
               style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: '16px',
+                width: '96px',
+                height: '96px',
+                borderRadius: '22px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 24px',
-                backgroundColor: 'var(--apple-blue)'
+                margin: '0 auto 32px',
+                backgroundColor: '#007aff',
+                boxShadow: '0 8px 16px rgba(0, 122, 255, 0.3)'
               }}>
               <ModernLogo size="large" color="white" />
             </motion.div>
@@ -94,10 +110,11 @@ export const ModernWelcomeScreen: React.FC = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
               style={{
-                fontSize: '24px',
-                fontWeight: 'bold',
-                marginBottom: '8px',
-                color: 'var(--apple-label)'
+                fontSize: '32px',
+                fontWeight: '700',
+                marginBottom: '12px',
+                color: '#ffffff',
+                letterSpacing: '-0.5px'
               }}>
               Welcome to Universal Wallet
             </motion.h1>
@@ -105,8 +122,13 @@ export const ModernWelcomeScreen: React.FC = () => {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              style={{ color: 'var(--apple-secondary-label)' }}>
-              Your secure Bitcoin wallet with Apple-inspired design
+              style={{
+                fontSize: '17px',
+                color: 'rgba(255, 255, 255, 0.6)',
+                lineHeight: '1.47059',
+                letterSpacing: '-0.022em'
+              }}>
+              Your secure Bitcoin wallet
             </motion.p>
           </div>
 
@@ -114,7 +136,7 @@ export const ModernWelcomeScreen: React.FC = () => {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <ModernButton
               variant="primary"
               size="large"
@@ -147,14 +169,14 @@ export const ModernWelcomeScreen: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ marginTop: '32px' }}>
+            style={{ marginTop: '48px' }}>
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '16px',
-                marginBottom: '16px'
+                gap: '32px',
+                marginBottom: '20px'
               }}>
               <FeatureItem icon={ShieldIcon} text="Enterprise Security" />
               <FeatureItem icon={KeyIcon} text="Your Keys" />
@@ -162,14 +184,16 @@ export const ModernWelcomeScreen: React.FC = () => {
             </div>
             <p
               style={{
-                fontSize: '12px',
+                fontSize: '13px',
                 textAlign: 'center',
-                color: 'var(--apple-tertiary-label)'
+                color: 'rgba(255, 255, 255, 0.5)',
+                letterSpacing: '-0.08px',
+                fontWeight: '400'
               }}>
-              🔒 Secured with AES-256-GCM encryption
+              Secured with AES-256-GCM encryption
             </p>
           </motion.div>
-        </ModernCard>
+        </div>
       </motion.div>
 
       {connectHardwareModalVisible && (

@@ -99,27 +99,28 @@ html {
   -webkit-text-size-adjust: 100%;
   -webkit-font-feature-settings: normal;
   font-feature-settings: normal;
-  /* Apple's exact font stack */
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial,
-    sans-serif;
-  line-height: 1.47059;
-  tab-size: 4;
-  scroll-behavior: smooth;
-  font-size: 17px; /* Apple's base font size */
-  font-weight: 400;
-  letter-spacing: -0.022em; /* Apple's letter spacing */
 }
 
 body {
   margin: 0;
-  background-color: var(--apple-system-background);
-  color: var(--apple-label);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
-  font-family: inherit;
+}
+
+/* Modern UI specific container */
+.modern-ui-container {
+  /* Apple's exact font stack */
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif !important;
+  line-height: 1.47059;
+  font-size: 17px; /* Apple's base font size */
+  font-weight: 400;
+  letter-spacing: -0.022em; /* Apple's letter spacing */
+  background-color: var(--apple-system-background);
+  color: var(--apple-label);
 }
 
 /* Apple Typography */
@@ -203,77 +204,83 @@ h6 {
 .apple-button-primary {
   background-color: var(--apple-blue);
   color: white;
-  font-weight: 500;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
 }
 
 .apple-button-primary:hover:not(:disabled) {
-  background-color: #0051d0;
+  background-color: #0062cc;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.35);
   transform: translateY(-1px);
 }
 
 .apple-button-primary:active:not(:disabled) {
-  background-color: #004493;
+  background-color: #0056b3;
+  box-shadow: 0 1px 4px rgba(0, 122, 255, 0.2);
   transform: translateY(0px) scale(0.98);
 }
 
 .apple-button-primary:focus:not(:disabled) {
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.25), 0 2px 8px rgba(0, 122, 255, 0.25);
 }
 
 /* Apple Button Secondary (Gray) */
 .apple-button-secondary {
-  background-color: var(--apple-gray-5);
-  color: var(--apple-label);
-  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
 }
 
 .apple-button-secondary:hover:not(:disabled) {
-  background-color: var(--apple-gray-4);
+  background-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
 
 .apple-button-secondary:active:not(:disabled) {
-  background-color: var(--apple-gray-3);
+  background-color: rgba(255, 255, 255, 0.08);
   transform: translateY(0px) scale(0.98);
 }
 
 /* Apple Button Tertiary (Tinted) */
 .apple-button-tertiary {
-  background-color: rgba(0, 122, 255, 0.1);
-  color: var(--apple-blue);
-  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  backdrop-filter: blur(10px);
 }
 
 .apple-button-tertiary:hover:not(:disabled) {
-  background-color: rgba(0, 122, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
   transform: translateY(-1px);
 }
 
 .apple-button-tertiary:active:not(:disabled) {
-  background-color: rgba(0, 122, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.06);
   transform: translateY(0px) scale(0.98);
 }
 
 /* Apple Button Sizes */
 .apple-button-small {
-  padding: 6px 12px;
+  padding: 6px 14px;
   font-size: 13px;
-  min-height: 28px;
-  border-radius: 6px;
-}
-
-.apple-button-medium {
-  padding: 8px 16px;
-  font-size: 15px;
-  min-height: 36px;
+  min-height: 32px;
   border-radius: 8px;
 }
 
-.apple-button-large {
-  padding: 12px 24px;
-  font-size: 17px;
-  min-height: 44px;
+.apple-button-medium {
+  padding: 10px 18px;
+  font-size: 15px;
+  min-height: 40px;
   border-radius: 10px;
+}
+
+.apple-button-large {
+  padding: 14px 24px;
+  font-size: 17px;
+  min-height: 50px;
+  border-radius: 12px;
 }
 
 /* Apple Card Style */

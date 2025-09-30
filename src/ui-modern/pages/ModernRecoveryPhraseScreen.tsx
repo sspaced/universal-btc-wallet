@@ -109,28 +109,25 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           Wallet Created Successfully!
         </motion.h1>
 
-        {/* Subtitle */}
-        <motion.p
+        {/* Security Warning */}
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          style={{
-            fontSize: '14px',
-            color: 'rgba(255, 255, 255, 0.6)',
-            textAlign: 'center',
-            marginBottom: '24px',
-            lineHeight: '1.47059',
-            letterSpacing: '-0.022em'
-          }}>
-          Your recovery phrase has been generated. Keep it safe!
-        </motion.p>
+          style={{ marginBottom: '20px' }}>
+          <ModernSecurityWarning
+            title="Important Security Info"
+            message="Write down your recovery phrase and store it safely. Never share it with anyone."
+            variant="warning"
+          />
+        </motion.div>
 
         {/* Recovery Grid */}
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          style={{ marginBottom: '20px' }}>
+          style={{ marginBottom: '16px' }}>
           <ModernRecoveryGrid words={words} title="Recovery Phrase" copyable />
         </motion.div>
 
@@ -139,39 +136,26 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          style={{ marginBottom: '20px' }}>
+          style={{ marginBottom: '16px' }}>
           <ModernButton variant="tertiary" size="medium" onClick={handleCopyAll} fullWidth>
             📋 Copy All Words
           </ModernButton>
-        </motion.div>
-
-        {/* Security Warning */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          style={{ marginBottom: '20px' }}>
-          <ModernSecurityWarning
-            title="Important Security Info"
-            message="Write down your recovery phrase and store it safely. Never share it with anyone or store it digitally."
-            variant="warning"
-          />
         </motion.div>
 
         {/* Checkbox */}
         <motion.label
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.5 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
           style={{
             display: 'flex',
             alignItems: 'flex-start',
             gap: '12px',
-            padding: '16px',
+            padding: '12px',
             backgroundColor: 'rgba(255, 255, 255, 0.05)',
-            borderRadius: '12px',
+            borderRadius: '10px',
             cursor: 'pointer',
-            marginBottom: '20px',
+            marginBottom: '16px',
             border: checked ? '1.5px solid rgba(0, 122, 255, 0.5)' : '1.5px solid rgba(255, 255, 255, 0.1)',
             transition: 'all 0.2s'
           }}>
@@ -203,7 +187,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}>
+          transition={{ delay: 0.7, duration: 0.5 }}>
           <ModernButton variant="primary" size="large" onClick={handleContinue} disabled={!checked} fullWidth>
             Continue to Next Step
           </ModernButton>

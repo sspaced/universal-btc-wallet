@@ -54,46 +54,46 @@ export const ModernSecurityWarning: React.FC<ModernSecurityWarningProps> = ({
       transition={{ duration: 0.3 }}
       className={className}
       style={{
-        padding: '16px',
+        padding: '12px 14px',
         backgroundColor: colors.background,
         border: `1.5px solid ${colors.border}`,
-        borderRadius: '12px',
+        borderRadius: '10px',
         display: 'flex',
-        gap: '12px',
+        gap: '10px',
         backdropFilter: 'blur(10px)'
       }}>
       {/* Icon */}
       <div
         style={{
           flexShrink: 0,
-          width: '24px',
-          height: '24px',
+          width: '20px',
+          height: '20px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: colors.icon
         }}>
-        {icon || <WarningIcon style={{ width: '24px', height: '24px' }} />}
+        {icon || <WarningIcon style={{ width: '20px', height: '20px' }} />}
       </div>
 
       {/* Content */}
       <div style={{ flex: 1 }}>
         <div
           style={{
-            fontSize: '14px',
+            fontSize: '13px',
             fontWeight: '600',
             color: colors.text,
-            marginBottom: '4px',
+            marginBottom: '2px',
             letterSpacing: '-0.08px'
           }}>
           {title}
         </div>
         <div
           style={{
-            fontSize: '13px',
+            fontSize: '12px',
             fontWeight: '400',
             color: 'rgba(255, 255, 255, 0.7)',
-            lineHeight: '1.4',
+            lineHeight: '1.3',
             letterSpacing: '-0.08px'
           }}>
           {message}

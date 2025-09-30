@@ -87,21 +87,21 @@ export const ModernWelcomeScreen: React.FC = () => {
         transition={{ duration: 0.5 }}
         style={{ width: '100%' }}>
         <div style={{ maxWidth: '448px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
               style={{
-                width: '96px',
-                height: '96px',
-                borderRadius: '22px',
+                width: '72px',
+                height: '72px',
+                borderRadius: '18px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 32px',
+                margin: '0 auto 24px',
                 backgroundColor: '#007aff',
-                boxShadow: '0 8px 16px rgba(0, 122, 255, 0.3)'
+                boxShadow: '0 6px 12px rgba(0, 122, 255, 0.3)'
               }}>
               <ModernLogo size="large" color="white" />
             </motion.div>
@@ -110,9 +110,9 @@ export const ModernWelcomeScreen: React.FC = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
               style={{
-                fontSize: '32px',
+                fontSize: '28px',
                 fontWeight: '700',
-                marginBottom: '12px',
+                marginBottom: '8px',
                 color: '#ffffff',
                 letterSpacing: '-0.5px'
               }}>
@@ -123,7 +123,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
               style={{
-                fontSize: '17px',
+                fontSize: '15px',
                 color: 'rgba(255, 255, 255, 0.6)',
                 lineHeight: '1.47059',
                 letterSpacing: '-0.022em'
@@ -169,7 +169,7 @@ export const ModernWelcomeScreen: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ marginTop: '48px' }}>
+            style={{ marginTop: '32px' }}>
             <div
               style={{
                 display: 'flex',

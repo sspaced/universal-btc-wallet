@@ -61,6 +61,11 @@ const ModernCreateHDWalletScreen = lazy(() =>
     default: module.ModernCreateHDWalletScreen
   }))
 );
+const ModernAddressTypeScreen = lazy(() =>
+  import('../../ui-modern/pages/ModernAddressTypeScreen').then((module) => ({
+    default: module.ModernAddressTypeScreen
+  }))
+);
 import OrdinalsInscriptionScreen from './Ordinals/OrdinalsInscriptionScreen';
 import SendOrdinalsInscriptionScreen from './Ordinals/SendOrdinalsInscriptionScreen';
 import SignOrdinalsTransactionScreen from './Ordinals/SignOrdinalsTransactionScreen';
@@ -248,7 +253,7 @@ export const routes = {
   },
   AddressTypeScreen: {
     path: '/settings/address-type',
-    element: <AddressTypeScreen />
+    element: <ModernAddressTypeScreen />
   },
   ContactsScreen: {
     path: '/settings/contacts',

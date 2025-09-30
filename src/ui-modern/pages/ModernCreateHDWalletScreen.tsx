@@ -13,6 +13,7 @@ import {
 } from '@/ui/pages/Account/createHDWalletComponents/types';
 
 import { ModernRecoveryPhraseScreen } from './ModernRecoveryPhraseScreen';
+import { ModernStep2Screen } from './ModernStep2Screen';
 
 export const ModernCreateHDWalletScreen: React.FC = () => {
   const { state } = useLocation();
@@ -58,7 +59,7 @@ export const ModernCreateHDWalletScreen: React.FC = () => {
       if (contextData.tabType === TabType.STEP1) {
         return <ModernRecoveryPhraseScreen contextData={contextData} updateContextData={updateContextData} />;
       } else {
-        return <Step2 contextData={contextData} updateContextData={updateContextData} />;
+        return <ModernStep2Screen contextData={contextData} updateContextData={updateContextData} />;
       }
     }
   }, [contextData, updateContextData]);

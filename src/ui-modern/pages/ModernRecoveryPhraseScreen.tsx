@@ -19,7 +19,6 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
   contextData,
   updateContextData
 }) => {
-  const [checked, setChecked] = useState(false);
   const wallet = useWallet();
   const tools = useTools();
 
@@ -33,12 +32,6 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
     init();
   }, []);
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.checked;
-    setChecked(val);
-    updateContextData({ step1Completed: val });
-  };
-
   const handleCopyAll = async () => {
     try {
       await copyToClipboard(contextData.mnemonics);
@@ -49,11 +42,10 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
   };
 
   const handleContinue = () => {
-    if (checked) {
-      updateContextData({
-        tabType: TabType.STEP2
-      });
-    }
+    updateContextData({
+      tabType: TabType.STEP2,
+      step1Completed: true
+    });
   };
 
   const words = contextData.mnemonics.split(' ');
@@ -80,17 +72,17 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.5 }}
           style={{
-            width: '64px',
-            height: '64px',
-            borderRadius: '16px',
-            backgroundColor: '#34c759',
+            width: '72px',
+            height: '72px',
+            borderRadius: '18px',
+            backgroundColor: '#007aff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 20px',
-            boxShadow: '0 6px 12px rgba(52, 199, 89, 0.3)'
+            margin: '0 auto 12px',
+            boxShadow: '0 6px 12px rgba(0, 122, 255, 0.3)'
           }}>
-          <CheckIcon style={{ width: '32px', height: '32px', color: '#ffffff' }} />
+          <CheckIcon style={{ width: '36px', height: '36px', color: '#ffffff' }} />
         </motion.div>
 
         {/* Title */}
@@ -99,7 +91,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
           style={{
-            fontSize: '24px',
+            fontSize: '20px',
             fontWeight: '700',
             marginBottom: '6px',
             color: '#ffffff',
@@ -114,7 +106,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          style={{ marginBottom: '20px' }}>
+          style={{ marginBottom: '12px' }}>
           <ModernSecurityWarning
             title="Important Security Info"
             message="Write down your recovery phrase and store it safely. Never share it with anyone."
@@ -127,7 +119,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          style={{ marginBottom: '16px' }}>
+          style={{ marginBottom: '10px' }}>
           <ModernRecoveryGrid words={words} title="Recovery Phrase" copyable />
         </motion.div>
 
@@ -136,59 +128,18 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          style={{ marginBottom: '16px' }}>
-          <ModernButton variant="tertiary" size="medium" onClick={handleCopyAll} fullWidth>
+          style={{ marginBottom: '10px' }}>
+          <ModernButton variant="tertiary" size="small" onClick={handleCopyAll} fullWidth>
             📋 Copy All Words
           </ModernButton>
         </motion.div>
-
-        {/* Checkbox */}
-        <motion.label
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: '12px',
-            padding: '12px',
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-            borderRadius: '10px',
-            cursor: 'pointer',
-            marginBottom: '16px',
-            border: checked ? '1.5px solid rgba(0, 122, 255, 0.5)' : '1.5px solid rgba(255, 255, 255, 0.1)',
-            transition: 'all 0.2s'
-          }}>
-          <input
-            type="checkbox"
-            checked={checked}
-            onChange={handleCheckboxChange}
-            style={{
-              width: '20px',
-              height: '20px',
-              marginTop: '2px',
-              cursor: 'pointer',
-              accentColor: '#007aff'
-            }}
-          />
-          <span
-            style={{
-              fontSize: '14px',
-              fontWeight: '500',
-              color: '#ffffff',
-              letterSpacing: '-0.08px',
-              flex: 1
-            }}>
-            I've saved my recovery phrase securely and understand that losing it means losing access to my wallet
-          </span>
-        </motion.label>
 
         {/* Continue Button */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.5 }}>
-          <ModernButton variant="primary" size="large" onClick={handleContinue} disabled={!checked} fullWidth>
+          transition={{ delay: 0.6, duration: 0.5 }}>
+          <ModernButton variant="primary" size="medium" onClick={handleContinue} fullWidth>
             Continue to Next Step
           </ModernButton>
         </motion.div>

@@ -43,19 +43,19 @@ export const ModernRecoveryGrid: React.FC<ModernRecoveryGridProps> = ({
     <div
       style={{
         width: '100%',
-        padding: '20px',
+        padding: '14px',
         backgroundColor: 'rgba(255, 255, 255, 0.03)',
-        borderRadius: '16px',
+        borderRadius: '14px',
         border: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
       {/* Title */}
       {title && (
         <h3
           style={{
-            fontSize: '16px',
+            fontSize: '14px',
             fontWeight: '600',
             color: '#ffffff',
-            marginBottom: '16px',
+            marginBottom: '12px',
             textAlign: 'center',
             letterSpacing: '-0.3px'
           }}>

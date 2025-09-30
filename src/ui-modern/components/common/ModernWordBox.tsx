@@ -34,13 +34,13 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
       onClick={handleClick}
       style={{
         position: 'relative',
-        padding: '8px 10px',
+        padding: '6px 8px',
         backgroundColor: selected ? 'rgba(0, 122, 255, 0.1)' : 'rgba(255, 255, 255, 0.08)',
         border: selected ? '1.5px solid rgba(0, 122, 255, 0.5)' : '1.5px solid rgba(255, 255, 255, 0.15)',
         borderRadius: '8px',
         cursor: onClick || copyable ? 'pointer' : 'default',
         transition: 'all 0.2s',
-        height: '42px',
+        height: '36px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -64,7 +64,7 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
       {/* Word */}
       <div
         style={{
-          fontSize: '13px',
+          fontSize: '12px',
           fontWeight: '500',
           color: '#ffffff',
           textAlign: 'center',

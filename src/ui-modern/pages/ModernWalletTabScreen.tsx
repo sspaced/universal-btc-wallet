@@ -7,6 +7,7 @@ import { ModernAccountSelector, ModernAccount } from '../components/wallet/Moder
 import { ModernAssetsList, Asset } from '../components/wallet/ModernAssetsList';
 import { ModernBalanceHeader } from '../components/wallet/ModernBalanceHeader';
 import { ModernQuickActions } from '../components/wallet/ModernQuickActions';
+import { useUnifiedAssets } from '../hooks/useUnifiedAssets';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useAccountBalance, useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useIsUnlocked } from '@/ui/state/global/hooks';
@@ -37,6 +38,9 @@ export const ModernWalletTabScreen: React.FC = () => {
 
   const { isSidePanel } = getUiType();
 
+  // Fetch unified assets
+  const { assets: unifiedAssets, loading: assetsLoading } = useUnifiedAssets();
+
   // Redirect to unlock if not unlocked
   useEffect(() => {
     if (!isUnlocked) {
@@ -44,17 +48,15 @@ export const ModernWalletTabScreen: React.FC = () => {
     }
   }, [isUnlocked, navigate]);
 
-  // Mock accounts data (TODO: fetch from wallet)
+  // Accounts data
   const accounts: Account[] = useMemo(() => {
-    // This should be fetched from the wallet state
-    // For now, we'll use the current account as a single item
     console.log('Current keyring type:', currentKeyring.type);
     return [
       {
         address: currentAccount.address || '',
         alianName: currentKeyring.alianName || 'Account 1',
         index: 0,
-        type: currentKeyring.type, // Add keyring type
+        type: currentKeyring.type,
       },
     ];
   }, [currentAccount, currentKeyring]);
@@ -62,52 +64,6 @@ export const ModernWalletTabScreen: React.FC = () => {
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(
     accounts.length > 0 ? accounts[0] : null
   );
-
-  // Mock assets data (TODO: fetch real assets)
-  const mockAssets: Asset[] = useMemo(() => {
-    return [
-      {
-        id: '1',
-        type: 'cat20',
-        name: 'USD Coin',
-        symbol: 'USDC',
-        amount: '1,750',
-        value: 1749.6,
-        usdValue: '$1,749.60',
-        change: '+$0.19',
-      },
-      {
-        id: '2',
-        type: 'rune',
-        name: 'Ethereum',
-        symbol: 'ETH',
-        amount: '0.00473',
-        value: 20.44,
-        usdValue: '$20.44',
-        change: '+$0.90',
-      },
-      {
-        id: '3',
-        type: 'ordinal',
-        name: 'Bitcoin Ordinal',
-        symbol: 'ORD',
-        amount: '5',
-        value: 15.2,
-        usdValue: '$15.20',
-        change: '-$0.30',
-      },
-      {
-        id: '4',
-        type: 'alkane',
-        name: 'Alkane Token',
-        symbol: 'ALK',
-        amount: '100',
-        value: 8.5,
-        usdValue: '$8.50',
-        change: '+$0.10',
-      },
-    ];
-  }, []);
 
   // Handlers
   const handleTabChange = (tab: BottomNavTab) => {
@@ -197,26 +153,25 @@ export const ModernWalletTabScreen: React.FC = () => {
   };
 
   const handleAssetClick = (asset: Asset) => {
-    console.log('Asset clicked:', asset);
-    // TODO: Navigate to asset detail screen based on type
+    // Navigate to asset detail screen based on type
     switch (asset.type) {
-      case 'ordinal':
-        // navigate to ordinal screen
-        break;
       case 'rune':
-        // navigate to rune screen
+        navigate('RunesTokenScreen', { runeid: asset.id });
         break;
       case 'alkane':
-        // navigate to alkane screen
+        navigate('AlkanesTokenScreen', { alkaneid: asset.id });
         break;
       case 'cat20':
-        // navigate to cat20 screen
+        navigate('CAT20TokenScreen', { tokenId: asset.id, version: 'CAT20' });
         break;
       case 'cat721':
-        // navigate to cat721 screen
+        navigate('CAT721NFTScreen', { tokenId: asset.id });
         break;
       case 'brc20':
-        // navigate to brc20 screen
+        navigate('BRC20TokenScreen', { tick: asset.symbol });
+        break;
+      case 'ordinal':
+        navigate('OrdinalsInscriptionScreen', { inscriptionId: asset.id });
         break;
     }
   };
@@ -282,8 +237,8 @@ export const ModernWalletTabScreen: React.FC = () => {
 
         {/* Assets List */}
         <ModernAssetsList
-          assets={mockAssets}
-          loading={false}
+          assets={unifiedAssets}
+          loading={assetsLoading}
           onAssetClick={handleAssetClick}
         />
       </ModernMainContent>

@@ -18,8 +18,18 @@ export const ModernMainContent: React.FC<ModernMainContentProps> = ({ children }
         paddingBottom: '80px', // Space for bottom navigation
         background: '#000000',
       }}
+      className="hide-scrollbar"
     >
       {children}
+      <style jsx>{`
+        .hide-scrollbar {
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE and Edge */
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none; /* Chrome, Safari, Opera */
+        }
+      `}</style>
     </motion.div>
   );
 };

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { useMemo } from 'react';
+import { PackageIcon, ClockIcon } from '../common/ModernIcons';
 
 export interface Asset {
   id: string;
@@ -93,11 +94,13 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({
       >
         <div
           style={{
-            fontSize: '32px',
+            display: 'flex',
+            justifyContent: 'center',
             marginBottom: '12px',
+            color: 'rgba(255, 255, 255, 0.5)',
           }}
         >
-          ⏳
+          <ClockIcon size={32} />
         </div>
         <div
           style={{
@@ -115,18 +118,19 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({
     return (
       <div
         style={{
-          padding: '60px 20px',
+          padding: '24px 20px',
           textAlign: 'center',
         }}
       >
         <div
           style={{
-            fontSize: '48px',
-            marginBottom: '16px',
-            opacity: 0.3,
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '8px',
+            color: 'rgba(255, 255, 255, 0.3)',
           }}
         >
-          📦
+          <PackageIcon size={48} />
         </div>
         <div
           style={{

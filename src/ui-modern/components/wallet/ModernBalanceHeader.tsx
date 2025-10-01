@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 
 import { ChainType } from '@/shared/constant';
 import { useBTCUnit, useChainType } from '@/ui/state/settings/hooks';
+import { EyeIcon, EyeOffIcon, RefreshIcon } from '../common/ModernIcons';
 
 interface ModernBalanceHeaderProps {
   accountBalance: {
@@ -175,9 +176,12 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
             fontSize: '14px',
             color: 'rgba(255, 255, 255, 0.7)',
             transition: 'all 0.2s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          {isBalanceHidden ? '👁️' : '👁️‍🗨️'}
+          {isBalanceHidden ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
         </motion.button>
 
         {/* Refresh Button */}
@@ -194,9 +198,12 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
               fontSize: '14px',
               color: 'rgba(255, 255, 255, 0.7)',
               transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            🔄
+            <RefreshIcon size={18} />
           </motion.button>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useState } from 'react';
 import { KeyringType } from '@unisat/keyring-service/types';
+import { EditIcon, KeyIcon, TrashIcon, PlusIcon } from '../common/ModernIcons';
 
 export interface Account {
   address: string;
@@ -325,26 +326,44 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                     {/* Contextual Menu */}
                     <AnimatePresence>
                       {isMenuOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.2 }}
-                          style={{
-                            position: 'absolute',
-                            top: '100%',
-                            right: '0',
-                            marginTop: '8px',
-                            background: 'rgba(28, 28, 30, 0.98)',
-                            backdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(255, 255, 255, 0.15)',
-                            borderRadius: '12px',
-                            padding: '8px',
-                            minWidth: '200px',
-                            zIndex: 1000,
-                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
-                          }}
-                        >
+                        <>
+                          {/* Backdrop to close menu when clicking outside */}
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenMenuForAccount(null);
+                            }}
+                            style={{
+                              position: 'fixed',
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              zIndex: 999,
+                            }}
+                          />
+
+                          {/* Menu */}
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            style={{
+                              position: 'absolute',
+                              top: '100%',
+                              right: '0',
+                              marginTop: '8px',
+                              background: 'rgba(28, 28, 30, 0.98)',
+                              backdropFilter: 'blur(20px)',
+                              border: '1px solid rgba(255, 255, 255, 0.15)',
+                              borderRadius: '12px',
+                              padding: '8px',
+                              minWidth: '200px',
+                              zIndex: 1000,
+                              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
+                            }}
+                          >
                           {/* Show Secret Recovery Phrase (HD wallets only) */}
                           {onShowSecretPhrase && account.type === KeyringType.HdKeyring && (
                             <motion.button
@@ -374,7 +393,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                                 e.currentTarget.style.background = 'transparent';
                               }}
                             >
-                              <span>🔑</span>
+                              <KeyIcon size={18} />
                               <span>Show Secret Phrase</span>
                             </motion.button>
                           )}
@@ -411,7 +430,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                                 e.currentTarget.style.background = 'transparent';
                               }}
                             >
-                              <span>🔑</span>
+                              <KeyIcon size={18} />
                               <span>Export Private Key</span>
                             </motion.button>
                           )}
@@ -460,11 +479,12 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                                 e.currentTarget.style.background = 'transparent';
                               }}
                             >
-                              <span>🗑️</span>
+                              <TrashIcon size={18} color="#ff3b30" />
                               <span>Remove Wallet</span>
                             </motion.button>
                           )}
                         </motion.div>
+                        </>
                       )}
                     </AnimatePresence>
                   </div>
@@ -500,7 +520,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                     transition: 'all 0.2s ease',
                   }}
                 >
-                  <span style={{ fontSize: '18px' }}>+</span>
+                  <PlusIcon size={20} />
                   Add Wallet
                 </motion.button>
               </div>

@@ -10,8 +10,6 @@ export interface ModernAccount {
 interface ModernAccountSelectorProps {
   currentAccount: ModernAccount;
   onToggleSidebar: () => void;
-  onSearch?: () => void;
-  onNotifications?: () => void;
 }
 
 export const ModernAccountSelector: React.FC<ModernAccountSelectorProps> = ({
@@ -128,87 +126,6 @@ export const ModernAccountSelector: React.FC<ModernAccountSelectorProps> = ({
         </motion.button>
       </div>
 
-      {/* Right: Action Buttons */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginLeft: '12px',
-        }}
-      >
-        {/* Search Button */}
-        {onSearch && (
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={onSearch}
-            style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '10px',
-              width: '36px',
-              height: '36px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              flexShrink: 0,
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#fff">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 16l-4-4m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </motion.button>
-        )}
-
-        {/* Notifications Button */}
-        {onNotifications && (
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={onNotifications}
-            style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '10px',
-              width: '36px',
-              height: '36px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              position: 'relative',
-              flexShrink: 0,
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#fff">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 13.5H3L4.5 12V7.5a4.5 4.5 0 019 0V12l1.5 1.5z"
-              />
-            </svg>
-            {/* Notification badge */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '6px',
-                right: '6px',
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                background: '#ff3b30',
-                border: '2px solid #000',
-              }}
-            />
-          </motion.button>
-        )}
-      </div>
     </div>
   );
 };

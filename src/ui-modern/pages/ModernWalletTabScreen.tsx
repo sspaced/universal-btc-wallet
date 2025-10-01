@@ -47,11 +47,13 @@ export const ModernWalletTabScreen: React.FC = () => {
   const accounts: Account[] = useMemo(() => {
     // This should be fetched from the wallet state
     // For now, we'll use the current account as a single item
+    console.log('Current keyring type:', currentKeyring.type);
     return [
       {
         address: currentAccount.address || '',
         alianName: currentKeyring.alianName || 'Account 1',
         index: 0,
+        type: currentKeyring.type, // Add keyring type
       },
     ];
   }, [currentAccount, currentKeyring]);
@@ -167,13 +169,24 @@ export const ModernWalletTabScreen: React.FC = () => {
     setSidebarVisible(false);
   };
 
-  const handleManageAccounts = () => {
-    navigate('SwitchAccountScreen');
+  const handleEditWalletName = (account: Account) => {
+    navigate('EditWalletNameScreen', { keyring: currentKeyring });
     setSidebarVisible(false);
   };
 
-  const handleSettings = () => {
-    navigate('SettingsTabScreen');
+  const handleShowSecretPhrase = (account: Account) => {
+    navigate('ExportMnemonicsScreen', { keyring: currentKeyring });
+    setSidebarVisible(false);
+  };
+
+  const handleExportPrivateKey = (account: Account) => {
+    navigate('ExportPrivateKeyScreen', { account: currentAccount });
+    setSidebarVisible(false);
+  };
+
+  const handleRemoveWallet = (account: Account) => {
+    // TODO: Show confirmation modal then remove wallet
+    console.log('Remove wallet:', account);
     setSidebarVisible(false);
   };
 
@@ -232,8 +245,10 @@ export const ModernWalletTabScreen: React.FC = () => {
         selectedAccount={selectedAccount}
         onSelectAccount={handleSelectAccount}
         onAddAccount={handleAddAccount}
-        onManageAccounts={handleManageAccounts}
-        onSettings={handleSettings}
+        onEditWalletName={handleEditWalletName}
+        onShowSecretPhrase={handleShowSecretPhrase}
+        onExportPrivateKey={handleExportPrivateKey}
+        onRemoveWallet={handleRemoveWallet}
       />
 
       {/* Main Content Area */}
@@ -242,8 +257,6 @@ export const ModernWalletTabScreen: React.FC = () => {
         <ModernAccountSelector
           currentAccount={modernCurrentAccount}
           onToggleSidebar={handleToggleSidebar}
-          onSearch={() => console.log('Search clicked')}
-          onNotifications={() => console.log('Notifications clicked')}
         />
 
         {/* Balance Header */}

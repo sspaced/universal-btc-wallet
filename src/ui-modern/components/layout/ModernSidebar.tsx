@@ -1,10 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import React from 'react';
+import React, { useState } from 'react';
+import { KeyringType } from '@unisat/keyring-service/types';
 
 export interface Account {
   address: string;
   alianName?: string;
   index: number;
+  type?: string; // Keyring type
 }
 
 interface ModernSidebarProps {
@@ -14,8 +16,10 @@ interface ModernSidebarProps {
   selectedAccount: Account | null;
   onSelectAccount: (account: Account) => void;
   onAddAccount?: () => void;
-  onManageAccounts?: () => void;
-  onSettings?: () => void;
+  onEditWalletName?: (account: Account) => void;
+  onShowSecretPhrase?: (account: Account) => void;
+  onExportPrivateKey?: (account: Account) => void;
+  onRemoveWallet?: (account: Account) => void;
 }
 
 export const ModernSidebar: React.FC<ModernSidebarProps> = ({
@@ -25,9 +29,12 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
   selectedAccount,
   onSelectAccount,
   onAddAccount,
-  onManageAccounts,
-  onSettings,
+  onEditWalletName,
+  onShowSecretPhrase,
+  onExportPrivateKey,
+  onRemoveWallet,
 }) => {
+  const [openMenuForAccount, setOpenMenuForAccount] = useState<string | null>(null);
   const getAccountInitials = (account: Account): string => {
     const name = account.alianName || `Account ${account.index + 1}`;
     return name
@@ -137,14 +144,10 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
             >
               {accounts.map((account) => {
                 const isSelected = selectedAccount?.address === account.address;
+                const isMenuOpen = openMenuForAccount === account.address;
                 return (
-                  <motion.button
+                  <div
                     key={account.address}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      onSelectAccount(account);
-                      onToggle();
-                    }}
                     style={{
                       width: '100%',
                       background: isSelected
@@ -156,11 +159,11 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                       borderRadius: '12px',
                       padding: '12px',
                       marginBottom: '8px',
-                      cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '12px',
                       transition: 'all 0.2s ease',
+                      position: 'relative',
                     }}
                   >
                     {/* Account Avatar */}
@@ -184,12 +187,18 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                       {getAccountInitials(account)}
                     </div>
 
-                    {/* Account Info */}
-                    <div
+                    {/* Account Info - Clickable area */}
+                    <motion.div
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        onSelectAccount(account);
+                        onToggle();
+                      }}
                       style={{
                         flex: 1,
                         textAlign: 'left',
                         overflow: 'hidden',
+                        cursor: 'pointer',
                       }}
                     >
                       <div
@@ -218,27 +227,229 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                         {account.address.substring(0, 8)}...
                         {account.address.substring(account.address.length - 6)}
                       </div>
-                    </div>
-                  </motion.button>
+                    </motion.div>
+
+                    {/* Settings Button - Opens wallet options menu */}
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenMenuForAccount(isMenuOpen ? null : account.address);
+                      }}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: isMenuOpen ? '#007aff' : 'rgba(255, 255, 255, 0.6)',
+                        transition: 'color 0.2s ease',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M9 3v1.5m0 9V15m4.5-10.5L12.75 5.25m-7.5 7.5L4.5 13.5m10.5-4.5H13.5m-9 0H3m10.5 4.5l-.75-.75m-7.5-7.5L4.5 4.5M12 9a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                    </motion.button>
+
+                    {/* Contextual Menu */}
+                    <AnimatePresence>
+                      {isMenuOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          style={{
+                            position: 'absolute',
+                            top: '100%',
+                            right: '0',
+                            marginTop: '8px',
+                            background: 'rgba(28, 28, 30, 0.98)',
+                            backdropFilter: 'blur(20px)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            borderRadius: '12px',
+                            padding: '8px',
+                            minWidth: '200px',
+                            zIndex: 1000,
+                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
+                          }}
+                        >
+                          {/* Edit Name */}
+                          {onEditWalletName && (
+                            <motion.button
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => {
+                                onEditWalletName(account);
+                                setOpenMenuForAccount(null);
+                              }}
+                              style={{
+                                width: '100%',
+                                background: 'transparent',
+                                border: 'none',
+                                padding: '10px 12px',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                                borderRadius: '8px',
+                                transition: 'background 0.2s ease',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                fontSize: '14px',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                              }}
+                            >
+                              <span>✏️</span>
+                              <span>Edit Name</span>
+                            </motion.button>
+                          )}
+
+                          {/* Show Secret Recovery Phrase (HD wallets only) */}
+                          {onShowSecretPhrase && account.type === KeyringType.HdKeyring && (
+                            <motion.button
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => {
+                                onShowSecretPhrase(account);
+                                setOpenMenuForAccount(null);
+                              }}
+                              style={{
+                                width: '100%',
+                                background: 'transparent',
+                                border: 'none',
+                                padding: '10px 12px',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                                borderRadius: '8px',
+                                transition: 'background 0.2s ease',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                fontSize: '14px',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                              }}
+                            >
+                              <span>🔑</span>
+                              <span>Show Secret Phrase</span>
+                            </motion.button>
+                          )}
+
+                          {/* Export Private Key (Simple wallets only) */}
+                          {onExportPrivateKey &&
+                            account.type !== KeyringType.HdKeyring &&
+                            account.type !== KeyringType.KeystoneKeyring &&
+                            account.type !== KeyringType.ColdWalletKeyring && (
+                            <motion.button
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => {
+                                onExportPrivateKey(account);
+                                setOpenMenuForAccount(null);
+                              }}
+                              style={{
+                                width: '100%',
+                                background: 'transparent',
+                                border: 'none',
+                                padding: '10px 12px',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                                borderRadius: '8px',
+                                transition: 'background 0.2s ease',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                fontSize: '14px',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                              }}
+                            >
+                              <span>🔑</span>
+                              <span>Export Private Key</span>
+                            </motion.button>
+                          )}
+
+                          {/* Divider */}
+                          <div
+                            style={{
+                              height: '1px',
+                              background: 'rgba(255, 255, 255, 0.1)',
+                              margin: '8px 0',
+                            }}
+                          />
+
+                          {/* Remove Wallet */}
+                          {onRemoveWallet && (
+                            <motion.button
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => {
+                                onRemoveWallet(account);
+                                setOpenMenuForAccount(null);
+                              }}
+                              style={{
+                                width: '100%',
+                                background: 'transparent',
+                                border: 'none',
+                                padding: '10px 12px',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                                borderRadius: '8px',
+                                transition: 'background 0.2s ease',
+                                color: '#ff3b30',
+                                fontSize: '14px',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(255, 59, 48, 0.1)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                              }}
+                            >
+                              <span>🗑️</span>
+                              <span>Remove Wallet</span>
+                            </motion.button>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 );
               })}
             </div>
 
             {/* Footer Actions */}
-            <div
-              style={{
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                padding: '12px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
-              }}
-            >
-              {onAddAccount && (
+            {onAddAccount && (
+              <div
+                style={{
+                  borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                  padding: '12px',
+                }}
+              >
                 <motion.button
                   whileTap={{ scale: 0.98 }}
                   onClick={onAddAccount}
                   style={{
+                    width: '100%',
                     background: 'rgba(255, 255, 255, 0.08)',
                     border: '1px solid rgba(255, 255, 255, 0.15)',
                     borderRadius: '10px',
@@ -255,52 +466,10 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                   }}
                 >
                   <span style={{ fontSize: '18px' }}>+</span>
-                  Add Account
+                  Add Wallet
                 </motion.button>
-              )}
-
-              <div style={{ display: 'flex', gap: '8px' }}>
-                {onManageAccounts && (
-                  <motion.button
-                    whileTap={{ scale: 0.98 }}
-                    onClick={onManageAccounts}
-                    style={{
-                      flex: 1,
-                      background: 'transparent',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
-                      borderRadius: '10px',
-                      padding: '10px',
-                      cursor: 'pointer',
-                      color: 'rgba(255, 255, 255, 0.7)',
-                      fontSize: '20px',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    ✏️
-                  </motion.button>
-                )}
-
-                {onSettings && (
-                  <motion.button
-                    whileTap={{ scale: 0.98 }}
-                    onClick={onSettings}
-                    style={{
-                      flex: 1,
-                      background: 'transparent',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
-                      borderRadius: '10px',
-                      padding: '10px',
-                      cursor: 'pointer',
-                      color: 'rgba(255, 255, 255, 0.7)',
-                      fontSize: '20px',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    ⚙️
-                  </motion.button>
-                )}
               </div>
-            </div>
+            )}
           </motion.div>
         </>
       )}

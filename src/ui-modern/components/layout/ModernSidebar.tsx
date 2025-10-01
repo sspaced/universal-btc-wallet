@@ -85,7 +85,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
               position: 'fixed',
               top: 0,
               left: 0,
-              bottom: 0,
+              bottom: '64px',
               width: '280px',
               maxWidth: '80vw',
               background: 'rgba(20, 20, 20, 0.98)',
@@ -143,6 +143,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                 flex: 1,
                 overflowY: 'auto',
                 padding: '12px',
+                minHeight: 0,
               }}
             >
               {accounts.map((account) => {

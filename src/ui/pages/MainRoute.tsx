@@ -61,6 +61,11 @@ const ModernCreateHDWalletScreen = lazy(() =>
     default: module.ModernCreateHDWalletScreen
   }))
 );
+const ModernWalletTabScreen = lazy(() =>
+  import('../../ui-modern/pages/ModernWalletTabScreen').then((module) => ({
+    default: module.ModernWalletTabScreen
+  }))
+);
 const ModernAddressTypeScreen = lazy(() =>
   import('../../ui-modern/pages/ModernAddressTypeScreen').then((module) => ({
     default: module.ModernAddressTypeScreen
@@ -108,7 +113,7 @@ export const routes = {
   },
   MainScreen: {
     path: '/main',
-    element: <WalletTabScreen />
+    element: <ModernWalletTabScreen />
   },
   DiscoverTabScreen: {
     path: '/discover',

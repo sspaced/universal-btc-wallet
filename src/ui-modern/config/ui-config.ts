@@ -18,7 +18,8 @@ export const defaultUIConfig: UIConfig = {
 export const modernRoutes = [
   'WelcomeScreen',
   'CreateHDWalletScreen',
-  'CreatePasswordScreen'
+  'CreatePasswordScreen',
+  'MainScreen' // ModernWalletTabScreen
   // Ajoutez d'autres routes ici au fur et à mesure
 ];
 

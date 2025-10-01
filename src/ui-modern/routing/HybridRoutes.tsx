@@ -82,6 +82,7 @@ import { shouldUseModernUI } from '../config/ui-config';
 // Import des composants modernes
 import { ModernCreateHDWalletScreen } from '../pages/ModernCreateHDWalletScreen';
 import { ModernWelcomeScreen } from '../pages/ModernWelcomeScreen';
+import { ModernWalletTabScreen } from '../pages/ModernWalletTabScreen';
 
 export const routes = {
   BoostScreen: {
@@ -94,7 +95,7 @@ export const routes = {
   },
   MainScreen: {
     path: '/main',
-    element: <WalletTabScreen />
+    element: shouldUseModernUI('MainScreen') ? <ModernWalletTabScreen /> : <WalletTabScreen />
   },
   DiscoverTabScreen: {
     path: '/discover',

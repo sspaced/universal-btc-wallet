@@ -35,6 +35,8 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
   onRemoveWallet,
 }) => {
   const [openMenuForAccount, setOpenMenuForAccount] = useState<string | null>(null);
+  const [editingAccount, setEditingAccount] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState<string>('');
   const getAccountInitials = (account: Account): string => {
     const name = account.alianName || `Account ${account.index + 1}`;
     return name
@@ -187,33 +189,94 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                       {getAccountInitials(account)}
                     </div>
 
-                    {/* Account Info - Clickable area */}
-                    <motion.div
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => {
-                        onSelectAccount(account);
-                        onToggle();
-                      }}
+                    {/* Account Info - Clickable area or inline edit */}
+                    <div
                       style={{
                         flex: 1,
                         textAlign: 'left',
                         overflow: 'hidden',
-                        cursor: 'pointer',
                       }}
                     >
-                      <div
-                        style={{
-                          fontSize: '14px',
-                          fontWeight: '600',
-                          color: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.9)',
-                          marginBottom: '2px',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {getAccountName(account)}
-                      </div>
+                      {editingAccount === account.address ? (
+                        // Inline editing mode
+                        <input
+                          type="text"
+                          value={editingName}
+                          onChange={(e) => {
+                            if (e.target.value.length <= 20) {
+                              setEditingName(e.target.value);
+                            }
+                          }}
+                          onBlur={() => {
+                            // Save on blur
+                            if (editingName.trim().length > 0 && onEditWalletName) {
+                              onEditWalletName({ ...account, alianName: editingName });
+                            }
+                            setEditingAccount(null);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              // Save on Enter
+                              if (editingName.trim().length > 0 && onEditWalletName) {
+                                onEditWalletName({ ...account, alianName: editingName });
+                              }
+                              setEditingAccount(null);
+                            } else if (e.key === 'Escape') {
+                              // Cancel on Escape
+                              setEditingAccount(null);
+                            }
+                          }}
+                          autoFocus
+                          maxLength={20}
+                          style={{
+                            width: '100%',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            color: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.9)',
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid rgba(0, 122, 255, 0.5)',
+                            borderRadius: '6px',
+                            padding: '4px 8px',
+                            outline: 'none',
+                            marginBottom: '4px',
+                          }}
+                        />
+                      ) : (
+                        // Normal display mode
+                        <div
+                          onClick={() => {
+                            onSelectAccount(account);
+                            onToggle();
+                          }}
+                          style={{
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <div
+                            onClick={(e) => {
+                              // Double click to edit
+                              e.stopPropagation();
+                            }}
+                            onDoubleClick={(e) => {
+                              e.stopPropagation();
+                              setEditingAccount(account.address);
+                              setEditingName(account.alianName || `Account ${account.index + 1}`);
+                            }}
+                            style={{
+                              fontSize: '14px',
+                              fontWeight: '600',
+                              color: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.9)',
+                              marginBottom: '2px',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              cursor: 'text',
+                            }}
+                          >
+                            {getAccountName(account)}
+                          </div>
+                        </div>
+                      )}
                       <div
                         style={{
                           fontSize: '11px',
@@ -227,7 +290,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                         {account.address.substring(0, 8)}...
                         {account.address.substring(account.address.length - 6)}
                       </div>
-                    </motion.div>
+                    </div>
 
                     {/* Settings Button - Opens wallet options menu */}
                     <motion.button
@@ -282,40 +345,6 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                             boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
                           }}
                         >
-                          {/* Edit Name */}
-                          {onEditWalletName && (
-                            <motion.button
-                              whileTap={{ scale: 0.98 }}
-                              onClick={() => {
-                                onEditWalletName(account);
-                                setOpenMenuForAccount(null);
-                              }}
-                              style={{
-                                width: '100%',
-                                background: 'transparent',
-                                border: 'none',
-                                padding: '10px 12px',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '12px',
-                                borderRadius: '8px',
-                                transition: 'background 0.2s ease',
-                                color: 'rgba(255, 255, 255, 0.9)',
-                                fontSize: '14px',
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'transparent';
-                              }}
-                            >
-                              <span>✏️</span>
-                              <span>Edit Name</span>
-                            </motion.button>
-                          )}
-
                           {/* Show Secret Recovery Phrase (HD wallets only) */}
                           {onShowSecretPhrase && account.type === KeyringType.HdKeyring && (
                             <motion.button
@@ -387,14 +416,20 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                             </motion.button>
                           )}
 
-                          {/* Divider */}
-                          <div
-                            style={{
-                              height: '1px',
-                              background: 'rgba(255, 255, 255, 0.1)',
-                              margin: '8px 0',
-                            }}
-                          />
+                          {/* Divider - Only show if there are options above */}
+                          {(onShowSecretPhrase && account.type === KeyringType.HdKeyring) ||
+                          (onExportPrivateKey &&
+                            account.type !== KeyringType.HdKeyring &&
+                            account.type !== KeyringType.KeystoneKeyring &&
+                            account.type !== KeyringType.ColdWalletKeyring) ? (
+                            <div
+                              style={{
+                                height: '1px',
+                                background: 'rgba(255, 255, 255, 0.1)',
+                                margin: '8px 0',
+                              }}
+                            />
+                          ) : null}
 
                           {/* Remove Wallet */}
                           {onRemoveWallet && (

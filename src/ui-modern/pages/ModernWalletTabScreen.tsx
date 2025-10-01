@@ -12,6 +12,7 @@ import { useAccountBalance, useCurrentAccount } from '@/ui/state/accounts/hooks'
 import { useIsUnlocked } from '@/ui/state/global/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { useCurrentKeyring } from '@/ui/state/keyrings/hooks';
+import { keyringsActions } from '@/ui/state/keyrings/reducer';
 import { useFetchBalanceCallback } from '@/ui/state/accounts/hooks';
 import { useResetUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { useWallet, getUiType } from '@/ui/utils';
@@ -169,9 +170,14 @@ export const ModernWalletTabScreen: React.FC = () => {
     setSidebarVisible(false);
   };
 
-  const handleEditWalletName = (account: Account) => {
-    navigate('EditWalletNameScreen', { keyring: currentKeyring });
-    setSidebarVisible(false);
+  const handleEditWalletName = async (account: Account) => {
+    // Update wallet name via API
+    try {
+      const newKeyring = await wallet.setKeyringAlianName(currentKeyring, account.alianName || '');
+      dispatch(keyringsActions.updateKeyringName(newKeyring));
+    } catch (error) {
+      console.error('Failed to update wallet name:', error);
+    }
   };
 
   const handleShowSecretPhrase = (account: Account) => {

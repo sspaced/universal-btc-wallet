@@ -6,4 +6,5 @@ export { ModernLogo } from './ModernLogo';
 export { ModernPasswordInput } from './ModernPasswordInput';
 export { ModernRecoveryGrid } from './ModernRecoveryGrid';
 export { ModernSecurityWarning } from './ModernSecurityWarning';
+export { ModernWalletCard } from './ModernWalletCard';
 export { ModernWordBox } from './ModernWordBox';

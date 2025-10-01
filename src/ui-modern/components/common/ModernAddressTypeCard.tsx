@@ -78,8 +78,8 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: '10px 12px',
-            backgroundColor: 'rgba(255, 204, 0, 0.08)',
-            border: '1px solid rgba(255, 204, 0, 0.2)',
+            backgroundColor: 'rgba(0, 122, 255, 0.08)',
+            border: '1px solid rgba(0, 122, 255, 0.2)',
             borderRadius: '8px'
           }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -88,7 +88,7 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
               style={{
                 fontSize: '14px',
                 fontWeight: '600',
-                color: '#ffcc00',
+                color: '#007aff',
                 letterSpacing: '-0.2px'
               }}>
               {balance}
@@ -99,7 +99,7 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
               style={{
                 fontSize: '12px',
                 fontWeight: '600',
-                color: '#ffcc00',
+                color: '#007aff',
                 letterSpacing: '-0.1px'
               }}>
               {inscriptionCount} Inscriptions

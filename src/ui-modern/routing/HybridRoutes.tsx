@@ -80,6 +80,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import { shouldUseModernUI } from '../config/ui-config';
 // Import des composants modernes
+import { ModernCreateHDWalletScreen } from '../pages/ModernCreateHDWalletScreen';
 import { ModernWelcomeScreen } from '../pages/ModernWelcomeScreen';
 
 export const routes = {
@@ -109,7 +110,7 @@ export const routes = {
   },
   CreateHDWalletScreen: {
     path: '/account/create-hd-wallet',
-    element: <CreateHDWalletScreen />
+    element: shouldUseModernUI('CreateHDWalletScreen') ? <ModernCreateHDWalletScreen /> : <CreateHDWalletScreen />
   },
   CreateAccountScreen: {
     path: '/account/create',

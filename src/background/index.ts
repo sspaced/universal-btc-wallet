@@ -4,7 +4,6 @@ import phishingService from '@/background/service/phishing';
 import { EVENTS, MANIFEST_VERSION } from '@/shared/constant';
 import eventBus from '@/shared/eventBus';
 import { Message } from '@/shared/utils';
-import { openExtensionInTab } from '@/ui/features/browser/tabs';
 
 import { phishingController, providerController, walletController } from './controller';
 import {
@@ -183,7 +182,9 @@ browserRuntimeOnConnect((port) => {
  */
 const addAppInstalledEvent = () => {
   if (appStoreLoaded) {
-    openExtensionInTab('index.html', {});
+    // Désactiver l'ouverture automatique
+    // openExtensionInTab('index.html', {});
+    console.log('Extension installed - automatic tab opening disabled');
     return;
   }
   setTimeout(() => {

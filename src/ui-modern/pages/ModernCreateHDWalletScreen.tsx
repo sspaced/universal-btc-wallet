@@ -1,10 +1,7 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { AddressType, RestoreWalletType } from '@/shared/types';
-import { Step0 } from '@/ui/pages/Account/createHDWalletComponents/Step0';
-import { Step1_Import } from '@/ui/pages/Account/createHDWalletComponents/Step1_Import';
-import { Step2 } from '@/ui/pages/Account/createHDWalletComponents/Step2';
 import {
   ContextData,
   TabType,
@@ -12,14 +9,19 @@ import {
   WordsType
 } from '@/ui/pages/Account/createHDWalletComponents/types';
 
+import { useNavigate } from '../../ui/pages/MainRoute';
+import { ModernRecoveryPhraseImportScreen } from './ModernRecoveryPhraseImportScreen';
 import { ModernRecoveryPhraseScreen } from './ModernRecoveryPhraseScreen';
 import { ModernStep2Screen } from './ModernStep2Screen';
+import { ModernWalletSelectionScreen } from './ModernWalletSelectionScreen';
 
 export const ModernCreateHDWalletScreen: React.FC = () => {
   const { state } = useLocation();
-  const { isImport } = state as {
+  const navigate = useNavigate();
+  const { isImport, restoreWalletType: initialRestoreWalletType } = state as {
     isImport: boolean;
     fromUnlock: boolean;
+    restoreWalletType?: RestoreWalletType;
   };
 
   const [contextData, setContextData] = useState<ContextData>({
@@ -28,14 +30,17 @@ export const ModernCreateHDWalletScreen: React.FC = () => {
     passphrase: '',
     addressType: AddressType.P2WPKH,
     step1Completed: false,
-    tabType: TabType.STEP1,
-    restoreWalletType: RestoreWalletType.UNISAT,
+    tabType: isImport && !initialRestoreWalletType ? TabType.STEP1 : TabType.STEP2,
+    restoreWalletType: initialRestoreWalletType || RestoreWalletType.UNISAT,
     isRestore: isImport,
     isCustom: false,
     customHdPath: '',
     addressTypeIndex: 0,
     wordsType: WordsType.WORDS_12
   });
+
+  // Show wallet selection screen if in import mode and no wallet type selected
+  const [showWalletSelection, setShowWalletSelection] = useState(isImport && !initialRestoreWalletType);
 
   const updateContextData = useCallback(
     (params: UpdateContextDataParams) => {
@@ -44,15 +49,29 @@ export const ModernCreateHDWalletScreen: React.FC = () => {
     [contextData, setContextData]
   );
 
+  const handleWalletSelect = useCallback(
+    (walletType: RestoreWalletType) => {
+      updateContextData({
+        restoreWalletType: walletType,
+        tabType: TabType.STEP2,
+      });
+      setShowWalletSelection(false);
+    },
+    [updateContextData]
+  );
+
   const currentStep = useMemo(() => {
+    // Show wallet selection if in import mode and no wallet type selected
+    if (showWalletSelection) {
+      return <ModernWalletSelectionScreen onWalletSelect={handleWalletSelect} />;
+    }
+
     if (contextData.isRestore) {
-      // Import flow - use old components
-      if (contextData.tabType === TabType.STEP1) {
-        return <Step0 contextData={contextData} updateContextData={updateContextData} />;
-      } else if (contextData.tabType === TabType.STEP2) {
-        return <Step1_Import contextData={contextData} updateContextData={updateContextData} />;
+      // Import flow - use modern components for all steps
+      if (contextData.tabType === TabType.STEP2) {
+        return <ModernRecoveryPhraseImportScreen contextData={contextData} updateContextData={updateContextData} />;
       } else {
-        return <Step2 contextData={contextData} updateContextData={updateContextData} />;
+        return <ModernStep2Screen contextData={contextData} updateContextData={updateContextData} />;
       }
     } else {
       // Create flow - use modern components
@@ -62,7 +81,7 @@ export const ModernCreateHDWalletScreen: React.FC = () => {
         return <ModernStep2Screen contextData={contextData} updateContextData={updateContextData} />;
       }
     }
-  }, [contextData, updateContextData]);
+  }, [contextData, updateContextData, showWalletSelection, handleWalletSelect]);
 
   return <>{currentStep}</>;
 };

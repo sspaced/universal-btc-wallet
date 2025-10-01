@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 
-import { QRCodeIcon, MailIcon, SwapIcon, DollarIcon } from '../common/ModernIcons';
+import { DollarIcon, MailIcon, QRCodeIcon, SwapIcon } from '../common/ModernIcons';
 
 interface ActionButton {
   id: string;
@@ -18,54 +18,47 @@ interface ModernQuickActionsProps {
   onExchange: () => void;
 }
 
-export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({
-  onSend,
-  onReceive,
-  onBuy,
-  onExchange,
-}) => {
+export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, onReceive, onBuy, onExchange }) => {
   const actions: ActionButton[] = [
     {
       id: 'receive',
       label: 'Receive',
       icon: <QRCodeIcon size={24} />,
-      onClick: onReceive,
+      onClick: onReceive
     },
     {
       id: 'send',
       label: 'Send',
       icon: <MailIcon size={24} />,
-      onClick: onSend,
+      onClick: onSend
     },
     {
       id: 'swap',
       label: 'Swap',
       icon: <SwapIcon size={24} />,
       onClick: onExchange,
-      disabled: false,
+      disabled: false
     },
     {
       id: 'buy',
       label: 'Buy',
       icon: <DollarIcon size={24} />,
-      onClick: onBuy,
-    },
+      onClick: onBuy
+    }
   ];
 
   return (
     <div
       style={{
         padding: '0 20px',
-        marginBottom: '24px',
-      }}
-    >
+        marginBottom: '24px'
+      }}>
       <div
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '12px',
-        }}
-      >
+          gap: '12px'
+        }}>
         {actions.map((action, index) => (
           <motion.button
             key={action.id}
@@ -74,14 +67,14 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({
             transition={{
               duration: 0.5,
               delay: index * 0.1,
-              ease: [0.25, 0.1, 0.25, 1],
+              ease: [0.25, 0.1, 0.25, 1]
             }}
             whileHover={
               action.disabled
                 ? {}
                 : {
                     scale: 1.05,
-                    transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] },
+                    transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }
                   }
             }
             whileTap={
@@ -89,7 +82,7 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({
                 ? {}
                 : {
                     scale: 0.95,
-                    transition: { duration: 0.1, ease: [0.25, 0.1, 0.25, 1] },
+                    transition: { duration: 0.1, ease: [0.25, 0.1, 0.25, 1] }
                   }
             }
             onClick={action.onClick}
@@ -103,9 +96,8 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({
               flexDirection: 'column',
               alignItems: 'center',
               gap: '8px',
-              opacity: action.disabled ? 0.5 : 1,
-            }}
-          >
+              opacity: action.disabled ? 0.5 : 1
+            }}>
             <motion.div
               style={{
                 width: '48px',
@@ -115,9 +107,8 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: action.disabled ? 'rgba(255, 255, 255, 0.3)' : '#ffffff',
-              }}
-            >
+                color: action.disabled ? 'rgba(255, 255, 255, 0.3)' : '#ffffff'
+              }}>
               {action.icon}
             </motion.div>
             <span
@@ -125,9 +116,8 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({
                 fontSize: '13px',
                 fontWeight: '600',
                 color: action.disabled ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.9)',
-                textAlign: 'center',
-              }}
-            >
+                textAlign: 'center'
+              }}>
               {action.label}
             </span>
           </motion.button>

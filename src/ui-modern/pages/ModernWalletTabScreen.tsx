@@ -1,22 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { ModernBottomNav, BottomNavTab } from '../components/layout/ModernBottomNav';
-import { ModernMainContent } from '../components/layout/ModernMainContent';
-import { ModernSidebar, Account } from '../components/layout/ModernSidebar';
-import { ModernAccountSelector, ModernAccount } from '../components/wallet/ModernAccountSelector';
-import { ModernAssetsList, Asset } from '../components/wallet/ModernAssetsList';
-import { ModernBalanceHeader } from '../components/wallet/ModernBalanceHeader';
-import { ModernQuickActions } from '../components/wallet/ModernQuickActions';
-import { useUnifiedAssets } from '../hooks/useUnifiedAssets';
 import { useNavigate } from '@/ui/pages/MainRoute';
-import { useAccountBalance, useCurrentAccount } from '@/ui/state/accounts/hooks';
+import { useAccountBalance, useCurrentAccount, useFetchBalanceCallback } from '@/ui/state/accounts/hooks';
 import { useIsUnlocked } from '@/ui/state/global/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { useCurrentKeyring } from '@/ui/state/keyrings/hooks';
 import { keyringsActions } from '@/ui/state/keyrings/reducer';
-import { useFetchBalanceCallback } from '@/ui/state/accounts/hooks';
 import { useResetUiTxCreateScreen } from '@/ui/state/ui/hooks';
-import { useWallet, getUiType } from '@/ui/utils';
+import { getUiType, useWallet } from '@/ui/utils';
+
+import { BottomNavTab, ModernBottomNav } from '../components/layout/ModernBottomNav';
+import { ModernMainContent } from '../components/layout/ModernMainContent';
+import { Account, ModernSidebar } from '../components/layout/ModernSidebar';
+import { ModernAccount, ModernAccountSelector } from '../components/wallet/ModernAccountSelector';
+import { Asset, ModernAssetsList } from '../components/wallet/ModernAssetsList';
+import { ModernBalanceHeader } from '../components/wallet/ModernBalanceHeader';
+import { ModernQuickActions } from '../components/wallet/ModernQuickActions';
+import { useUnifiedAssets } from '../hooks/useUnifiedAssets';
 
 export const ModernWalletTabScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -56,14 +56,12 @@ export const ModernWalletTabScreen: React.FC = () => {
         address: currentAccount.address || '',
         alianName: currentKeyring.alianName || 'Account 1',
         index: 0,
-        type: currentKeyring.type,
-      },
+        type: currentKeyring.type
+      }
     ];
   }, [currentAccount, currentKeyring]);
 
-  const [selectedAccount, setSelectedAccount] = useState<Account | null>(
-    accounts.length > 0 ? accounts[0] : null
-  );
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(accounts.length > 0 ? accounts[0] : null);
 
   // Handlers
   const handleTabChange = (tab: BottomNavTab) => {
@@ -181,7 +179,7 @@ export const ModernWalletTabScreen: React.FC = () => {
     return {
       address: currentAccount.address || '',
       alianName: currentKeyring.alianName || 'Account 1',
-      index: 0,
+      index: 0
     };
   }, [currentAccount, currentKeyring]);
 
@@ -195,9 +193,8 @@ export const ModernWalletTabScreen: React.FC = () => {
         flexDirection: 'column',
         background: '#000000',
         overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
+        position: 'relative'
+      }}>
       {/* Sidebar */}
       <ModernSidebar
         visible={sidebarVisible}
@@ -215,10 +212,7 @@ export const ModernWalletTabScreen: React.FC = () => {
       {/* Main Content Area */}
       <ModernMainContent>
         {/* Account Selector Header */}
-        <ModernAccountSelector
-          currentAccount={modernCurrentAccount}
-          onToggleSidebar={handleToggleSidebar}
-        />
+        <ModernAccountSelector currentAccount={modernCurrentAccount} onToggleSidebar={handleToggleSidebar} />
 
         {/* Balance Header */}
         <ModernBalanceHeader
@@ -236,11 +230,7 @@ export const ModernWalletTabScreen: React.FC = () => {
         />
 
         {/* Assets List */}
-        <ModernAssetsList
-          assets={unifiedAssets}
-          loading={assetsLoading}
-          onAssetClick={handleAssetClick}
-        />
+        <ModernAssetsList assets={unifiedAssets} loading={assetsLoading} onAssetClick={handleAssetClick} />
       </ModernMainContent>
 
       {/* Bottom Navigation */}

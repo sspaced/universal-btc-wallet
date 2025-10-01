@@ -219,8 +219,7 @@ export const ModernCreatePasswordScreen: React.FC = () => {
             onClick={handleCreate}
             disabled={!isValid || loading}
             loading={loading}
-            style={{ flex: 2 }}
-            onKeyPress={handleKeyPress as any}>
+            style={{ flex: 2 }}>
             Create Wallet
           </ModernButton>
         </motion.div>

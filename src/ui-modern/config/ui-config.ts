@@ -19,7 +19,8 @@ export const modernRoutes = [
   'WelcomeScreen',
   'CreateHDWalletScreen',
   'CreatePasswordScreen',
-  'MainScreen' // ModernWalletTabScreen
+  'MainScreen', // ModernWalletTabScreen
+  'ReceiveScreen' // ModernReceiveScreen
   // Ajoutez d'autres routes ici au fur et à mesure
 ];
 

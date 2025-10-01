@@ -7,6 +7,7 @@ import MergeCAT20Screen from '@/ui/pages/CAT20/MergeCAT20Screen';
 import SendCAT20Screen from '@/ui/pages/CAT20/SendCAT20Screen';
 import { LoadingOutlined } from '@ant-design/icons';
 
+import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
 import { Content, Icon } from '../components';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { accountActions } from '../state/accounts/reducer';
@@ -18,9 +19,7 @@ import { useWallet } from '../utils';
 import AddKeyringScreen from './Account/AddKeyringScreen';
 import CreateAccountScreen from './Account/CreateAccountScreen';
 import CreateColdWalletScreen from './Account/CreateColdWalletScreen';
-import CreateHDWalletScreen from './Account/CreateHDWalletScreen';
 import CreateKeystoneWalletScreen from './Account/CreateKeystoneWalletScreen';
-import CreatePasswordScreen from './Account/CreatePasswordScreen';
 import CreateSimpleWalletScreen from './Account/CreateSimpleWalletScreen';
 import SwitchAccountScreen from './Account/SwitchAccountScreen';
 import SwitchKeyringScreen from './Account/SwitchKeyringScreen';
@@ -46,8 +45,35 @@ import AppTabScrren from './Main/AppTabScreen';
 import BoostScreen from './Main/BoostScreen';
 import DiscoverTabScreen from './Main/DiscoverTabScreen';
 import SettingsTabScreen from './Main/SettingsTabScreen';
-import WalletTabScreen from './Main/WalletTabScreen';
-import WelcomeScreen from './Main/WelcomeScreen';
+import OrdinalsInscriptionScreen from './Ordinals/OrdinalsInscriptionScreen';
+import SendOrdinalsInscriptionScreen from './Ordinals/SendOrdinalsInscriptionScreen';
+import SignOrdinalsTransactionScreen from './Ordinals/SignOrdinalsTransactionScreen';
+import SplitOrdinalsInscriptionScreen from './Ordinals/SplitOrdinalsInscriptionScreen';
+import PhishingScreen from './Phishing/PhishingScreen';
+import RunesTokenScreen from './Runes/RunesTokenScreen';
+import SendRunesScreen from './Runes/SendRunesScreen';
+import AboutUsScreen from './Settings/AboutUsScreen';
+import AdvancedScreen from './Settings/AdvancedScreen';
+import { LockTimePage } from './Settings/AdvancedScreen/LockTimePage';
+import ChangePasswordScreen from './Settings/ChangePasswordScreen';
+import ContactsScreen from './Settings/ContactsScreen';
+import EditAccountNameScreen from './Settings/EditAccountNameScreen';
+import EditContactScreen from './Settings/EditContactScreen';
+import EditWalletNameScreen from './Settings/EditWalletNameScreen';
+import ExportMnemonicsScreen from './Settings/ExportMnemonicsScreen';
+import ExportPrivateKeyScreen from './Settings/ExportPrivateKeyScreen';
+import LanguageScreen from './Settings/LanguageScreen';
+import NetworkTypeScreen from './Settings/NetworkTypeScreen';
+import UpgradeNoticeScreen from './Settings/UpgradeNoticeScreen';
+import CosmosSignDemo from './Test/CosmosSignDemo';
+import TestScreen from './Test/TestScreen';
+import HistoryScreen from './Wallet/HistoryScreen';
+import TxConfirmScreen from './Wallet/TxConfirmScreen';
+import TxCreateScreen from './Wallet/TxCreateScreen';
+import TxFailScreen from './Wallet/TxFailScreen';
+import TxSuccessScreen from './Wallet/TxSuccessScreen';
+import './index.module.less';
+
 const ModernWelcomeScreen = lazy(() =>
   import('../../ui-modern/pages/ModernWelcomeScreen').then((module) => ({ default: module.ModernWelcomeScreen }))
 );
@@ -71,36 +97,6 @@ const ModernAddressTypeScreen = lazy(() =>
     default: module.ModernAddressTypeScreen
   }))
 );
-import OrdinalsInscriptionScreen from './Ordinals/OrdinalsInscriptionScreen';
-import SendOrdinalsInscriptionScreen from './Ordinals/SendOrdinalsInscriptionScreen';
-import SignOrdinalsTransactionScreen from './Ordinals/SignOrdinalsTransactionScreen';
-import SplitOrdinalsInscriptionScreen from './Ordinals/SplitOrdinalsInscriptionScreen';
-import PhishingScreen from './Phishing/PhishingScreen';
-import RunesTokenScreen from './Runes/RunesTokenScreen';
-import SendRunesScreen from './Runes/SendRunesScreen';
-import AboutUsScreen from './Settings/AboutUsScreen';
-import AddressTypeScreen from './Settings/AddressTypeScreen';
-import AdvancedScreen from './Settings/AdvancedScreen';
-import { LockTimePage } from './Settings/AdvancedScreen/LockTimePage';
-import ChangePasswordScreen from './Settings/ChangePasswordScreen';
-import ContactsScreen from './Settings/ContactsScreen';
-import EditAccountNameScreen from './Settings/EditAccountNameScreen';
-import EditContactScreen from './Settings/EditContactScreen';
-import EditWalletNameScreen from './Settings/EditWalletNameScreen';
-import ExportMnemonicsScreen from './Settings/ExportMnemonicsScreen';
-import ExportPrivateKeyScreen from './Settings/ExportPrivateKeyScreen';
-import LanguageScreen from './Settings/LanguageScreen';
-import NetworkTypeScreen from './Settings/NetworkTypeScreen';
-import UpgradeNoticeScreen from './Settings/UpgradeNoticeScreen';
-import CosmosSignDemo from './Test/CosmosSignDemo';
-import TestScreen from './Test/TestScreen';
-import HistoryScreen from './Wallet/HistoryScreen';
-import ReceiveScreen from './Wallet/ReceiveScreen';
-import TxConfirmScreen from './Wallet/TxConfirmScreen';
-import TxCreateScreen from './Wallet/TxCreateScreen';
-import TxFailScreen from './Wallet/TxFailScreen';
-import TxSuccessScreen from './Wallet/TxSuccessScreen';
-import './index.module.less';
 
 export const routes = {
   BoostScreen: {
@@ -149,7 +145,7 @@ export const routes = {
   },
   ReceiveScreen: {
     path: '/wallet/receive',
-    element: <ReceiveScreen />
+    element: <ModernReceiveScreen />
   },
 
   TxCreateScreen: {

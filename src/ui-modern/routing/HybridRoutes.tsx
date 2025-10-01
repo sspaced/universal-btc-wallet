@@ -65,7 +65,6 @@ import UpgradeNoticeScreen from '@/ui/pages/Settings/UpgradeNoticeScreen';
 import CosmosSignDemo from '@/ui/pages/Test/CosmosSignDemo';
 import TestScreen from '@/ui/pages/Test/TestScreen';
 import HistoryScreen from '@/ui/pages/Wallet/HistoryScreen';
-import ReceiveScreen from '@/ui/pages/Wallet/ReceiveScreen';
 import TxConfirmScreen from '@/ui/pages/Wallet/TxConfirmScreen';
 import TxCreateScreen from '@/ui/pages/Wallet/TxCreateScreen';
 import TxFailScreen from '@/ui/pages/Wallet/TxFailScreen';
@@ -81,8 +80,9 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { shouldUseModernUI } from '../config/ui-config';
 // Import des composants modernes
 import { ModernCreateHDWalletScreen } from '../pages/ModernCreateHDWalletScreen';
-import { ModernWelcomeScreen } from '../pages/ModernWelcomeScreen';
+import { ModernReceiveScreen } from '../pages/ModernReceiveScreen';
 import { ModernWalletTabScreen } from '../pages/ModernWalletTabScreen';
+import { ModernWelcomeScreen } from '../pages/ModernWelcomeScreen';
 
 export const routes = {
   BoostScreen: {
@@ -131,7 +131,7 @@ export const routes = {
   },
   ReceiveScreen: {
     path: '/wallet/receive',
-    element: <ReceiveScreen />
+    element: <ModernReceiveScreen />
   },
 
   TxCreateScreen: {
@@ -406,6 +406,7 @@ export function useNavigate() {
       }
 
       const route: any = routes[routKey];
+
       if (route.getDynamicPath) {
         const path = route.getDynamicPath(pathState);
         navigate(path, { replace: false, state });

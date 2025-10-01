@@ -7,6 +7,8 @@ import MergeCAT20Screen from '@/ui/pages/CAT20/MergeCAT20Screen';
 import SendCAT20Screen from '@/ui/pages/CAT20/SendCAT20Screen';
 import { LoadingOutlined } from '@ant-design/icons';
 
+import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
+import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
 import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
 import { Content, Icon } from '../components';
 import { ErrorBoundary } from '../components/ErrorBoundary';
@@ -73,6 +75,11 @@ import TxCreateScreen from './Wallet/TxCreateScreen';
 import TxFailScreen from './Wallet/TxFailScreen';
 import TxSuccessScreen from './Wallet/TxSuccessScreen';
 import './index.module.less';
+
+// Composant wrapper pour l'évaluation dynamique
+const ExportMnemonicsScreenWrapper = () => {
+  return shouldUseModernUI('ExportMnemonicsScreen') ? <ModernExportMnemonicsScreen /> : <ExportMnemonicsScreen />;
+};
 
 const ModernWelcomeScreen = lazy(() =>
   import('../../ui-modern/pages/ModernWelcomeScreen').then((module) => ({ default: module.ModernWelcomeScreen }))
@@ -194,7 +201,7 @@ export const routes = {
   },
   ExportMnemonicsScreen: {
     path: '/settings/export-mnemonics',
-    element: <ExportMnemonicsScreen />
+    element: <ExportMnemonicsScreenWrapper />
   },
   ExportPrivateKeyScreen: {
     path: '/settings/export-privatekey',

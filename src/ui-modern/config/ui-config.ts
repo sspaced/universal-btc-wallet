@@ -20,7 +20,8 @@ export const modernRoutes = [
   'CreateHDWalletScreen',
   'CreatePasswordScreen',
   'MainScreen', // ModernWalletTabScreen
-  'ReceiveScreen' // ModernReceiveScreen
+  'ReceiveScreen', // ModernReceiveScreen
+  'ExportMnemonicsScreen' // ModernExportMnemonicsScreen
   // Ajoutez d'autres routes ici au fur et à mesure
 ];
 

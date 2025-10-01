@@ -80,9 +80,17 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { shouldUseModernUI } from '../config/ui-config';
 // Import des composants modernes
 import { ModernCreateHDWalletScreen } from '../pages/ModernCreateHDWalletScreen';
+import { ModernExportMnemonicsScreen } from '../pages/ModernExportMnemonicsScreen';
 import { ModernReceiveScreen } from '../pages/ModernReceiveScreen';
 import { ModernWalletTabScreen } from '../pages/ModernWalletTabScreen';
 import { ModernWelcomeScreen } from '../pages/ModernWelcomeScreen';
+
+// Composant wrapper pour l'évaluation dynamique
+const ExportMnemonicsScreenWrapper = () => {
+  // Force l'utilisation de l'UI moderne pour le debug
+  console.log('ExportMnemonicsScreenWrapper: shouldUseModernUI =', shouldUseModernUI('ExportMnemonicsScreen'));
+  return <ModernExportMnemonicsScreen />;
+};
 
 export const routes = {
   BoostScreen: {
@@ -180,7 +188,7 @@ export const routes = {
   },
   ExportMnemonicsScreen: {
     path: '/settings/export-mnemonics',
-    element: <ExportMnemonicsScreen />
+    element: <ExportMnemonicsScreenWrapper />
   },
   ExportPrivateKeyScreen: {
     path: '/settings/export-privatekey',

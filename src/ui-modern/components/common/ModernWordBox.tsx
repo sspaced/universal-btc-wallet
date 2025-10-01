@@ -64,16 +64,18 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
       {/* Word */}
       <div
         style={{
-          fontSize: '12px',
+          fontSize: '13px',
           fontWeight: '500',
           color: '#ffffff',
           textAlign: 'center',
-          fontFamily: "'SF Mono', 'Monaco', 'Courier New', monospace",
+          fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
           letterSpacing: '0.01em',
           filter: blurred ? 'blur(4px)' : 'none',
-          userSelect: 'none'
+          userSelect: 'text',
+          WebkitUserSelect: 'text',
+          wordBreak: 'break-word'
         }}>
-        {word}
+        {word || '(empty)'}
       </div>
     </motion.div>
   );

@@ -16,6 +16,7 @@ import { ModernAccount, ModernAccountSelector } from '../components/wallet/Moder
 import { Asset, ModernAssetsList } from '../components/wallet/ModernAssetsList';
 import { ModernBalanceHeader } from '../components/wallet/ModernBalanceHeader';
 import { ModernQuickActions } from '../components/wallet/ModernQuickActions';
+import { ModernSettingsPanel } from '../components/wallet/ModernSettingsPanel';
 import { useUnifiedAssets } from '../hooks/useUnifiedAssets';
 
 export const ModernWalletTabScreen: React.FC = () => {
@@ -27,6 +28,7 @@ export const ModernWalletTabScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState<BottomNavTab>('home');
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [buyBtcModalVisible, setBuyBtcModalVisible] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   // Hooks from original WalletTabScreen
   const accountBalance = useAccountBalance();
@@ -79,9 +81,8 @@ export const ModernWalletTabScreen: React.FC = () => {
       case 'history':
         navigate('HistoryScreen');
         break;
-      case 'search':
-        // TODO: Navigate to search screen
-        console.log('Navigate to search');
+      case 'settings':
+        setShowSettings(true);
         break;
     }
   };
@@ -235,6 +236,13 @@ export const ModernWalletTabScreen: React.FC = () => {
 
       {/* Bottom Navigation */}
       <ModernBottomNav activeTab={activeTab} onTabChange={handleTabChange} />
+
+      {/* Settings Panel */}
+      <ModernSettingsPanel
+        visible={showSettings}
+        onClose={() => setShowSettings(false)}
+        onNavigate={(route: any) => navigate(route)}
+      />
     </div>
   );
 };

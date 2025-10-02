@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 
-export type BottomNavTab = 'home' | 'swap' | 'history' | 'search';
+export type BottomNavTab = 'home' | 'swap' | 'history' | 'settings';
 
 interface ModernBottomNavProps {
   activeTab: BottomNavTab;
@@ -28,7 +28,7 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
           />
         </svg>
-      ),
+      )
     },
     {
       id: 'swap',
@@ -42,7 +42,7 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
             d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
           />
         </svg>
-      ),
+      )
     },
     {
       id: 'history',
@@ -56,22 +56,23 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-      ),
+      )
     },
     {
-      id: 'search',
-      label: 'Search',
+      id: 'settings',
+      label: 'Settings',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
           />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-      ),
-    },
+      )
+    }
   ];
 
   return (
@@ -89,9 +90,8 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
         alignItems: 'center',
         justifyContent: 'space-around',
         padding: '0 16px',
-        zIndex: 1000,
-      }}
-    >
+        zIndex: 1000
+      }}>
       {navItems.map((item) => {
         const isActive = activeTab === item.id;
         return (
@@ -109,15 +109,13 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
               gap: '4px',
               padding: '8px 12px',
               flex: 1,
-              maxWidth: '80px',
-            }}
-          >
+              maxWidth: '80px'
+            }}>
             <div
               style={{
                 color: isActive ? '#007aff' : 'rgba(255, 255, 255, 0.6)',
-                transition: 'color 0.3s ease',
-              }}
-            >
+                transition: 'color 0.3s ease'
+              }}>
               {item.icon}
             </div>
             <span
@@ -125,9 +123,8 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
                 fontSize: '11px',
                 fontWeight: isActive ? '600' : '500',
                 color: isActive ? '#007aff' : 'rgba(255, 255, 255, 0.6)',
-                transition: 'all 0.3s ease',
-              }}
-            >
+                transition: 'all 0.3s ease'
+              }}>
               {item.label}
             </span>
           </motion.button>

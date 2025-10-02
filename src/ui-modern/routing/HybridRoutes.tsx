@@ -57,7 +57,6 @@ import ContactsScreen from '@/ui/pages/Settings/ContactsScreen';
 import EditAccountNameScreen from '@/ui/pages/Settings/EditAccountNameScreen';
 import EditContactScreen from '@/ui/pages/Settings/EditContactScreen';
 import EditWalletNameScreen from '@/ui/pages/Settings/EditWalletNameScreen';
-import ExportMnemonicsScreen from '@/ui/pages/Settings/ExportMnemonicsScreen';
 import ExportPrivateKeyScreen from '@/ui/pages/Settings/ExportPrivateKeyScreen';
 import LanguageScreen from '@/ui/pages/Settings/LanguageScreen';
 import NetworkTypeScreen from '@/ui/pages/Settings/NetworkTypeScreen';
@@ -82,6 +81,7 @@ import { shouldUseModernUI } from '../config/ui-config';
 import { ModernCreateHDWalletScreen } from '../pages/ModernCreateHDWalletScreen';
 import { ModernExportMnemonicsScreen } from '../pages/ModernExportMnemonicsScreen';
 import { ModernReceiveScreen } from '../pages/ModernReceiveScreen';
+import { ModernSendScreen } from '../pages/ModernSendScreen';
 import { ModernWalletTabScreen } from '../pages/ModernWalletTabScreen';
 import { ModernWelcomeScreen } from '../pages/ModernWelcomeScreen';
 
@@ -144,7 +144,7 @@ export const routes = {
 
   TxCreateScreen: {
     path: '/wallet/tx/create',
-    element: <TxCreateScreen />
+    element: shouldUseModernUI('TxCreateScreen') ? <ModernSendScreen /> : <TxCreateScreen />
   },
   TxConfirmScreen: {
     path: '/wallet/tx/confirm',

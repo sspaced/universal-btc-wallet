@@ -10,6 +10,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
 import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
+import { ModernSendScreen } from '../../ui-modern/pages/ModernSendScreen';
 import { Content, Icon } from '../components';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { accountActions } from '../state/accounts/reducer';
@@ -157,7 +158,7 @@ export const routes = {
 
   TxCreateScreen: {
     path: '/wallet/tx/create',
-    element: <TxCreateScreen />
+    element: shouldUseModernUI('TxCreateScreen') ? <ModernSendScreen /> : <TxCreateScreen />
   },
   TxConfirmScreen: {
     path: '/wallet/tx/confirm',

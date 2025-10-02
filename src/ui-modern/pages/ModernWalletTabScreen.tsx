@@ -40,6 +40,15 @@ export const ModernWalletTabScreen: React.FC = () => {
 
   const { isSidePanel } = getUiType();
 
+  // Debug logs for balance
+  useEffect(() => {
+    console.log('=== BALANCE DEBUG ===');
+    console.log('Current account:', currentAccount);
+    console.log('Account balance:', accountBalance);
+    console.log('Is unlocked:', isUnlocked);
+    console.log('===================');
+  }, [currentAccount, accountBalance, isUnlocked]);
+
   // Fetch unified assets
   const { assets: unifiedAssets, loading: assetsLoading } = useUnifiedAssets();
 

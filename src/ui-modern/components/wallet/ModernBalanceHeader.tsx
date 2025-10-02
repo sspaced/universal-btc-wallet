@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { ChainType } from '@/shared/constant';
 import { useBTCUnit, useChainType } from '@/ui/state/settings/hooks';
+
 import { EyeIcon, EyeOffIcon, RefreshIcon } from '../common/ModernIcons';
 
 interface ModernBalanceHeaderProps {
@@ -18,7 +19,7 @@ interface ModernBalanceHeaderProps {
 export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
   accountBalance,
   enableRefresh = false,
-  onRefresh,
+  onRefresh
 }) => {
   const chainType = useChainType();
   const btcUnit = useBTCUnit();
@@ -31,12 +32,36 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
 
   const totalAmount = satoshisToAmount(accountBalance.totalBalance);
 
-  const { intPart, decPart } = useMemo(() => {
+  const { intPart, decPart, displayAmount } = useMemo(() => {
     const [intPart, decPart] = totalAmount.split('.');
-    return {
+
+    // For very small amounts, show more decimal places
+    const numValue = parseFloat(totalAmount);
+    let displayAmount;
+
+    if (numValue < 0.0001) {
+      displayAmount = numValue.toFixed(8);
+    } else if (numValue < 0.001) {
+      displayAmount = numValue.toFixed(6);
+    } else if (numValue < 0.01) {
+      displayAmount = numValue.toFixed(5);
+    } else {
+      displayAmount = numValue.toFixed(4);
+    }
+
+    const result = {
       intPart,
       decPart: decPart || '00000000',
+      displayAmount
     };
+
+    // Debug log
+    console.log('=== DECIMAL CALCULATION DEBUG ===');
+    console.log('numValue:', numValue);
+    console.log('displayAmount:', result.displayAmount);
+    console.log('================================');
+
+    return result;
   }, [totalAmount]);
 
   const isBTCChain =
@@ -44,6 +69,18 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
     chainType === ChainType.BITCOIN_TESTNET ||
     chainType === ChainType.BITCOIN_TESTNET4 ||
     chainType === ChainType.BITCOIN_SIGNET;
+
+  // Debug logs
+  useEffect(() => {
+    console.log('=== ModernBalanceHeader DEBUG ===');
+    console.log('Account balance received:', accountBalance);
+    console.log('Total balance:', accountBalance.totalBalance);
+    console.log('Available balance:', accountBalance.availableBalance);
+    console.log('Unavailable balance:', accountBalance.unavailableBalance);
+    console.log('Total amount (BTC):', totalAmount);
+    console.log('Display amount:', displayAmount);
+    console.log('================================');
+  }, [accountBalance, totalAmount, displayAmount]);
 
   // Mock price change data (TODO: fetch from API)
   const priceChange = '+$1.51';
@@ -54,66 +91,50 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
     <div
       style={{
         padding: '24px 20px',
-        background: 'transparent',
-      }}
-    >
+        background: 'transparent'
+      }}>
       {/* Balance Display */}
       <div
         style={{
           textAlign: 'center',
-          marginBottom: '8px',
-        }}
-      >
+          marginBottom: '8px'
+        }}>
         {!isBalanceHidden ? (
           <div
             style={{
               display: 'flex',
               alignItems: 'baseline',
               justifyContent: 'center',
-              gap: '4px',
-            }}
-          >
+              gap: '4px'
+            }}>
             <span
               style={{
-                fontSize: '48px',
+                fontSize: '36px',
                 fontWeight: '700',
                 color: '#ffffff',
-                letterSpacing: '-1px',
-                lineHeight: 1,
-              }}
-            >
-              {intPart}
-            </span>
-            <span
-              style={{
-                fontSize: '28px',
-                fontWeight: '700',
-                color: 'rgba(255, 255, 255, 0.6)',
                 letterSpacing: '-0.5px',
-              }}
-            >
-              .{decPart.substring(0, 3)}
+                lineHeight: 1
+              }}>
+              {displayAmount}
             </span>
             <span
               style={{
-                fontSize: '24px',
+                fontSize: '20px',
                 fontWeight: '600',
                 color: 'rgba(255, 255, 255, 0.8)',
-                marginLeft: '8px',
-                letterSpacing: '-0.5px',
-              }}
-            >
+                marginLeft: '6px',
+                letterSpacing: '-0.5px'
+              }}>
               {btcUnit}
             </span>
           </div>
         ) : (
           <div
             style={{
-              fontSize: '48px',
+              fontSize: '36px',
               color: 'rgba(255, 255, 255, 0.3)',
-              letterSpacing: '8px',
-            }}
-          >
+              letterSpacing: '6px'
+            }}>
             ••••••
           </div>
         )}
@@ -127,16 +148,14 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
-            marginBottom: '16px',
-          }}
-        >
+            marginBottom: '16px'
+          }}>
           <span
             style={{
               fontSize: '16px',
               fontWeight: '600',
-              color: isPositive ? '#34c759' : '#ff3b30',
-            }}
-          >
+              color: isPositive ? '#34c759' : '#ff3b30'
+            }}>
             {priceChange}
           </span>
           <span
@@ -146,9 +165,8 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
               color: isPositive ? '#34c759' : '#ff3b30',
               backgroundColor: isPositive ? 'rgba(52, 199, 89, 0.15)' : 'rgba(255, 59, 48, 0.15)',
               padding: '2px 8px',
-              borderRadius: '6px',
-            }}
-          >
+              borderRadius: '6px'
+            }}>
             {percentageChange}
           </span>
         </div>
@@ -160,9 +178,8 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '12px',
-        }}
-      >
+          gap: '12px'
+        }}>
         {/* Hide/Show Balance */}
         <motion.button
           whileTap={{ scale: 0.95 }}
@@ -178,9 +195,8 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
             transition: 'all 0.2s ease',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+            justifyContent: 'center'
+          }}>
           {isBalanceHidden ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
         </motion.button>
 
@@ -200,9 +216,8 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
               transition: 'all 0.2s ease',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+              justifyContent: 'center'
+            }}>
             <RefreshIcon size={18} />
           </motion.button>
         )}

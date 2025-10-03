@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { KeyringType } from '@unisat/keyring-service/types';
 
@@ -40,6 +40,17 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
   const [openMenuForAccount, setOpenMenuForAccount] = useState<string | null>(null);
   const [editingAccount, setEditingAccount] = useState<string | null>(null);
   const [editingName, setEditingName] = useState<string>('');
+  const [clickTimeout, setClickTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (clickTimeout) {
+        clearTimeout(clickTimeout);
+      }
+    };
+  }, [clickTimeout]);
+
   const getAccountInitials = (account: Account): string => {
     const name = account.alianName || `Account ${account.index + 1}`;
     return name
@@ -149,9 +160,33 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                 return (
                   <div
                     key={account.address}
-                    onClick={() => {
-                      onSelectAccount(account);
-                      onToggle();
+                    onClick={(e) => {
+                      // Clear any existing timeout
+                      if (clickTimeout) {
+                        clearTimeout(clickTimeout);
+                        setClickTimeout(null);
+                        return;
+                      }
+
+                      // Set a timeout to handle single click
+                      const timeout = setTimeout(() => {
+                        onSelectAccount(account);
+                        onToggle();
+                        setClickTimeout(null);
+                      }, 200);
+
+                      setClickTimeout(timeout);
+                    }}
+                    onDoubleClick={(e) => {
+                      // Clear the single click timeout
+                      if (clickTimeout) {
+                        clearTimeout(clickTimeout);
+                        setClickTimeout(null);
+                      }
+
+                      // Handle double click for editing
+                      setEditingAccount(account.address);
+                      setEditingName(account.alianName || `Account ${account.index + 1}`);
                     }}
                     style={{
                       width: '100%',
@@ -254,11 +289,10 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                         // Normal display mode
                         <div
                           style={{
-                            cursor: 'pointer'
+                            cursor: 'inherit'
                           }}>
                           <div
                             onClick={(e) => {
-                              // Double click to edit
                               e.stopPropagation();
                             }}
                             onDoubleClick={(e) => {
@@ -274,7 +308,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
                               whiteSpace: 'nowrap',
-                              cursor: 'text'
+                              cursor: 'inherit'
                             }}>
                             {getAccountName(account)}
                           </div>

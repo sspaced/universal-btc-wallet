@@ -40,6 +40,15 @@
   "view_on_block_explorer": {
     "message": "View on Block Explorer"
   },
+  "confirm_and_send": {
+    "message": "Confirm and Send"
+  },
+  "confirming": {
+    "message": "Confirming..."
+  },
+  "rbf_enabled": {
+    "message": "Replace-by-fee enabled"
+  },
   "view": {
     "message": "View"
   },
@@ -54,6 +63,27 @@
   },
   "done": {
     "message": "Done"
+  },
+  "confirm_transaction": {
+    "message": "Confirm Transaction"
+  },
+  "transaction_success": {
+    "message": "Transaction Success"
+  },
+  "transaction_failed": {
+    "message": "Transaction Failed"
+  },
+  "transaction_could_not_be_completed": {
+    "message": "The transaction could not be completed"
+  },
+  "transaction_failed_help_text": {
+    "message": "Please check your network connection and try again. If the problem persists, contact support."
+  },
+  "try_again": {
+    "message": "Try Again"
+  },
+  "go_to_home": {
+    "message": "Go to Home"
   },
   "payment_failed": {
     "message": "Payment Failed"

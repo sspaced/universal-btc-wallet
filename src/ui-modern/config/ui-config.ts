@@ -22,6 +22,9 @@ export const modernRoutes = [
   'MainScreen', // ModernWalletTabScreen
   'ReceiveScreen', // ModernReceiveScreen
   'TxCreateScreen', // ModernSendScreen
+  'TxConfirmScreen', // ModernTxConfirmScreen
+  'TxSuccessScreen', // ModernTxSuccessScreen
+  'TxFailScreen', // ModernTxFailScreen
   'ExportMnemonicsScreen' // ModernExportMnemonicsScreen
   // Ajoutez d'autres routes ici au fur et à mesure
 ];

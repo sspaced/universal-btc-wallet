@@ -4,7 +4,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { OW_HD_PATH } from '@/shared/constant';
 import { AddressType, RestoreWalletType } from '@/shared/types';
 import { useTools } from '@/ui/components/ActionComponent';
-import { ContextData, TabType, UpdateContextDataParams, WordsType } from '@/ui/pages/Account/createHDWalletComponents/types';
+import {
+  ContextData,
+  TabType,
+  UpdateContextDataParams,
+  WordsType
+} from '@/ui/pages/Account/createHDWalletComponents/types';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useCreateAccountCallback } from '@/ui/state/global/hooks';
 import { validateMnemonic } from '@/ui/utils/bitcoin-utils';
@@ -20,18 +25,18 @@ export interface ModernRecoveryPhraseImportScreenProps {
 const getWords12Item = () => ({
   key: WordsType.WORDS_12,
   label: '12 words',
-  count: 12,
+  count: 12
 });
 
 const getWords24Item = () => ({
   key: WordsType.WORDS_24,
   label: '24 words',
-  count: 24,
+  count: 24
 });
 
 export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImportScreenProps> = ({
   contextData,
-  updateContextData,
+  updateContextData
 }) => {
   const tools = useTools();
   const navigate = useNavigate();
@@ -115,9 +120,8 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
         background: '#000000',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
-      }}
-    >
+        overflow: 'hidden'
+      }}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -127,9 +131,8 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
           padding: '20px 24px',
           display: 'flex',
           alignItems: 'center',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        }}
-      >
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -142,14 +145,13 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
             alignItems: 'center',
             justifyContent: 'center',
             padding: '8px',
-            marginRight: '12px',
-          }}
-        >
+            marginRight: '12px'
+          }}>
           <BackIcon
             style={{
               width: '24px',
               height: '24px',
-              color: '#007aff',
+              color: '#007aff'
             }}
           />
         </motion.button>
@@ -159,9 +161,8 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
             fontSize: '20px',
             fontWeight: '600',
             color: 'white',
-            margin: 0,
-          }}
-        >
+            margin: 0
+          }}>
           Secret Recovery Phrase
         </h1>
       </motion.div>
@@ -171,23 +172,17 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '20px 24px',
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
+          padding: '20px 24px'
+        }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }}>
           <p
             style={{
               fontSize: '15px',
               color: 'rgba(255, 255, 255, 0.7)',
               margin: '0 0 20px 0',
               lineHeight: '1.6',
-              textAlign: 'center',
-            }}
-          >
+              textAlign: 'center'
+            }}>
             Import an existing wallet with your secret recovery phrase
           </p>
 
@@ -198,9 +193,8 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
                 display: 'flex',
                 justifyContent: 'center',
                 gap: '12px',
-                marginBottom: '24px',
-              }}
-            >
+                marginBottom: '24px'
+              }}>
               {wordsItems.map((item) => (
                 <motion.button
                   key={item.key}
@@ -210,15 +204,16 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
                   style={{
                     padding: '10px 24px',
                     borderRadius: '10px',
-                    border: contextData.wordsType === item.key ? '1px solid #007aff' : '1px solid rgba(255, 255, 255, 0.1)',
-                    background: contextData.wordsType === item.key ? 'rgba(0, 122, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+                    border:
+                      contextData.wordsType === item.key ? '1px solid #007aff' : '1px solid rgba(255, 255, 255, 0.1)',
+                    background:
+                      contextData.wordsType === item.key ? 'rgba(0, 122, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)',
                     color: contextData.wordsType === item.key ? '#007aff' : 'rgba(255, 255, 255, 0.7)',
                     fontSize: '14px',
                     fontWeight: '500',
                     cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                  }}
-                >
+                    transition: 'all 0.3s ease'
+                  }}>
                   {item.label}
                 </motion.button>
               ))}
@@ -232,9 +227,8 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
               gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '6px',
               maxWidth: '340px',
-              margin: '0 auto 24px auto',
-            }}
-          >
+              margin: '0 auto 24px auto'
+            }}>
             {keys.map((value, index) => (
               <motion.div
                 key={index}
@@ -248,18 +242,16 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
                   background: 'rgba(255, 255, 255, 0.05)',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '8px',
-                  padding: '6px 10px',
-                }}
-              >
+                  padding: '6px 10px'
+                }}>
                 <span
                   style={{
                     fontSize: '12px',
                     color: value.trim() ? '#007aff' : 'rgba(255, 255, 255, 0.5)',
                     fontWeight: '500',
                     minWidth: '20px',
-                    transition: 'color 0.3s ease',
-                  }}
-                >
+                    transition: 'color 0.3s ease'
+                  }}>
                   {index + 1}.
                 </span>
                 <input
@@ -277,7 +269,7 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
                     fontSize: '13px',
                     fontWeight: '500',
                     width: '100%',
-                    minWidth: 0,
+                    minWidth: 0
                   }}
                 />
               </motion.div>
@@ -291,16 +283,9 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
             transition={{ duration: 0.5, delay: 0.4 }}
             style={{
               maxWidth: '400px',
-              margin: '0 auto',
-            }}
-          >
-            <ModernButton
-              variant="primary"
-              size="large"
-              fullWidth
-              disabled={disabled}
-              onClick={onNext}
-            >
+              margin: '0 auto'
+            }}>
+            <ModernButton variant="primary" size="large" fullWidth disabled={disabled} onClick={onNext}>
               Continue
             </ModernButton>
           </motion.div>

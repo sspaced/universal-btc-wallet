@@ -23,3 +23,5 @@ export type { FeeOption, ModernFeeSelectorProps } from './ModernFeeSelector';
 
 export { ModernRFBToggle } from './ModernRFBToggle';
 export type { ModernRFBToggleProps } from './ModernRFBToggle';
+
+export { ModernTxConfirmContent } from './ModernTxConfirmContent';

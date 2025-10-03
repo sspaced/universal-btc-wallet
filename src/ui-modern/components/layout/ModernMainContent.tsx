@@ -3,9 +3,10 @@ import React, { ReactNode } from 'react';
 
 interface ModernMainContentProps {
   children: ReactNode;
+  noPadding?: boolean;
 }
 
-export const ModernMainContent: React.FC<ModernMainContentProps> = ({ children }) => {
+export const ModernMainContent: React.FC<ModernMainContentProps> = ({ children, noPadding = false }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -15,7 +16,7 @@ export const ModernMainContent: React.FC<ModernMainContentProps> = ({ children }
         flex: 1,
         overflowY: 'auto',
         overflowX: 'hidden',
-        paddingBottom: '80px', // Space for bottom navigation
+        paddingBottom: noPadding ? '0px' : '80px', // Space for bottom navigation
         background: '#000000',
         scrollbarWidth: 'none', // Firefox
         msOverflowStyle: 'none' // IE and Edge

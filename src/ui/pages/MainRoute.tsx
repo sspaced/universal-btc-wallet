@@ -11,6 +11,10 @@ import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
 import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
 import { ModernSendScreen } from '../../ui-modern/pages/ModernSendScreen';
+import { ModernTxConfirmScreen } from '../../ui-modern/pages/ModernTxConfirmScreen';
+import { ModernTxFailScreen } from '../../ui-modern/pages/ModernTxFailScreen';
+import { ModernTxSuccessScreen } from '../../ui-modern/pages/ModernTxSuccessScreen';
+import { ModernUnlockScreen } from '../../ui-modern/pages/ModernUnlockScreen';
 import { Content, Icon } from '../components';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { accountActions } from '../state/accounts/reducer';
@@ -71,10 +75,7 @@ import UpgradeNoticeScreen from './Settings/UpgradeNoticeScreen';
 import CosmosSignDemo from './Test/CosmosSignDemo';
 import TestScreen from './Test/TestScreen';
 import HistoryScreen from './Wallet/HistoryScreen';
-import TxConfirmScreen from './Wallet/TxConfirmScreen';
 import TxCreateScreen from './Wallet/TxCreateScreen';
-import TxFailScreen from './Wallet/TxFailScreen';
-import TxSuccessScreen from './Wallet/TxSuccessScreen';
 import './index.module.less';
 
 // Composant wrapper pour l'évaluation dynamique
@@ -145,7 +146,7 @@ export const routes = {
   },
   UnlockScreen: {
     path: '/account/unlock',
-    element: <UnlockScreen />
+    element: <ModernUnlockScreen />
   },
   SwitchAccountScreen: {
     path: '/account/switch-account',
@@ -162,15 +163,15 @@ export const routes = {
   },
   TxConfirmScreen: {
     path: '/wallet/tx/confirm',
-    element: <TxConfirmScreen />
+    element: <ModernTxConfirmScreen />
   },
   TxSuccessScreen: {
     path: '/wallet/tx/success',
-    element: <TxSuccessScreen />
+    element: <ModernTxSuccessScreen />
   },
   TxFailScreen: {
     path: '/wallet/tx/fail',
-    element: <TxFailScreen />
+    element: <ModernTxFailScreen />
   },
 
   OrdinalsInscriptionScreen: {

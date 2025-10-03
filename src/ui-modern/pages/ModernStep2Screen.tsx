@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 
 import { ADDRESS_TYPES, getRestoreWallets } from '@/shared/constant';
-import { AddressType } from '@/shared/types';
 import { useTools } from '@/ui/components/ActionComponent';
 import { ContextData, UpdateContextDataParams } from '@/ui/pages/Account/createHDWalletComponents/types';
 import { useNavigate } from '@/ui/pages/MainRoute';

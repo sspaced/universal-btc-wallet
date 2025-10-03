@@ -1,7 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
-import { useAccountBalance, useCurrentAccount, useFetchBalanceCallback } from '@/ui/state/accounts/hooks';
+import {
+  useAccountBalance,
+  useAccounts,
+  useCurrentAccount,
+  useFetchBalanceCallback,
+  useReloadAccounts,
+  useSetCurrentAccountCallback
+} from '@/ui/state/accounts/hooks';
 import { useIsUnlocked } from '@/ui/state/global/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { useCurrentKeyring } from '@/ui/state/keyrings/hooks';
@@ -37,6 +44,9 @@ export const ModernWalletTabScreen: React.FC = () => {
   const isUnlocked = useIsUnlocked();
   const fetchBalance = useFetchBalanceCallback();
   const resetUiTxCreateScreen = useResetUiTxCreateScreen();
+  const allAccounts = useAccounts();
+  const reloadAccounts = useReloadAccounts();
+  const setCurrentAccount = useSetCurrentAccountCallback();
 
   const { isSidePanel } = getUiType();
 
@@ -61,18 +71,33 @@ export const ModernWalletTabScreen: React.FC = () => {
 
   // Accounts data
   const accounts: Account[] = useMemo(() => {
+    console.log('All accounts:', allAccounts);
     console.log('Current keyring type:', currentKeyring.type);
-    return [
-      {
-        address: currentAccount.address || '',
-        alianName: currentKeyring.alianName || 'Account 1',
-        index: 0,
-        type: currentKeyring.type
-      }
-    ];
-  }, [currentAccount, currentKeyring]);
 
-  const [selectedAccount, setSelectedAccount] = useState<Account | null>(accounts.length > 0 ? accounts[0] : null);
+    // Convert all accounts to the format expected by ModernSidebar
+    return allAccounts.map((account, index) => ({
+      address: account.address || '',
+      alianName: account.alianName || `Account ${index + 1}`,
+      index: account.index || index,
+      type: account.type || currentKeyring.type
+    }));
+  }, [allAccounts, currentKeyring]);
+
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
+
+  // Update selected account when current account or accounts list changes
+  useEffect(() => {
+    if (accounts.length > 0) {
+      const currentAccountInList = accounts.find((acc) => acc.address === currentAccount.address);
+      if (currentAccountInList) {
+        console.log('Setting selected account to current account:', currentAccountInList);
+        setSelectedAccount(currentAccountInList);
+      } else {
+        console.log('Current account not found in list, setting to first account:', accounts[0]);
+        setSelectedAccount(accounts[0]);
+      }
+    }
+  }, [accounts, currentAccount]);
 
   // Handlers
   const handleTabChange = (tab: BottomNavTab) => {
@@ -119,9 +144,23 @@ export const ModernWalletTabScreen: React.FC = () => {
     fetchBalance();
   };
 
-  const handleSelectAccount = (account: Account) => {
+  const handleSelectAccount = async (account: Account) => {
     setSelectedAccount(account);
-    // TODO: Switch to selected account in wallet state
+    // Switch to selected account in wallet state
+    try {
+      const targetAccount = allAccounts.find((acc) => acc.address === account.address);
+      if (targetAccount && currentAccount.address !== targetAccount.address) {
+        // Use changeKeyring to switch to the selected account
+        await wallet.changeKeyring(currentKeyring, targetAccount.index);
+        // Update the current account in the state
+        const newCurrentAccount = await wallet.getCurrentAccount();
+        setCurrentAccount(newCurrentAccount);
+        // Reload accounts to update current account
+        await reloadAccounts();
+      }
+    } catch (error) {
+      console.error('Failed to switch account:', error);
+    }
     console.log('Selected account:', account);
   };
 
@@ -133,6 +172,13 @@ export const ModernWalletTabScreen: React.FC = () => {
     navigate('CreateAccountScreen');
     setSidebarVisible(false);
   };
+
+  // Reload accounts when component mounts or when returning from account creation
+  useEffect(() => {
+    if (isUnlocked) {
+      reloadAccounts();
+    }
+  }, [isUnlocked, reloadAccounts]);
 
   const handleEditWalletName = async (account: Account) => {
     // Update wallet name via API

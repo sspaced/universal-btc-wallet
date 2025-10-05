@@ -30,7 +30,6 @@ import CreateKeystoneWalletScreen from './Account/CreateKeystoneWalletScreen';
 import CreateSimpleWalletScreen from './Account/CreateSimpleWalletScreen';
 import SwitchAccountScreen from './Account/SwitchAccountScreen';
 import SwitchKeyringScreen from './Account/SwitchKeyringScreen';
-import UnlockScreen from './Account/UnlockScreen';
 import AlkanesCollectionScreen from './Alkanes/AlkanesCollectionScreen';
 import AlkanesNFTScreen from './Alkanes/AlkanesNFTScreen';
 import AlkanesTokenScreen from './Alkanes/AlkanesTokenScreen';

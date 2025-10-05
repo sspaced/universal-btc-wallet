@@ -25,7 +25,7 @@ const defaultOptions: FeeOption[] = [
     rate: 1,
     description: 'Lowest fee',
     estimatedTime: '~30 min',
-    color: 'rgba(255, 255, 255, 0.1)'
+    color: 'rgba(255, 255, 255, 0.3)'
   },
   {
     id: 'normal',
@@ -33,7 +33,7 @@ const defaultOptions: FeeOption[] = [
     rate: 5,
     description: 'Recommended',
     estimatedTime: '~10 min',
-    color: '#007aff'
+    color: 'rgba(255, 255, 255, 0.3)'
   },
   {
     id: 'fast',
@@ -41,7 +41,7 @@ const defaultOptions: FeeOption[] = [
     rate: 10,
     description: 'Highest priority',
     estimatedTime: '~5 min',
-    color: 'rgba(255, 255, 255, 0.1)'
+    color: 'rgba(255, 255, 255, 0.3)'
   }
 ];
 
@@ -84,6 +84,7 @@ export const ModernFeeSelector: React.FC<ModernFeeSelectorProps> = ({
               whileHover={!disabled ? { scale: 1.02 } : {}}
               whileTap={!disabled ? { scale: 0.98 } : {}}
               onClick={() => !disabled && onRateChange(option.rate)}
+              onMouseDown={(e) => e.preventDefault()}
               disabled={disabled}
               style={{
                 flex: 1,
@@ -97,7 +98,8 @@ export const ModernFeeSelector: React.FC<ModernFeeSelectorProps> = ({
                 transition: 'all 0.2s ease',
                 opacity: disabled ? 0.5 : 1,
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                outline: 'none'
               }}>
               {/* Selection indicator */}
               {isSelected && (

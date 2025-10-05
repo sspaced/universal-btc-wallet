@@ -82,6 +82,7 @@ import { ModernCreateHDWalletScreen } from '../pages/ModernCreateHDWalletScreen'
 import { ModernExportMnemonicsScreen } from '../pages/ModernExportMnemonicsScreen';
 import { ModernReceiveScreen } from '../pages/ModernReceiveScreen';
 import { ModernSendScreen } from '../pages/ModernSendScreen';
+import { ModernSwapScreen } from '../pages/ModernSwapScreen';
 import { ModernWalletTabScreen } from '../pages/ModernWalletTabScreen';
 import { ModernWelcomeScreen } from '../pages/ModernWelcomeScreen';
 
@@ -140,6 +141,10 @@ export const routes = {
   ReceiveScreen: {
     path: '/wallet/receive',
     element: <ModernReceiveScreen />
+  },
+  ModernSwapScreen: {
+    path: '/wallet/swap',
+    element: <ModernSwapScreen />
   },
 
   TxCreateScreen: {

@@ -303,6 +303,74 @@ export class SimplicityService {
     }
   };
 
+  // Get token price from BlackNode API
+  getSimplicityTokenPrice = async (ticker: string): Promise<{ curPrice: number; changePercent: number }> => {
+    try {
+      const url = `https://www.blacknode.co/api/market/v1/brc20/ticker/${ticker}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-client': 'UniSat Wallet',
+          'x-version': VERSION,
+          'x-channel': CHANNEL
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.code !== 0) {
+        throw new Error(`API error: ${data.msg}`);
+      }
+
+      // Extract floor price in satoshis
+      const floorPriceSatoshis = parseFloat(data.data.current_floor_price_satoshis_active_listings);
+
+      // Convert satoshis to BTC (1 BTC = 100,000,000 satoshis)
+      const priceInBTC = floorPriceSatoshis / 100000000;
+
+      // For now, we'll return the price in satoshis as curPrice
+      // The conversion to USD will be handled by the price provider
+      return {
+        curPrice: floorPriceSatoshis, // Price in satoshis per token
+        changePercent: 0 // BlackNode API doesn't provide change percentage
+      };
+    } catch (error) {
+      console.error('Error fetching Simplicity token price:', error);
+      throw error;
+    }
+  };
+
+  // Get multiple token prices
+  getSimplicityTokensPrice = async (
+    tickers: string[]
+  ): Promise<{ [key: string]: { curPrice: number; changePercent: number } }> => {
+    const priceMap: { [key: string]: { curPrice: number; changePercent: number } } = {};
+
+    // Fetch prices for all tickers in parallel
+    const pricePromises = tickers.map(async (ticker) => {
+      try {
+        const price = await this.getSimplicityTokenPrice(ticker);
+        return { ticker, price };
+      } catch (error) {
+        console.error(`Error fetching price for ${ticker}:`, error);
+        return { ticker, price: { curPrice: 0, changePercent: 0 } };
+      }
+    });
+
+    const results = await Promise.all(pricePromises);
+
+    results.forEach(({ ticker, price }) => {
+      priceMap[ticker] = price;
+    });
+
+    return priceMap;
+  };
+
   // Check if service is available
   isServiceAvailable = async (): Promise<boolean> => {
     try {

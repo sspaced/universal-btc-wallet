@@ -136,6 +136,18 @@ export function TickUsdWithoutPrice(
           .catch(() => {
             setShown(false);
           });
+      } else if (type === TokenType.SIMPLICITY) {
+        wallet
+          .getSimplicitysPrice([tick])
+          .then((priceMap) => {
+            setPrice(priceMap[tick]);
+            if (priceMap[tick].curPrice > 0) {
+              setShown(true);
+            }
+          })
+          .catch(() => {
+            setShown(false);
+          });
       }
     }
   }, [tick]);

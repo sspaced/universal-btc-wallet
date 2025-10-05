@@ -312,19 +312,31 @@ export const useUnifiedAssets = () => {
             const { list: simplicityList } = await wallet.getSimplicityTokensList(currentAccount.address, 1, 100);
             console.log('Simplicity list:', simplicityList);
 
-            simplicityList.forEach((token) => {
-              const simplicityAsset = {
-                id: token.ticker,
-                type: 'simplicity' as const,
-                name: token.ticker,
-                symbol: token.ticker,
-                amount: token.balance,
-                value: 0, // No price data available yet
-                usdValue: '-'
-              };
-              console.log('Simplicity asset created:', simplicityAsset);
-              allAssets.push(simplicityAsset);
-            });
+            if (simplicityList.length > 0) {
+              // Get prices for all Simplicity tokens
+              const tickers = simplicityList.map((token) => token.ticker);
+              const priceMap = await wallet.getSimplicitysPrice(tickers);
+              console.log('Simplicity price map:', priceMap);
+
+              simplicityList.forEach((token) => {
+                const price = priceMap[token.ticker];
+                const tokenPrice = price ? price.curPrice : 0;
+                const balance = parseFloat(token.balance);
+                const valueInSats = balance * tokenPrice;
+
+                const simplicityAsset = {
+                  id: token.ticker,
+                  type: 'simplicity' as const,
+                  name: token.ticker,
+                  symbol: token.ticker,
+                  amount: token.balance,
+                  value: valueInSats, // Value in satoshis
+                  usdValue: valueInSats > 0 ? `$${((valueInSats / 100000000) * coinPrice.btc).toFixed(2)}` : '-'
+                };
+                console.log('Simplicity asset created:', simplicityAsset);
+                allAssets.push(simplicityAsset);
+              });
+            }
           } catch (e) {
             console.error('Failed to fetch Simplicity tokens:', e);
           }

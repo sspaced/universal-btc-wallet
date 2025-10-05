@@ -646,6 +646,7 @@ export interface WalletController {
   }>;
   getSimplicityTokenSummary(address: string, ticker: string): Promise<any>;
   getSimplicityTokenHistory(address: string, ticker: string): Promise<any[]>;
+  getSimplicitysPrice(ticks: string[]): Promise<{ [key: string]: { curPrice: number; changePercent: number } }>;
 }
 
 const WalletContext = createContext<{

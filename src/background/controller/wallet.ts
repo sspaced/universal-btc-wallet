@@ -2745,5 +2745,10 @@ export class WalletController extends BaseController {
       throw error;
     }
   };
+
+  // Get Simplicity token prices
+  getSimplicitysPrice = async (ticks: string[]) => {
+    return simplicityService.getSimplicityTokensPrice(ticks);
+  };
 }
 export default new WalletController();

@@ -31,6 +31,7 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
   const [priceChange, setPriceChange] = useState<{
     change24h: number;
     changePercent: number;
+    currentPrice: number;
   } | null>(null);
 
   // Fetch Bitcoin price change data
@@ -61,7 +62,8 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
 
         setPriceChange({
           change24h: change24h,
-          changePercent: changePercent
+          changePercent: changePercent,
+          currentPrice: currentPrice
         });
       }
     } catch (error) {
@@ -69,7 +71,8 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
       // Fallback to mock data
       setPriceChange({
         change24h: 1.51,
-        changePercent: 0.08
+        changePercent: 0.08,
+        currentPrice: 50000
       });
     }
   };
@@ -153,7 +156,7 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
     console.log('================================');
   }, [accountBalance, totalAmount, displayAmount, priceChange]);
 
-  // Calculate price change display
+  // Calculate price change display based on wallet value
   const priceChangeDisplay = useMemo(() => {
     if (!priceChange) {
       return {
@@ -163,16 +166,47 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
       };
     }
 
-    const isPositive = priceChange.changePercent >= 0;
-    const changeText = `${isPositive ? '+' : ''}$${Math.abs(priceChange.change24h).toFixed(2)}`;
-    const percentageText = `${isPositive ? '+' : ''}${priceChange.changePercent.toFixed(2)}%`;
+    // Calculate wallet value change based on BTC amount
+    const walletBTCAmount = parseFloat(totalAmount);
+
+    // Use the current price from the API response (most reliable)
+    const effectiveCurrentPrice = priceChange.currentPrice;
+
+    const currentWalletValueUSD = walletBTCAmount * effectiveCurrentPrice;
+
+    // Calculate previous wallet value (24h ago)
+    const previousPrice = effectiveCurrentPrice / (1 + priceChange.changePercent / 100);
+    const previousWalletValueUSD = walletBTCAmount * previousPrice;
+
+    // Calculate wallet value change
+    const walletValueChange = currentWalletValueUSD - previousWalletValueUSD;
+    const walletValueChangePercent =
+      previousWalletValueUSD > 0 ? (walletValueChange / previousWalletValueUSD) * 100 : 0;
+
+    const isPositive = walletValueChange >= 0;
+    const changeText = `${isPositive ? '+' : ''}$${Math.abs(walletValueChange).toFixed(2)}`;
+    const percentageText = `${isPositive ? '+' : ''}${walletValueChangePercent.toFixed(2)}%`;
+
+    console.log('=== WALLET VALUE CHANGE CALCULATION ===');
+    console.log('Wallet BTC amount:', walletBTCAmount);
+    console.log('coinPrice.btc:', coinPrice.btc);
+    console.log('priceChange.change24h:', priceChange.change24h);
+    console.log('priceChange.changePercent:', priceChange.changePercent);
+    console.log('priceChange.currentPrice:', priceChange.currentPrice);
+    console.log('effectiveCurrentPrice:', effectiveCurrentPrice);
+    console.log('Previous BTC price:', previousPrice);
+    console.log('Current wallet value USD:', currentWalletValueUSD);
+    console.log('Previous wallet value USD:', previousWalletValueUSD);
+    console.log('Wallet value change USD:', walletValueChange);
+    console.log('Wallet value change percent:', walletValueChangePercent);
+    console.log('========================================');
 
     return {
       changeText,
       percentageText,
       isPositive
     };
-  }, [priceChange]);
+  }, [priceChange, totalAmount, coinPrice]);
 
   return (
     <div

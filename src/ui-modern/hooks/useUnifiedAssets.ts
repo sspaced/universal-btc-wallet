@@ -176,7 +176,7 @@ export const useUnifiedAssets = () => {
         // Add BTC as the first asset
         if (accountBalance.totalBalance > 0) {
           const btcAmount = satoshisToAmount(accountBalance.totalBalance);
-          const btcValue = coinPrice ? parseFloat(coinPrice) * parseFloat(btcAmount) : 0;
+          const btcValue = coinPrice ? coinPrice.btc * parseFloat(btcAmount) : 0;
 
           console.log('=== BTC ASSET DEBUG ===');
           console.log('BTC amount (satoshis):', accountBalance.totalBalance);
@@ -216,7 +216,7 @@ export const useUnifiedAssets = () => {
 
             runesList.forEach((rune) => {
               const price = runesPriceMap[rune.spacedRune];
-              const value = price ? parseFloat(price.price || '0') * parseFloat(rune.amount) : 0;
+              const value = price ? price.curPrice * parseFloat(rune.amount) : 0;
               const runeAsset = {
                 id: rune.runeid,
                 type: 'rune' as const,
@@ -252,12 +252,12 @@ export const useUnifiedAssets = () => {
 
             alkanesList.forEach((alkane) => {
               const price = alkanesPriceMap[alkane.alkaneid];
-              const value = price ? parseFloat(price.price || '0') * parseFloat(alkane.amount) : 0;
+              const value = price ? price.curPrice * parseFloat(alkane.amount) : 0;
               const alkaneAsset = {
                 id: alkane.alkaneid,
                 type: 'alkane' as const,
-                name: alkane.alkanename,
-                symbol: alkane.alkanename,
+                name: alkane.name,
+                symbol: alkane.symbol,
                 amount: alkane.amount,
                 value: value,
                 usdValue: value > 0 ? `$${value.toFixed(2)}` : '-'
@@ -276,7 +276,7 @@ export const useUnifiedAssets = () => {
         if (supportedAssets.assets.CAT20) {
           console.log('=== FETCHING CAT20 ===');
           try {
-            const { list: cat20List } = await wallet.getCAT20List(CAT_VERSION.CAT20, currentAccount.address, 1, 100);
+            const { list: cat20List } = await wallet.getCAT20List(CAT_VERSION.V1, currentAccount.address, 1, 100);
             console.log('CAT20 list:', cat20List);
 
             const cat20PriceMap =
@@ -285,7 +285,7 @@ export const useUnifiedAssets = () => {
 
             cat20List.forEach((cat20) => {
               const price = cat20PriceMap[cat20.tokenId];
-              const value = price ? parseFloat(price.price || '0') * parseFloat(cat20.amount) : 0;
+              const value = price ? price.curPrice * parseFloat(cat20.amount) : 0;
               const cat20Asset = {
                 id: cat20.tokenId,
                 type: 'cat20' as const,
@@ -303,6 +303,33 @@ export const useUnifiedAssets = () => {
           }
         } else {
           console.log('CAT20 not supported');
+        }
+
+        // Fetch Simplicity tokens
+        if (supportedAssets.assets.simplicity) {
+          console.log('=== FETCHING SIMPLICITY TOKENS ===');
+          try {
+            const { list: simplicityList } = await wallet.getSimplicityTokensList(currentAccount.address, 1, 100);
+            console.log('Simplicity list:', simplicityList);
+
+            simplicityList.forEach((token) => {
+              const simplicityAsset = {
+                id: token.ticker,
+                type: 'simplicity' as const,
+                name: token.ticker,
+                symbol: token.ticker,
+                amount: token.balance,
+                value: 0, // No price data available yet
+                usdValue: '-'
+              };
+              console.log('Simplicity asset created:', simplicityAsset);
+              allAssets.push(simplicityAsset);
+            });
+          } catch (e) {
+            console.error('Failed to fetch Simplicity tokens:', e);
+          }
+        } else {
+          console.log('Simplicity not supported');
         }
 
         console.log('=== ALL ASSETS BEFORE SORTING ===');

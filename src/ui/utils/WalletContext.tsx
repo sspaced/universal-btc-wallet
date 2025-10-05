@@ -633,6 +633,19 @@ export interface WalletController {
   ): Promise<{ currentPage: number; pageSize: number; list: AlkanesInfo[]; total: number }>;
 
   getBRC20RecentHistory(address: string, ticker: string): Promise<BRC20HistoryItem[]>;
+
+  // Simplicity methods
+  getSimplicityTokensList(
+    address: string,
+    cursor: number,
+    size: number
+  ): Promise<{
+    list: any[];
+    total: number;
+    hasMore: boolean;
+  }>;
+  getSimplicityTokenSummary(address: string, ticker: string): Promise<any>;
+  getSimplicityTokenHistory(address: string, ticker: string): Promise<any[]>;
 }
 
 const WalletContext = createContext<{

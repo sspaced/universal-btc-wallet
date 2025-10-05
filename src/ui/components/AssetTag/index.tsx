@@ -4,7 +4,7 @@ import { Row } from '../Row';
 import { Text } from '../Text';
 
 export interface AssetTagProps {
-  type: 'BRC20' | 'ARC20' | 'Inscription' | 'Unconfirmed' | 'RUNES' | 'Alkanes';
+  type: 'BRC20' | 'ARC20' | 'Inscription' | 'Unconfirmed' | 'RUNES' | 'Alkanes' | 'Simplicity';
   small?: boolean;
 }
 
@@ -14,7 +14,8 @@ const colors = {
   Inscription: '#62A759',
   Unconfirmed: '#BC9238',
   RUNES: '#A14419',
-  Alkanes: '#A14419'
+  Alkanes: '#A14419',
+  Simplicity: '#8B5CF6'
 };
 
 export default function AssetTag(props: AssetTagProps) {
@@ -28,6 +29,8 @@ export default function AssetTag(props: AssetTagProps) {
       return t('unconfirmed');
     } else if (type === 'Inscription') {
       return t('inscription');
+    } else if (type === 'Simplicity') {
+      return 'Simplicity';
     }
     return type;
   };

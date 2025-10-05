@@ -10,6 +10,7 @@ import {
   permissionService,
   preferenceService,
   sessionService,
+  simplicityService,
   walletApiService
 } from '@/background/service';
 import { psbtFromString } from '@/background/utils/psbt-utils';
@@ -2665,6 +2666,84 @@ export class WalletController extends BaseController {
       total,
       list
     };
+  };
+
+  // Simplicity methods
+  getSimplicityTokensList = async (address: string, cursor: number, size: number) => {
+    try {
+      const tokens = await simplicityService.getAllTokensForAddress(address);
+
+      // Transform the response to match the expected format
+      const list = tokens.map((token) => ({
+        ticker: token.ticker,
+        balance: token.overall_balance,
+        availableBalance: token.available_balance,
+        blockHeight: token.block_height,
+        wallet: token.wallet,
+        pkscript: token.pkscript
+      }));
+
+      return {
+        list,
+        total: tokens.length,
+        hasMore: false // Simplicity API doesn't support pagination in this implementation
+      };
+    } catch (error) {
+      console.error('Error fetching Simplicity tokens:', error);
+      return {
+        list: [],
+        total: 0,
+        hasMore: false
+      };
+    }
+  };
+
+  getSimplicityTokenSummary = async (address: string, ticker: string) => {
+    try {
+      const [balance, tokenInfo] = await Promise.all([
+        simplicityService.getAddressTickerBalance(address, ticker),
+        simplicityService.getTickerInfo(ticker)
+      ]);
+
+      const tokenSummary = {
+        tokenInfo: {
+          ticker: tokenInfo.ticker,
+          name: tokenInfo.ticker,
+          totalSupply: tokenInfo.max_supply,
+          decimals: tokenInfo.decimals,
+          deployTime: tokenInfo.deploy_timestamp,
+          deployHeight: tokenInfo.deploy_block_height,
+          deployer: tokenInfo.creator_address,
+          mintable: tokenInfo.remaining_supply !== '0',
+          holders: tokenInfo.holders,
+          currentSupply: tokenInfo.current_supply,
+          remainingSupply: tokenInfo.remaining_supply
+        },
+        tokenBalance: {
+          ticker: balance.ticker,
+          overallBalance: balance.overall_balance,
+          availableBalance: balance.available_balance,
+          blockHeight: balance.block_height,
+          wallet: balance.wallet,
+          pkscript: balance.pkscript
+        }
+      };
+
+      return tokenSummary;
+    } catch (error) {
+      console.error('Error fetching Simplicity token summary:', error);
+      throw error;
+    }
+  };
+
+  getSimplicityTokenHistory = async (address: string, ticker: string) => {
+    try {
+      const history = await simplicityService.getAddressTickerHistory(address, ticker);
+      return history;
+    } catch (error) {
+      console.error('Error fetching Simplicity token history:', error);
+      throw error;
+    }
   };
 }
 export default new WalletController();

@@ -64,7 +64,8 @@ export enum TokenType {
   BRC20 = 'brc20',
   CAT20 = 'CAT20',
   RUNES = 'runes',
-  ALKANES = 'alkanes'
+  ALKANES = 'alkanes',
+  SIMPLICITY = 'simplicity'
 }
 
 export function TickUsdWithoutPrice(

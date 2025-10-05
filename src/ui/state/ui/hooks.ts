@@ -74,7 +74,8 @@ export function useSupportedAssets() {
     ordinals: false,
     runes: false,
     CAT20: false,
-    alkanes: false
+    alkanes: false,
+    simplicity: false
   };
 
   assets.ordinals = true;
@@ -94,6 +95,12 @@ export function useSupportedAssets() {
   if (chainType === ChainType.BITCOIN_SIGNET || chainType === ChainType.BITCOIN_MAINNET) {
     assets.alkanes = true;
     assetTabKeys.push(AssetTabKey.ALKANES);
+  }
+
+  // Add Simplicity support for mainnet
+  if (chainType === ChainType.BITCOIN_MAINNET) {
+    assets.simplicity = true;
+    assetTabKeys.push(AssetTabKey.SIMPLICITY);
   }
 
   return {

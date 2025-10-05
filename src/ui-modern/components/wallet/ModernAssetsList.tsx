@@ -5,7 +5,7 @@ import { PackageIcon } from '../common/ModernIcons';
 
 export interface Asset {
   id: string;
-  type: 'ordinal' | 'rune' | 'alkane' | 'cat20' | 'cat721' | 'brc20' | 'btc';
+  type: 'ordinal' | 'rune' | 'alkane' | 'cat20' | 'cat721' | 'brc20' | 'btc' | 'simplicity';
   name: string;
   symbol?: string;
   icon?: string;
@@ -368,6 +368,26 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
                   letterSpacing: '0.5px'
                 }}>
                 Main
+              </div>
+            )}
+
+            {/* Simplicity Badge */}
+            {asset.type === 'simplicity' && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  right: '8px',
+                  background: 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)',
+                  color: '#ffffff',
+                  fontSize: '10px',
+                  fontWeight: '600',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                Simplicity
               </div>
             )}
           </motion.div>

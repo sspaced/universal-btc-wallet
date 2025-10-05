@@ -234,6 +234,27 @@ export default function SignTxDetails({
               </Row>
             </Column>
           ) : null}
+
+          {/* Simplicity section - placeholder for future implementation */}
+          {false && (
+            <Column
+              fullX
+              px="md"
+              pt="md"
+              pb="md"
+              style={{
+                backgroundColor: '#1e1a1e',
+                borderRadius: 10,
+                borderWidth: 1,
+                borderColor: colors.border
+              }}>
+              <Row>
+                <AssetTag type="Simplicity" />
+              </Row>
+
+              <Row overflowX>{/* Simplicity tokens will be displayed here when implemented */}</Row>
+            </Column>
+          )}
         </Column>
       </Column>
     );

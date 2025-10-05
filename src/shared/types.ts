@@ -768,3 +768,43 @@ export interface BRC20HistoryItem {
   txid: string;
   blocktime: number;
 }
+
+export interface SimplicityAddressBalance {
+  pkscript: string;
+  ticker: string;
+  wallet: string;
+  overall_balance: string;
+  available_balance: string;
+  block_height: number;
+}
+
+export interface SimplicityBrc20Info {
+  ticker: string;
+  decimals: number;
+  max_supply: string;
+  limit_per_mint: string;
+  actual_deploy_txid_for_api: string;
+  deploy_tx_id: string;
+  deploy_block_height: number;
+  deploy_timestamp: string;
+  creator_address: string;
+  remaining_supply: string;
+  current_supply: string;
+  holders: number;
+}
+
+export interface SimplicityOp {
+  id: number;
+  tx_id: string;
+  txid: string | null;
+  op: 'deploy' | 'mint' | 'transfer';
+  ticker: string;
+  amount_str: string | null;
+  block_height: number;
+  block_hash: string;
+  tx_index: number;
+  timestamp: string;
+  from_address: string | null;
+  to_address: string | null;
+  valid: boolean;
+}

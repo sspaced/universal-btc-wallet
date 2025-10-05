@@ -5,7 +5,7 @@ import { ChainType } from '@/shared/constant';
 import { usePrice } from '@/ui/provider/PriceProvider';
 import { useBTCUnit, useChainType } from '@/ui/state/settings/hooks';
 
-import { EyeIcon, EyeOffIcon, RefreshIcon } from '../common/ModernIcons';
+import { RefreshIcon } from '../common/ModernIcons';
 
 interface ModernBalanceHeaderProps {
   accountBalance: {
@@ -24,7 +24,6 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
 }) => {
   const chainType = useChainType();
   const btcUnit = useBTCUnit();
-  const [isBalanceHidden, setIsBalanceHidden] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false); // Back to hover mode
   const { coinPrice, isLoadingCoinPrice } = usePrice();
 
@@ -188,50 +187,39 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
           marginBottom: '8px',
           position: 'relative'
         }}>
-        {!isBalanceHidden ? (
-          <div
-            style={{
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'center',
-              gap: '4px',
-              cursor: 'pointer',
-              width: '100%'
-            }}
-            onMouseEnter={() => setShowTooltip(true)}
-            onMouseLeave={() => setShowTooltip(false)}>
-            <span
-              style={{
-                fontSize: '36px',
-                fontWeight: '700',
-                color: '#ffffff',
-                letterSpacing: '-0.5px',
-                lineHeight: 1
-              }}>
-              {displayAmount}
-            </span>
-            <span
-              style={{
-                fontSize: '20px',
-                fontWeight: '600',
-                color: 'rgba(255, 255, 255, 0.8)',
-                marginLeft: '6px',
-                letterSpacing: '-0.5px'
-              }}>
-              {btcUnit}
-            </span>
-          </div>
-        ) : (
-          <div
+        <div
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'baseline',
+            justifyContent: 'center',
+            gap: '4px',
+            cursor: 'pointer',
+            width: '100%'
+          }}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}>
+          <span
             style={{
               fontSize: '36px',
-              color: 'rgba(255, 255, 255, 0.3)',
-              letterSpacing: '6px'
+              fontWeight: '700',
+              color: '#ffffff',
+              letterSpacing: '-0.5px',
+              lineHeight: 1
             }}>
-            ••••••
-          </div>
-        )}
+            {displayAmount}
+          </span>
+          <span
+            style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              color: 'rgba(255, 255, 255, 0.8)',
+              marginLeft: '6px',
+              letterSpacing: '-0.5px'
+            }}>
+            {btcUnit}
+          </span>
+        </div>
 
         {/* Balance Details Tooltip - Positioned with left: 20% */}
         {showTooltip && (
@@ -302,36 +290,34 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
       </div>
 
       {/* Price Change */}
-      {!isBalanceHidden && (
-        <div
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          marginBottom: '16px'
+        }}>
+        <span
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            marginBottom: '16px'
+            fontSize: '16px',
+            fontWeight: '600',
+            color: priceChangeDisplay.isPositive ? '#34c759' : '#ff3b30'
           }}>
-          <span
-            style={{
-              fontSize: '16px',
-              fontWeight: '600',
-              color: priceChangeDisplay.isPositive ? '#34c759' : '#ff3b30'
-            }}>
-            {priceChangeDisplay.changeText}
-          </span>
-          <span
-            style={{
-              fontSize: '14px',
-              fontWeight: '500',
-              color: priceChangeDisplay.isPositive ? '#34c759' : '#ff3b30',
-              backgroundColor: priceChangeDisplay.isPositive ? 'rgba(52, 199, 89, 0.15)' : 'rgba(255, 59, 48, 0.15)',
-              padding: '2px 8px',
-              borderRadius: '6px'
-            }}>
-            {priceChangeDisplay.percentageText}
-          </span>
-        </div>
-      )}
+          {priceChangeDisplay.changeText}
+        </span>
+        <span
+          style={{
+            fontSize: '14px',
+            fontWeight: '500',
+            color: priceChangeDisplay.isPositive ? '#34c759' : '#ff3b30',
+            backgroundColor: priceChangeDisplay.isPositive ? 'rgba(52, 199, 89, 0.15)' : 'rgba(255, 59, 48, 0.15)',
+            padding: '2px 8px',
+            borderRadius: '6px'
+          }}>
+          {priceChangeDisplay.percentageText}
+        </span>
+      </div>
 
       {/* Actions Row */}
       <div
@@ -341,26 +327,6 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
           justifyContent: 'center',
           gap: '12px'
         }}>
-        {/* Hide/Show Balance */}
-        <motion.button
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsBalanceHidden(!isBalanceHidden)}
-          style={{
-            background: 'rgba(255, 255, 255, 0.08)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '8px',
-            padding: '6px 10px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            color: 'rgba(255, 255, 255, 0.7)',
-            transition: 'all 0.2s ease',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-          {isBalanceHidden ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
-        </motion.button>
-
         {/* Refresh Button */}
         {enableRefresh && onRefresh && (
           <motion.button

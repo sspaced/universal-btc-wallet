@@ -46,6 +46,16 @@ export interface SimplicityServiceStore {
   baseUrl: string;
 }
 
+// New response format for address tickers
+export interface SimplicityAddressTickersResponse {
+  address: string;
+  tickers: Array<{
+    ticker: string;
+    balance: string;
+  }>;
+  total_tickers: number;
+}
+
 export class SimplicityService {
   store!: SimplicityServiceStore;
   private baseUrl = 'https://simplicity.sspace.fr';
@@ -252,10 +262,10 @@ export class SimplicityService {
     }
   };
 
-  // Get all tokens for an address using the /tickers/all endpoint
+  // Get all tokens for an address using BlackNode API
   getAllTokensForAddress = async (address: string): Promise<SimplicityAddressBalance[]> => {
     try {
-      const url = `${this.baseUrl}/v1/indexer/address/${address}/tickers/all`;
+      const url = `https://www.blacknode.co/api/brc20/addresses/${address}/tickers-balance`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -270,16 +280,20 @@ export class SimplicityService {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
+      const data: SimplicityAddressTickersResponse = await response.json();
+
+      // Handle the BlackNode API response format
+      // Expected format: { "address": "...", "tickers": [...], "total_tickers": 1 }
+      const tickers = data.tickers || [];
 
       // Transform the response to match SimplicityAddressBalance format
-      const tokenBalances: SimplicityAddressBalance[] = data.data.map((token: any) => ({
+      const tokenBalances: SimplicityAddressBalance[] = tickers.map((token) => ({
         pkscript: '', // Not provided by this endpoint
         ticker: token.ticker,
         wallet: address,
         overall_balance: token.balance,
         available_balance: token.balance, // Assume same as overall for now
-        block_height: token.last_transfer_height
+        block_height: 0 // Not provided in new format
       }));
 
       return tokenBalances;

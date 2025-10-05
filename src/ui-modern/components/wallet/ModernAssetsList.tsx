@@ -129,28 +129,6 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
     );
   };
 
-  const getAssetTypeLabel = (asset: Asset) => {
-    const label =
-      asset.type === 'btc'
-        ? 'Bitcoin'
-        : asset.type === 'rune'
-        ? 'Rune'
-        : asset.type === 'alkane'
-        ? 'Alkane'
-        : asset.type === 'cat20'
-        ? 'CAT20'
-        : asset.type === 'cat721'
-        ? 'CAT721'
-        : asset.type === 'brc20'
-        ? 'BRC20'
-        : asset.type === 'ordinal'
-        ? 'Ordinal'
-        : 'Asset';
-
-    console.log(`Asset type label for ${asset.name}: ${label}`);
-    return label;
-  };
-
   const handleAssetClick = (asset: Asset) => {
     console.log(`Asset clicked: ${asset.name} (${asset.type})`);
 
@@ -303,18 +281,6 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
                   }}>
                   {asset.name}
                 </span>
-                <span
-                  style={{
-                    fontSize: '12px',
-                    color: 'rgba(255, 255, 255, 0.5)',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
-                  {getAssetTypeLabel(asset)}
-                </span>
               </div>
 
               <div
@@ -350,46 +316,6 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
                 </div>
               )}
             </div>
-
-            {/* BTC Badge */}
-            {asset.type === 'btc' && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  background: 'linear-gradient(135deg, #f7931a 0%, #ffb347 100%)',
-                  color: '#ffffff',
-                  fontSize: '10px',
-                  fontWeight: '600',
-                  padding: '2px 6px',
-                  borderRadius: '4px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px'
-                }}>
-                Main
-              </div>
-            )}
-
-            {/* Simplicity Badge */}
-            {asset.type === 'simplicity' && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)',
-                  color: '#ffffff',
-                  fontSize: '10px',
-                  fontWeight: '600',
-                  padding: '2px 6px',
-                  borderRadius: '4px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px'
-                }}>
-                Simplicity
-              </div>
-            )}
           </motion.div>
         );
       })}

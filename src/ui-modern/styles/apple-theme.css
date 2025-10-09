@@ -1,8 +1,8 @@
 /* Apple Design System Variables */
 :root {
   /* Apple System Colors */
-  --apple-blue: #007aff;
-  --apple-blue-dark: #0056cc;
+  --apple-blue: #72e3ad;
+  --apple-blue-dark: #5dd39a;
   --apple-green: #34c759;
   --apple-indigo: #5856d6;
   --apple-orange: #ff9500;
@@ -205,23 +205,23 @@ h6 {
   background-color: var(--apple-blue);
   color: white;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(114, 227, 173, 0.25);
 }
 
 .apple-button-primary:hover:not(:disabled) {
-  background-color: #0062cc;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.35);
+  background-color: #5dd39a;
+  box-shadow: 0 4px 12px rgba(114, 227, 173, 0.35);
   transform: translateY(-1px);
 }
 
 .apple-button-primary:active:not(:disabled) {
-  background-color: #0056b3;
-  box-shadow: 0 1px 4px rgba(0, 122, 255, 0.2);
+  background-color: #4bc88a;
+  box-shadow: 0 1px 4px rgba(114, 227, 173, 0.2);
   transform: translateY(0px) scale(0.98);
 }
 
 .apple-button-primary:focus:not(:disabled) {
-  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.25), 0 2px 8px rgba(0, 122, 255, 0.25);
+  box-shadow: 0 0 0 4px rgba(114, 227, 173, 0.25), 0 2px 8px rgba(114, 227, 173, 0.25);
 }
 
 /* Apple Button Secondary (Gray) */

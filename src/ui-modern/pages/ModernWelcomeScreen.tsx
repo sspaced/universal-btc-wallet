@@ -65,7 +65,7 @@ export const ModernWelcomeScreen: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#000000'
+        backgroundColor: '#242424'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -127,7 +127,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="primary"
               size="large"
               fullWidth
-              leftIcon={<Plus style={{ width: '20px', height: '20px', margin: '0 auto' }} />}
+              leftIcon={<Plus style={{ width: '20px', height: '20px', margin: '0 auto', color: '#ffffff' }} />}
               onClick={handleCreateWallet}>
               Create New Wallet
             </ModernButton>
@@ -136,7 +136,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="secondary"
               size="large"
               fullWidth
-              leftIcon={<Download style={{ width: '20px', height: '20px', margin: '0 auto' }} />}
+              leftIcon={<Download style={{ width: '20px', height: '20px', margin: '0 auto', color: '#ffffff' }} />}
               onClick={handleImportWallet}>
               Import Existing Wallet
             </ModernButton>
@@ -145,7 +145,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="tertiary"
               size="large"
               fullWidth
-              leftIcon={<Cpu style={{ width: '20px', height: '20px', margin: '0 auto' }} />}
+              leftIcon={<Cpu style={{ width: '20px', height: '20px', margin: '0 auto', color: '#ffffff' }} />}
               onClick={handleConnectHardware}>
               Connect Hardware Wallet
             </ModernButton>

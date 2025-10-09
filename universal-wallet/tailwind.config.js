@@ -8,18 +8,21 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49',
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#72e3ad',
+          500: '#72e3ad',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+          950: '#052e16',
         },
+        secondary: '#242424',
+        tertiary: '#313131',
+        contrast: '#a78bfa',
         gray: {
           50: '#f9fafb',
           100: '#f3f4f6',
@@ -34,9 +37,9 @@ export default {
           950: '#030712',
         },
         success: {
-          50: '#ecfdf5',
-          500: '#10b981',
-          600: '#059669',
+          50: '#f0fdf4',
+          500: '#72e3ad',
+          600: '#16a34a',
         },
         error: {
           50: '#fef2f2',
@@ -50,7 +53,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       borderRadius: {
         'xl': '1rem',

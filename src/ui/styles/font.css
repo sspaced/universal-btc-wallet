@@ -1,3 +1,20 @@
+/* Apple SF Fonts */
+@font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('SF Pro Display'), local('SFProDisplay-Regular');
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('SF Pro Text'), local('SFProText-Regular');
+}
+
 @font-face {
   font-family: ProtoMono-Bold;
   src: url('./fonts/ProtoMono-Bold.otf');

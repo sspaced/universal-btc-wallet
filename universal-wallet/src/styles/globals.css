@@ -5,16 +5,16 @@
 /* Apple Design System Variables */
 :root {
   /* Apple System Colors */
-  --apple-blue: #007AFF;
-  --apple-blue-dark: #0056CC;
-  --apple-green: #34C759;
-  --apple-indigo: #5856D6;
+  --apple-blue: #a78bfa;
+  --apple-blue-dark: #8b5cf6;
+  --apple-green: #72e3ad;
+  --apple-indigo: #a78bfa;
   --apple-orange: #FF9500;
   --apple-pink: #FF2D92;
-  --apple-purple: #AF52DE;
+  --apple-purple: #a78bfa;
   --apple-red: #FF3B30;
-  --apple-teal: #5AC8FA;
-  --apple-yellow: #FFCC00;
+  --apple-teal: #72e3ad;
+  --apple-yellow: #72e3ad;
 
   /* Apple Grays */
   --apple-gray-1: #8E8E93;
@@ -31,9 +31,9 @@
   --apple-quaternary-label: rgba(60, 60, 67, 0.18);
 
   /* Apple Background Colors */
-  --apple-system-background: #FFFFFF;
-  --apple-secondary-system-background: #F2F2F7;
-  --apple-tertiary-system-background: #FFFFFF;
+  --apple-system-background: #242424;
+  --apple-secondary-system-background: #313131;
+  --apple-tertiary-system-background: #313131;
 
   /* Apple Spacing (Apple's 8pt grid system) */
   --apple-spacing-1: 2px;

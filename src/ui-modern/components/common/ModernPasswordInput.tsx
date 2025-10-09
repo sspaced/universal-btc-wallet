@@ -82,7 +82,7 @@ export const ModernPasswordInput: React.FC<ModernPasswordInputProps> = ({
 
   const getBorderColor = () => {
     if (hasError) return 'rgba(255, 59, 48, 0.5)';
-    if (isFocused) return 'rgba(0, 122, 255, 0.6)';
+    if (isFocused) return 'rgba(114, 227, 173, 0.6)';
     return 'rgba(255, 255, 255, 0.2)';
   };
 
@@ -139,7 +139,7 @@ export const ModernPasswordInput: React.FC<ModernPasswordInputProps> = ({
             borderRadius: '10px',
             outline: 'none',
             transition: 'border-color 0.2s, background-color 0.2s',
-            letterSpacing: isVisible ? '-0.022em' : '0.15em',
+            letterSpacing: '-0.022em',
             fontFamily:
               "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
           }}

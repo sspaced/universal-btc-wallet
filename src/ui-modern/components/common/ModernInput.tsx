@@ -48,7 +48,7 @@ export const ModernInput: React.FC<ModernInputProps> = ({
   const getFocusBorderColor = () => {
     if (hasError) return 'rgba(255, 59, 48, 0.8)';
     if (hasSuccess) return 'rgba(52, 199, 89, 0.8)';
-    return 'rgba(0, 122, 255, 0.6)'; // Apple blue
+    return 'rgba(114, 227, 173, 0.6)'; // Green theme
   };
 
   return (

@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import { Check, Copy } from 'lucide-react';
+import React, { useEffect } from 'react';
 
 import { useTools } from '@/ui/components/ActionComponent';
 import { ContextData, TabType, UpdateContextDataParams } from '@/ui/pages/Account/createHDWalletComponents/types';
 import { copyToClipboard, useWallet } from '@/ui/utils';
 
 import { ModernButton } from '../components/common';
-import { CheckIcon } from '../components/common/Icons';
 import { ModernRecoveryGrid } from '../components/common/ModernRecoveryGrid';
 import { ModernSecurityWarning } from '../components/common/ModernSecurityWarning';
 
@@ -59,7 +59,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#000000'
+        backgroundColor: '#242424'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -75,14 +75,14 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
             width: '72px',
             height: '72px',
             borderRadius: '18px',
-            backgroundColor: '#007aff',
+            backgroundColor: '#72e3ad',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 12px',
-            boxShadow: '0 6px 12px rgba(0, 122, 255, 0.3)'
+            boxShadow: '0 6px 12px rgba(114, 227, 173, 0.3)'
           }}>
-          <CheckIcon style={{ width: '36px', height: '36px', color: '#ffffff' }} />
+          <Check style={{ width: '36px', height: '36px', color: '#ffffff' }} />
         </motion.div>
 
         {/* Title */}
@@ -91,12 +91,13 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
           style={{
-            fontSize: '20px',
+            fontSize: '18px',
             fontWeight: '700',
             marginBottom: '6px',
             color: '#ffffff',
             textAlign: 'center',
-            letterSpacing: '-0.5px'
+            letterSpacing: '-0.3px',
+            whiteSpace: 'nowrap'
           }}>
           Wallet Created Successfully!
         </motion.h1>
@@ -128,9 +129,14 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          style={{ marginBottom: '10px' }}>
-          <ModernButton variant="tertiary" size="small" onClick={handleCopyAll} fullWidth>
-            📋 Copy All Words
+          style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
+          <ModernButton 
+            variant="tertiary" 
+            size="small" 
+            onClick={handleCopyAll} 
+            leftIcon={<Copy style={{ width: '16px', height: '16px', color: '#ffffff' }} />}
+            style={{ maxWidth: '200px' }}>
+            Copy All Words
           </ModernButton>
         </motion.div>
 

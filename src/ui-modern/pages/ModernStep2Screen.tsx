@@ -59,31 +59,55 @@ export const ModernStep2Screen: React.FC<{
   const [loading, setLoading] = useState(false);
 
   const generateAddress = async () => {
+    console.log('Generating addresses with contextData:', {
+      mnemonics: contextData.mnemonics ? 'Present' : 'Missing',
+      passphrase: contextData.passphrase ? 'Present' : 'Missing',
+      customHdPath: contextData.customHdPath,
+      hdPathOptionsLength: hdPathOptions.length
+    });
+
+    if (!contextData.mnemonics) {
+      setError('No mnemonic phrase provided');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
     const addresses: string[] = [];
     for (let i = 0; i < hdPathOptions.length; i++) {
       const options = hdPathOptions[i];
       try {
+        console.log(`Generating address for option ${i}:`, options);
         const keyring = await wallet.createTmpKeyringWithMnemonics(
           contextData.mnemonics,
           contextData.customHdPath || options.hdPath,
           contextData.passphrase,
           options.addressType
         );
+        console.log('Keyring created:', keyring);
         keyring.accounts.forEach((v) => {
+          console.log('Account address:', v.address);
           addresses.push(v.address);
         });
       } catch (e) {
-        console.log(e);
-        setError((e as any).message);
+        console.error('Error generating address for option', i, e);
+        setError(`Failed to generate address: ${(e as any).message}`);
+        setLoading(false);
         return;
       }
     }
+    console.log('All addresses generated:', addresses);
     setPreviewAddresses(addresses);
+    setLoading(false);
   };
 
   useEffect(() => {
-    generateAddress();
-  }, [contextData.passphrase, contextData.customHdPath]);
+    // Only generate addresses if we have mnemonics
+    if (contextData.mnemonics) {
+      generateAddress();
+    }
+  }, [contextData.mnemonics, contextData.passphrase, contextData.customHdPath]);
 
   const fetchAddressesBalance = async () => {
     if (!contextData.isRestore) {
@@ -162,7 +186,7 @@ export const ModernStep2Screen: React.FC<{
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#000000'
+        backgroundColor: '#242424'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -199,6 +223,36 @@ export const ModernStep2Screen: React.FC<{
           }}>
           Select the Bitcoin address type for your wallet
         </motion.p>
+
+        {/* Loading indicator */}
+        {loading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            style={{
+              textAlign: 'center',
+              marginBottom: '20px',
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontSize: '14px'
+            }}>
+            Generating addresses...
+          </motion.div>
+        )}
+
+        {/* No mnemonics indicator */}
+        {!contextData.mnemonics && !loading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            style={{
+              textAlign: 'center',
+              marginBottom: '20px',
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontSize: '14px'
+            }}>
+            Please complete the previous step to generate addresses...
+          </motion.div>
+        )}
 
         {/* Address Type Cards */}
         <motion.div

@@ -96,11 +96,12 @@ export const ModernWelcomeScreen: React.FC = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
               style={{
-                fontSize: '28px',
+                fontSize: '22px',
                 fontWeight: '700',
                 marginBottom: '8px',
                 color: '#ffffff',
-                letterSpacing: '-0.5px'
+                letterSpacing: '-0.3px',
+                whiteSpace: 'nowrap'
               }}>
               Welcome to Universal Wallet
             </motion.h1>

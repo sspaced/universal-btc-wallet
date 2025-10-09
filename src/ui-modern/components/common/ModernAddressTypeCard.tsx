@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 
-import { CheckIcon } from './Icons';
 
 export interface ModernAddressTypeCardProps {
   label: string;
@@ -33,8 +32,8 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
       style={{
         width: '100%',
         padding: '16px',
-        backgroundColor: checked ? 'rgba(0, 122, 255, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-        border: checked ? '2px solid rgba(0, 122, 255, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
+        backgroundColor: checked ? 'rgba(114, 227, 173, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+        border: checked ? '2px solid rgba(114, 227, 173, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '12px',
         cursor: onClick ? 'pointer' : 'default',
         transition: 'all 0.2s',
@@ -78,8 +77,8 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: '10px 12px',
-            backgroundColor: 'rgba(0, 122, 255, 0.08)',
-            border: '1px solid rgba(0, 122, 255, 0.2)',
+            backgroundColor: 'rgba(114, 227, 173, 0.08)',
+            border: '1px solid rgba(114, 227, 173, 0.2)',
             borderRadius: '8px'
           }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -88,7 +87,7 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
               style={{
                 fontSize: '14px',
                 fontWeight: '600',
-                color: '#007aff',
+                color: '#72e3ad',
                 letterSpacing: '-0.2px'
               }}>
               {balance}
@@ -99,7 +98,7 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
               style={{
                 fontSize: '12px',
                 fontWeight: '600',
-                color: '#007aff',
+                color: '#72e3ad',
                 letterSpacing: '-0.1px'
               }}>
               {inscriptionCount} Inscriptions

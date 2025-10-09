@@ -70,8 +70,10 @@ export const ModernCreatePasswordScreen: React.FC = () => {
       } else if (isKeystone) {
         navigate('CreateKeystoneWalletScreen', { fromUnlock: true });
       } else if (isNewAccount) {
+        // For new accounts, go to HD wallet creation which will handle mnemonic generation
         navigate('CreateHDWalletScreen', { isImport: false, fromUnlock: true });
       } else {
+        // For import, go to HD wallet creation which will handle mnemonic import
         navigate('CreateHDWalletScreen', { isImport: true, fromUnlock: true });
       }
     },

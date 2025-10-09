@@ -40,10 +40,11 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
         borderRadius: '8px',
         cursor: onClick || copyable ? 'pointer' : 'default',
         transition: 'all 0.2s',
-        height: '36px',
+        height: '44px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        alignItems: 'center',
         backdropFilter: 'blur(10px)'
       }}
       className={onClick || copyable ? 'hover-lift' : ''}>
@@ -51,11 +52,10 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
       <div
         style={{
           position: 'absolute',
-          top: '4px',
-          left: '6px',
-          fontSize: '9px',
+          top: '6px',
+          fontSize: '10px',
           fontWeight: '600',
-          color: 'rgba(255, 255, 255, 0.4)',
+          color: 'rgba(255, 255, 255, 0.5)',
           letterSpacing: '-0.08px'
         }}>
         {index + 1}
@@ -64,7 +64,7 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
       {/* Word */}
       <div
         style={{
-          fontSize: '13px',
+          fontSize: '11px',
           fontWeight: '500',
           color: '#ffffff',
           textAlign: 'center',
@@ -73,7 +73,8 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
           filter: blurred ? 'blur(4px)' : 'none',
           userSelect: 'text',
           WebkitUserSelect: 'text',
-          wordBreak: 'break-word'
+          wordBreak: 'break-word',
+          marginTop: '8px'
         }}>
         {word || '(empty)'}
       </div>

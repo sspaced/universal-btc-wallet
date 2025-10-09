@@ -5,8 +5,8 @@ import { useTools } from '@/ui/components/ActionComponent';
 import { useIsUnlocked, useUnlockCallback } from '@/ui/state/global/hooks';
 import { getUiType, useWallet } from '@/ui/utils';
 
-import { ModernButton } from '../components/common/ModernButton';
 import { useNavigate } from '../../ui/pages/MainRoute';
+import { ModernButton } from '../components/common/ModernButton';
 
 export const ModernUnlockScreen: React.FC = () => {
   const wallet = useWallet();
@@ -35,10 +35,14 @@ export const ModernUnlockScreen: React.FC = () => {
       }
       setLoading(true);
       setError('');
+      
+      console.log('Attempting to unlock with password:', password ? 'Present' : 'Missing');
       await unlock(password);
+      console.log('Unlock successful');
 
       if (!isInNotification) {
         const hasVault = await wallet.hasVault();
+        console.log('Has vault:', hasVault);
         if (!hasVault) {
           navigate('WelcomeScreen');
           return;
@@ -48,7 +52,7 @@ export const ModernUnlockScreen: React.FC = () => {
         }
       }
     } catch (e) {
-      console.log(e);
+      console.error('Unlock failed:', e);
       setError('Incorrect password. Please try again.');
       tools.toastError('Incorrect password. Please try again.');
     } finally {
@@ -78,7 +82,7 @@ export const ModernUnlockScreen: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        backgroundColor: '#000000',
+        backgroundColor: '#242424',
         padding: '20px',
         overflow: 'hidden'
       }}>

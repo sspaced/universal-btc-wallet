@@ -108,6 +108,7 @@
     "koa-compose": "^4.1.0",
     "lodash-es": "^4.17.21",
     "loglevel": "^1.8.0",
+    "lucide-react": "^0.545.0",
     "lz-string": "^1.5.0",
     "mini-css-extract-plugin": "^2.4.5",
     "mobx": "^6.13.6",

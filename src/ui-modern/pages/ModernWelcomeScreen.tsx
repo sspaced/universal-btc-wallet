@@ -1,47 +1,33 @@
 import { motion } from 'framer-motion';
+import { Cpu, Download, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ConnectHardwareModal } from '../../ui/pages/Main/ConnectHardwareModal';
 import { useNavigate } from '../../ui/pages/MainRoute';
 import { useWallet } from '../../ui/utils';
-import { ModernButton, ModernLogo } from '../components/common';
-import { HardwareIcon, ImportIcon, KeyIcon, LockIcon, PlusIcon, ShieldIcon } from '../components/common/Icons';
+import { ModernButton } from '../components/common';
 
-// Helper Components
-const FeatureItem: React.FC<{ icon: React.ComponentType<{ className: string }>; text: string }> = ({
-  icon: Icon,
-  text
-}) => (
-  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', width: '80px' }}>
-    <div
-      style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '12px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)'
-      }}>
-      <Icon style={{ width: '16px', height: '16px', color: '#ffffff' }} />
-    </div>
-    <span
-      style={{
-        fontSize: '11px',
-        fontWeight: '500',
-        color: 'rgba(255, 255, 255, 0.7)',
-        letterSpacing: '-0.08px',
-        textAlign: 'center',
-        lineHeight: '1.3',
-        minHeight: '28px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-      {text}
-    </span>
-  </div>
+// Custom Logo Component
+const CustomLogo: React.FC<{ size?: string; color?: string }> = ({ size = '32px', color = '#231f20' }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 20.2 13.4" 
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g>
+      <path 
+        fill={color} 
+        d="M5.9,9.9c-1-1.7.9-4.6,4.2-6.6,3.3-2,6.8-2.2,7.8-.5.7,1.1,0,2.7-1.3,4.3,1.9-1.9,2.7-3.9,2-5.2C17.4,0,12.9.5,8.5,3.2,4.1,5.8,1.4,9.5,2.6,11.4c1.1,1.9,5.6,1.3,10-1.3.7-.4,1.3-.9,1.9-1.3-.3.2-.6.4-.9.6-3.3,2-6.8,2.2-7.8.5Z"
+      />
+      <path 
+        fill={color} 
+        d="M15.5,3.1c-.3,4.2-.5,4.5-4.7,4.7,4.2.3,4.5.5,4.7,4.7.3-4.2.5-4.5,4.7-4.7-4.2-.3-4.5-.5-4.7-4.7Z"
+      />
+    </g>
+  </svg>
 );
+
 
 export const ModernWelcomeScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -100,10 +86,10 @@ export const ModernWelcomeScreen: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 24px',
-                backgroundColor: '#007aff',
-                boxShadow: '0 6px 12px rgba(0, 122, 255, 0.3)'
+                backgroundColor: '#ffffff',
+                boxShadow: '0 6px 12px rgba(255, 255, 255, 0.3)'
               }}>
-              <ModernLogo size="large" color="white" />
+              <CustomLogo size="40px" color="#231f20" />
             </motion.div>
             <motion.h1
               initial={{ y: 20, opacity: 0 }}
@@ -141,7 +127,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="primary"
               size="large"
               fullWidth
-              leftIcon={<PlusIcon style={{ width: '20px', height: '20px' }} />}
+              leftIcon={<Plus style={{ width: '20px', height: '20px', margin: '0 auto' }} />}
               onClick={handleCreateWallet}>
               Create New Wallet
             </ModernButton>
@@ -150,7 +136,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="secondary"
               size="large"
               fullWidth
-              leftIcon={<ImportIcon style={{ width: '20px', height: '20px' }} />}
+              leftIcon={<Download style={{ width: '20px', height: '20px', margin: '0 auto' }} />}
               onClick={handleImportWallet}>
               Import Existing Wallet
             </ModernButton>
@@ -159,7 +145,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="tertiary"
               size="large"
               fullWidth
-              leftIcon={<HardwareIcon style={{ width: '20px', height: '20px' }} />}
+              leftIcon={<Cpu style={{ width: '20px', height: '20px', margin: '0 auto' }} />}
               onClick={handleConnectHardware}>
               Connect Hardware Wallet
             </ModernButton>
@@ -170,18 +156,6 @@ export const ModernWelcomeScreen: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.5 }}
             style={{ marginTop: '32px' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '32px',
-                marginBottom: '20px'
-              }}>
-              <FeatureItem icon={ShieldIcon} text="Enterprise Security" />
-              <FeatureItem icon={KeyIcon} text="Your Keys" />
-              <FeatureItem icon={LockIcon} text="Private by Design" />
-            </div>
             <p
               style={{
                 fontSize: '13px',

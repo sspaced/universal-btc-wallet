@@ -77,7 +77,7 @@ export const ModernAccountSelector: React.FC<ModernAccountSelectorProps> = ({
               width: '32px',
               height: '32px',
               borderRadius: '8px',
-              background: 'linear-gradient(135deg, #007aff 0%, #0056cc 100%)',
+              background: 'linear-gradient(135deg, #72e3ad 0%, #5dd39a 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

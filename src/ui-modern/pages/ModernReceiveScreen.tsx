@@ -85,7 +85,6 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
         style={{
           backgroundColor: 'rgba(255, 255, 255, 0.1)',
           borderRadius: '12px',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
           overflow: 'hidden'
         }}>
         {/* Partie Adresse */}
@@ -114,7 +113,7 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
           style={{
             width: '100%',
             padding: '12px 16px',
-            backgroundColor: copied ? '#34C759' : '#007aff',
+            backgroundColor: copied ? '#34C759' : '#72e3ad',
             border: 'none',
             color: '#ffffff',
             fontSize: '14px',
@@ -125,19 +124,19 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
             justifyContent: 'center',
             gap: '8px',
             transition: 'all 0.2s ease',
-            boxShadow: copied ? '0 2px 8px rgba(52, 199, 89, 0.25)' : '0 2px 8px rgba(0, 122, 255, 0.25)'
+            boxShadow: copied ? '0 2px 8px rgba(52, 199, 89, 0.25)' : '0 2px 8px rgba(114, 227, 173, 0.25)'
           }}
           onMouseEnter={(e) => {
             if (!copied) {
-              e.currentTarget.style.backgroundColor = '#0062cc';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 122, 255, 0.35)';
+              e.currentTarget.style.backgroundColor = '#5dd39a';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(114, 227, 173, 0.35)';
               e.currentTarget.style.transform = 'translateY(-1px)';
             }
           }}
           onMouseLeave={(e) => {
             if (!copied) {
-              e.currentTarget.style.backgroundColor = '#007aff';
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 122, 255, 0.25)';
+              e.currentTarget.style.backgroundColor = '#72e3ad';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(114, 227, 173, 0.25)';
               e.currentTarget.style.transform = 'translateY(0px)';
             }
           }}>
@@ -296,7 +295,7 @@ export const ModernReceiveScreen: React.FC = () => {
             style={{
               background: 'none',
               border: 'none',
-              color: '#007aff',
+              color: '#72e3ad',
               fontSize: '14px',
               fontWeight: '500',
               cursor: 'pointer',

@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
+import { ArrowUpDown, DollarSign, QrCode, Send } from 'lucide-react';
 import React from 'react';
-
-import { DollarIcon, MailIcon, QRCodeIcon, SwapIcon } from '../common/ModernIcons';
 
 interface ActionButton {
   id: string;
@@ -23,26 +22,26 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, 
     {
       id: 'receive',
       label: 'Receive',
-      icon: <QRCodeIcon size={24} />,
+      icon: <QrCode size={24} color="#ffffff" />,
       onClick: onReceive
     },
     {
       id: 'send',
       label: 'Send',
-      icon: <MailIcon size={24} />,
+      icon: <Send size={24} color="#ffffff" />,
       onClick: onSend
     },
     {
       id: 'swap',
       label: 'Swap',
-      icon: <SwapIcon size={24} />,
+      icon: <ArrowUpDown size={24} color="#ffffff" />,
       onClick: onExchange,
       disabled: false
     },
     {
       id: 'buy',
       label: 'Buy',
-      icon: <DollarIcon size={24} />,
+      icon: <DollarSign size={24} color="#ffffff" />,
       onClick: onBuy
     }
   ];
@@ -103,7 +102,8 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, 
                 width: '48px',
                 height: '48px',
                 borderRadius: '12px',
-                background: action.disabled ? 'rgba(255, 255, 255, 0.1)' : '#007aff',
+                background: action.disabled ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.1)',
+                border: action.disabled ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(255, 255, 255, 0.2)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

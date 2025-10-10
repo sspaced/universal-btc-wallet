@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Check, ExternalLink } from 'lucide-react';
 import React from 'react';
 
 import { useI18n } from '@/ui/hooks/useI18n';
@@ -67,34 +68,26 @@ export const ModernTxSuccessScreen: React.FC = () => {
             style={{
               width: '80px',
               height: '80px',
-              borderRadius: '50%',
-              backgroundColor: 'rgba(52, 199, 89, 0.2)',
+              borderRadius: '20px',
+              backgroundColor: 'rgba(114, 227, 173, 0.2)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '24px',
-              border: '2px solid rgba(52, 199, 89, 0.3)'
+              border: '2px solid rgba(114, 227, 173, 0.3)'
             }}>
             <motion.div
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.5 }}
               style={{
                 width: '40px',
-                height: '40px'
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}>
-              <svg viewBox="0 0 24 24" fill="none" style={{ width: '100%', height: '100%' }}>
-                <motion.path
-                  d="M9 12l2 2 4-4"
-                  stroke="#34C759"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                />
-              </svg>
+              <Check size={40} color="#72e3ad" />
             </motion.div>
           </motion.div>
 
@@ -110,7 +103,8 @@ export const ModernTxSuccessScreen: React.FC = () => {
                 fontWeight: '700',
                 color: '#ffffff',
                 marginBottom: '8px',
-                letterSpacing: '-0.5px'
+                letterSpacing: '-0.5px',
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
               }}>
               {t('payment_sent')}
             </h1>
@@ -119,7 +113,8 @@ export const ModernTxSuccessScreen: React.FC = () => {
                 fontSize: '16px',
                 color: 'rgba(255, 255, 255, 0.7)',
                 lineHeight: '1.5',
-                margin: 0
+                margin: 0,
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
               }}>
               {t('your_transaction_has_been_successfully_sent')}
             </p>
@@ -175,17 +170,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
               size="large"
               fullWidth
               onClick={handleViewExplorer}
-              leftIcon={
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M15 3h6v6M10 14L21 3M21 3v6M21 3h-6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              }>
+              leftIcon={<ExternalLink size={16} />}>
               {t('view_on_block_explorer')}
             </ModernButton>
 
@@ -198,8 +183,8 @@ export const ModernTxSuccessScreen: React.FC = () => {
 
       <style>{`
         .success-details-card {
-          background: rgba(52, 199, 89, 0.05);
-          border: 1px solid rgba(52, 199, 89, 0.2);
+          background: rgba(114, 227, 173, 0.05);
+          border: 1px solid rgba(114, 227, 173, 0.2);
         }
       `}</style>
     </motion.div>

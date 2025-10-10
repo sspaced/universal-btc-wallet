@@ -247,7 +247,7 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
                 <span
                   style={{
                     fontSize: '12px',
-                    color: value.trim() ? '#007aff' : 'rgba(255, 255, 255, 0.5)',
+                    color: value.trim() ? '#72e3ad' : 'rgba(255, 255, 255, 0.5)',
                     fontWeight: '500',
                     minWidth: '20px',
                     transition: 'color 0.3s ease'

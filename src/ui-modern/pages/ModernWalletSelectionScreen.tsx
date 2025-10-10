@@ -1,9 +1,9 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import { RestoreWalletType } from '@/shared/types';
+import { motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ModernWalletCard } from '../components/common/ModernWalletCard';
-import { BackIcon } from '../components/common/Icons';
 
 interface ModernWalletSelectionScreenProps {
   onWalletSelect?: (walletType: RestoreWalletType) => void;
@@ -97,12 +97,9 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
             marginRight: '12px',
           }}
         >
-          <BackIcon
-            style={{
-              width: '24px',
-              height: '24px',
-              color: '#007aff',
-            }}
+          <ArrowLeft
+            size={24}
+            color="#72e3ad"
           />
         </motion.button>
 
@@ -112,6 +109,7 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
             fontWeight: '600',
             color: 'white',
             margin: 0,
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
           }}
         >
           Choose a Wallet
@@ -140,6 +138,7 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
               color: 'rgba(255, 255, 255, 0.7)',
               margin: 0,
               lineHeight: '1.6',
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
             }}
           >
             Select the wallet type you want to restore. Each wallet uses a different address derivation path.

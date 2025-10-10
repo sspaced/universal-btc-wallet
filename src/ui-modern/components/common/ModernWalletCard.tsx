@@ -1,6 +1,6 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { WalletIcon } from './Icons';
+import { Wallet } from 'lucide-react';
+import React from 'react';
 
 interface ModernWalletCardProps {
   walletName: string;
@@ -35,7 +35,7 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
       style={{
         background: 'rgba(255, 255, 255, 0.05)',
         backdropFilter: 'blur(10px)',
-        border: isHovered ? '1px solid rgba(0, 122, 255, 0.6)' : '1px solid rgba(255, 255, 255, 0.1)',
+        border: isHovered ? '1px solid rgba(114, 227, 173, 0.6)' : '1px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '12px',
         padding: '16px',
         cursor: 'pointer',
@@ -53,18 +53,15 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
           width: '36px',
           height: '36px',
           borderRadius: '10px',
-          background: 'rgba(0, 122, 255, 0.15)',
+          background: 'rgba(114, 227, 173, 0.15)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <WalletIcon
-          style={{
-            width: '20px',
-            height: '20px',
-            color: '#007aff',
-          }}
+        <Wallet
+          size={20}
+          color="#72e3ad"
         />
       </div>
 
@@ -80,6 +77,7 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
             fontWeight: '600',
             color: 'white',
             marginBottom: '2px',
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
           }}
         >
           {walletName}
@@ -90,6 +88,7 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
               fontSize: '11px',
               color: 'rgba(255, 255, 255, 0.5)',
               lineHeight: '1.3',
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
             }}
           >
             {description}

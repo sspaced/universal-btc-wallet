@@ -170,17 +170,17 @@ export const ModernSendScreen: React.FC = () => {
       return (
         <div
           style={{
-            width: '80px',
-            height: '80px',
+            width: '60px',
+            height: '60px',
             borderRadius: '50%',
             background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '40px',
+            fontSize: '30px',
             fontWeight: 'bold',
             color: '#ffffff',
-            boxShadow: '0 8px 24px rgba(52, 199, 89, 0.3)'
+            boxShadow: '0 6px 18px rgba(52, 199, 89, 0.3)'
           }}>
           ₿
         </div>
@@ -191,17 +191,17 @@ export const ModernSendScreen: React.FC = () => {
       return (
         <div
           style={{
-            width: '80px',
-            height: '80px',
+            width: '60px',
+            height: '60px',
             borderRadius: '50%',
             background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '40px',
+            fontSize: '30px',
             fontWeight: 'bold',
             color: '#ffffff',
-            boxShadow: '0 8px 24px rgba(52, 199, 89, 0.3)'
+            boxShadow: '0 6px 18px rgba(52, 199, 89, 0.3)'
           }}>
           ₿
         </div>
@@ -212,22 +212,22 @@ export const ModernSendScreen: React.FC = () => {
       return (
         <div
           style={{
-            width: '80px',
-            height: '80px',
+            width: '60px',
+            height: '60px',
             borderRadius: '50%',
             background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
-            boxShadow: '0 8px 24px rgba(52, 199, 89, 0.3)'
+            boxShadow: '0 6px 18px rgba(52, 199, 89, 0.3)'
           }}>
           <img
             src={selectedAsset.icon}
             alt={selectedAsset.name}
             style={{
-              width: '50px',
-              height: '50px',
+              width: '40px',
+              height: '40px',
               borderRadius: '50%',
               objectFit: 'cover'
             }}
@@ -240,17 +240,17 @@ export const ModernSendScreen: React.FC = () => {
     return (
       <div
         style={{
-          width: '80px',
-          height: '80px',
+          width: '60px',
+          height: '60px',
           borderRadius: '50%',
           background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: '#ffffff',
-          fontSize: '32px',
+          fontSize: '24px',
           fontWeight: '700',
-          boxShadow: '0 8px 24px rgba(52, 199, 89, 0.3)'
+          boxShadow: '0 6px 18px rgba(52, 199, 89, 0.3)'
         }}>
         {selectedAsset.symbol?.charAt(0) || selectedAsset.name.charAt(0)}
       </div>
@@ -339,10 +339,10 @@ export const ModernSendScreen: React.FC = () => {
         style={{
           flex: 1,
           padding: '20px',
-          overflowY: 'auto',
+          overflowY: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          gap: '20px'
+          gap: '16px'
         }}>
         {/* Asset Icon */}
         <motion.div
@@ -352,7 +352,7 @@ export const ModernSendScreen: React.FC = () => {
           style={{
             display: 'flex',
             justifyContent: 'center',
-            marginBottom: '8px'
+            marginBottom: '4px'
           }}>
           {getAssetIcon()}
         </motion.div>
@@ -395,8 +395,8 @@ export const ModernSendScreen: React.FC = () => {
               overflow: 'hidden'
             }}>
             {/* Amount Input Section */}
-            <div style={{ padding: '12px 16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ padding: '8px 12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <input
                   type="text"
                   value={inputAmount}
@@ -408,11 +408,11 @@ export const ModernSendScreen: React.FC = () => {
                     border: 'none',
                     outline: 'none',
                     color: '#ffffff',
-                    fontSize: '16px',
+                    fontSize: '15px',
                     fontWeight: '600'
                   }}
                 />
-                <span style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '600' }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '600' }}>
                   {getAssetDisplayName()}
                 </span>
                 <motion.button
@@ -423,17 +423,17 @@ export const ModernSendScreen: React.FC = () => {
                     background: 'rgba(52, 199, 89, 0.2)',
                     border: 'none',
                     color: '#34c759',
-                    fontSize: '12px',
+                    fontSize: '11px',
                     fontWeight: '700',
                     cursor: 'pointer',
-                    padding: '6px 12px',
-                    borderRadius: '8px'
+                    padding: '4px 8px',
+                    borderRadius: '6px'
                   }}>
                   Max
                 </motion.button>
               </div>
               {/* USD Value */}
-              <div style={{ marginTop: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)' }}>~${usdValue}</div>
+              <div style={{ marginTop: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>~${usdValue}</div>
             </div>
 
             {/* Separator */}
@@ -458,8 +458,9 @@ export const ModernSendScreen: React.FC = () => {
                       key={option}
                       style={{
                         flex: 1,
-                        padding: '12px 8px',
-                        backgroundColor: isSelected ? '#34c759' : 'transparent',
+                        padding: '8px 6px',
+                        backgroundColor: 'transparent',
+                        border: isSelected ? '2px solid #72e3ad' : '2px solid transparent',
                         borderBottomRightRadius: isLast ? '12px' : '0',
                         display: 'flex',
                         alignItems: 'center',
@@ -478,7 +479,7 @@ export const ModernSendScreen: React.FC = () => {
                           border: 'none',
                           outline: 'none',
                           color: '#ffffff',
-                          fontSize: '13px',
+                          fontSize: '12px',
                           fontWeight: '600',
                           textAlign: 'center'
                         }}
@@ -494,13 +495,13 @@ export const ModernSendScreen: React.FC = () => {
                     onClick={() => handleFeeOptionChange(option)}
                     style={{
                       flex: 1,
-                      padding: '12px 8px',
-                      border: 'none',
-                      backgroundColor: isSelected ? '#34c759' : 'transparent',
+                      padding: '8px 6px',
+                      border: isSelected ? '2px solid #72e3ad' : '2px solid transparent',
+                      backgroundColor: 'transparent',
                       borderBottomLeftRadius: isFirst ? '12px' : '0',
                       borderBottomRightRadius: isLast ? '12px' : '0',
                       color: '#ffffff',
-                      fontSize: '13px',
+                      fontSize: '12px',
                       fontWeight: '600',
                       cursor: 'pointer',
                       transition: 'all 0.2s ease'

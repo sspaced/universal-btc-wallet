@@ -136,20 +136,20 @@ export const ModernBalanceCard: React.FC<ModernBalanceCardProps> = ({
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#007aff',
+                    color: '#72e3ad',
                     fontSize: '12px',
                     fontWeight: '600',
                     cursor: 'pointer',
                     padding: '6px 10px',
                     borderRadius: '8px',
-                    backgroundColor: 'rgba(0, 122, 255, 0.1)',
+                    backgroundColor: 'rgba(114, 227, 173, 0.1)',
                     transition: 'all 0.2s ease'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(0, 122, 255, 0.2)';
+                    e.currentTarget.style.backgroundColor = 'rgba(114, 227, 173, 0.2)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(0, 122, 255, 0.1)';
+                    e.currentTarget.style.backgroundColor = 'rgba(114, 227, 173, 0.1)';
                   }}>
                   Unlock
                 </motion.button>

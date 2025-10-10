@@ -230,8 +230,8 @@ export const ModernAddressTypeScreen: React.FC = () => {
         style={{
           marginTop: '24px',
           padding: '14px',
-          backgroundColor: 'rgba(0, 122, 255, 0.08)',
-          border: '1px solid rgba(0, 122, 255, 0.2)',
+          backgroundColor: 'rgba(114, 227, 173, 0.08)',
+          border: '1px solid rgba(114, 227, 173, 0.2)',
           borderRadius: '10px',
           maxWidth: '600px',
           margin: '24px auto 0'

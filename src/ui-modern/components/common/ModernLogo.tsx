@@ -17,7 +17,7 @@ const sizeClasses = {
 const colorClasses = {
   white: { color: 'white' },
   black: { color: 'black' },
-  blue: { color: '#007aff' }
+  blue: { color: '#72e3ad' }
 };
 
 export const ModernLogo: React.FC<ModernLogoProps> = ({

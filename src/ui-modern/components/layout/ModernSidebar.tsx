@@ -278,7 +278,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                             fontWeight: '600',
                             color: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.9)',
                             background: 'rgba(255, 255, 255, 0.1)',
-                            border: '1px solid rgba(0, 122, 255, 0.5)',
+                            border: '1px solid rgba(114, 227, 173, 0.5)',
                             borderRadius: '6px',
                             padding: '4px 8px',
                             outline: 'none',
@@ -369,7 +369,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                           marginTop: '2px'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.color = '#007aff';
+                          e.currentTarget.style.color = '#72e3ad';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)';
@@ -395,7 +395,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: isMenuOpen ? '#007aff' : 'rgba(255, 255, 255, 0.6)',
+                        color: isMenuOpen ? '#72e3ad' : 'rgba(255, 255, 255, 0.6)',
                         transition: 'color 0.2s ease',
                         flexShrink: 0
                       }}>

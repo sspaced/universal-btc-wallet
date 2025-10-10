@@ -10,7 +10,7 @@ export interface ModernLoadingSpinnerProps {
 
 export const ModernLoadingSpinner: React.FC<ModernLoadingSpinnerProps> = ({
   size = 'medium',
-  color = '#007aff',
+  color = '#72e3ad',
   text = 'Loading...',
   showText = false
 }) => {

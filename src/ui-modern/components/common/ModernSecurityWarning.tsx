@@ -29,9 +29,9 @@ export const ModernSecurityWarning: React.FC<ModernSecurityWarningProps> = ({
         };
       case 'info':
         return {
-          border: 'rgba(0, 122, 255, 0.5)',
-          background: 'rgba(0, 122, 255, 0.08)',
-          icon: '#007aff',
+          border: 'rgba(114, 227, 173, 0.5)',
+          background: 'rgba(114, 227, 173, 0.08)',
+          icon: '#72e3ad',
           text: 'rgba(255, 255, 255, 0.9)'
         };
       case 'warning':

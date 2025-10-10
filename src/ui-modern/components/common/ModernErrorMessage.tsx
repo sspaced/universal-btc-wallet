@@ -32,10 +32,10 @@ export const ModernErrorMessage: React.FC<ModernErrorMessageProps> = ({
         };
       case 'info':
         return {
-          background: 'rgba(0, 122, 255, 0.1)',
-          border: 'rgba(0, 122, 255, 0.3)',
-          text: '#007aff',
-          icon: '#007aff'
+          background: 'rgba(114, 227, 173, 0.1)',
+          border: 'rgba(114, 227, 173, 0.3)',
+          text: '#72e3ad',
+          icon: '#72e3ad'
         };
       default:
         return {

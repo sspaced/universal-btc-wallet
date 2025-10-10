@@ -145,14 +145,26 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.4 }}
-                style={{ fontSize: '11px', fontWeight: '600', color: '#ff3b30', margin: '0 0 4px 0', letterSpacing: '-0.2px' }}>
+                style={{
+                  fontSize: '11px',
+                  fontWeight: '600',
+                  color: '#ff3b30',
+                  margin: '0 0 4px 0',
+                  letterSpacing: '-0.2px'
+                }}>
                 If you lose your secret recovery phrase, your assets will be lost forever.
               </motion.p>
               <motion.p
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.4 }}
-                style={{ fontSize: '11px', fontWeight: '600', color: '#ff3b30', margin: '0 0 4px 0', letterSpacing: '-0.2px' }}>
+                style={{
+                  fontSize: '11px',
+                  fontWeight: '600',
+                  color: '#ff3b30',
+                  margin: '0 0 4px 0',
+                  letterSpacing: '-0.2px'
+                }}>
                 Never share this phrase with anyone. Anyone with it can access your funds.
               </motion.p>
               <motion.p
@@ -195,7 +207,13 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                 <motion.p
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  style={{ fontSize: '13px', color: '#ff3b30', marginTop: '10px', margin: '10px 0 0 0', letterSpacing: '-0.2px' }}>
+                  style={{
+                    fontSize: '13px',
+                    color: '#ff3b30',
+                    marginTop: '10px',
+                    margin: '10px 0 0 0',
+                    letterSpacing: '-0.2px'
+                  }}>
                   {error}
                 </motion.p>
               )}
@@ -216,12 +234,12 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                 fontSize: '14px',
                 fontWeight: '600',
                 color: '#ffffff',
-                background: disabled ? 'rgba(0, 122, 255, 0.3)' : 'linear-gradient(135deg, #007aff 0%, #0051d5 100%)',
+                background: disabled ? 'rgba(114, 227, 173, 0.3)' : 'linear-gradient(135deg, #72e3ad 0%, #5dd39a 100%)',
                 border: 'none',
                 borderRadius: '10px',
                 cursor: disabled ? 'not-allowed' : 'pointer',
                 opacity: disabled ? 0.6 : 1,
-                boxShadow: disabled ? 'none' : '0 4px 16px rgba(0, 122, 255, 0.4)',
+                boxShadow: disabled ? 'none' : '0 4px 16px rgba(114, 227, 173, 0.4)',
                 letterSpacing: '-0.3px',
                 transition: 'all 0.3s ease'
               }}>
@@ -320,7 +338,7 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => copy(mnemonic)}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0, 122, 255, 0.8)';
+                  e.currentTarget.style.borderColor = 'rgba(114, 227, 173, 0.8)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
@@ -359,7 +377,14 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                 padding: '11px',
                 backdropFilter: 'blur(20px)'
               }}>
-              <h3 style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', margin: '0 0 9px 0', letterSpacing: '-0.5px' }}>
+              <h3
+                style={{
+                  fontSize: '14px',
+                  fontWeight: '700',
+                  color: '#ffffff',
+                  margin: '0 0 9px 0',
+                  letterSpacing: '-0.5px'
+                }}>
                 Advanced Options
               </h3>
 
@@ -377,10 +402,23 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                   transition: 'all 0.2s ease'
                 }}>
                 <div>
-                  <div style={{ fontSize: '12px', fontWeight: '600', color: '#ffffff', marginBottom: '3px', letterSpacing: '-0.2px' }}>
+                  <div
+                    style={{
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      color: '#ffffff',
+                      marginBottom: '3px',
+                      letterSpacing: '-0.2px'
+                    }}>
                     Derivation Path
                   </div>
-                  <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)', userSelect: 'text', letterSpacing: '-0.1px' }}>
+                  <div
+                    style={{
+                      fontSize: '11px',
+                      color: 'rgba(255, 255, 255, 0.6)',
+                      userSelect: 'text',
+                      letterSpacing: '-0.1px'
+                    }}>
                     {keyring.hdPath}/0 ({pathName})
                   </div>
                 </div>
@@ -420,10 +458,23 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                     transition: 'all 0.2s ease'
                   }}>
                   <div>
-                    <div style={{ fontSize: '12px', fontWeight: '600', color: '#ffffff', marginBottom: '3px', letterSpacing: '-0.2px' }}>
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        color: '#ffffff',
+                        marginBottom: '3px',
+                        letterSpacing: '-0.2px'
+                      }}>
                       Passphrase
                     </div>
-                    <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)', userSelect: 'text', letterSpacing: '-0.1px' }}>
+                    <div
+                      style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.6)',
+                        userSelect: 'text',
+                        letterSpacing: '-0.1px'
+                      }}>
                       {passphrase}
                     </div>
                   </div>

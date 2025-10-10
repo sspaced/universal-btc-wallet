@@ -132,11 +132,6 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
   const handleAssetClick = (asset: Asset) => {
     console.log(`Asset clicked: ${asset.name} (${asset.type})`);
 
-    if (asset.type === 'btc') {
-      console.log('BTC asset clicked - no navigation needed');
-      return;
-    }
-
     if (onAssetClick) {
       console.log('Calling onAssetClick for:', asset);
       onAssetClick(asset);
@@ -246,18 +241,14 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
               border:
                 asset.type === 'btc' ? '1px solid rgba(247, 147, 26, 0.2)' : '1px solid rgba(255, 255, 255, 0.05)',
               borderRadius: '8px',
-              cursor: asset.type === 'btc' ? 'default' : 'pointer',
+              cursor: 'pointer',
               transition: 'all 0.2s ease',
               position: 'relative'
             }}
-            whileHover={
-              asset.type !== 'btc'
-                ? {
-                    background: 'rgba(255, 255, 255, 0.04)',
-                    borderColor: 'rgba(255, 255, 255, 0.1)'
-                  }
-                : {}
-            }>
+            whileHover={{
+              background: asset.type === 'btc' ? 'rgba(247, 147, 26, 0.08)' : 'rgba(255, 255, 255, 0.04)',
+              borderColor: asset.type === 'btc' ? 'rgba(247, 147, 26, 0.3)' : 'rgba(255, 255, 255, 0.1)'
+            }}>
             {/* Asset Icon */}
             {getAssetIcon(asset)}
 

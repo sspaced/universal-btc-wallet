@@ -8,7 +8,10 @@ import SendCAT20Screen from '@/ui/pages/CAT20/SendCAT20Screen';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
+import { ModernAssetSelectionScreen } from '../../ui-modern/pages/ModernAssetSelectionScreen';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
+import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
+import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
 import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
 import { ModernSendScreen } from '../../ui-modern/pages/ModernSendScreen';
 import { ModernSwapScreen } from '../../ui-modern/pages/ModernSwapScreen';
@@ -16,8 +19,6 @@ import { ModernTxConfirmScreen } from '../../ui-modern/pages/ModernTxConfirmScre
 import { ModernTxFailScreen } from '../../ui-modern/pages/ModernTxFailScreen';
 import { ModernTxSuccessScreen } from '../../ui-modern/pages/ModernTxSuccessScreen';
 import { ModernUnlockScreen } from '../../ui-modern/pages/ModernUnlockScreen';
-import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
-import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
 import { Content, Icon } from '../components';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { accountActions } from '../state/accounts/reducer';
@@ -76,7 +77,6 @@ import NetworkTypeScreen from './Settings/NetworkTypeScreen';
 import UpgradeNoticeScreen from './Settings/UpgradeNoticeScreen';
 import CosmosSignDemo from './Test/CosmosSignDemo';
 import TestScreen from './Test/TestScreen';
-import HistoryScreen from './Wallet/HistoryScreen';
 import TxCreateScreen from './Wallet/TxCreateScreen';
 import './index.module.less';
 
@@ -161,6 +161,11 @@ export const routes = {
   ModernSwapScreen: {
     path: '/wallet/swap',
     element: <ModernSwapScreen />
+  },
+
+  ModernAssetSelectionScreen: {
+    path: '/wallet/asset-selection',
+    element: <ModernAssetSelectionScreen />
   },
 
   TxCreateScreen: {

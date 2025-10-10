@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
 import {
-    useAccountBalance,
-    useAccounts,
-    useCurrentAccount,
-    useFetchBalanceCallback,
-    useReloadAccounts,
-    useSetCurrentAccountCallback
+  useAccountBalance,
+  useAccounts,
+  useCurrentAccount,
+  useFetchBalanceCallback,
+  useReloadAccounts,
+  useSetCurrentAccountCallback
 } from '@/ui/state/accounts/hooks';
 import { useIsUnlocked } from '@/ui/state/global/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
@@ -122,7 +122,7 @@ export const ModernWalletTabScreen: React.FC = () => {
 
   const handleSend = () => {
     resetUiTxCreateScreen();
-    navigate('TxCreateScreen');
+    navigate('ModernAssetSelectionScreen');
   };
 
   const handleReceive = () => {
@@ -295,7 +295,6 @@ export const ModernWalletTabScreen: React.FC = () => {
         onClose={() => setShowSettings(false)}
         onNavigate={(route: any) => navigate(route)}
       />
-
     </div>
   );
 };

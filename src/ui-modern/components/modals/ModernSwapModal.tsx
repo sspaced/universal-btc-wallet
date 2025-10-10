@@ -133,7 +133,7 @@ export const ModernSwapModal: React.FC<ModernSwapModalProps> = ({ isOpen, onClos
               <div
                 style={{
                   backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                  borderRadius: '16px',
+                  borderRadius: '10px',
                   padding: '16px',
                   border: '1px solid rgba(255, 255, 255, 0.1)'
                 }}>
@@ -217,7 +217,7 @@ export const ModernSwapModal: React.FC<ModernSwapModalProps> = ({ isOpen, onClos
               <div
                 style={{
                   backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                  borderRadius: '16px',
+                  borderRadius: '10px',
                   padding: '16px',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   marginBottom: '24px'

@@ -34,7 +34,7 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
         padding: '16px',
         backgroundColor: checked ? 'rgba(114, 227, 173, 0.08)' : 'rgba(255, 255, 255, 0.03)',
         border: checked ? '2px solid rgba(114, 227, 173, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '12px',
+        borderRadius: '8px',
         cursor: onClick ? 'pointer' : 'default',
         transition: 'all 0.2s',
         backdropFilter: 'blur(10px)'

@@ -186,7 +186,7 @@ export const ModernStep2Screen: React.FC<{
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#242424'
+        backgroundColor: '#121212'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}

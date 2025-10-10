@@ -45,7 +45,7 @@ export const ModernRecoveryGrid: React.FC<ModernRecoveryGridProps> = ({
         width: '100%',
         padding: '14px',
         backgroundColor: 'rgba(255, 255, 255, 0.03)',
-        borderRadius: '14px',
+        borderRadius: '10px',
         border: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
       {/* Title */}

@@ -117,7 +117,7 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
       style={{
         width: '100vw',
         height: '100vh',
-        background: '#000000',
+        background: '#121212',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden'

@@ -32,19 +32,21 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
     change24h: number;
     changePercent: number;
     currentPrice: number;
+    currentPriceEUR: number;
   } | null>(null);
 
   // Fetch Bitcoin price change data
   const fetchPriceChange = async () => {
     try {
-      // Use CoinGecko API for Bitcoin price change data
+      // Use CoinGecko API for Bitcoin price change data in both USD and EUR
       const response = await fetch(
-        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true'
+        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,eur&include_24hr_change=true'
       );
       const data = await response.json();
 
       if (data.bitcoin) {
         const currentPrice = data.bitcoin.usd;
+        const currentPriceEUR = data.bitcoin.eur;
         const changePercent = data.bitcoin.usd_24h_change || 0;
 
         // Calculate absolute change in USD
@@ -63,7 +65,8 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
         setPriceChange({
           change24h: change24h,
           changePercent: changePercent,
-          currentPrice: currentPrice
+          currentPrice: currentPrice,
+          currentPriceEUR: currentPriceEUR
         });
       }
     } catch (error) {
@@ -72,7 +75,8 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
       setPriceChange({
         change24h: 1.51,
         changePercent: 0.08,
-        currentPrice: 50000
+        currentPrice: 50000,
+        currentPriceEUR: 46000
       });
     }
   };
@@ -83,6 +87,14 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
   };
 
   const totalAmount = satoshisToAmount(accountBalance.availableBalance);
+  
+  // Calculate EUR value
+  const eurValue = useMemo(() => {
+    if (!priceChange) return '0.00';
+    const btcAmount = parseFloat(totalAmount);
+    const eurAmount = btcAmount * priceChange.currentPriceEUR;
+    return eurAmount.toFixed(2);
+  }, [totalAmount, priceChange]);
 
   // Calculate detailed balance amounts for tooltip
   const balanceDetails = useMemo(() => {
@@ -160,7 +172,7 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
   const priceChangeDisplay = useMemo(() => {
     if (!priceChange) {
       return {
-        changeText: '+$1.51',
+        changeText: '+€1.51',
         percentageText: '+0.08%',
         isPositive: true
       };
@@ -169,37 +181,34 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
     // Calculate wallet value change based on BTC amount
     const walletBTCAmount = parseFloat(totalAmount);
 
-    // Use the current price from the API response (most reliable)
-    const effectiveCurrentPrice = priceChange.currentPrice;
+    // Use the current EUR price from the API response
+    const effectiveCurrentPriceEUR = priceChange.currentPriceEUR;
 
-    const currentWalletValueUSD = walletBTCAmount * effectiveCurrentPrice;
+    const currentWalletValueEUR = walletBTCAmount * effectiveCurrentPriceEUR;
 
-    // Calculate previous wallet value (24h ago)
-    const previousPrice = effectiveCurrentPrice / (1 + priceChange.changePercent / 100);
-    const previousWalletValueUSD = walletBTCAmount * previousPrice;
+    // Calculate previous wallet value (24h ago) - using EUR price change
+    const previousPriceEUR = effectiveCurrentPriceEUR / (1 + priceChange.changePercent / 100);
+    const previousWalletValueEUR = walletBTCAmount * previousPriceEUR;
 
-    // Calculate wallet value change
-    const walletValueChange = currentWalletValueUSD - previousWalletValueUSD;
+    // Calculate wallet value change in EUR
+    const walletValueChange = currentWalletValueEUR - previousWalletValueEUR;
     const walletValueChangePercent =
-      previousWalletValueUSD > 0 ? (walletValueChange / previousWalletValueUSD) * 100 : 0;
+      previousWalletValueEUR > 0 ? (walletValueChange / previousWalletValueEUR) * 100 : 0;
 
     const isPositive = walletValueChange >= 0;
-    const changeText = `${isPositive ? '+' : ''}$${Math.abs(walletValueChange).toFixed(2)}`;
+    const changeText = `${isPositive ? '+' : ''}€${Math.abs(walletValueChange).toFixed(2)}`;
     const percentageText = `${isPositive ? '+' : ''}${walletValueChangePercent.toFixed(2)}%`;
 
-    console.log('=== WALLET VALUE CHANGE CALCULATION ===');
+    console.log('=== WALLET VALUE CHANGE CALCULATION (EUR) ===');
     console.log('Wallet BTC amount:', walletBTCAmount);
-    console.log('coinPrice.btc:', coinPrice.btc);
-    console.log('priceChange.change24h:', priceChange.change24h);
+    console.log('priceChange.currentPriceEUR:', priceChange.currentPriceEUR);
     console.log('priceChange.changePercent:', priceChange.changePercent);
-    console.log('priceChange.currentPrice:', priceChange.currentPrice);
-    console.log('effectiveCurrentPrice:', effectiveCurrentPrice);
-    console.log('Previous BTC price:', previousPrice);
-    console.log('Current wallet value USD:', currentWalletValueUSD);
-    console.log('Previous wallet value USD:', previousWalletValueUSD);
-    console.log('Wallet value change USD:', walletValueChange);
+    console.log('Previous EUR price:', previousPriceEUR);
+    console.log('Current wallet value EUR:', currentWalletValueEUR);
+    console.log('Previous wallet value EUR:', previousWalletValueEUR);
+    console.log('Wallet value change EUR:', walletValueChange);
     console.log('Wallet value change percent:', walletValueChangePercent);
-    console.log('========================================');
+    console.log('============================================');
 
     return {
       changeText,
@@ -251,7 +260,7 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
               marginLeft: '6px',
               letterSpacing: '-0.5px'
             }}>
-            {btcUnit}
+            €
           </span>
         </div>
 

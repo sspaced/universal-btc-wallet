@@ -60,7 +60,7 @@ export const ModernAccountSelector: React.FC<ModernAccountSelectorProps> = ({
           style={{
             background: 'rgba(255, 255, 255, 0.05)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '12px',
+            borderRadius: '8px',
             padding: '6px 12px 6px 6px',
             display: 'flex',
             alignItems: 'center',
@@ -83,7 +83,7 @@ export const ModernAccountSelector: React.FC<ModernAccountSelectorProps> = ({
               justifyContent: 'center',
               fontSize: '12px',
               fontWeight: '600',
-              color: '#ffffff',
+              color: '#000000',
               flexShrink: 0,
             }}
           >

@@ -40,7 +40,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
-        backgroundColor: '#000000',
+        backgroundColor: '#121212',
         color: '#ffffff'
       }}>
       <ModernHeader title={t('transaction_success')} showBackButton={false} />
@@ -68,7 +68,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
             style={{
               width: '80px',
               height: '80px',
-              borderRadius: '20px',
+              borderRadius: '12px',
               backgroundColor: 'rgba(114, 227, 173, 0.2)',
               display: 'flex',
               alignItems: 'center',

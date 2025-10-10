@@ -22,7 +22,7 @@ const ModernQRCode: React.FC<{ address: string; chainIcon: string }> = ({ addres
         width: '180px',
         height: '180px',
         backgroundColor: '#ffffff',
-        borderRadius: '16px',
+        borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -116,7 +116,7 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
             padding: '12px 16px',
             backgroundColor: copied ? '#34C759' : '#72e3ad',
             border: 'none',
-            color: '#ffffff',
+            color: '#000000',
             fontSize: '14px',
             fontWeight: '600',
             fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
@@ -184,7 +184,7 @@ export const ModernReceiveScreen: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#000000',
+          backgroundColor: '#121212',
           color: '#ffffff'
         }}>
         <p>Loading address...</p>
@@ -199,7 +199,7 @@ export const ModernReceiveScreen: React.FC = () => {
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#000000',
+        backgroundColor: '#121212',
         overflow: 'hidden'
       }}>
       {/* Header */}

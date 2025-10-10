@@ -192,7 +192,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                       width: '100%',
                       background: isSelected ? 'rgba(114, 227, 173, 0.15)' : 'rgba(255, 255, 255, 0.05)',
                       border: isSelected ? '1px solid rgba(114, 227, 173, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: '12px',
+                      borderRadius: '8px',
                       padding: '12px',
                       marginBottom: '8px',
                       display: 'flex',
@@ -228,7 +228,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                         justifyContent: 'center',
                         fontSize: '14px',
                         fontWeight: '600',
-                        color: '#ffffff',
+                        color: isSelected ? '#000000' : '#ffffff',
                         flexShrink: 0
                       }}>
                       {getAccountInitials(account)}
@@ -443,7 +443,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                               background: 'rgba(28, 28, 30, 0.98)',
                               backdropFilter: 'blur(20px)',
                               border: '1px solid rgba(255, 255, 255, 0.15)',
-                              borderRadius: '12px',
+                              borderRadius: '8px',
                               padding: '8px',
                               minWidth: '200px',
                               zIndex: 1000,

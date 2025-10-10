@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
-import { ArrowUpDown, DollarSign, QrCode, Send } from 'lucide-react';
 import React from 'react';
+
+import { HistoryIcon, PaperPlaneIcon, QRCodeIcon, SwapIcon } from '../common/CustomIcons';
 
 interface ActionButton {
   id: string;
@@ -13,36 +14,36 @@ interface ActionButton {
 interface ModernQuickActionsProps {
   onSend: () => void;
   onReceive: () => void;
-  onBuy: () => void;
+  onHistory: () => void;
   onExchange: () => void;
 }
 
-export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, onReceive, onBuy, onExchange }) => {
+export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, onReceive, onHistory, onExchange }) => {
   const actions: ActionButton[] = [
     {
       id: 'receive',
       label: 'Receive',
-      icon: <QrCode size={24} color="#ffffff" />,
+      icon: <QRCodeIcon size={24} color="#ffffff" />,
       onClick: onReceive
     },
     {
       id: 'send',
       label: 'Send',
-      icon: <Send size={24} color="#ffffff" />,
+      icon: <PaperPlaneIcon size={24} color="#ffffff" />,
       onClick: onSend
     },
     {
       id: 'swap',
       label: 'Swap',
-      icon: <ArrowUpDown size={24} color="#ffffff" />,
+      icon: <SwapIcon size={24} color="#ffffff" />,
       onClick: onExchange,
       disabled: false
     },
     {
-      id: 'buy',
-      label: 'Buy',
-      icon: <DollarSign size={24} color="#ffffff" />,
-      onClick: onBuy
+      id: 'history',
+      label: 'History',
+      icon: <HistoryIcon size={24} color="#ffffff" />,
+      onClick: onHistory
     }
   ];
 
@@ -101,8 +102,8 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, 
               style={{
                 width: '48px',
                 height: '48px',
-                borderRadius: '12px',
-                background: action.disabled ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                background: action.disabled ? 'rgba(255, 255, 255, 0.1)' : '#313131',
                 border: action.disabled ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(255, 255, 255, 0.2)',
                 display: 'flex',
                 alignItems: 'center',
@@ -115,7 +116,7 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, 
               style={{
                 fontSize: '13px',
                 fontWeight: '600',
-                color: action.disabled ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.9)',
+                color: action.disabled ? 'rgba(255, 255, 255, 0.3)' : '#ffffff',
                 textAlign: 'center'
               }}>
               {action.label}

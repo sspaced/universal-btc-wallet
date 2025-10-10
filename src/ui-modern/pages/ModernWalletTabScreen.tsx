@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
 import {
-  useAccountBalance,
-  useAccounts,
-  useCurrentAccount,
-  useFetchBalanceCallback,
-  useReloadAccounts,
-  useSetCurrentAccountCallback
+    useAccountBalance,
+    useAccounts,
+    useCurrentAccount,
+    useFetchBalanceCallback,
+    useReloadAccounts,
+    useSetCurrentAccountCallback
 } from '@/ui/state/accounts/hooks';
 import { useIsUnlocked } from '@/ui/state/global/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
@@ -131,9 +131,8 @@ export const ModernWalletTabScreen: React.FC = () => {
     navigate('ReceiveScreen');
   };
 
-  const handleBuy = () => {
-    // TODO: Show buy BTC modal
-    console.log('Buy BTC');
+  const handleHistory = () => {
+    navigate('HistoryScreen');
   };
 
   const handleExchange = () => {
@@ -247,7 +246,7 @@ export const ModernWalletTabScreen: React.FC = () => {
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        background: '#000000',
+        background: '#121212',
         overflow: 'hidden',
         position: 'relative'
       }}>
@@ -281,7 +280,7 @@ export const ModernWalletTabScreen: React.FC = () => {
         <ModernQuickActions
           onSend={handleSend}
           onReceive={handleReceive}
-          onBuy={handleBuy}
+          onHistory={handleHistory}
           onExchange={handleExchange}
         />
 
@@ -301,6 +300,7 @@ export const ModernWalletTabScreen: React.FC = () => {
 
       {/* Swap Modal */}
       <ModernSwapModal isOpen={swapModalVisible} onClose={() => setSwapModalVisible(false)} />
+
     </div>
   );
 };

@@ -32,7 +32,7 @@ export const ModernBalanceCard: React.FC<ModernBalanceCardProps> = ({
       transition={{ duration: 0.5 }}
       style={{
         backgroundColor: 'rgba(255, 255, 255, 0.06)',
-        borderRadius: '12px',
+        borderRadius: '8px',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         padding: '16px',
         backdropFilter: 'blur(10px)'

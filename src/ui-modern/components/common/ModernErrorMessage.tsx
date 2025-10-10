@@ -113,7 +113,7 @@ export const ModernErrorMessage: React.FC<ModernErrorMessageProps> = ({
       style={{
         backgroundColor: colors.background,
         border: `1px solid ${colors.border}`,
-        borderRadius: '12px',
+        borderRadius: '8px',
         padding: '12px 16px',
         display: 'flex',
         alignItems: 'center',

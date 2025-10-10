@@ -65,7 +65,7 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        background: '#000000',
+        background: '#121212',
         overflow: 'hidden'
       }}>
       {/* Header avec animation */}

@@ -41,7 +41,7 @@ export const ModernTxFailScreen: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
-        backgroundColor: '#000000',
+        backgroundColor: '#121212',
         color: '#ffffff'
       }}>
       <ModernHeader title={t('transaction_failed')} onBack={handleBack} showBackButton={true} />

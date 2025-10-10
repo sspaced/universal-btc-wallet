@@ -36,7 +36,7 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
         background: 'rgba(255, 255, 255, 0.05)',
         backdropFilter: 'blur(10px)',
         border: isHovered ? '1px solid rgba(114, 227, 173, 0.6)' : '1px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '12px',
+        borderRadius: '8px',
         padding: '16px',
         cursor: 'pointer',
         transition: 'all 0.3s ease',

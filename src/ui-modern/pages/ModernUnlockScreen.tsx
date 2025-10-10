@@ -82,7 +82,7 @@ export const ModernUnlockScreen: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        backgroundColor: '#242424',
+        backgroundColor: '#121212',
         padding: '20px',
         overflow: 'hidden'
       }}>
@@ -103,7 +103,7 @@ export const ModernUnlockScreen: React.FC = () => {
           style={{
             width: '80px',
             height: '80px',
-            borderRadius: '20px',
+            borderRadius: '12px',
             backgroundColor: 'rgba(255, 255, 255, 0.05)',
             display: 'flex',
             alignItems: 'center',

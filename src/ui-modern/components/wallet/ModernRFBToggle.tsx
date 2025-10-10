@@ -23,7 +23,7 @@ export const ModernRFBToggle: React.FC<ModernRFBToggleProps> = ({
       transition={{ duration: 0.5 }}
       style={{
         backgroundColor: 'rgba(255, 255, 255, 0.06)',
-        borderRadius: '12px',
+        borderRadius: '8px',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         padding: '16px',
         backdropFilter: 'blur(10px)'
@@ -64,7 +64,7 @@ export const ModernRFBToggle: React.FC<ModernRFBToggleProps> = ({
           style={{
             width: '44px',
             height: '24px',
-            borderRadius: '12px',
+            borderRadius: '8px',
             border: 'none',
             backgroundColor: enabled ? '#007aff' : 'rgba(255, 255, 255, 0.2)',
             cursor: disabled ? 'not-allowed' : 'pointer',

@@ -17,11 +17,11 @@ import { BackIcon } from '../components/common/Icons';
 import { ModernButton } from '../components/common/ModernButton';
 import { ModernErrorMessage } from '../components/common/ModernErrorMessage';
 import {
-  ModernAddressInput,
-  ModernAmountInput,
-  ModernBalanceCard,
-  ModernFeeSelector,
-  ModernRFBToggle
+    ModernAddressInput,
+    ModernAmountInput,
+    ModernBalanceCard,
+    ModernFeeSelector,
+    ModernRFBToggle
 } from '../components/wallet';
 
 export const ModernSendScreen: React.FC = () => {
@@ -177,7 +177,7 @@ export const ModernSendScreen: React.FC = () => {
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#000000',
+        backgroundColor: '#121212',
         overflow: 'hidden'
       }}>
       {/* Header */}

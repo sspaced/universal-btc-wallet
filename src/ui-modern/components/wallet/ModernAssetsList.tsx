@@ -165,7 +165,7 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
               padding: '16px',
               background: 'rgba(255, 255, 255, 0.02)',
               border: '1px solid rgba(255, 255, 255, 0.05)',
-              borderRadius: '12px',
+              borderRadius: '8px',
               animation: 'pulse 2s infinite'
             }}>
             <div
@@ -245,7 +245,7 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
               background: asset.type === 'btc' ? 'rgba(247, 147, 26, 0.05)' : 'rgba(255, 255, 255, 0.02)',
               border:
                 asset.type === 'btc' ? '1px solid rgba(247, 147, 26, 0.2)' : '1px solid rgba(255, 255, 255, 0.05)',
-              borderRadius: '12px',
+              borderRadius: '8px',
               cursor: asset.type === 'btc' ? 'default' : 'pointer',
               transition: 'all 0.2s ease',
               position: 'relative'

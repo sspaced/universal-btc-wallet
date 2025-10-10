@@ -59,7 +59,8 @@ export const ModernSwapButton: React.FC<ModernSwapButtonProps> = ({ onSwap, disa
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '2px'
+              gap: '2px',
+              transform: 'rotate(90deg)'
             }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path

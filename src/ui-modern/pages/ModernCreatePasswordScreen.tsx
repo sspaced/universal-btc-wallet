@@ -127,7 +127,7 @@ export const ModernCreatePasswordScreen: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#242424'
+        backgroundColor: '#121212'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -142,13 +142,12 @@ export const ModernCreatePasswordScreen: React.FC = () => {
           style={{
             width: '64px',
             height: '64px',
-            borderRadius: '16px',
+            borderRadius: '12px',
             backgroundColor: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 20px',
-            boxShadow: '0 6px 12px rgba(255, 255, 255, 0.3)'
           }}>
           <CustomLogo size="32px" color="#231f20" />
         </motion.div>
@@ -248,7 +247,7 @@ export const ModernCreatePasswordScreen: React.FC = () => {
             onClick={handleCreate}
             disabled={!isValid || loading}
             loading={loading}
-            leftIcon={<Plus style={{ width: '16px', height: '16px', color: '#ffffff' }} />}
+            leftIcon={<Plus style={{ width: '20px', height: '20px', color: '#000000', display: 'flex', alignItems: 'center' }} />}
             style={{ flex: 2 }}>
             Create Wallet
           </ModernButton>

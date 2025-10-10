@@ -89,7 +89,7 @@ export const ModernFeeSelector: React.FC<ModernFeeSelectorProps> = ({
               style={{
                 flex: 1,
                 padding: '16px 12px',
-                borderRadius: '12px',
+                borderRadius: '8px',
                 border: '1.5px solid',
                 borderColor: isSelected ? option.color || '#007aff' : 'rgba(255, 255, 255, 0.2)',
                 backgroundColor: isSelected ? `${option.color || '#007aff'}20` : 'rgba(255, 255, 255, 0.06)',

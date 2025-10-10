@@ -65,7 +65,7 @@ export const ModernWelcomeScreen: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#242424'
+        backgroundColor: '#121212'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -81,13 +81,12 @@ export const ModernWelcomeScreen: React.FC = () => {
               style={{
                 width: '72px',
                 height: '72px',
-                borderRadius: '18px',
+                borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 24px',
-                backgroundColor: '#ffffff',
-                boxShadow: '0 6px 12px rgba(255, 255, 255, 0.3)'
+                backgroundColor: '#ffffff'
               }}>
               <CustomLogo size="40px" color="#231f20" />
             </motion.div>
@@ -128,7 +127,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="primary"
               size="large"
               fullWidth
-              leftIcon={<Plus style={{ width: '20px', height: '20px', margin: '0 auto', color: '#ffffff' }} />}
+              leftIcon={<Plus style={{ width: '20px', height: '20px', color: '#000000', display: 'flex', alignItems: 'center' }} />}
               onClick={handleCreateWallet}>
               Create New Wallet
             </ModernButton>
@@ -137,7 +136,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="secondary"
               size="large"
               fullWidth
-              leftIcon={<Download style={{ width: '20px', height: '20px', margin: '0 auto', color: '#ffffff' }} />}
+              leftIcon={<Download style={{ width: '20px', height: '20px', color: '#ffffff', display: 'flex', alignItems: 'center' }} />}
               onClick={handleImportWallet}>
               Import Existing Wallet
             </ModernButton>
@@ -146,7 +145,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="tertiary"
               size="large"
               fullWidth
-              leftIcon={<Cpu style={{ width: '20px', height: '20px', margin: '0 auto', color: '#ffffff' }} />}
+              leftIcon={<Cpu style={{ width: '20px', height: '20px', color: '#ffffff', display: 'flex', alignItems: 'center' }} />}
               onClick={handleConnectHardware}>
               Connect Hardware Wallet
             </ModernButton>

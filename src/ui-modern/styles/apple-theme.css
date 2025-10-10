@@ -203,7 +203,7 @@ h6 {
 /* Apple Button Primary (Filled) */
 .apple-button-primary {
   background-color: var(--apple-blue);
-  color: white;
+  color: #000000;
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(114, 227, 173, 0.25);
 }
@@ -266,21 +266,21 @@ h6 {
   padding: 6px 14px;
   font-size: 13px;
   min-height: 32px;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .apple-button-medium {
   padding: 10px 18px;
   font-size: 15px;
   min-height: 40px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .apple-button-large {
   padding: 12px 20px;
   font-size: 16px;
   min-height: 44px;
-  border-radius: 11px;
+  border-radius: 8px;
 }
 
 /* Apple Card Style */

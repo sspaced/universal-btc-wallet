@@ -118,7 +118,7 @@ export const ModernAddressTypeScreen: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         padding: '16px',
-        backgroundColor: '#000000'
+        backgroundColor: '#121212'
       }}>
       {/* Header */}
       <motion.div

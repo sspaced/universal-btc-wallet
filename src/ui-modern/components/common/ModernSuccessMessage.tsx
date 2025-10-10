@@ -35,7 +35,7 @@ export const ModernSuccessMessage: React.FC<ModernSuccessMessageProps> = ({
       style={{
         backgroundColor: 'rgba(52, 199, 89, 0.1)',
         border: '1px solid rgba(52, 199, 89, 0.3)',
-        borderRadius: '12px',
+        borderRadius: '8px',
         padding: '12px 16px',
         display: 'flex',
         alignItems: 'center',

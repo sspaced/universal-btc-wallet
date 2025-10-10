@@ -59,7 +59,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#242424'
+        backgroundColor: '#121212'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -68,41 +68,37 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
         style={{ width: '100%', maxWidth: '520px' }}>
         {/* Success Icon */}
         <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{
-            scale: 1,
-            opacity: 1
-          }}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
           transition={{
-            delay: 0.1,
-            type: "spring",
-            stiffness: 260,
-            damping: 20
+            type: 'spring',
+            stiffness: 200,
+            damping: 15,
+            delay: 0.2
           }}
           style={{
-            width: '72px',
-            height: '72px',
-            borderRadius: '18px',
-            backgroundColor: '#72e3ad',
+            width: '80px',
+            height: '80px',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(114, 227, 173, 0.2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 12px',
-            boxShadow: '0 6px 12px rgba(114, 227, 173, 0.3)'
+            margin: '0 auto 24px',
+            border: '2px solid rgba(114, 227, 173, 0.3)'
           }}>
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
-            animate={{
-              scale: 1,
-              opacity: 1
-            }}
-            transition={{
-              delay: 0.3,
-              type: "spring",
-              stiffness: 400,
-              damping: 25
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            style={{
+              width: '40px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}>
-            <Check style={{ width: '36px', height: '36px', color: '#ffffff' }} />
+            <Check size={40} color="#72e3ad" />
           </motion.div>
         </motion.div>
 

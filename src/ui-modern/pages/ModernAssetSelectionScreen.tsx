@@ -7,12 +7,12 @@ import { useNavigate } from '@/ui/pages/MainRoute';
 import { BackIcon } from '../components/common/Icons';
 import { ModernButton } from '../components/common/ModernButton';
 import { ModernAssetsList } from '../components/wallet';
-import { useUnifiedAssets } from '../hooks/useUnifiedAssets';
+import { useAssets } from '../providers/AssetProvider';
 
 export const ModernAssetSelectionScreen: React.FC = () => {
   const { t } = useI18n();
   const navigate = useNavigate();
-  const { assets, loading } = useUnifiedAssets();
+  const { assets, loading } = useAssets();
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleBack = () => {

@@ -1,5 +1,7 @@
-import { lazy, useCallback, useEffect, useRef } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef } from 'react';
 import { HashRouter, Route, Routes, useNavigate as useNavigateOrigin } from 'react-router-dom';
+
+import { AssetProvider } from '@/ui-modern/providers/AssetProvider';
 
 import CAT20TokenScreen from '@/ui/pages/CAT20/CAT20TokenScreen';
 import MergeCAT20HistoryScreen from '@/ui/pages/CAT20/MergeCAT20HistoryScreen';
@@ -592,13 +594,15 @@ const Main = () => {
 
   return (
     <HashRouter>
-      <Routes>
-        {Object.keys(routes)
-          .map((v) => routes[v])
-          .map((v) => (
-            <Route key={v.path} path={v.path} element={<ErrorBoundary>{v.element}</ErrorBoundary>} />
-          ))}
-      </Routes>
+      <AssetProvider>
+        <Routes>
+          {Object.keys(routes)
+            .map((v) => routes[v])
+            .map((v) => (
+              <Route key={v.path} path={v.path} element={<ErrorBoundary>{v.element}</ErrorBoundary>} />
+            ))}
+        </Routes>
+      </AssetProvider>
     </HashRouter>
   );
 };

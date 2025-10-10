@@ -24,7 +24,7 @@ import { Asset, ModernAssetsList } from '../components/wallet/ModernAssetsList';
 import { ModernBalanceHeader } from '../components/wallet/ModernBalanceHeader';
 import { ModernQuickActions } from '../components/wallet/ModernQuickActions';
 import { ModernSettingsPanel } from '../components/wallet/ModernSettingsPanel';
-import { useUnifiedAssets } from '../hooks/useUnifiedAssets';
+import { useAssets } from '../providers/AssetProvider';
 
 export const ModernWalletTabScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -59,8 +59,8 @@ export const ModernWalletTabScreen: React.FC = () => {
     console.log('===================');
   }, [currentAccount, accountBalance, isUnlocked]);
 
-  // Fetch unified assets
-  const { assets: unifiedAssets, loading: assetsLoading } = useUnifiedAssets();
+  // Fetch unified assets with caching (via Context Provider)
+  const { assets: unifiedAssets, loading: assetsLoading, isRefreshing, refreshAssets } = useAssets();
 
   // Redirect to unlock if not unlocked
   useEffect(() => {
@@ -139,6 +139,7 @@ export const ModernWalletTabScreen: React.FC = () => {
 
   const handleRefreshBalance = () => {
     fetchBalance();
+    refreshAssets(); // Refresh les assets aussi
   };
 
   const handleSelectAccount = async (account: Account) => {
@@ -272,6 +273,7 @@ export const ModernWalletTabScreen: React.FC = () => {
           accountBalance={accountBalance}
           enableRefresh={isSidePanel}
           onRefresh={handleRefreshBalance}
+          isRefreshing={isRefreshing}
         />
 
         {/* Quick Actions */}

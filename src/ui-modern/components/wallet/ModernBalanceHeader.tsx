@@ -15,12 +15,14 @@ interface ModernBalanceHeaderProps {
   };
   enableRefresh?: boolean;
   onRefresh?: () => void;
+  isRefreshing?: boolean;
 }
 
 export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
   accountBalance,
   enableRefresh = false,
-  onRefresh
+  onRefresh,
+  isRefreshing = false
 }) => {
   const chainType = useChainType();
   const btcUnit = useBTCUnit();
@@ -375,20 +377,26 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={onRefresh}
+            disabled={isRefreshing}
             style={{
               background: 'rgba(255, 255, 255, 0.08)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               borderRadius: '8px',
               padding: '6px 10px',
-              cursor: 'pointer',
+              cursor: isRefreshing ? 'not-allowed' : 'pointer',
               fontSize: '14px',
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: isRefreshing ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.7)',
               transition: 'all 0.2s ease',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              opacity: isRefreshing ? 0.6 : 1
             }}>
-            <RefreshIcon size={18} />
+            <motion.div
+              animate={isRefreshing ? { rotate: 360 } : { rotate: 0 }}
+              transition={isRefreshing ? { duration: 1, repeat: Infinity, ease: 'linear' } : { duration: 0.2 }}>
+              <RefreshIcon size={18} />
+            </motion.div>
           </motion.button>
         )}
       </div>

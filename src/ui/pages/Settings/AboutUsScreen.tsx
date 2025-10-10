@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL, VERSION } from '@/shared/constant';
@@ -108,7 +109,7 @@ export default function AboutUsScreen() {
                   gap: 0
                 }}
                 onClick={() => window.open('https://unisat.io/extension/update')}>
-                <Icon icon="arrowUp" size={14} />
+                <ArrowRight size={14} color="rgba(255, 255, 255, 0.6)" />
                 <Text
                   text={t('new_update_available')}
                   style={{ marginLeft: 3, whiteSpace: 'nowrap', color: '#EBB94C' }}
@@ -139,7 +140,7 @@ export default function AboutUsScreen() {
                 onClick={() => window.open(TERMS_OF_SERVICE_URL)}>
                 <Row style={{ justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                   <Text text={t('terms_of_service')} preset="regular" size="sm" style={{ color: 'white' }} />
-                  <Icon icon="arrow-right" size={20} color="textDim" />
+                  <ArrowRight size={20} color="rgba(255, 255, 255, 0.6)" />
                 </Row>
               </Row>
               <Row
@@ -152,7 +153,7 @@ export default function AboutUsScreen() {
                 onClick={() => window.open(PRIVACY_POLICY_URL)}>
                 <Row style={{ justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                   <Text text={t('privacy_policy')} preset="regular" size="sm" style={{ color: 'white' }} />
-                  <Icon icon="arrow-right" size={20} color="textDim" />
+                  <ArrowRight size={20} color="rgba(255, 255, 255, 0.6)" />
                 </Row>
               </Row>
             </div>

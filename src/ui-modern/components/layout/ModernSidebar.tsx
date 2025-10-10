@@ -190,8 +190,8 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                     }}
                     style={{
                       width: '100%',
-                      background: isSelected ? 'rgba(0, 122, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)',
-                      border: isSelected ? '1px solid rgba(0, 122, 255, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
+                      background: isSelected ? 'rgba(114, 227, 173, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+                      border: isSelected ? '1px solid rgba(114, 227, 173, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
                       borderRadius: '12px',
                       padding: '12px',
                       marginBottom: '8px',
@@ -221,7 +221,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                         height: '40px',
                         borderRadius: '10px',
                         background: isSelected
-                          ? 'linear-gradient(135deg, #007aff 0%, #0056cc 100%)'
+                          ? 'linear-gradient(135deg, #72e3ad 0%, #5dd39a 100%)'
                           : 'linear-gradient(135deg, #444 0%, #333 100%)',
                         display: 'flex',
                         alignItems: 'center',

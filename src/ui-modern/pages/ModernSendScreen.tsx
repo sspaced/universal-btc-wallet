@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { COIN_DUST } from '@/shared/constant';
@@ -7,11 +7,12 @@ import { RawTxInfo } from '@/shared/types';
 import { useTools } from '@/ui/components/ActionComponent';
 import { useI18n } from '@/ui/hooks/useI18n';
 import { useNavigate } from '@/ui/pages/MainRoute';
+import { usePrice } from '@/ui/provider/PriceProvider';
 import { useAccountBalance } from '@/ui/state/accounts/hooks';
 import { useBTCUnit, useChain } from '@/ui/state/settings/hooks';
 import { useBitcoinTx, useFetchUtxosCallback, usePrepareSendBTCCallback } from '@/ui/state/transactions/hooks';
 import { useUiTxCreateScreen, useUpdateUiTxCreateScreen } from '@/ui/state/ui/hooks';
-import { amountToSatoshis, isValidAddress, satoshisToAmount } from '@/ui/utils';
+import { amountToSatoshis, isValidAddress, satoshisToAmount, useWallet } from '@/ui/utils';
 
 import { BackIcon } from '../components/common/Icons';
 import { ModernButton } from '../components/common/ModernButton';
@@ -28,6 +29,8 @@ export const ModernSendScreen: React.FC = () => {
   const bitcoinTx = useBitcoinTx();
   const btcUnit = useBTCUnit();
   const chain = useChain();
+  const wallet = useWallet();
+  const { coinPrice } = usePrice();
 
   // Get selected asset from navigation state
   const selectedAsset = (location.state as any)?.selectedAsset as Asset | undefined;
@@ -49,9 +52,36 @@ export const ModernSendScreen: React.FC = () => {
   const [selectedFeeOption, setSelectedFeeOption] = useState<'slow' | 'medium' | 'high' | 'custom'>('medium');
   const [customFeeRate, setCustomFeeRate] = useState('');
 
+  // Token price states
+  const [tokenPrice, setTokenPrice] = useState<number | null>(null);
+  const [isLoadingPrice, setIsLoadingPrice] = useState(false);
+
   // Hooks
   const fetchUtxos = useFetchUtxosCallback();
   const prepareSendBTC = usePrepareSendBTCCallback();
+
+  // Fonction pour fetch le prix du token spécifique
+  const fetchTokenPrice = useCallback(async () => {
+    if (!selectedAsset || selectedAsset.type === 'btc') {
+      setTokenPrice(null);
+      return;
+    }
+
+    setIsLoadingPrice(true);
+    try {
+      if (selectedAsset.type === 'simplicity') {
+        const priceMap = await wallet.getSimplicitysPrice([selectedAsset.symbol || selectedAsset.name]);
+        const price = priceMap[selectedAsset.symbol || selectedAsset.name];
+        setTokenPrice(price ? price.curPrice : 0);
+      }
+      // Ajouter d'autres types de tokens si nécessaire (runes, cat20, etc.)
+    } catch (error) {
+      console.error('Failed to fetch token price:', error);
+      setTokenPrice(0);
+    } finally {
+      setIsLoadingPrice(false);
+    }
+  }, [selectedAsset, wallet]);
 
   // Computed values
   const toSatoshis = useMemo(() => {
@@ -62,13 +92,46 @@ export const ModernSendScreen: React.FC = () => {
   const dustAmount = useMemo(() => satoshisToAmount(COIN_DUST), [COIN_DUST]);
   const availableAmount = satoshisToAmount(accountBalance.availableBalance);
 
-  // USD value calculation
+  // USD value calculation - SE MET À JOUR EN TEMPS RÉEL selon l'input
   const usdValue = useMemo(() => {
-    if (!inputAmount) return '0.00';
-    const btcAmount = parseFloat(inputAmount);
-    const usd = btcAmount * 50000; // Replace with actual price from context
-    return usd.toFixed(2);
-  }, [inputAmount]);
+    if (!inputAmount || parseFloat(inputAmount) === 0) return '0.00';
+
+    const inputAmountNum = parseFloat(inputAmount);
+
+    if (!selectedAsset || selectedAsset.type === 'btc') {
+      // Pour BTC - utiliser le prix BTC standard
+      const btcAmount = inputAmountNum;
+      const btcPrice = coinPrice?.btc || 50000; // Fallback si pas de prix
+      const usd = btcAmount * btcPrice;
+      return usd.toFixed(2);
+    }
+
+    // Pour les tokens spécifiques
+    if (tokenPrice && tokenPrice > 0) {
+      // Le tokenPrice est en satoshis par unité de token
+      // Calculer la valeur en satoshis du montant saisi
+      const valueInSats = inputAmountNum * tokenPrice;
+
+      // Convertir les satoshis en BTC puis en USD
+      const btcPrice = coinPrice?.btc || 50000;
+      const usdValue = (valueInSats / 100000000) * btcPrice;
+
+      return usdValue.toFixed(2);
+    }
+
+    // Si pas de prix disponible, essayer d'utiliser la valeur de l'asset
+    if (selectedAsset.usdValue && selectedAsset.usdValue !== '-') {
+      const assetAmount = parseFloat(selectedAsset.amount);
+      if (assetAmount > 0) {
+        const totalUsdValue = parseFloat(selectedAsset.usdValue.replace('$', '').replace(',', ''));
+        const ratio = inputAmountNum / assetAmount;
+        const inputUsdValue = totalUsdValue * ratio;
+        return inputUsdValue.toFixed(2);
+      }
+    }
+
+    return isLoadingPrice ? '...' : '0.00';
+  }, [inputAmount, selectedAsset, tokenPrice, coinPrice, isLoadingPrice]);
 
   // Initialize
   useEffect(() => {
@@ -77,6 +140,11 @@ export const ModernSendScreen: React.FC = () => {
       tools.showLoading(false);
     });
   }, []);
+
+  // Fetch le prix au montage ou changement d'asset
+  useEffect(() => {
+    fetchTokenPrice();
+  }, [fetchTokenPrice]);
 
   // Validation and transaction preparation
   useEffect(() => {
@@ -433,7 +501,9 @@ export const ModernSendScreen: React.FC = () => {
                 </motion.button>
               </div>
               {/* USD Value */}
-              <div style={{ marginTop: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>~${usdValue}</div>
+              <div style={{ marginTop: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>
+                {isLoadingPrice ? '~$...' : `~$${usdValue}`}
+              </div>
             </div>
 
             {/* Separator */}

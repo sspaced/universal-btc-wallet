@@ -15,6 +15,7 @@ interface ModernCurrencySelectorProps {
   availableCurrencies: Currency[];
   disabled?: boolean;
   label?: string;
+  onDropdownToggle?: (isOpen: boolean) => void;
 }
 
 export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
@@ -22,19 +23,25 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
   onCurrencySelect,
   availableCurrencies,
   disabled = false,
-  label
+  label,
+  onDropdownToggle
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = (open: boolean) => {
+    setIsOpen(open);
+    onDropdownToggle?.(open);
+  };
 
   const handleCurrencyClick = (currency: Currency) => {
     if (!currency.disabled) {
       onCurrencySelect(currency);
-      setIsOpen(false);
+      toggleDropdown(false);
     }
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%' }}>
+    <div style={{ position: 'relative', width: '100%', zIndex: isOpen ? 1000 : 'auto' }}>
       {label && (
         <div
           style={{
@@ -50,7 +57,7 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
 
       <motion.button
         whileTap={{ scale: disabled ? 1 : 0.98 }}
-        onClick={() => !disabled && setIsOpen(!isOpen)}
+        onClick={() => !disabled && toggleDropdown(!isOpen)}
         disabled={disabled}
         style={{
           width: '100%',
@@ -167,9 +174,10 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
             border: '1px solid rgba(255, 255, 255, 0.1)',
             borderRadius: '8px',
             padding: '8px',
-            zIndex: 1000,
+            zIndex: 9999,
             maxHeight: '200px',
-            overflowY: 'auto'
+            overflowY: 'auto',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
           }}>
           {availableCurrencies.map((currency, index) => (
             <motion.button

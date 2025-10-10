@@ -127,7 +127,6 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="primary"
               size="large"
               fullWidth
-              leftIcon={<Plus style={{ width: '20px', height: '20px', color: '#000000', display: 'flex', alignItems: 'center' }} />}
               onClick={handleCreateWallet}>
               Create New Wallet
             </ModernButton>
@@ -136,7 +135,6 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="secondary"
               size="large"
               fullWidth
-              leftIcon={<Download style={{ width: '20px', height: '20px', color: '#ffffff', display: 'flex', alignItems: 'center' }} />}
               onClick={handleImportWallet}>
               Import Existing Wallet
             </ModernButton>
@@ -145,7 +143,6 @@ export const ModernWelcomeScreen: React.FC = () => {
               variant="tertiary"
               size="large"
               fullWidth
-              leftIcon={<Cpu style={{ width: '20px', height: '20px', color: '#ffffff', display: 'flex', alignItems: 'center' }} />}
               onClick={handleConnectHardware}>
               Connect Hardware Wallet
             </ModernButton>

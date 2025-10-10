@@ -28,16 +28,16 @@ export const ModernSwapButton: React.FC<ModernSwapButtonProps> = ({ onSwap, disa
           width: '56px',
           height: '56px',
           borderRadius: '50%',
-          background: isDisabled ? 'rgba(255, 255, 255, 0.1)' : 'linear-gradient(135deg, #007aff 0%, #5856d6 100%)',
+          background: isDisabled ? 'rgba(44, 44, 46, 0.9)' : '#34c759',
           border: 'none',
           cursor: isDisabled ? 'not-allowed' : 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: isDisabled ? 'none' : '0 8px 32px rgba(0, 122, 255, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+          boxShadow: isDisabled ? 'none' : '0 8px 32px rgba(52, 199, 89, 0.4)',
           zIndex: 10,
           position: 'relative',
-          opacity: isDisabled ? 0.5 : 1,
+          opacity: isDisabled ? 0.9 : 1,
           transition: 'all 0.3s ease'
         }}>
         {loading ? (
@@ -91,7 +91,7 @@ export const ModernSwapButton: React.FC<ModernSwapButtonProps> = ({ onSwap, disa
             width: '80px',
             height: '80px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(0, 122, 255, 0.2) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(52, 199, 89, 0.2) 0%, transparent 70%)',
             zIndex: 1
           }}
         />

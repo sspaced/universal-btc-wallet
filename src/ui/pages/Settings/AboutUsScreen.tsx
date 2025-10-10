@@ -74,7 +74,7 @@ export default function AboutUsScreen() {
         <Column gap="lg" style={{ padding: spacing.small }}>
           {/* Logo Section */}
           <Column itemsCenter style={{ marginTop: spacing.tiny }}>
-            <CustomLogo size="82px" color="#231f20" />
+            <CustomLogo size="82px" color="#ffffff" />
           </Column>
 
           {/* App Name */}

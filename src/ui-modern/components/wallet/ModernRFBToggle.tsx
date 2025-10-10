@@ -101,9 +101,9 @@ export const ModernRFBToggle: React.FC<ModernRFBToggleProps> = ({
         style={{
           marginTop: '12px',
           padding: '8px 12px',
-          backgroundColor: 'rgba(0, 122, 255, 0.1)',
+          backgroundColor: 'rgba(52, 199, 89, 0.1)',
           borderRadius: '8px',
-          border: '1px solid rgba(0, 122, 255, 0.2)'
+          border: '1px solid rgba(52, 199, 89, 0.2)'
         }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <svg
@@ -111,7 +111,7 @@ export const ModernRFBToggle: React.FC<ModernRFBToggleProps> = ({
             height="14"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#007aff"
+            stroke="#34c759"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round">
@@ -122,7 +122,7 @@ export const ModernRFBToggle: React.FC<ModernRFBToggleProps> = ({
           <span
             style={{
               fontSize: '11px',
-              color: '#007aff',
+              color: '#34c759',
               fontWeight: '500'
             }}>
             RBF allows you to increase the fee after sending if the transaction is taking too long to confirm.

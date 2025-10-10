@@ -204,7 +204,6 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({ visibl
                   style={{
                     width: '100%',
                     background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
                     borderRadius: '8px',
                     padding: '12px',
                     marginBottom: '8px',
@@ -220,11 +219,9 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({ visibl
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                   }}>
                   {/* Icon */}
                   <div
@@ -252,7 +249,7 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({ visibl
                     <div
                       style={{
                         fontSize: '14px',
-                        fontWeight: '600',
+                        fontWeight: '400',
                         color: 'rgba(255, 255, 255, 0.9)',
                         marginBottom: '2px',
                         overflow: 'hidden',

@@ -130,20 +130,20 @@ export const ModernAmountInput: React.FC<ModernAmountInputProps> = ({
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: '#007aff',
+                  color: '#34c759',
                   fontSize: '12px',
                   fontWeight: '600',
                   cursor: 'pointer',
                   padding: '6px 10px',
                   borderRadius: '8px',
-                  backgroundColor: 'rgba(0, 122, 255, 0.1)',
+                  backgroundColor: 'rgba(52, 199, 89, 0.1)',
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(0, 122, 255, 0.2)';
+                  e.currentTarget.style.backgroundColor = 'rgba(52, 199, 89, 0.2)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(0, 122, 255, 0.1)';
+                  e.currentTarget.style.backgroundColor = 'rgba(52, 199, 89, 0.1)';
                 }}>
                 MAX
               </motion.button>

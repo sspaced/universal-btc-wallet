@@ -19,7 +19,6 @@ import { getUiType, useWallet } from '@/ui/utils';
 import { BottomNavTab, ModernBottomNav } from '../components/layout/ModernBottomNav';
 import { ModernMainContent } from '../components/layout/ModernMainContent';
 import { Account, ModernSidebar } from '../components/layout/ModernSidebar';
-import { ModernSwapModal } from '../components/modals/ModernSwapModal';
 import { ModernAccount, ModernAccountSelector } from '../components/wallet/ModernAccountSelector';
 import { Asset, ModernAssetsList } from '../components/wallet/ModernAssetsList';
 import { ModernBalanceHeader } from '../components/wallet/ModernBalanceHeader';
@@ -37,7 +36,6 @@ export const ModernWalletTabScreen: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [buyBtcModalVisible, setBuyBtcModalVisible] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [swapModalVisible, setSwapModalVisible] = useState(false);
 
   // Hooks from original WalletTabScreen
   const accountBalance = useAccountBalance();
@@ -111,7 +109,7 @@ export const ModernWalletTabScreen: React.FC = () => {
         // Already on home
         break;
       case 'swap':
-        setSwapModalVisible(true);
+        navigate('ModernSwapScreen');
         break;
       case 'history':
         navigate('HistoryScreen');
@@ -136,7 +134,7 @@ export const ModernWalletTabScreen: React.FC = () => {
   };
 
   const handleExchange = () => {
-    setSwapModalVisible(true);
+    navigate('ModernSwapScreen');
   };
 
   const handleRefreshBalance = () => {
@@ -297,9 +295,6 @@ export const ModernWalletTabScreen: React.FC = () => {
         onClose={() => setShowSettings(false)}
         onNavigate={(route: any) => navigate(route)}
       />
-
-      {/* Swap Modal */}
-      <ModernSwapModal isOpen={swapModalVisible} onClose={() => setSwapModalVisible(false)} />
 
     </div>
   );

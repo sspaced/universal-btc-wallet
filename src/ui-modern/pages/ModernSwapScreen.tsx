@@ -17,26 +17,32 @@ export const ModernSwapScreen: React.FC = () => {
   // States
   const [fromAmount, setFromAmount] = useState('');
   const [toAmount, setToAmount] = useState('');
-  const [fromCurrency, setFromCurrency] = useState<Currency>({ 
-    symbol: 'BTC', 
-    name: 'Bitcoin', 
-    balance: '0.0012',
+  const [fromDropdownOpen, setFromDropdownOpen] = useState(false);
+  const [toDropdownOpen, setToDropdownOpen] = useState(false);
+
+  // Use real BTC balance from wallet
+  const btcBalance = accountBalance?.amount || '0';
+
+  const [fromCurrency, setFromCurrency] = useState<Currency>({
+    symbol: 'BTC',
+    name: 'Bitcoin',
+    balance: btcBalance,
     icon: <span style={{ fontSize: '18px' }}>₿</span>
   });
-  const [toCurrency, setToCurrency] = useState<Currency>({ 
-    symbol: 'USDT', 
-    name: 'Tether', 
-    balance: '100.00',
+  const [toCurrency, setToCurrency] = useState<Currency>({
+    symbol: 'USDT',
+    name: 'Tether',
+    balance: '0',
     icon: <span style={{ fontSize: '18px' }}>₮</span>
   });
 
-  // Available currencies
+  // Available currencies - Use real balance for BTC from wallet
   const availableCurrencies: Currency[] = [
-    { symbol: 'BTC', name: 'Bitcoin', balance: '0.0012', icon: <span style={{ fontSize: '18px' }}>₿</span> },
-    { symbol: 'USDT', name: 'Tether', balance: '100.00', icon: <span style={{ fontSize: '18px' }}>₮</span> },
-    { symbol: 'USDC', name: 'USD Coin', balance: '50.00', icon: <span style={{ fontSize: '18px' }}>◉</span> },
-    { symbol: 'ETH', name: 'Ethereum', balance: '0.5', icon: <span style={{ fontSize: '18px' }}>Ξ</span> },
-    { symbol: 'LTC', name: 'Litecoin', balance: '2.5', icon: <span style={{ fontSize: '18px' }}>Ł</span> }
+    { symbol: 'BTC', name: 'Bitcoin', balance: btcBalance, icon: <span style={{ fontSize: '18px' }}>₿</span> },
+    { symbol: 'USDT', name: 'Tether', balance: '0', icon: <span style={{ fontSize: '18px' }}>₮</span> },
+    { symbol: 'USDC', name: 'USD Coin', balance: '0', icon: <span style={{ fontSize: '18px' }}>◉</span> },
+    { symbol: 'ETH', name: 'Ethereum', balance: '0', icon: <span style={{ fontSize: '18px' }}>Ξ</span> },
+    { symbol: 'LTC', name: 'Litecoin', balance: '0', icon: <span style={{ fontSize: '18px' }}>Ł</span> }
   ];
 
   const handleSwapCurrencies = () => {
@@ -125,12 +131,13 @@ export const ModernSwapScreen: React.FC = () => {
           flexDirection: 'column',
           gap: '20px'
         }}>
-        
+
         {/* From Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}>
+          transition={{ duration: 0.3, delay: 0.1 }}
+          style={{ position: 'relative', zIndex: fromDropdownOpen ? 10 : toDropdownOpen ? 1 : 2 }}>
           <ModernSwapCard
             type="pay"
             amount={fromAmount}
@@ -141,6 +148,7 @@ export const ModernSwapScreen: React.FC = () => {
             label="You pay"
             placeholder="0.00"
             balance={fromCurrency.balance}
+            onDropdownToggle={setFromDropdownOpen}
           />
         </motion.div>
 
@@ -152,7 +160,9 @@ export const ModernSwapScreen: React.FC = () => {
           style={{
             display: 'flex',
             justifyContent: 'center',
-            margin: '-10px 0'
+            margin: '-10px 0',
+            position: 'relative',
+            zIndex: fromDropdownOpen || toDropdownOpen ? 0 : 5
           }}>
           <ModernSwapButton
             onSwap={handleSwapCurrencies}
@@ -164,7 +174,8 @@ export const ModernSwapScreen: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.3 }}>
+          transition={{ duration: 0.3, delay: 0.3 }}
+          style={{ position: 'relative', zIndex: toDropdownOpen ? 10 : fromDropdownOpen ? 1 : 2 }}>
           <ModernSwapCard
             type="receive"
             amount={toAmount}
@@ -175,6 +186,7 @@ export const ModernSwapScreen: React.FC = () => {
             label="You receive"
             placeholder="0.00"
             balance={toCurrency.balance}
+            onDropdownToggle={setToDropdownOpen}
           />
         </motion.div>
 

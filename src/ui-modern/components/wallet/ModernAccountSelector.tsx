@@ -32,6 +32,19 @@ export const ModernAccountSelector: React.FC<ModernAccountSelectorProps> = ({
     return account.alianName || `Account ${account.index + 1}`;
   };
 
+  const shortenAddress = (address: string): string => {
+    if (!address || address.length < 8) return address;
+    return `${address.slice(0, 4)}...${address.slice(-4)}`;
+  };
+
+  const handleCopyAddress = async () => {
+    try {
+      await navigator.clipboard.writeText(currentAccount.address);
+    } catch (err) {
+      console.error('Failed to copy address:', err);
+    }
+  };
+
   return (
     <div
       style={{
@@ -43,89 +56,67 @@ export const ModernAccountSelector: React.FC<ModernAccountSelectorProps> = ({
         background: 'transparent',
       }}
     >
-      {/* Left: Account Info */}
-      <div
+      {/* Hamburger Menu Button */}
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        onClick={onToggleSidebar}
         style={{
+          background: 'transparent',
+          border: 'none',
+          padding: '8px',
+          cursor: 'pointer',
           display: 'flex',
+          flexDirection: 'column',
+          gap: '5px',
           alignItems: 'center',
-          gap: '12px',
-          flex: 1,
-          minWidth: 0,
+          justifyContent: 'center',
         }}
       >
-        {/* Account Avatar and Name (clickable to open sidebar) */}
-        <motion.button
-          whileTap={{ scale: 0.98 }}
-          onClick={onToggleSidebar}
+        {/* Hamburger Lines */}
+        <div style={{ width: '24px', height: '2px', background: 'rgba(255, 255, 255, 0.8)', borderRadius: '2px' }} />
+        <div style={{ width: '24px', height: '2px', background: 'rgba(255, 255, 255, 0.8)', borderRadius: '2px' }} />
+        <div style={{ width: '24px', height: '2px', background: 'rgba(255, 255, 255, 0.8)', borderRadius: '2px' }} />
+      </motion.button>
+
+      {/* Address with Copy Button */}
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        onClick={handleCopyAddress}
+        style={{
+          background: 'transparent',
+          border: 'none',
+          padding: '6px 8px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+        }}
+      >
+        <span
           style={{
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '8px',
-            padding: '6px 12px 6px 6px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            cursor: 'pointer',
-            flex: 1,
-            minWidth: 0,
-            transition: 'all 0.2s ease',
+            fontSize: '12px',
+            fontWeight: '500',
+            color: 'rgba(255, 255, 255, 0.7)',
+            letterSpacing: '0.3px',
           }}
         >
-          {/* Avatar */}
-          <div
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              background: 'linear-gradient(135deg, #72e3ad 0%, #5dd39a 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '12px',
-              fontWeight: '600',
-              color: '#000000',
-              flexShrink: 0,
-            }}
-          >
-            {getAccountInitials(currentAccount)}
-          </div>
-
-          {/* Account Name */}
-          <div
-            style={{
-              flex: 1,
-              minWidth: 0,
-              textAlign: 'left',
-            }}
-          >
-            <div
-              style={{
-                fontSize: '14px',
-                fontWeight: '600',
-                color: '#ffffff',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {getAccountName(currentAccount)}
-            </div>
-          </div>
-
-          {/* Dropdown Arrow */}
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="rgba(255, 255, 255, 0.5)"
-            style={{ flexShrink: 0 }}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6l4 4 4-4" />
-          </svg>
-        </motion.button>
-      </div>
-
+          {shortenAddress(currentAccount.address)}
+        </span>
+        {/* Copy Icon */}
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="rgba(255, 255, 255, 0.6)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+      </motion.button>
     </div>
   );
 };

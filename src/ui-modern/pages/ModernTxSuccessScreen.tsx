@@ -100,7 +100,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
             <h1
               style={{
                 fontSize: '28px',
-                fontWeight: '700',
+                fontWeight: '500',
                 color: '#ffffff',
                 marginBottom: '8px',
                 letterSpacing: '-0.5px',
@@ -111,6 +111,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
             <p
               style={{
                 fontSize: '16px',
+                fontWeight: '400',
                 color: 'rgba(255, 255, 255, 0.7)',
                 lineHeight: '1.5',
                 margin: 0,
@@ -133,13 +134,14 @@ export const ModernTxSuccessScreen: React.FC = () => {
                     fontSize: '14px',
                     color: 'rgba(255, 255, 255, 0.6)',
                     marginBottom: '8px',
-                    fontWeight: '500'
+                    fontWeight: '400'
                   }}>
                   Transaction ID
                 </p>
                 <p
                   style={{
                     fontSize: '12px',
+                    fontWeight: '400',
                     color: 'rgba(255, 255, 255, 0.8)',
                     fontFamily: 'monospace',
                     wordBreak: 'break-all',

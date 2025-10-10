@@ -17,6 +17,8 @@ interface ModernSwapCardProps {
   showQuickAmounts?: boolean;
   onQuickAmount?: (percentage: number) => void;
   balance?: string;
+  onDropdownToggle?: (isOpen: boolean) => void;
+  zIndex?: number;
 }
 
 export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
@@ -31,7 +33,9 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
   disabled = false,
   showQuickAmounts = false,
   onQuickAmount,
-  balance
+  balance,
+  onDropdownToggle,
+  zIndex = 1
 }) => {
   const isPay = type === 'pay';
 
@@ -46,7 +50,9 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
         border: '1px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '10px',
         padding: '20px',
-        position: 'relative'
+        position: 'relative',
+        overflow: 'visible',
+        zIndex
       }}>
       {/* Label */}
       <div
@@ -68,16 +74,6 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
           placeholder={placeholder}
           type="number"
           disabled={disabled}
-          style={{
-            fontSize: '24px',
-            fontWeight: '600',
-            textAlign: 'left',
-            padding: '16px 0',
-            background: 'transparent',
-            border: 'none',
-            color: amount ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
-            letterSpacing: '-0.022em'
-          }}
         />
       </div>
 
@@ -89,6 +85,7 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
             onCurrencySelect={onCurrencySelect}
             availableCurrencies={availableCurrencies}
             disabled={disabled}
+            onDropdownToggle={onDropdownToggle}
           />
         </div>
 
@@ -132,41 +129,9 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
         )}
       </div>
 
-      {/* Balance and Additional Info */}
-      <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div
-            style={{
-              width: '16px',
-              height: '16px',
-              borderRadius: '4px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '10px',
-              color: 'rgba(255, 255, 255, 0.5)'
-            }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
-              />
-            </svg>
-          </div>
-          <span
-            style={{
-              fontSize: '12px',
-              color: 'rgba(255, 255, 255, 0.5)',
-              letterSpacing: '-0.08px'
-            }}>
-            {isPay ? '<0.01' : '<0.01'}
-          </span>
-        </div>
-
-        {balance && (
+      {/* Balance Info */}
+      {balance && (
+        <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <span
             style={{
               fontSize: '12px',
@@ -175,8 +140,8 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
             }}>
             Balance: {balance}
           </span>
-        )}
-      </div>
+        </div>
+      )}
     </motion.div>
   );
 };

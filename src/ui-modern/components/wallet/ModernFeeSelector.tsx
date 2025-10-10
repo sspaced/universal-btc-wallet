@@ -24,24 +24,21 @@ const defaultOptions: FeeOption[] = [
     label: 'Slow',
     rate: 1,
     description: 'Lowest fee',
-    estimatedTime: '~30 min',
-    color: 'rgba(255, 255, 255, 0.3)'
+    estimatedTime: '~30 min'
   },
   {
     id: 'normal',
     label: 'Normal',
     rate: 5,
     description: 'Recommended',
-    estimatedTime: '~10 min',
-    color: 'rgba(255, 255, 255, 0.3)'
+    estimatedTime: '~10 min'
   },
   {
     id: 'fast',
     label: 'Fast',
     rate: 10,
     description: 'Highest priority',
-    estimatedTime: '~5 min',
-    color: 'rgba(255, 255, 255, 0.3)'
+    estimatedTime: '~5 min'
   }
 ];
 
@@ -91,8 +88,8 @@ export const ModernFeeSelector: React.FC<ModernFeeSelectorProps> = ({
                 padding: '16px 12px',
                 borderRadius: '8px',
                 border: '1.5px solid',
-                borderColor: isSelected ? option.color || '#007aff' : 'rgba(255, 255, 255, 0.2)',
-                backgroundColor: isSelected ? `${option.color || '#007aff'}20` : 'rgba(255, 255, 255, 0.06)',
+                borderColor: isSelected ? option.color || '#34c759' : 'rgba(255, 255, 255, 0.2)',
+                backgroundColor: isSelected ? `${option.color || '#34c759'}20` : 'rgba(255, 255, 255, 0.06)',
                 color: '#ffffff',
                 cursor: disabled ? 'not-allowed' : 'pointer',
                 transition: 'all 0.2s ease',
@@ -114,7 +111,7 @@ export const ModernFeeSelector: React.FC<ModernFeeSelectorProps> = ({
                     width: '8px',
                     height: '8px',
                     borderRadius: '50%',
-                    backgroundColor: option.color || '#007aff'
+                    backgroundColor: option.color || '#34c759'
                   }}
                 />
               )}

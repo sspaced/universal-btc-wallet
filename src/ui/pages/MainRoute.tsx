@@ -11,10 +11,13 @@ import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
 import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
 import { ModernSendScreen } from '../../ui-modern/pages/ModernSendScreen';
+import { ModernSwapScreen } from '../../ui-modern/pages/ModernSwapScreen';
 import { ModernTxConfirmScreen } from '../../ui-modern/pages/ModernTxConfirmScreen';
 import { ModernTxFailScreen } from '../../ui-modern/pages/ModernTxFailScreen';
 import { ModernTxSuccessScreen } from '../../ui-modern/pages/ModernTxSuccessScreen';
 import { ModernUnlockScreen } from '../../ui-modern/pages/ModernUnlockScreen';
+import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
+import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
 import { Content, Icon } from '../components';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { accountActions } from '../state/accounts/reducer';
@@ -155,6 +158,10 @@ export const routes = {
     path: '/wallet/receive',
     element: <ModernReceiveScreen />
   },
+  ModernSwapScreen: {
+    path: '/wallet/swap',
+    element: <ModernSwapScreen />
+  },
 
   TxCreateScreen: {
     path: '/wallet/tx/create',
@@ -222,7 +229,15 @@ export const routes = {
   },
   HistoryScreen: {
     path: '/wallet/history',
-    element: <HistoryScreen />
+    element: <ModernHistoryScreen />
+  },
+  ModernHistoryScreen: {
+    path: '/wallet/modern-history',
+    element: <ModernHistoryScreen />
+  },
+  ModernHistoryDetail: {
+    path: '/wallet/history/detail',
+    element: <ModernHistoryDetail />
   },
   ApprovalScreen: {
     path: '/approval',

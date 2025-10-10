@@ -39,6 +39,20 @@ export const ModernInput: React.FC<ModernInputProps> = ({
   const hasError = Boolean(error);
   const hasSuccess = success && !hasError;
 
+  const handleIncrement = () => {
+    if (type === 'number' && !disabled) {
+      const currentValue = parseFloat(value) || 0;
+      onChange((currentValue + 1).toString());
+    }
+  };
+
+  const handleDecrement = () => {
+    if (type === 'number' && !disabled) {
+      const currentValue = parseFloat(value) || 0;
+      onChange((currentValue - 1).toString());
+    }
+  };
+
   const getBorderColor = () => {
     if (hasError) return 'rgba(255, 59, 48, 0.5)'; // Apple red
     if (hasSuccess) return 'rgba(52, 199, 89, 0.5)'; // Apple green
@@ -120,7 +134,59 @@ export const ModernInput: React.FC<ModernInputProps> = ({
           }}
         />
 
-        {rightIcon && (
+        {type === 'number' && !disabled ? (
+          <div
+            style={{
+              position: 'absolute',
+              right: '8px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '2px'
+            }}>
+            <button
+              type="button"
+              onClick={handleIncrement}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                padding: '2px 4px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'rgba(255, 255, 255, 0.6)',
+                transition: 'color 0.2s'
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)')}>
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                <path d="M1 5L5 1L9 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={handleDecrement}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                padding: '2px 4px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'rgba(255, 255, 255, 0.6)',
+                transition: 'color 0.2s'
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)')}>
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+        ) : rightIcon ? (
           <div
             style={{
               position: 'absolute',
@@ -133,7 +199,7 @@ export const ModernInput: React.FC<ModernInputProps> = ({
             }}>
             {rightIcon}
           </div>
-        )}
+        ) : null}
       </div>
 
       {(error || helperText) && (

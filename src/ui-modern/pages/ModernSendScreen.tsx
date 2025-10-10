@@ -123,7 +123,8 @@ export const ModernSendScreen: React.FC = () => {
   };
 
   const handleMaxAmount = () => {
-    setUiState({ inputAmount: availableAmount.toString() });
+    const maxAmount = getAvailableAmount();
+    setUiState({ inputAmount: maxAmount.toString() });
   };
 
   const handleAddressChange = (address: string) => {
@@ -165,21 +166,21 @@ export const ModernSendScreen: React.FC = () => {
   // Helper function to get asset icon
   const getAssetIcon = () => {
     if (!selectedAsset) {
-      // Default BTC icon
+      // Default BTC icon in green
       return (
         <div
           style={{
             width: '80px',
             height: '80px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, #f7931a 0%, #ffb347 100%)',
+            background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '40px',
             fontWeight: 'bold',
             color: '#ffffff',
-            boxShadow: '0 8px 24px rgba(247, 147, 26, 0.3)'
+            boxShadow: '0 8px 24px rgba(52, 199, 89, 0.3)'
           }}>
           ₿
         </div>
@@ -193,14 +194,14 @@ export const ModernSendScreen: React.FC = () => {
             width: '80px',
             height: '80px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, #f7931a 0%, #ffb347 100%)',
+            background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '40px',
             fontWeight: 'bold',
             color: '#ffffff',
-            boxShadow: '0 8px 24px rgba(247, 147, 26, 0.3)'
+            boxShadow: '0 8px 24px rgba(52, 199, 89, 0.3)'
           }}>
           ₿
         </div>
@@ -209,46 +210,47 @@ export const ModernSendScreen: React.FC = () => {
 
     if (selectedAsset.icon) {
       return (
-        <img
-          src={selectedAsset.icon}
-          alt={selectedAsset.name}
+        <div
           style={{
             width: '80px',
             height: '80px',
             borderRadius: '50%',
-            objectFit: 'cover',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)'
-          }}
-        />
+            background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            boxShadow: '0 8px 24px rgba(52, 199, 89, 0.3)'
+          }}>
+          <img
+            src={selectedAsset.icon}
+            alt={selectedAsset.name}
+            style={{
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%',
+              objectFit: 'cover'
+            }}
+          />
+        </div>
       );
     }
 
-    // Default icon based on type
-    const iconColor =
-      {
-        rune: '#8b5cf6',
-        alkane: '#06b6d4',
-        cat20: '#10b981',
-        cat721: '#f59e0b',
-        brc20: '#ef4444',
-        ordinal: '#6b7280',
-        simplicity: '#3b82f6'
-      }[selectedAsset.type] || '#6b7280';
-
+    // Default icon - always green with first letter
     return (
       <div
         style={{
           width: '80px',
           height: '80px',
           borderRadius: '50%',
-          backgroundColor: iconColor,
+          background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: '#ffffff',
           fontSize: '32px',
           fontWeight: '700',
-          boxShadow: `0 8px 24px ${iconColor}50`
+          boxShadow: '0 8px 24px rgba(52, 199, 89, 0.3)'
         }}>
         {selectedAsset.symbol?.charAt(0) || selectedAsset.name.charAt(0)}
       </div>
@@ -364,7 +366,7 @@ export const ModernSendScreen: React.FC = () => {
           autoFocus={true}
         />
 
-        {/* Amount Input with Fees - Combined Box */}
+        {/* Amount Input with Fees - Combined */}
         <div>
           {/* Label and Available Balance */}
           <div style={{ marginBottom: '8px' }}>
@@ -384,16 +386,16 @@ export const ModernSendScreen: React.FC = () => {
             </div>
           </div>
 
-          {/* Combined Input Container with Rounded Corners */}
+          {/* Combined Box */}
           <div
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.06)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '16px',
+              borderRadius: '12px',
               overflow: 'hidden'
             }}>
             {/* Amount Input Section */}
-            <div style={{ padding: '16px' }}>
+            <div style={{ padding: '12px 16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <input
                   type="text"
@@ -406,11 +408,11 @@ export const ModernSendScreen: React.FC = () => {
                     border: 'none',
                     outline: 'none',
                     color: '#ffffff',
-                    fontSize: '20px',
+                    fontSize: '16px',
                     fontWeight: '600'
                   }}
                 />
-                <span style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '600' }}>
+                <span style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '600' }}>
                   {getAssetDisplayName()}
                 </span>
                 <motion.button
@@ -424,99 +426,89 @@ export const ModernSendScreen: React.FC = () => {
                     fontSize: '12px',
                     fontWeight: '700',
                     cursor: 'pointer',
-                    padding: '8px 16px',
+                    padding: '6px 12px',
                     borderRadius: '8px'
                   }}>
                   Max
                 </motion.button>
               </div>
-
               {/* USD Value */}
-              <div style={{ marginTop: '8px', fontSize: '14px', color: 'rgba(255, 255, 255, 0.5)' }}>~${usdValue}</div>
+              <div style={{ marginTop: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)' }}>~${usdValue}</div>
             </div>
 
-            {/* Vertical Separator */}
-            <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)', margin: '0' }} />
+            {/* Separator */}
+            <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
 
-            {/* Fee Buttons Section */}
-            <div style={{ padding: '16px' }}>
-              <div style={{ marginBottom: '12px' }}>
-                <label style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.7)', fontWeight: '600' }}>
-                  Frais réseau
-                </label>
-              </div>
+            {/* Network Fees - Band Style */}
+            <div
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                display: 'flex',
+                gap: '0'
+              }}>
+              {(['slow', 'medium', 'high', 'custom'] as const).map((option, index) => {
+                const isSelected = selectedFeeOption === option;
+                const labels = { slow: 'Lent', medium: 'Moyen', high: 'Rapide', custom: 'Custom' };
+                const isFirst = index === 0;
+                const isLast = index === 3;
 
-              <div style={{ display: 'flex', gap: '8px' }}>
-                {(['slow', 'medium', 'high', 'custom'] as const).map((option) => {
-                  const isSelected = selectedFeeOption === option;
-                  const labels = { slow: 'Lent', medium: 'Moyen', high: 'Rapide', custom: 'Custom' };
-
-                  if (option === 'custom') {
-                    return (
-                      <div
-                        key={option}
-                        style={{
-                          flex: 1,
-                          padding: '10px 8px',
-                          borderRadius: '12px',
-                          border: '1.5px solid',
-                          borderColor: isSelected ? '#34c759' : 'rgba(255, 255, 255, 0.2)',
-                          backgroundColor: isSelected ? 'rgba(52, 199, 89, 0.15)' : 'transparent',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}>
-                        <input
-                          type="text"
-                          value={customFeeRate}
-                          onChange={(e) => handleCustomFeeChange(e.target.value)}
-                          onFocus={() => handleFeeOptionChange('custom')}
-                          placeholder="Custom"
-                          style={{
-                            width: '100%',
-                            background: 'none',
-                            border: 'none',
-                            outline: 'none',
-                            color: '#ffffff',
-                            fontSize: '13px',
-                            fontWeight: '600',
-                            textAlign: 'center'
-                          }}
-                        />
-                      </div>
-                    );
-                  }
-
+                if (option === 'custom') {
                   return (
-                    <motion.button
+                    <div
                       key={option}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => handleFeeOptionChange(option)}
                       style={{
                         flex: 1,
-                        padding: '10px 8px',
-                        borderRadius: '12px',
-                        border: '1.5px solid',
-                        borderColor: isSelected ? '#34c759' : 'rgba(255, 255, 255, 0.2)',
-                        backgroundColor: isSelected ? 'rgba(52, 199, 89, 0.15)' : 'transparent',
-                        color: '#ffffff',
-                        fontSize: '13px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
+                        padding: '12px 8px',
+                        backgroundColor: isSelected ? '#34c759' : 'transparent',
+                        borderBottomRightRadius: isLast ? '12px' : '0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         transition: 'all 0.2s ease'
                       }}>
-                      {labels[option]}
-                    </motion.button>
+                      <input
+                        type="text"
+                        value={customFeeRate}
+                        onChange={(e) => handleCustomFeeChange(e.target.value)}
+                        onFocus={() => handleFeeOptionChange('custom')}
+                        placeholder="Custom"
+                        style={{
+                          width: '100%',
+                          background: 'none',
+                          border: 'none',
+                          outline: 'none',
+                          color: '#ffffff',
+                          fontSize: '13px',
+                          fontWeight: '600',
+                          textAlign: 'center'
+                        }}
+                      />
+                    </div>
                   );
-                })}
-              </div>
+                }
 
-              {/* Fee Rate Display */}
-              <div
-                style={{ marginTop: '12px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>
-                {feeRate} sat/vB • ~{Math.round(feeRate * 0.25 * 100) / 100} sats
-              </div>
+                return (
+                  <motion.button
+                    key={option}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => handleFeeOptionChange(option)}
+                    style={{
+                      flex: 1,
+                      padding: '12px 8px',
+                      border: 'none',
+                      backgroundColor: isSelected ? '#34c759' : 'transparent',
+                      borderBottomLeftRadius: isFirst ? '12px' : '0',
+                      borderBottomRightRadius: isLast ? '12px' : '0',
+                      color: '#ffffff',
+                      fontSize: '13px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}>
+                    {labels[option]}
+                  </motion.button>
+                );
+              })}
             </div>
           </div>
         </div>

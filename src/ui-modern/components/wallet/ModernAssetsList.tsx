@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import React, { useEffect, useMemo } from 'react';
 
+import { useI18n } from '@/ui/hooks/useI18n';
+
 import { PackageIcon } from '../common/ModernIcons';
 
 export interface Asset {
@@ -23,6 +25,7 @@ interface ModernAssetsListProps {
 }
 
 export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, loading = false, onAssetClick }) => {
+  const { t } = useI18n();
   // Debug logs for assets
   useEffect(() => {
     console.log('=== ModernAssetsList DEBUG ===');
@@ -206,8 +209,8 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
           color: 'rgba(255, 255, 255, 0.5)'
         }}>
         <PackageIcon size={48} style={{ marginBottom: '16px', opacity: 0.3 }} />
-        <div style={{ fontSize: '16px', fontWeight: '500', marginBottom: '8px' }}>No assets found</div>
-        <div style={{ fontSize: '14px', opacity: 0.7 }}>Your assets will appear here once you receive them</div>
+        <div style={{ fontSize: '16px', fontWeight: '500', marginBottom: '8px' }}>{t('no_assets_found')}</div>
+        <div style={{ fontSize: '14px', opacity: 0.7 }}>{t('assets_will_appear_here')}</div>
       </div>
     );
   }

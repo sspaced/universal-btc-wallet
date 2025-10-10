@@ -82,7 +82,7 @@ export const ModernAssetSelectionScreen: React.FC = () => {
             margin: 0,
             letterSpacing: '-0.3px'
           }}>
-          {t('select_asset') || 'Sélectionner un asset'}
+          {t('select_asset')}
         </motion.h1>
 
         <div style={{ width: '40px' }} />
@@ -116,7 +116,7 @@ export const ModernAssetSelectionScreen: React.FC = () => {
           </svg>
           <input
             type="text"
-            placeholder="Rechercher..."
+            placeholder={t('search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
@@ -157,7 +157,7 @@ export const ModernAssetSelectionScreen: React.FC = () => {
       {/* Close Button */}
       <div style={{ padding: '16px 20px', borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
         <ModernButton variant="secondary" size="large" fullWidth onClick={handleBack}>
-          {t('close') || 'Fermer'}
+          {t('close')}
         </ModernButton>
       </div>
     </div>

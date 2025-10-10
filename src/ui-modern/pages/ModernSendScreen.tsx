@@ -324,7 +324,7 @@ export const ModernSendScreen: React.FC = () => {
             margin: 0,
             letterSpacing: '-0.3px'
           }}>
-          Envoyer {getAssetDisplayName()}
+          {t('send')} {getAssetDisplayName()}
         </motion.h1>
 
         {/* Spacer */}
@@ -361,8 +361,8 @@ export const ModernSendScreen: React.FC = () => {
         <ModernAddressInput
           value={toInfo.address}
           onChange={handleAddressChange}
-          placeholder="Adresse Base du destinataire"
-          label="Adresse destinataire"
+          placeholder={t('recipient_address_placeholder')}
+          label={t('recipient_address')}
           autoFocus={true}
         />
 
@@ -378,10 +378,10 @@ export const ModernSendScreen: React.FC = () => {
                   color: '#ffffff',
                   letterSpacing: '-0.08px'
                 }}>
-                Montant
+                {t('amount')}
               </label>
               <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>
-                Disponible {getAvailableAmount()} {getAssetDisplayName()}
+                {t('available')} {getAvailableAmount()} {getAssetDisplayName()}
               </span>
             </div>
           </div>
@@ -429,7 +429,7 @@ export const ModernSendScreen: React.FC = () => {
                     padding: '4px 8px',
                     borderRadius: '6px'
                   }}>
-                  Max
+                  {t('max')}
                 </motion.button>
               </div>
               {/* USD Value */}
@@ -448,7 +448,7 @@ export const ModernSendScreen: React.FC = () => {
               }}>
               {(['slow', 'medium', 'high', 'custom'] as const).map((option, index) => {
                 const isSelected = selectedFeeOption === option;
-                const labels = { slow: 'Lent', medium: 'Moyen', high: 'Rapide', custom: 'Custom' };
+                const labels = { slow: t('slow'), medium: t('medium'), high: t('fast'), custom: t('custom') };
                 const isFirst = index === 0;
                 const isLast = index === 3;
 
@@ -472,7 +472,7 @@ export const ModernSendScreen: React.FC = () => {
                         value={customFeeRate}
                         onChange={(e) => handleCustomFeeChange(e.target.value)}
                         onFocus={() => handleFeeOptionChange('custom')}
-                        placeholder="Custom"
+                        placeholder={t('custom')}
                         style={{
                           width: '100%',
                           background: 'none',
@@ -526,8 +526,8 @@ export const ModernSendScreen: React.FC = () => {
             border: '1px solid rgba(255, 255, 255, 0.08)'
           }}>
           <div>
-            <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff', marginBottom: '2px' }}>RBF</div>
-            <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>Replace-by-fee</div>
+            <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff', marginBottom: '2px' }}>{t('rbf')}</div>
+            <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>{t('replace_by_fee')}</div>
           </div>
 
           <motion.button
@@ -538,7 +538,7 @@ export const ModernSendScreen: React.FC = () => {
               height: '24px',
               borderRadius: '12px',
               border: 'none',
-              backgroundColor: enableRBF ? '#007aff' : 'rgba(255, 255, 255, 0.2)',
+              backgroundColor: enableRBF ? '#72e3ad' : 'rgba(255, 255, 255, 0.2)',
               cursor: 'pointer',
               position: 'relative',
               transition: 'background-color 0.2s ease'
@@ -577,7 +577,7 @@ export const ModernSendScreen: React.FC = () => {
           borderTop: '1px solid rgba(255, 255, 255, 0.05)'
         }}>
         <ModernButton variant="secondary" size="large" fullWidth onClick={handleBack} style={{ flex: 1 }}>
-          Annuler
+          {t('cancel')}
         </ModernButton>
         <ModernButton
           variant="primary"
@@ -586,7 +586,7 @@ export const ModernSendScreen: React.FC = () => {
           disabled={disabled}
           onClick={handleNext}
           style={{ flex: 1 }}>
-          Suivant
+          {t('next')}
         </ModernButton>
       </div>
     </div>

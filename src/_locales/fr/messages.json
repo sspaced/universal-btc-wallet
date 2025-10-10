@@ -2414,5 +2414,98 @@
   },
   "swap_send": {
     "message": "Envoyer"
+  },
+  "send": {
+    "message": "Envoyer"
+  },
+  "recipient_address_placeholder": {
+    "message": "Entrez l'adresse du destinataire"
+  },
+  "recipient_address": {
+    "message": "Adresse Destinataire"
+  },
+  "available": {
+    "message": "Disponible"
+  },
+  "max": {
+    "message": "Max"
+  },
+  "slow": {
+    "message": "Lent"
+  },
+  "medium": {
+    "message": "Moyen"
+  },
+  "fast": {
+    "message": "Rapide"
+  },
+  "custom": {
+    "message": "Personnalisé"
+  },
+  "rbf": {
+    "message": "RBF"
+  },
+  "replace_by_fee": {
+    "message": "Replace-by-fee"
+  },
+  "cancel": {
+    "message": "Annuler"
+  },
+  "next": {
+    "message": "Suivant"
+  },
+  "select_asset": {
+    "message": "Sélectionner un Actif"
+  },
+  "search": {
+    "message": "Rechercher..."
+  },
+  "close": {
+    "message": "Fermer"
+  },
+  "send_to": {
+    "message": "Envoyer à"
+  },
+  "network_fee": {
+    "message": "Frais de Réseau"
+  },
+  "fee_rate": {
+    "message": "Taux de Frais"
+  },
+  "total": {
+    "message": "Total"
+  },
+  "replace_by_fee_enabled": {
+    "message": "Replace-by-fee activé"
+  },
+  "enter_valid_bitcoin_address": {
+    "message": "Entrez une adresse Bitcoin valide"
+  },
+  "valid_bitcoin_address": {
+    "message": "Adresse Bitcoin valide"
+  },
+  "invalid_bitcoin_address_format": {
+    "message": "Format d'adresse Bitcoin invalide"
+  },
+  "enter_bitcoin_address": {
+    "message": "Entrez l'adresse Bitcoin"
+  },
+  "no_assets_found": {
+    "message": "Aucun actif trouvé"
+  },
+  "assets_will_appear_here": {
+    "message": "Vos actifs apparaîtront ici une fois que vous les recevrez"
+  },
+  "swap": {
+    "message": "Échanger"
+  },
+  "history": {
+    "message": "Historique"
+  },
+  "home": {
+    "message": "Accueil"
+  },
+  "settings": {
+    "message": "Paramètres"
   }
 }

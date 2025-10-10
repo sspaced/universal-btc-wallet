@@ -2,8 +2,6 @@ import { motion } from 'framer-motion';
 import React, { useMemo } from 'react';
 
 import { RawTxInfo } from '@/shared/types';
-import { useI18n } from '@/ui/hooks/useI18n';
-import { useAccountAddress } from '@/ui/state/accounts/hooks';
 import { useBTCUnit, useChain } from '@/ui/state/settings/hooks';
 import { satoshisToAmount } from '@/ui/utils';
 
@@ -81,7 +79,7 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
                 marginBottom: '8px',
                 fontWeight: '500'
               }}>
-              Send to
+              {t('send_to')}
             </p>
             <div
               style={{
@@ -117,7 +115,7 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
                   marginBottom: '8px',
                   fontWeight: '500'
                 }}>
-                Amount
+                {t('amount')}
               </p>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '6px' }}>
                 <span
@@ -158,7 +156,7 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
                   color: 'rgba(255, 255, 255, 0.6)',
                   fontWeight: '500'
                 }}>
-                Network Fee
+                {t('network_fee')}
               </span>
               <span
                 style={{
@@ -178,7 +176,7 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
                   color: 'rgba(255, 255, 255, 0.6)',
                   fontWeight: '500'
                 }}>
-                Fee Rate
+                {t('fee_rate')}
               </span>
               <span
                 style={{
@@ -206,7 +204,7 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
                   color: 'rgba(255, 255, 255, 0.9)',
                   fontWeight: '700'
                 }}>
-                Total
+                {t('total')}
               </span>
               <span
                 style={{
@@ -251,7 +249,7 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
               color: 'rgba(247, 147, 26, 0.9)',
               fontWeight: '500'
             }}>
-            Replace-by-fee enabled
+            {t('replace_by_fee_enabled')}
           </span>
         </motion.div>
       )}
@@ -268,18 +266,12 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
           gap: '10px',
           paddingTop: '8px'
         }}>
-        <ModernButton
-          variant="primary"
-          size="large"
-          fullWidth
-          onClick={onConfirm}
-          disabled={loading}
-          loading={loading}>
-          {loading ? 'Confirming...' : 'Confirm and Send'}
+        <ModernButton variant="primary" size="large" fullWidth onClick={onConfirm} disabled={loading} loading={loading}>
+          {loading ? t('confirming') : t('confirm_and_send')}
         </ModernButton>
 
         <ModernButton variant="secondary" size="large" fullWidth onClick={onCancel} disabled={loading}>
-          Cancel
+          {t('cancel')}
         </ModernButton>
       </motion.div>
 

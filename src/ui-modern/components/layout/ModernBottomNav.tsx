@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { ArrowUpDown, Clock, Home, Settings } from 'lucide-react';
 import React from 'react';
 
+import { useI18n } from '@/ui/hooks/useI18n';
+
 export type BottomNavTab = 'home' | 'swap' | 'history' | 'settings';
 
 interface ModernBottomNavProps {
@@ -16,25 +18,27 @@ interface NavItem {
 }
 
 export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onTabChange }) => {
+  const { t } = useI18n();
+
   const navItems: NavItem[] = [
     {
       id: 'home',
-      label: 'Home',
+      label: t('home'),
       icon: <Home size={24} />
     },
     {
       id: 'swap',
-      label: 'Swap',
+      label: t('swap'),
       icon: <ArrowUpDown size={24} />
     },
     {
       id: 'history',
-      label: 'History',
+      label: t('history'),
       icon: <Clock size={24} />
     },
     {
       id: 'settings',
-      label: 'Settings',
+      label: t('settings'),
       icon: <Settings size={24} />
     }
   ];

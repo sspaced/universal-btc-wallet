@@ -2449,5 +2449,98 @@
   },
   "swap_send": {
     "message": "Send"
+  },
+  "send": {
+    "message": "Send"
+  },
+  "recipient_address_placeholder": {
+    "message": "Enter recipient address"
+  },
+  "recipient_address": {
+    "message": "Recipient Address"
+  },
+  "available": {
+    "message": "Available"
+  },
+  "max": {
+    "message": "Max"
+  },
+  "slow": {
+    "message": "Slow"
+  },
+  "medium": {
+    "message": "Medium"
+  },
+  "fast": {
+    "message": "Fast"
+  },
+  "custom": {
+    "message": "Custom"
+  },
+  "rbf": {
+    "message": "RBF"
+  },
+  "replace_by_fee": {
+    "message": "Replace-by-fee"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "next": {
+    "message": "Next"
+  },
+  "select_asset": {
+    "message": "Select Asset"
+  },
+  "search": {
+    "message": "Search..."
+  },
+  "close": {
+    "message": "Close"
+  },
+  "send_to": {
+    "message": "Send to"
+  },
+  "network_fee": {
+    "message": "Network Fee"
+  },
+  "fee_rate": {
+    "message": "Fee Rate"
+  },
+  "total": {
+    "message": "Total"
+  },
+  "replace_by_fee_enabled": {
+    "message": "Replace-by-fee enabled"
+  },
+  "enter_valid_bitcoin_address": {
+    "message": "Enter a valid Bitcoin address"
+  },
+  "valid_bitcoin_address": {
+    "message": "Valid Bitcoin address"
+  },
+  "invalid_bitcoin_address_format": {
+    "message": "Invalid Bitcoin address format"
+  },
+  "enter_bitcoin_address": {
+    "message": "Enter Bitcoin address"
+  },
+  "no_assets_found": {
+    "message": "No assets found"
+  },
+  "assets_will_appear_here": {
+    "message": "Your assets will appear here once you receive them"
+  },
+  "swap": {
+    "message": "Swap"
+  },
+  "history": {
+    "message": "History"
+  },
+  "home": {
+    "message": "Home"
+  },
+  "settings": {
+    "message": "Settings"
   }
 }

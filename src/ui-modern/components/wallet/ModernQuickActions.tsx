@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 
+import { useI18n } from '@/ui/hooks/useI18n';
+
 import { HistoryIcon, PaperPlaneIcon, QRCodeIcon, SwapIcon } from '../common/CustomIcons';
 
 interface ActionButton {
@@ -19,29 +21,31 @@ interface ModernQuickActionsProps {
 }
 
 export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, onReceive, onHistory, onExchange }) => {
+  const { t } = useI18n();
+
   const actions: ActionButton[] = [
     {
       id: 'receive',
-      label: 'Receive',
+      label: t('receive'),
       icon: <QRCodeIcon size={24} color="#ffffff" />,
       onClick: onReceive
     },
     {
       id: 'send',
-      label: 'Send',
+      label: t('send'),
       icon: <PaperPlaneIcon size={24} color="#ffffff" />,
       onClick: onSend
     },
     {
       id: 'swap',
-      label: 'Swap',
+      label: t('swap'),
       icon: <SwapIcon size={24} color="#ffffff" />,
       onClick: onExchange,
       disabled: false
     },
     {
       id: 'history',
-      label: 'History',
+      label: t('history'),
       icon: <HistoryIcon size={24} color="#ffffff" />,
       onClick: onHistory
     }

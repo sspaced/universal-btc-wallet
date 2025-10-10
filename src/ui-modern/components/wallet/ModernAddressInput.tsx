@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 
+import { useI18n } from '@/ui/hooks/useI18n';
 import { isValidAddress } from '@/ui/utils';
 
 import { ModernInput } from '../common/ModernInput';
@@ -19,13 +20,14 @@ export interface ModernAddressInputProps {
 export const ModernAddressInput: React.FC<ModernAddressInputProps> = ({
   value,
   onChange,
-  placeholder = 'Enter Bitcoin address',
-  label = 'Recipient Address',
+  placeholder,
+  label,
   error,
   disabled = false,
   autoFocus = false,
   onBlur
 }) => {
+  const { t } = useI18n();
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -60,17 +62,17 @@ export const ModernAddressInput: React.FC<ModernAddressInputProps> = ({
   };
 
   const getHelperText = () => {
-    if (value.length === 0) return 'Enter a valid Bitcoin address';
-    if (isValid === true) return 'Valid Bitcoin address';
-    if (isValid === false) return 'Invalid Bitcoin address format';
+    if (value.length === 0) return t('enter_valid_bitcoin_address');
+    if (isValid === true) return t('valid_bitcoin_address');
+    if (isValid === false) return t('invalid_bitcoin_address_format');
     return '';
   };
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <ModernInput
-        label={label}
-        placeholder={placeholder}
+        label={label || t('recipient_address')}
+        placeholder={placeholder || t('enter_bitcoin_address')}
         value={value}
         onChange={handleChange}
         onFocus={handleFocus}

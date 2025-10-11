@@ -122,7 +122,7 @@ export const ModernNetworkTypeScreen: React.FC = () => {
             letterSpacing: '-0.5px',
             margin: 0
           }}>
-          Select Network
+          {t('select_network') || 'Select Network'}
         </h1>
       </motion.div>
 

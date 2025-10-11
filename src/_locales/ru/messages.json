@@ -2408,5 +2408,23 @@
   },
   "swap_send": {
     "message": "Отправить"
+  },
+  "enter_current_password": {
+    "message": "Введите текущий пароль"
+  },
+  "enter_new_password": {
+    "message": "Введите новый пароль"
+  },
+  "confirm_new_password": {
+    "message": "Подтвердите новый пароль"
+  },
+  "security_tip": {
+    "message": "Совет по безопасности"
+  },
+  "password_security_tip": {
+    "message": "Используйте надежный пароль длиной не менее 8 символов, включая цифры и специальные символы."
+  },
+  "select_network": {
+    "message": "Выбрать сеть"
   }
 }

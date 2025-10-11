@@ -2401,5 +2401,23 @@
   },
   "swap_send": {
     "message": "Enviar"
+  },
+  "enter_current_password": {
+    "message": "Ingrese su contraseña actual"
+  },
+  "enter_new_password": {
+    "message": "Ingrese su nueva contraseña"
+  },
+  "confirm_new_password": {
+    "message": "Confirme su nueva contraseña"
+  },
+  "security_tip": {
+    "message": "Consejo de seguridad"
+  },
+  "password_security_tip": {
+    "message": "Use una contraseña fuerte con al menos 8 caracteres, incluyendo números y caracteres especiales."
+  },
+  "select_network": {
+    "message": "Seleccionar red"
   }
 }

@@ -2507,5 +2507,23 @@
   },
   "settings": {
     "message": "Paramètres"
+  },
+  "enter_current_password": {
+    "message": "Entrez votre mot de passe actuel"
+  },
+  "enter_new_password": {
+    "message": "Entrez votre nouveau mot de passe"
+  },
+  "confirm_new_password": {
+    "message": "Confirmez votre nouveau mot de passe"
+  },
+  "security_tip": {
+    "message": "Conseil de sécurité"
+  },
+  "password_security_tip": {
+    "message": "Utilisez un mot de passe fort avec au moins 8 caractères, incluant des chiffres et des caractères spéciaux."
+  },
+  "select_network": {
+    "message": "Sélectionner le réseau"
   }
 }

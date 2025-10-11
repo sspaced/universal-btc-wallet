@@ -2411,5 +2411,23 @@
   },
   "swap_send": {
     "message": "送信"
+  },
+  "enter_current_password": {
+    "message": "現在のパスワードを入力"
+  },
+  "enter_new_password": {
+    "message": "新しいパスワードを入力"
+  },
+  "confirm_new_password": {
+    "message": "新しいパスワードを確認"
+  },
+  "security_tip": {
+    "message": "セキュリティのヒント"
+  },
+  "password_security_tip": {
+    "message": "数字と特殊文字を含む、少なくとも8文字の強力なパスワードを使用してください。"
+  },
+  "select_network": {
+    "message": "ネットワークを選択"
   }
 }

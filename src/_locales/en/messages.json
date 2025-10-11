@@ -2542,5 +2542,23 @@
   },
   "settings": {
     "message": "Settings"
+  },
+  "enter_current_password": {
+    "message": "Enter current password"
+  },
+  "enter_new_password": {
+    "message": "Enter new password"
+  },
+  "confirm_new_password": {
+    "message": "Confirm new password"
+  },
+  "security_tip": {
+    "message": "Security Tip"
+  },
+  "password_security_tip": {
+    "message": "Use a strong password with at least 8 characters, including numbers and special characters."
+  },
+  "select_network": {
+    "message": "Select Network"
   }
 }

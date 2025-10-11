@@ -2326,5 +2326,23 @@
   },
   "swap_send": {
     "message": "发送"
+  },
+  "enter_current_password": {
+    "message": "输入当前密码"
+  },
+  "enter_new_password": {
+    "message": "输入新密码"
+  },
+  "confirm_new_password": {
+    "message": "确认新密码"
+  },
+  "security_tip": {
+    "message": "安全提示"
+  },
+  "password_security_tip": {
+    "message": "使用至少8个字符的强密码，包括数字和特殊字符。"
+  },
+  "select_network": {
+    "message": "选择网络"
   }
 }

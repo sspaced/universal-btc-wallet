@@ -2419,5 +2419,23 @@
   },
   "swap_send": {
     "message": "發送"
+  },
+  "enter_current_password": {
+    "message": "輸入當前密碼"
+  },
+  "enter_new_password": {
+    "message": "輸入新密碼"
+  },
+  "confirm_new_password": {
+    "message": "確認新密碼"
+  },
+  "security_tip": {
+    "message": "安全提示"
+  },
+  "password_security_tip": {
+    "message": "使用至少8個字符的強密碼，包括數字和特殊字符。"
+  },
+  "select_network": {
+    "message": "選擇網絡"
   }
 }

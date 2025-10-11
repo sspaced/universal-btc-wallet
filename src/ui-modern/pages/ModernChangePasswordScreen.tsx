@@ -157,7 +157,7 @@ export const ModernChangePasswordScreen: React.FC = () => {
           </label>
           <input
             type="password"
-            placeholder="Entrez votre mot de passe actuel"
+            placeholder={t('enter_current_password') || 'Enter current password'}
             value={currentPassword}
             onChange={(e) => {
               setCurrentPassword(e.target.value);
@@ -225,7 +225,7 @@ export const ModernChangePasswordScreen: React.FC = () => {
           </label>
           <input
             type="password"
-            placeholder="Entrez votre nouveau mot de passe"
+            placeholder={t('enter_new_password') || 'Enter new password'}
             value={newPassword}
             onChange={(e) => {
               setNewPassword(e.target.value);
@@ -293,7 +293,7 @@ export const ModernChangePasswordScreen: React.FC = () => {
           </label>
           <input
             type="password"
-            placeholder="Confirmez votre nouveau mot de passe"
+            placeholder={t('confirm_new_password') || 'Confirm new password'}
             value={confirmPassword}
             onChange={(e) => {
               setConfirmPassword(e.target.value);
@@ -396,7 +396,7 @@ export const ModernChangePasswordScreen: React.FC = () => {
               fontWeight: '600',
               color: '#72e3ad'
             }}>
-            Conseil de sécurité
+            {t('security_tip') || 'Security Tip'}
           </span>
         </div>
         <div
@@ -405,7 +405,8 @@ export const ModernChangePasswordScreen: React.FC = () => {
             color: 'rgba(255, 255, 255, 0.7)',
             lineHeight: '1.5'
           }}>
-          Utilisez un mot de passe fort avec au moins 8 caractères, incluant des chiffres et des caractères spéciaux.
+          {t('password_security_tip') ||
+            'Use a strong password with at least 8 characters, including numbers and special characters.'}
         </div>
       </motion.div>
     </div>

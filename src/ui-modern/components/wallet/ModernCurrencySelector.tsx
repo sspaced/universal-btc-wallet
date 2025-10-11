@@ -16,6 +16,7 @@ interface ModernCurrencySelectorProps {
   disabled?: boolean;
   label?: string;
   onDropdownToggle?: (isOpen: boolean) => void;
+  variant?: 'primary' | 'secondary';
 }
 
 export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
@@ -24,9 +25,13 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
   availableCurrencies,
   disabled = false,
   label,
-  onDropdownToggle
+  onDropdownToggle,
+  variant = 'primary'
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const dropdownBg = variant === 'primary' ? 'rgba(18, 18, 18, 0.98)' : 'rgba(36, 36, 36, 0.98)';
+  const buttonBg = variant === 'primary' ? '#121212' : '#242424';
 
   const toggleDropdown = (open: boolean) => {
     setIsOpen(open);
@@ -41,7 +46,7 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', zIndex: isOpen ? 1000 : 'auto' }}>
+    <div style={{ position: 'relative', width: 'auto', zIndex: isOpen ? 1000 : 'auto' }}>
       {label && (
         <div
           style={{
@@ -60,27 +65,27 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
         onClick={() => !disabled && toggleDropdown(!isOpen)}
         disabled={disabled}
         style={{
-          width: '100%',
-          background: 'rgba(255, 255, 255, 0.06)',
-          border: '1.5px solid rgba(255, 255, 255, 0.2)',
-          borderRadius: '8px',
-          padding: '12px 16px',
+          width: 'auto',
+          background: buttonBg,
+          border: '1px solid rgba(255, 255, 255, 0.14)',
+          borderRadius: '9999px',
+          padding: '6px 10px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          gap: '8px',
           cursor: disabled ? 'not-allowed' : 'pointer',
           opacity: disabled ? 0.5 : 1,
           transition: 'all 0.2s ease'
         }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {selectedCurrency ? (
             <>
               <div
                 style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '8px',
-                  background: 'rgba(255, 255, 255, 0.1)',
+                  width: '22px',
+                  height: '22px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 255, 255, 0.12)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -107,26 +112,16 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
                   </div>
                 )}
               </div>
-              <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <div
                   style={{
-                    fontSize: '16px',
+                    fontSize: '14px',
                     fontWeight: '600',
                     color: '#ffffff',
                     letterSpacing: '-0.022em'
                   }}>
                   {selectedCurrency.symbol}
                 </div>
-                {selectedCurrency.balance && (
-                  <div
-                    style={{
-                      fontSize: '12px',
-                      color: 'rgba(255, 255, 255, 0.5)',
-                      marginTop: '2px'
-                    }}>
-                    Balance: {selectedCurrency.balance}
-                  </div>
-                )}
               </div>
             </>
           ) : (
@@ -150,11 +145,26 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
             display: 'flex',
             alignItems: 'center'
           }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </motion.div>
       </motion.button>
+
+      {/* Overlay to close dropdown when clicking outside */}
+      {isOpen && (
+        <div
+          onClick={() => toggleDropdown(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 9998
+          }}
+        />
+      )}
 
       {/* Dropdown */}
       {isOpen && (
@@ -166,48 +176,48 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
           style={{
             position: 'absolute',
             top: '100%',
-            left: 0,
             right: 0,
-            marginTop: '8px',
-            background: 'rgba(28, 28, 30, 0.95)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '8px',
-            padding: '8px',
+            marginTop: '6px',
+            minWidth: '220px',
+            background: dropdownBg,
+            backdropFilter: 'blur(24px)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            borderRadius: '12px',
+            padding: '6px',
             zIndex: 9999,
-            maxHeight: '200px',
+            maxHeight: '280px',
             overflowY: 'auto',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)'
           }}>
           {availableCurrencies.map((currency, index) => (
             <motion.button
               key={currency.symbol}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-              whileTap={{ scale: 0.98 }}
+              transition={{ delay: index * 0.03 }}
+              whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => handleCurrencyClick(currency)}
               disabled={currency.disabled}
               style={{
                 width: '100%',
                 background: 'transparent',
                 border: 'none',
-                borderRadius: '8px',
-                padding: '12px',
+                borderRadius: '10px',
+                padding: '10px',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '12px',
+                gap: '10px',
                 cursor: currency.disabled ? 'not-allowed' : 'pointer',
                 opacity: currency.disabled ? 0.5 : 1,
-                transition: 'background-color 0.2s ease'
+                transition: 'background-color 0.15s ease'
               }}>
               <div
                 style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '8px',
-                  background: 'rgba(255, 255, 255, 0.1)',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 255, 255, 0.12)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -237,27 +247,29 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
               <div style={{ flex: 1, textAlign: 'left' }}>
                 <div
                   style={{
-                    fontSize: '16px',
+                    fontSize: '15px',
                     fontWeight: '600',
                     color: '#ffffff',
                     letterSpacing: '-0.022em'
                   }}>
                   {currency.symbol}
                 </div>
-                <div
-                  style={{
-                    fontSize: '12px',
-                    color: 'rgba(255, 255, 255, 0.5)',
-                    marginTop: '2px'
-                  }}>
-                  {currency.name}
-                </div>
+                {currency.name !== currency.symbol && (
+                  <div
+                    style={{
+                      fontSize: '11px',
+                      color: 'rgba(255, 255, 255, 0.45)',
+                      marginTop: '2px'
+                    }}>
+                    {currency.name}
+                  </div>
+                )}
               </div>
-              {currency.balance && (
+              {currency.balance && parseFloat(currency.balance) > 0 && (
                 <div
                   style={{
-                    fontSize: '12px',
-                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: '11px',
+                    color: 'rgba(255, 255, 255, 0.45)',
                     textAlign: 'right'
                   }}>
                   {currency.balance}

@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 
-import { ModernInput } from '../common/ModernInput';
 import { Currency, ModernCurrencySelector } from './ModernCurrencySelector';
 
 interface ModernSwapCardProps {
@@ -39,109 +38,99 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
 }) => {
   const isPay = type === 'pay';
 
+  // Style to hide number input arrows
+  const hideNumberInputArrows = `
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  `;
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      style={{
-        background: 'rgba(28, 28, 30, 0.8)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '10px',
-        padding: '10px 12px',
-        position: 'relative',
-        overflow: 'visible',
-        zIndex
-      }}>
-      {/* Label */}
-      <div
+    <>
+      <style>{hideNumberInputArrows}</style>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
         style={{
-          fontSize: '11px',
-          fontWeight: '600',
-          color: 'rgba(255, 255, 255, 0.7)',
-          marginBottom: '6px',
-          letterSpacing: '-0.08px'
+          background: isPay ? 'var(--modern-bg-primary)' : 'var(--modern-bg-secondary)',
+          backdropFilter: 'blur(12px)',
+          border: isPay ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+          borderRadius: '14px',
+          padding: '10px 16px',
+          position: 'relative',
+          overflow: 'visible',
+          zIndex
         }}>
-        {label}
-      </div>
-
-      {/* Amount Input */}
-      <div style={{ marginBottom: '8px' }}>
-        <ModernInput
-          value={amount}
-          onChange={onAmountChange}
-          placeholder={placeholder}
-          type="number"
-          disabled={disabled}
-        />
-      </div>
-
-      {/* Currency Selector and Quick Amounts */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
-        <div style={{ flex: 1 }}>
-          <ModernCurrencySelector
-            selectedCurrency={selectedCurrency}
-            onCurrencySelect={onCurrencySelect}
-            availableCurrencies={availableCurrencies}
-            disabled={disabled}
-            onDropdownToggle={onDropdownToggle}
-          />
+        {/* Label */}
+        <div
+          style={{
+            fontSize: '11px',
+            fontWeight: '500',
+            color: 'rgba(255, 255, 255, 0.6)',
+            marginBottom: '4px',
+            letterSpacing: '-0.2px'
+          }}>
+          {label}
         </div>
 
-        {showQuickAmounts && onQuickAmount && (
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onQuickAmount(0.5)}
+        {/* Amount Input and Currency Selector in same row */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
+          {/* Amount Input - Direct input without sub-box */}
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => onAmountChange(e.target.value)}
+            placeholder={placeholder}
+            disabled={disabled}
+            style={{
+              flex: 1,
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              color: '#ffffff',
+              fontSize: isPay ? '36px' : '42px',
+              fontWeight: '600',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
+              letterSpacing: '-0.5px',
+              padding: 0,
+              margin: 0,
+              width: '100%'
+            }}
+          />
+
+          {/* Currency Selector on the right */}
+          <div style={{ flexShrink: 0 }}>
+            <ModernCurrencySelector
+              selectedCurrency={selectedCurrency}
+              onCurrencySelect={onCurrencySelect}
+              availableCurrencies={availableCurrencies}
+              disabled={disabled}
+              onDropdownToggle={onDropdownToggle}
+              variant={isPay ? 'primary' : 'secondary'}
+            />
+          </div>
+        </div>
+
+        {/* Balance Info */}
+        {balance && (
+          <div style={{ marginTop: '4px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <span
               style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                border: 'none',
-                borderRadius: '8px',
-                padding: '6px 12px',
-                fontSize: '12px',
-                fontWeight: '600',
-                color: '#ffffff',
-                cursor: 'pointer',
-                transition: 'background-color 0.2s ease'
+                fontSize: '10px',
+                color: 'rgba(255, 255, 255, 0.5)',
+                letterSpacing: '-0.2px'
               }}>
-              50%
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onQuickAmount(1)}
-              style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                border: 'none',
-                borderRadius: '8px',
-                padding: '6px 12px',
-                fontSize: '12px',
-                fontWeight: '600',
-                color: '#ffffff',
-                cursor: 'pointer',
-                transition: 'background-color 0.2s ease'
-              }}>
-              Max
-            </motion.button>
+              Balance: {balance}
+            </span>
           </div>
         )}
-      </div>
-
-      {/* Balance Info */}
-      {balance && (
-        <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <span
-            style={{
-              fontSize: '10px',
-              color: 'rgba(255, 255, 255, 0.5)',
-              letterSpacing: '-0.08px'
-            }}>
-            Balance: {balance}
-          </span>
-        </div>
-      )}
-    </motion.div>
+      </motion.div>
+    </>
   );
 };

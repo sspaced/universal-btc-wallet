@@ -7,6 +7,7 @@ import { useAccountBalance } from '@/ui/state/accounts/hooks';
 import { ModernButton } from '../components/common/ModernButton';
 import { ModernHeader } from '../components/layout/ModernHeader';
 import { Currency } from '../components/wallet/ModernCurrencySelector';
+import { ModernSlippageSelector } from '../components/wallet/ModernSlippageSelector';
 import { ModernSwapButton } from '../components/wallet/ModernSwapButton';
 import { ModernSwapCard } from '../components/wallet/ModernSwapCard';
 import { useSimplicityTokens } from '../hooks/useSimplicityTokens';
@@ -23,6 +24,7 @@ export const ModernSwapScreen: React.FC = () => {
   const [toAmount, setToAmount] = useState('');
   const [fromDropdownOpen, setFromDropdownOpen] = useState(false);
   const [toDropdownOpen, setToDropdownOpen] = useState(false);
+  const [slippage, setSlippage] = useState(1);
 
   // Use real BTC balance from wallet
   const btcBalance = accountBalance?.amount || '0';
@@ -233,7 +235,7 @@ export const ModernSwapScreen: React.FC = () => {
           padding: '8px 12px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '8px',
+          gap: '3px',
           overflow: 'hidden'
         }}>
         {/* From Card */}
@@ -249,8 +251,8 @@ export const ModernSwapScreen: React.FC = () => {
             selectedCurrency={fromCurrency}
             onCurrencySelect={handleFromCurrencySelect}
             availableCurrencies={availableFromCurrencies}
-            label="You pay"
-            placeholder="0.00"
+            label="Vendre"
+            placeholder="0"
             balance={fromCurrency.balance}
             onDropdownToggle={setFromDropdownOpen}
           />
@@ -264,11 +266,11 @@ export const ModernSwapScreen: React.FC = () => {
           style={{
             display: 'flex',
             justifyContent: 'center',
-            margin: '-4px 0',
+            margin: '0',
             position: 'relative',
-            zIndex: fromDropdownOpen || toDropdownOpen ? 0 : 5
+            zIndex: fromDropdownOpen || toDropdownOpen ? 0 : 50
           }}>
-          <ModernSwapButton onSwap={handleSwapCurrencies} disabled={!fromAmount || !toAmount} />
+          <ModernSwapButton onSwap={handleSwapCurrencies} disabled={false} />
         </motion.div>
 
         {/* To Card */}
@@ -284,11 +286,27 @@ export const ModernSwapScreen: React.FC = () => {
             selectedCurrency={toCurrency}
             onCurrencySelect={handleToCurrencySelect}
             availableCurrencies={availableToCurrencies}
-            label="You receive"
-            placeholder="0.00"
+            label="Acheter"
+            placeholder="0"
             balance={toCurrency.balance}
             onDropdownToggle={setToDropdownOpen}
           />
+        </motion.div>
+
+        {/* Slippage Selector */}
+        <div style={{ marginTop: '10px' }}>
+          <ModernSlippageSelector value={slippage} onChange={setSlippage} />
+        </div>
+
+        {/* Review Swap Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.4 }}
+          style={{ marginTop: '10px' }}>
+          <ModernButton variant="primary" size="large" fullWidth disabled={!canSwap} onClick={handleSwap}>
+            {canSwap ? 'Review Swap' : 'Enter amount'}
+          </ModernButton>
         </motion.div>
 
         {/* Rate Info */}
@@ -296,7 +314,7 @@ export const ModernSwapScreen: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.4 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
               borderRadius: '6px',
@@ -304,7 +322,8 @@ export const ModernSwapScreen: React.FC = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              marginTop: '8px'
             }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
               <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>Rate</span>
@@ -319,17 +338,6 @@ export const ModernSwapScreen: React.FC = () => {
             </div>
           </motion.div>
         )}
-
-        {/* Swap Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.5 }}
-          style={{ marginTop: 'auto', paddingTop: '4px' }}>
-          <ModernButton variant="primary" size="large" fullWidth disabled={!canSwap} onClick={handleSwap}>
-            {canSwap ? 'Review Swap' : 'Enter amount'}
-          </ModernButton>
-        </motion.div>
       </div>
     </div>
   );

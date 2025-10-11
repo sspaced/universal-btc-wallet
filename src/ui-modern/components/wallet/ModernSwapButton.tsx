@@ -17,7 +17,7 @@ export const ModernSwapButton: React.FC<ModernSwapButtonProps> = ({ onSwap, disa
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: '-20px 0'
+        margin: '-24px 0'
       }}>
       <motion.button
         whileHover={!isDisabled ? { scale: 1.05 } : {}}
@@ -25,19 +25,19 @@ export const ModernSwapButton: React.FC<ModernSwapButtonProps> = ({ onSwap, disa
         onClick={onSwap}
         disabled={isDisabled}
         style={{
-          width: '56px',
-          height: '56px',
-          borderRadius: '50%',
-          background: isDisabled ? 'rgba(44, 44, 46, 0.9)' : '#34c759',
-          border: 'none',
+          width: '45px',
+          height: '45px',
+          borderRadius: '13px',
+          background: '#242424',
+          border: '4px solid #121212',
           cursor: isDisabled ? 'not-allowed' : 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: isDisabled ? 'none' : '0 8px 32px rgba(52, 199, 89, 0.4)',
+          boxShadow: 'none',
           zIndex: 10,
           position: 'relative',
-          opacity: isDisabled ? 0.9 : 1,
+          opacity: isDisabled ? 0.6 : 1,
           transition: 'all 0.3s ease'
         }}>
         {loading ? (
@@ -45,57 +45,23 @@ export const ModernSwapButton: React.FC<ModernSwapButtonProps> = ({ onSwap, disa
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
             style={{
-              width: '24px',
-              height: '24px',
+              width: '20px',
+              height: '20px',
               border: '2px solid rgba(255, 255, 255, 0.3)',
               borderTop: '2px solid #ffffff',
               borderRadius: '50%'
             }}
           />
         ) : (
-          <motion.div
-            style={{
-              color: '#ffffff',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '2px',
-              transform: 'rotate(90deg)'
-            }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
-              />
+          <motion.div style={{ color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 5v14m0 0l4-4m-4 4l-4-4" />
             </svg>
           </motion.div>
         )}
       </motion.button>
 
-      {/* Glow effect */}
-      {!isDisabled && (
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3]
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeInOut'
-          }}
-          style={{
-            position: 'absolute',
-            width: '80px',
-            height: '80px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(52, 199, 89, 0.2) 0%, transparent 70%)',
-            zIndex: 1
-          }}
-        />
-      )}
+      {/* No glow for the modern dark pill design */}
     </motion.div>
   );
 };

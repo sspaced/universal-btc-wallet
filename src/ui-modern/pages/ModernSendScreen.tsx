@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { COIN_DUST } from '@/shared/constant';
 import { RawTxInfo } from '@/shared/types';
 import { useTools } from '@/ui/components/ActionComponent';
+import { useDynamicFees } from '@/ui/hooks/useDynamicFees';
 import { useI18n } from '@/ui/hooks/useI18n';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { usePrice } from '@/ui/provider/PriceProvider';
@@ -32,6 +33,16 @@ export const ModernSendScreen: React.FC = () => {
   const wallet = useWallet();
   const { coinPrice } = usePrice();
 
+  // Dynamic fees hook
+  const {
+    feeRates: dynamicFeeRates,
+    selectedFeeRate: dynamicFeeRate,
+    selectedLevel,
+    isLoading: feesLoading,
+    setSelectedFeeRate: setDynamicFeeRate,
+    setSelectedLevel: setDynamicLevel
+  } = useDynamicFees();
+
   // Get selected asset from navigation state
   const selectedAsset = (location.state as any)?.selectedAsset as Asset | undefined;
 
@@ -43,7 +54,8 @@ export const ModernSendScreen: React.FC = () => {
   const toInfo = uiState.toInfo;
   const inputAmount = uiState.inputAmount;
   const enableRBF = uiState.enableRBF;
-  const feeRate = uiState.feeRate;
+  // Utiliser les fees dynamiques au lieu des fees statiques
+  const feeRate = dynamicFeeRate || uiState.feeRate;
 
   // Local state
   const [disabled, setDisabled] = useState(true);
@@ -273,8 +285,9 @@ export const ModernSendScreen: React.FC = () => {
     setSelectedFeeOption(option);
 
     if (option !== 'custom') {
-      const feeRates = { slow: 1, medium: 5, high: 10 };
-      setUiState({ feeRate: feeRates[option] });
+      // Utiliser les fees dynamiques si disponibles
+      const dynamicFee = getDynamicFeeRate(option);
+      setUiState({ feeRate: dynamicFee });
     }
   };
 
@@ -284,6 +297,19 @@ export const ModernSendScreen: React.FC = () => {
 
     if (sanitized && parseInt(sanitized) > 0) {
       setUiState({ feeRate: parseInt(sanitized) });
+    }
+  };
+
+  const getDynamicFeeRate = (option: string) => {
+    switch (option) {
+      case 'slow':
+        return dynamicFeeRates.find((f) => f.label === 'Slow')?.feeRate || 1;
+      case 'medium':
+        return dynamicFeeRates.find((f) => f.label === 'Medium')?.feeRate || 5;
+      case 'high':
+        return dynamicFeeRates.find((f) => f.label === 'Fast')?.feeRate || 10;
+      default:
+        return feeRate;
     }
   };
 
@@ -569,7 +595,7 @@ export const ModernSendScreen: React.FC = () => {
             {/* Separator */}
             <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
 
-            {/* Network Fees - Band Style */}
+            {/* Network Fees - Band Style avec fees dynamiques */}
             <div
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.04)',
@@ -581,6 +607,20 @@ export const ModernSendScreen: React.FC = () => {
                 const labels = { slow: t('slow'), medium: t('medium'), high: t('fast'), custom: t('custom') };
                 const isFirst = index === 0;
                 const isLast = index === 3;
+
+                // Récupérer les fees dynamiques pour afficher les valeurs réelles
+                const getDynamicFeeRate = (option: string) => {
+                  switch (option) {
+                    case 'slow':
+                      return dynamicFeeRates.find((f) => f.label === 'Slow')?.feeRate || 1;
+                    case 'medium':
+                      return dynamicFeeRates.find((f) => f.label === 'Medium')?.feeRate || 5;
+                    case 'high':
+                      return dynamicFeeRates.find((f) => f.label === 'Fast')?.feeRate || 10;
+                    default:
+                      return feeRate;
+                  }
+                };
 
                 if (option === 'custom') {
                   return (
@@ -634,9 +674,16 @@ export const ModernSendScreen: React.FC = () => {
                       fontSize: '12px',
                       fontWeight: '600',
                       cursor: 'pointer',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.2s ease',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '2px'
                     }}>
-                    {labels[option]}
+                    <div>{labels[option]}</div>
+                    <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                      {getDynamicFeeRate(option)} sat/vB
+                    </div>
                   </motion.button>
                 );
               })}

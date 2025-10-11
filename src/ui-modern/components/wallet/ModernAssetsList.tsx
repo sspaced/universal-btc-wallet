@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 
 import { useI18n } from '@/ui/hooks/useI18n';
 
+import { getAssetLogo, testAssetLogos } from '../../config/asset-logos';
 import { PackageIcon } from '../common/ModernIcons';
 
 export interface Asset {
@@ -32,6 +33,11 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
     console.log('Assets received:', assets);
     console.log('Assets count:', assets.length);
     console.log('Loading state:', loading);
+
+    // Test des logos au premier chargement
+    if (assets.length > 0) {
+      testAssetLogos();
+    }
 
     assets.forEach((asset, index) => {
       console.log(`Asset ${index + 1} details:`, {
@@ -85,6 +91,25 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
       );
     }
 
+    // Chercher le logo dans la liste des logos disponibles
+    const assetLogoPath = getAssetLogo(asset.symbol, asset.name, asset.type);
+
+    if (assetLogoPath) {
+      console.log('Using available logo:', assetLogoPath);
+      return (
+        <img
+          src={assetLogoPath}
+          alt={asset.name}
+          style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            objectFit: 'cover'
+          }}
+        />
+      );
+    }
+
     if (asset.icon) {
       console.log('Using custom icon:', asset.icon);
       return (
@@ -101,31 +126,23 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
       );
     }
 
-    // Default icon based on type
-    const iconColor =
-      {
-        rune: '#8b5cf6',
-        alkane: '#06b6d4',
-        cat20: '#10b981',
-        cat721: '#f59e0b',
-        brc20: '#ef4444',
-        ordinal: '#6b7280'
-      }[asset.type] || '#6b7280';
-
-    console.log(`Using default icon with color: ${iconColor}`);
+    // Si pas de logo disponible, afficher juste le nom de l'asset sans icône
+    console.log(`Using text fallback for: ${asset.name}`);
     return (
       <div
         style={{
           width: '32px',
           height: '32px',
           borderRadius: '50%',
-          backgroundColor: iconColor,
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: '#ffffff',
-          fontSize: '12px',
-          fontWeight: '600'
+          fontSize: '10px',
+          fontWeight: '600',
+          textAlign: 'center',
+          padding: '2px'
         }}>
         {asset.symbol?.charAt(0) || asset.name.charAt(0)}
       </div>

@@ -20,6 +20,7 @@ import { ModernButton } from '../components/common/ModernButton';
 import { ModernErrorMessage } from '../components/common/ModernErrorMessage';
 import { ModernAddressInput } from '../components/wallet';
 import type { Asset } from '../components/wallet/ModernAssetsList';
+import { getAssetLogo } from '../config/asset-logos';
 
 export const ModernSendScreen: React.FC = () => {
   const { t } = useI18n();
@@ -362,51 +363,57 @@ export const ModernSendScreen: React.FC = () => {
       );
     }
 
-    if (selectedAsset.icon) {
+    // Chercher le logo dans la liste des logos disponibles
+    const assetLogoPath = getAssetLogo(selectedAsset.symbol, selectedAsset.name, selectedAsset.type);
+
+    if (assetLogoPath) {
       return (
-        <div
+        <img
+          src={assetLogoPath}
+          alt={selectedAsset.name}
           style={{
             width: '60px',
             height: '60px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-            boxShadow: '0 6px 18px rgba(52, 199, 89, 0.3)'
-          }}>
-          <img
-            src={selectedAsset.icon}
-            alt={selectedAsset.name}
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              objectFit: 'cover'
-            }}
-          />
-        </div>
+            objectFit: 'cover'
+          }}
+        />
       );
     }
 
-    // Default icon - always green with first letter
+    // Si l'asset a déjà un icon défini, l'utiliser
+    if (selectedAsset.icon) {
+      return (
+        <img
+          src={selectedAsset.icon}
+          alt={selectedAsset.name}
+          style={{
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            objectFit: 'cover'
+          }}
+        />
+      );
+    }
+
+    // Si pas de logo disponible, afficher juste le nom de l'asset sans le rond vert
     return (
       <div
         style={{
-          width: '60px',
-          height: '60px',
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #34c759 0%, #30d158 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: '#ffffff',
-          fontSize: '24px',
+          fontSize: '18px',
           fontWeight: '700',
-          boxShadow: '0 6px 18px rgba(52, 199, 89, 0.3)'
+          textAlign: 'center',
+          padding: '8px 12px',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: '8px',
+          border: '1px solid rgba(255, 255, 255, 0.2)'
         }}>
-        {selectedAsset.symbol?.charAt(0) || selectedAsset.name.charAt(0)}
+        {selectedAsset.symbol || selectedAsset.name}
       </div>
     );
   };
@@ -543,7 +550,7 @@ export const ModernSendScreen: React.FC = () => {
           {/* Combined Box */}
           <div
             style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.06)',
+              backgroundColor: 'var(--modern-bg-secondary)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               borderRadius: '12px',
               overflow: 'hidden'
@@ -598,7 +605,7 @@ export const ModernSendScreen: React.FC = () => {
             {/* Network Fees - Band Style avec fees dynamiques */}
             <div
               style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                backgroundColor: 'var(--modern-bg-tertiary)',
                 display: 'flex',
                 gap: '0'
               }}>
@@ -698,7 +705,7 @@ export const ModernSendScreen: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '12px 16px',
-            backgroundColor: 'rgba(255, 255, 255, 0.04)',
+            backgroundColor: 'var(--modern-bg-secondary)',
             borderRadius: '12px',
             border: '1px solid rgba(255, 255, 255, 0.08)'
           }}>

@@ -1,7 +1,7 @@
 {
-  "appName": { "message": "UniSat Wallet" },
+  "appName": { "message": "Universal Wallet" },
   "appDescription": {
-    "message": "Inscrivez et stockez vos inscriptions dans le premier portefeuille Chrome open-source au monde pour les Ordinals !"
+    "message": "Portefeuille Bitcoin sécurisé avec support du protocole OPI Universal. Design minimaliste inspiré d'Apple/Revolut."
   },
   "receive": {
     "message": "Recevoir"

@@ -1,7 +1,7 @@
 {
-  "appName": { "message": "UniSat Wallet" },
+  "appName": { "message": "Universal Wallet" },
   "appDescription": {
-    "message": "Inscribe and store your inscriptions in the world's first open-source Ordinals Chrome wallet!"
+    "message": "Secure Bitcoin wallet with OPI Universal Protocol support. Apple/Revolut-inspired minimalist design."
   },
   "receive": {
     "message": "Receive"

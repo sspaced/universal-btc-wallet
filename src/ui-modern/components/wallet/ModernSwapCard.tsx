@@ -49,7 +49,7 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
         backdropFilter: 'blur(20px)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '10px',
-        padding: '20px',
+        padding: '10px 12px',
         position: 'relative',
         overflow: 'visible',
         zIndex
@@ -57,17 +57,17 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
       {/* Label */}
       <div
         style={{
-          fontSize: '13px',
+          fontSize: '11px',
           fontWeight: '600',
           color: 'rgba(255, 255, 255, 0.7)',
-          marginBottom: '12px',
+          marginBottom: '6px',
           letterSpacing: '-0.08px'
         }}>
         {label}
       </div>
 
       {/* Amount Input */}
-      <div style={{ marginBottom: '16px' }}>
+      <div style={{ marginBottom: '8px' }}>
         <ModernInput
           value={amount}
           onChange={onAmountChange}
@@ -131,10 +131,10 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
 
       {/* Balance Info */}
       {balance && (
-        <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <span
             style={{
-              fontSize: '12px',
+              fontSize: '10px',
               color: 'rgba(255, 255, 255, 0.5)',
               letterSpacing: '-0.08px'
             }}>

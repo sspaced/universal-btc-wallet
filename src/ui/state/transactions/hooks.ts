@@ -730,7 +730,7 @@ export function usePrepareSendUnifiedCallback() {
               disableAutoAdjust
             });
 
-          case 'simplicity':
+          case 'simplicity': {
             console.log('usePrepareSendUnifiedCallback: Routing to Simplicity send...');
             if (!prepareSendSimplicity) {
               console.error('prepareSendSimplicity is undefined');
@@ -749,6 +749,7 @@ export function usePrepareSendUnifiedCallback() {
             console.log('usePrepareSendUnifiedCallback: Fee in result:', simplicityResult.fee);
 
             return simplicityResult;
+          }
 
           case 'rune':
             return await prepareSendRunes({

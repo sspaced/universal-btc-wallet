@@ -1,8 +1,7 @@
-import { lazy, Suspense, useCallback, useEffect, useRef } from 'react';
+import { lazy, useCallback, useEffect, useRef } from 'react';
 import { HashRouter, Route, Routes, useNavigate as useNavigateOrigin } from 'react-router-dom';
 
 import { AssetProvider } from '@/ui-modern/providers/AssetProvider';
-
 import CAT20TokenScreen from '@/ui/pages/CAT20/CAT20TokenScreen';
 import MergeCAT20HistoryScreen from '@/ui/pages/CAT20/MergeCAT20HistoryScreen';
 import MergeCAT20Screen from '@/ui/pages/CAT20/MergeCAT20Screen';
@@ -16,6 +15,7 @@ import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
 import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
 import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
 import { ModernSendScreen } from '../../ui-modern/pages/ModernSendScreen';
+import { ModernSwapConfirmationScreen } from '../../ui-modern/pages/ModernSwapConfirmationScreen';
 import { ModernSwapScreen } from '../../ui-modern/pages/ModernSwapScreen';
 import { ModernTxConfirmScreen } from '../../ui-modern/pages/ModernTxConfirmScreen';
 import { ModernTxFailScreen } from '../../ui-modern/pages/ModernTxFailScreen';
@@ -163,6 +163,10 @@ export const routes = {
   ModernSwapScreen: {
     path: '/wallet/swap',
     element: <ModernSwapScreen />
+  },
+  ModernSwapConfirmationScreen: {
+    path: '/wallet/swap/confirmation',
+    element: <ModernSwapConfirmationScreen />
   },
 
   ModernAssetSelectionScreen: {

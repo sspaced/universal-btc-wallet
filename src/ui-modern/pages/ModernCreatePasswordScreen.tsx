@@ -13,20 +13,15 @@ import { ModernInput } from '../components/common/ModernInput';
 import { ModernPasswordInput } from '../components/common/ModernPasswordInput';
 
 // Custom Logo Component
-const CustomLogo: React.FC<{ size?: string; color?: string }> = ({ size = '32px', color = '#231f20' }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 20.2 13.4" 
-    xmlns="http://www.w3.org/2000/svg"
-  >
+const CustomLogo: React.FC<{ size?: string; color?: string }> = ({ size = '32px', color = '#ffffff' }) => (
+  <svg width={size} height={size} viewBox="0 0 20.2 13.4" xmlns="http://www.w3.org/2000/svg">
     <g>
-      <path 
-        fill={color} 
+      <path
+        fill={color}
         d="M5.9,9.9c-1-1.7.9-4.6,4.2-6.6,3.3-2,6.8-2.2,7.8-.5.7,1.1,0,2.7-1.3,4.3,1.9-1.9,2.7-3.9,2-5.2C17.4,0,12.9.5,8.5,3.2,4.1,5.8,1.4,9.5,2.6,11.4c1.1,1.9,5.6,1.3,10-1.3.7-.4,1.3-.9,1.9-1.3-.3.2-.6.4-.9.6-3.3,2-6.8,2.2-7.8.5Z"
       />
-      <path 
-        fill={color} 
+      <path
+        fill={color}
         d="M15.5,3.1c-.3,4.2-.5,4.5-4.7,4.7,4.2.3,4.5.5,4.7,4.7.3-4.2.5-4.5,4.7-4.7-4.2-.3-4.5-.5-4.7-4.7Z"
       />
     </g>
@@ -140,16 +135,12 @@ export const ModernCreatePasswordScreen: React.FC = () => {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.5 }}
           style={{
-            width: '64px',
-            height: '64px',
-            borderRadius: '12px',
-            backgroundColor: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 20px',
+            margin: '0 auto 20px'
           }}>
-          <CustomLogo size="32px" color="#231f20" />
+          <CustomLogo size="72px" color="#ffffff" />
         </motion.div>
 
         {/* Title */}
@@ -231,11 +222,11 @@ export const ModernCreatePasswordScreen: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
           style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
-          <ModernButton 
-            variant="secondary" 
-            size="large" 
-            onClick={handleBack} 
-            disabled={loading} 
+          <ModernButton
+            variant="secondary"
+            size="large"
+            onClick={handleBack}
+            disabled={loading}
             leftIcon={<ArrowLeft style={{ width: '16px', height: '16px', color: '#ffffff' }} />}
             style={{ flex: 1 }}>
             Back
@@ -247,7 +238,11 @@ export const ModernCreatePasswordScreen: React.FC = () => {
             onClick={handleCreate}
             disabled={!isValid || loading}
             loading={loading}
-            leftIcon={<Plus style={{ width: '20px', height: '20px', color: '#000000', display: 'flex', alignItems: 'center' }} />}
+            leftIcon={
+              <Plus
+                style={{ width: '20px', height: '20px', color: '#000000', display: 'flex', alignItems: 'center' }}
+              />
+            }
             style={{ flex: 2 }}>
             Create Wallet
           </ModernButton>

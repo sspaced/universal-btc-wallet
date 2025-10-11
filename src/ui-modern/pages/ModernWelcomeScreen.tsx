@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Cpu, Download, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ConnectHardwareModal } from '../../ui/pages/Main/ConnectHardwareModal';
@@ -8,26 +7,20 @@ import { useWallet } from '../../ui/utils';
 import { ModernButton } from '../components/common';
 
 // Custom Logo Component
-const CustomLogo: React.FC<{ size?: string; color?: string }> = ({ size = '32px', color = '#231f20' }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 20.2 13.4" 
-    xmlns="http://www.w3.org/2000/svg"
-  >
+const CustomLogo: React.FC<{ size?: string; color?: string }> = ({ size = '32px', color = '#ffffff' }) => (
+  <svg width={size} height={size} viewBox="0 0 20.2 13.4" xmlns="http://www.w3.org/2000/svg">
     <g>
-      <path 
-        fill={color} 
+      <path
+        fill={color}
         d="M5.9,9.9c-1-1.7.9-4.6,4.2-6.6,3.3-2,6.8-2.2,7.8-.5.7,1.1,0,2.7-1.3,4.3,1.9-1.9,2.7-3.9,2-5.2C17.4,0,12.9.5,8.5,3.2,4.1,5.8,1.4,9.5,2.6,11.4c1.1,1.9,5.6,1.3,10-1.3.7-.4,1.3-.9,1.9-1.3-.3.2-.6.4-.9.6-3.3,2-6.8,2.2-7.8.5Z"
       />
-      <path 
-        fill={color} 
+      <path
+        fill={color}
         d="M15.5,3.1c-.3,4.2-.5,4.5-4.7,4.7,4.2.3,4.5.5,4.7,4.7.3-4.2.5-4.5,4.7-4.7-4.2-.3-4.5-.5-4.7-4.7Z"
       />
     </g>
   </svg>
 );
-
 
 export const ModernWelcomeScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -79,16 +72,12 @@ export const ModernWelcomeScreen: React.FC = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
               style={{
-                width: '72px',
-                height: '72px',
-                borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 24px',
-                backgroundColor: '#ffffff'
+                margin: '0 auto 24px'
               }}>
-              <CustomLogo size="40px" color="#231f20" />
+              <CustomLogo size="90px" color="#ffffff" />
             </motion.div>
             <motion.h1
               initial={{ y: 20, opacity: 0 }}
@@ -123,27 +112,15 @@ export const ModernWelcomeScreen: React.FC = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <ModernButton
-              variant="primary"
-              size="large"
-              fullWidth
-              onClick={handleCreateWallet}>
+            <ModernButton variant="primary" size="large" fullWidth onClick={handleCreateWallet}>
               Create New Wallet
             </ModernButton>
 
-            <ModernButton
-              variant="secondary"
-              size="large"
-              fullWidth
-              onClick={handleImportWallet}>
+            <ModernButton variant="secondary" size="large" fullWidth onClick={handleImportWallet}>
               Import Existing Wallet
             </ModernButton>
 
-            <ModernButton
-              variant="tertiary"
-              size="large"
-              fullWidth
-              onClick={handleConnectHardware}>
+            <ModernButton variant="tertiary" size="large" fullWidth onClick={handleConnectHardware}>
               Connect Hardware Wallet
             </ModernButton>
           </motion.div>

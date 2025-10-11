@@ -122,7 +122,7 @@ export const ModernCreatePasswordScreen: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#121212'
+        backgroundColor: 'var(--modern-bg-primary)'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}

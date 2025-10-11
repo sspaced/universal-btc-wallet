@@ -83,7 +83,7 @@ export const ModernChangePasswordScreen: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         padding: '16px',
-        backgroundColor: '#121212'
+        backgroundColor: 'var(--modern-bg-primary)'
       }}>
       {/* Header */}
       <motion.div
@@ -102,7 +102,7 @@ export const ModernChangePasswordScreen: React.FC = () => {
             width: '36px',
             height: '36px',
             borderRadius: '10px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'var(--modern-bg-secondary)',
             border: 'none',
             display: 'flex',
             alignItems: 'center',
@@ -111,10 +111,10 @@ export const ModernChangePasswordScreen: React.FC = () => {
             transition: 'all 0.2s'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+            e.currentTarget.style.backgroundColor = 'var(--modern-bg-tertiary)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.backgroundColor = 'var(--modern-bg-secondary)';
           }}>
           <span style={{ color: '#ffffff', fontSize: '18px' }}>←</span>
         </button>
@@ -171,8 +171,10 @@ export const ModernChangePasswordScreen: React.FC = () => {
               fontSize: '16px',
               fontWeight: '500',
               color: '#ffffff',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              border: errors.current ? '2px solid rgba(255, 59, 48, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
+              backgroundColor: 'var(--modern-bg-secondary)',
+              border: errors.current
+                ? 'var(--modern-border-width) solid rgba(255, 59, 48, 0.5)'
+                : 'var(--modern-border-width) solid var(--modern-border-color)',
               borderRadius: '12px',
               outline: 'none',
               transition: 'all 0.2s ease',
@@ -180,12 +182,14 @@ export const ModernChangePasswordScreen: React.FC = () => {
             }}
             onFocus={(e) => {
               if (!errors.current) {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                e.target.style.borderColor = 'var(--modern-border-focus)';
+                e.target.style.backgroundColor = 'var(--modern-bg-tertiary)';
               }
             }}
             onBlur={(e) => {
               if (!errors.current) {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.target.style.borderColor = 'var(--modern-border-color)';
+                e.target.style.backgroundColor = 'var(--modern-bg-secondary)';
               }
             }}
           />
@@ -239,8 +243,10 @@ export const ModernChangePasswordScreen: React.FC = () => {
               fontSize: '16px',
               fontWeight: '500',
               color: '#ffffff',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              border: errors.new ? '2px solid rgba(255, 59, 48, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
+              backgroundColor: 'var(--modern-bg-secondary)',
+              border: errors.new
+                ? 'var(--modern-border-width) solid rgba(255, 59, 48, 0.5)'
+                : 'var(--modern-border-width) solid var(--modern-border-color)',
               borderRadius: '12px',
               outline: 'none',
               transition: 'all 0.2s ease',
@@ -248,12 +254,14 @@ export const ModernChangePasswordScreen: React.FC = () => {
             }}
             onFocus={(e) => {
               if (!errors.new) {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                e.target.style.borderColor = 'var(--modern-border-focus)';
+                e.target.style.backgroundColor = 'var(--modern-bg-tertiary)';
               }
             }}
             onBlur={(e) => {
               if (!errors.new) {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.target.style.borderColor = 'var(--modern-border-color)';
+                e.target.style.backgroundColor = 'var(--modern-bg-secondary)';
               }
             }}
           />
@@ -307,8 +315,10 @@ export const ModernChangePasswordScreen: React.FC = () => {
               fontSize: '16px',
               fontWeight: '500',
               color: '#ffffff',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              border: errors.confirm ? '2px solid rgba(255, 59, 48, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
+              backgroundColor: 'var(--modern-bg-secondary)',
+              border: errors.confirm
+                ? 'var(--modern-border-width) solid rgba(255, 59, 48, 0.5)'
+                : 'var(--modern-border-width) solid var(--modern-border-color)',
               borderRadius: '12px',
               outline: 'none',
               transition: 'all 0.2s ease',
@@ -316,12 +326,14 @@ export const ModernChangePasswordScreen: React.FC = () => {
             }}
             onFocus={(e) => {
               if (!errors.confirm) {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                e.target.style.borderColor = 'var(--modern-border-focus)';
+                e.target.style.backgroundColor = 'var(--modern-bg-tertiary)';
               }
             }}
             onBlur={(e) => {
               if (!errors.confirm) {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.target.style.borderColor = 'var(--modern-border-color)';
+                e.target.style.backgroundColor = 'var(--modern-bg-secondary)';
               }
             }}
           />

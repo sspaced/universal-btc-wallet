@@ -59,7 +59,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#121212'
+        backgroundColor: 'var(--modern-bg-primary)'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -147,10 +147,10 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
           style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
-          <ModernButton 
-            variant="tertiary" 
-            size="small" 
-            onClick={handleCopyAll} 
+          <ModernButton
+            variant="tertiary"
+            size="small"
+            onClick={handleCopyAll}
             leftIcon={<Copy style={{ width: '16px', height: '16px', color: '#ffffff' }} />}
             style={{ maxWidth: '200px' }}>
             Copy All Words

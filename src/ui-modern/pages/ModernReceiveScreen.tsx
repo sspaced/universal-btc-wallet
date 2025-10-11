@@ -73,7 +73,8 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
           textAlign: 'center',
           marginBottom: '8px',
           letterSpacing: '-0.3px',
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+          fontFamily:
+            "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
         }}>
         Your Bitcoin Address
       </motion.p>
@@ -84,7 +85,7 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.5 }}
         style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          backgroundColor: 'var(--modern-bg-secondary)',
           borderRadius: '12px',
           overflow: 'hidden'
         }}>
@@ -119,7 +120,8 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
             color: '#000000',
             fontSize: '14px',
             fontWeight: '600',
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+            fontFamily:
+              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -184,7 +186,7 @@ export const ModernReceiveScreen: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#121212',
+          backgroundColor: 'var(--modern-bg-primary)',
           color: '#ffffff'
         }}>
         <p>Loading address...</p>
@@ -199,7 +201,7 @@ export const ModernReceiveScreen: React.FC = () => {
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#121212',
+        backgroundColor: 'var(--modern-bg-primary)',
         overflow: 'hidden'
       }}>
       {/* Header */}
@@ -223,7 +225,7 @@ export const ModernReceiveScreen: React.FC = () => {
             width: '40px',
             height: '40px',
             borderRadius: '12px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'var(--modern-bg-secondary)',
             border: 'none',
             display: 'flex',
             alignItems: 'center',
@@ -289,7 +291,8 @@ export const ModernReceiveScreen: React.FC = () => {
               color: 'rgba(255, 255, 255, 0.7)',
               lineHeight: '1.5',
               margin: '0 0 8px 0',
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
             }}>
             This address can only be used to receive compatible tokens.
           </p>
@@ -301,7 +304,8 @@ export const ModernReceiveScreen: React.FC = () => {
               color: '#72e3ad',
               fontSize: '14px',
               fontWeight: '500',
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
               cursor: 'pointer',
               textDecoration: 'underline'
             }}>

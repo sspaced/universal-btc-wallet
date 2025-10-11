@@ -118,7 +118,7 @@ export const ModernAddressTypeScreen: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         padding: '16px',
-        backgroundColor: '#121212'
+        backgroundColor: 'var(--modern-bg-primary)'
       }}>
       {/* Header */}
       <motion.div
@@ -137,7 +137,7 @@ export const ModernAddressTypeScreen: React.FC = () => {
             width: '36px',
             height: '36px',
             borderRadius: '10px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'var(--modern-bg-secondary)',
             border: 'none',
             display: 'flex',
             alignItems: 'center',
@@ -146,10 +146,10 @@ export const ModernAddressTypeScreen: React.FC = () => {
             transition: 'all 0.2s'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+            e.currentTarget.style.backgroundColor = 'var(--modern-bg-tertiary)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.backgroundColor = 'var(--modern-bg-secondary)';
           }}>
           <span style={{ color: '#ffffff', fontSize: '18px' }}>←</span>
         </button>

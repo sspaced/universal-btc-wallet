@@ -69,7 +69,7 @@ export const ModernTxConfirmScreen: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
-        backgroundColor: '#121212',
+        backgroundColor: 'var(--modern-bg-primary)',
         color: '#ffffff'
       }}>
       <ModernHeader title={t('confirm_transaction')} onBack={handleBack} showBackButton={true} />

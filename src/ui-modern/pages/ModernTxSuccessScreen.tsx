@@ -40,7 +40,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
-        backgroundColor: '#121212',
+        backgroundColor: 'var(--modern-bg-primary)',
         color: '#ffffff'
       }}>
       <ModernHeader title={t('transaction_success')} showBackButton={false} />
@@ -104,7 +104,8 @@ export const ModernTxSuccessScreen: React.FC = () => {
                 color: '#ffffff',
                 marginBottom: '8px',
                 letterSpacing: '-0.5px',
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                fontFamily:
+                  "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
               }}>
               {t('payment_sent')}
             </h1>
@@ -115,7 +116,8 @@ export const ModernTxSuccessScreen: React.FC = () => {
                 color: 'rgba(255, 255, 255, 0.7)',
                 lineHeight: '1.5',
                 margin: 0,
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                fontFamily:
+                  "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
               }}>
               {t('your_transaction_has_been_successfully_sent')}
             </p>

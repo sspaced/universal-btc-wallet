@@ -85,7 +85,7 @@ export const ModernCreateAccountScreen: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#121212'
+        backgroundColor: 'var(--modern-bg-primary)'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -111,7 +111,7 @@ export const ModernCreateAccountScreen: React.FC = () => {
               width: '40px',
               height: '40px',
               borderRadius: '12px',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              backgroundColor: 'var(--modern-bg-secondary)',
               border: 'none',
               display: 'flex',
               alignItems: 'center',

@@ -22,8 +22,8 @@ const baseClasses = 'apple-button';
 
 const variantClasses = {
   primary: 'apple-button-primary',
-  secondary: 'apple-button-secondary',
-  tertiary: 'apple-button-tertiary',
+  secondary: 'apple-button-secondary modern-button-secondary',
+  tertiary: 'apple-button-tertiary modern-button-tertiary',
   destructive: 'apple-button-destructive',
   plain: 'apple-button-plain'
 };
@@ -63,7 +63,7 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
     opacity: isDisabled ? 0.4 : 1,
     cursor: isDisabled ? 'not-allowed' : 'pointer',
     width: fullWidth ? '100%' : 'auto',
-    fontWeight: '600',
+    fontWeight: '400',
     ...style
   };
 

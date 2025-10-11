@@ -35,7 +35,7 @@ export const ModernUnlockScreen: React.FC = () => {
       }
       setLoading(true);
       setError('');
-      
+
       console.log('Attempting to unlock with password:', password ? 'Present' : 'Missing');
       await unlock(password);
       console.log('Unlock successful');
@@ -82,7 +82,7 @@ export const ModernUnlockScreen: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        backgroundColor: '#121212',
+        backgroundColor: 'var(--modern-bg-primary)',
         padding: '20px',
         overflow: 'hidden'
       }}>
@@ -112,12 +112,7 @@ export const ModernUnlockScreen: React.FC = () => {
           }}>
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
             <rect x="5" y="11" width="14" height="10" rx="2" stroke="rgba(255, 255, 255, 0.9)" strokeWidth="2" />
-            <path
-              d="M8 11V7a4 4 0 0 1 8 0v4"
-              stroke="rgba(255, 255, 255, 0.9)"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
+            <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="rgba(255, 255, 255, 0.9)" strokeWidth="2" strokeLinecap="round" />
             <circle cx="12" cy="16" r="1.5" fill="rgba(255, 255, 255, 0.9)" />
           </svg>
         </div>
@@ -186,10 +181,10 @@ export const ModernUnlockScreen: React.FC = () => {
                 fontSize: '16px',
                 fontWeight: '500',
                 color: '#ffffff',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                backgroundColor: 'var(--modern-bg-secondary)',
                 border: error
-                  ? '2px solid rgba(255, 59, 48, 0.5)'
-                  : '2px solid rgba(255, 255, 255, 0.1)',
+                  ? 'var(--modern-border-width) solid rgba(255, 59, 48, 0.5)'
+                  : 'var(--modern-border-width) solid var(--modern-border-color)',
                 borderRadius: '12px',
                 outline: 'none',
                 transition: 'all 0.2s ease',
@@ -197,12 +192,14 @@ export const ModernUnlockScreen: React.FC = () => {
               }}
               onFocus={(e) => {
                 if (!error) {
-                  e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                  e.target.style.borderColor = 'var(--modern-border-focus)';
+                  e.target.style.backgroundColor = 'var(--modern-bg-tertiary)';
                 }
               }}
               onBlur={(e) => {
                 if (!error) {
-                  e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                  e.target.style.borderColor = 'var(--modern-border-color)';
+                  e.target.style.backgroundColor = 'var(--modern-bg-secondary)';
                 }
               }}
             />
@@ -230,13 +227,7 @@ export const ModernUnlockScreen: React.FC = () => {
         </div>
 
         {/* Unlock Button */}
-        <ModernButton
-          variant="primary"
-          size="large"
-          fullWidth
-          onClick={btnClick}
-          disabled={disabled}
-          loading={loading}>
+        <ModernButton variant="primary" size="large" fullWidth onClick={btnClick} disabled={disabled} loading={loading}>
           {loading ? 'Unlocking...' : 'Unlock Wallet'}
         </ModernButton>
       </motion.div>

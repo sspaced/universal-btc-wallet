@@ -100,7 +100,7 @@ export const ModernContactsScreen: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         padding: '16px',
-        backgroundColor: '#121212'
+        backgroundColor: 'var(--modern-bg-primary)'
       }}>
       {/* Header */}
       <motion.div
@@ -119,7 +119,7 @@ export const ModernContactsScreen: React.FC = () => {
             width: '36px',
             height: '36px',
             borderRadius: '10px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'var(--modern-bg-secondary)',
             border: 'none',
             display: 'flex',
             alignItems: 'center',
@@ -128,10 +128,10 @@ export const ModernContactsScreen: React.FC = () => {
             transition: 'all 0.2s'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+            e.currentTarget.style.backgroundColor = 'var(--modern-bg-tertiary)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.backgroundColor = 'var(--modern-bg-secondary)';
           }}>
           <span style={{ color: '#ffffff', fontSize: '18px' }}>←</span>
         </button>
@@ -210,7 +210,7 @@ export const ModernContactsScreen: React.FC = () => {
                 fontSize: '14px',
                 fontWeight: '600',
                 color: selectedNetworkFilter === 'all' ? '#121212' : 'rgba(255, 255, 255, 0.7)',
-                backgroundColor: selectedNetworkFilter === 'all' ? '#72e3ad' : 'rgba(255, 255, 255, 0.1)',
+                backgroundColor: selectedNetworkFilter === 'all' ? '#72e3ad' : 'var(--modern-bg-secondary)',
                 border: 'none',
                 borderRadius: '20px',
                 cursor: 'pointer',
@@ -228,7 +228,7 @@ export const ModernContactsScreen: React.FC = () => {
                   fontSize: '14px',
                   fontWeight: '600',
                   color: selectedNetworkFilter === network ? '#121212' : 'rgba(255, 255, 255, 0.7)',
-                  backgroundColor: selectedNetworkFilter === network ? '#72e3ad' : 'rgba(255, 255, 255, 0.1)',
+                  backgroundColor: selectedNetworkFilter === network ? '#72e3ad' : 'var(--modern-bg-secondary)',
                   border: 'none',
                   borderRadius: '20px',
                   cursor: 'pointer',
@@ -428,7 +428,7 @@ export const ModernContactsScreen: React.FC = () => {
                       fontSize: '10px',
                       fontWeight: '600',
                       color: 'rgba(255, 255, 255, 0.7)',
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      backgroundColor: 'var(--modern-bg-secondary)',
                       borderRadius: '6px',
                       textTransform: 'uppercase'
                     }}>

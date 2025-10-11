@@ -82,8 +82,8 @@ export const ModernPasswordInput: React.FC<ModernPasswordInputProps> = ({
 
   const getBorderColor = () => {
     if (hasError) return 'rgba(255, 59, 48, 0.5)';
-    if (isFocused) return 'rgba(114, 227, 173, 0.6)';
-    return 'rgba(255, 255, 255, 0.2)';
+    if (isFocused) return 'var(--modern-border-focus)';
+    return 'var(--modern-border-color)';
   };
 
   const EyeOffIcon = () => (
@@ -118,11 +118,15 @@ export const ModernPasswordInput: React.FC<ModernPasswordInputProps> = ({
           type={isVisible ? 'text' : 'password'}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          onBlur={() => {
+          onBlur={(e) => {
             setIsFocused(false);
+            e.target.style.backgroundColor = 'var(--modern-bg-secondary)';
             onBlur?.();
           }}
-          onFocus={() => setIsFocused(true)}
+          onFocus={(e) => {
+            setIsFocused(true);
+            e.target.style.backgroundColor = 'var(--modern-bg-tertiary)';
+          }}
           placeholder={placeholder}
           disabled={disabled}
           autoFocus={autoFocus}
@@ -134,8 +138,8 @@ export const ModernPasswordInput: React.FC<ModernPasswordInputProps> = ({
             fontSize: '15px',
             fontWeight: '400',
             color: '#ffffff',
-            backgroundColor: 'rgba(255, 255, 255, 0.06)',
-            border: `1.5px solid ${getBorderColor()}`,
+            backgroundColor: 'var(--modern-bg-secondary)',
+            border: `var(--modern-border-width) solid ${getBorderColor()}`,
             borderRadius: '10px',
             outline: 'none',
             transition: 'border-color 0.2s, background-color 0.2s',

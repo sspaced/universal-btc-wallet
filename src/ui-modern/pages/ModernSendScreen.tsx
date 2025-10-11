@@ -432,7 +432,7 @@ export const ModernSendScreen: React.FC = () => {
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#121212',
+        backgroundColor: 'var(--modern-bg-primary)',
         overflow: 'hidden'
       }}>
       {/* Header */}
@@ -456,7 +456,7 @@ export const ModernSendScreen: React.FC = () => {
             width: '40px',
             height: '40px',
             borderRadius: '12px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'var(--modern-bg-secondary)',
             border: 'none',
             display: 'flex',
             alignItems: 'center',
@@ -593,7 +593,7 @@ export const ModernSendScreen: React.FC = () => {
             </div>
 
             {/* Separator */}
-            <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+            <div style={{ height: '1px', backgroundColor: 'var(--modern-border-color)' }} />
 
             {/* Network Fees - Band Style avec fees dynamiques */}
             <div

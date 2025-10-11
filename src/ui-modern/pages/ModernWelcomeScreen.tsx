@@ -58,7 +58,7 @@ export const ModernWelcomeScreen: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: '#121212'
+        backgroundColor: 'var(--modern-bg-primary)'
       }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -120,7 +120,7 @@ export const ModernWelcomeScreen: React.FC = () => {
               Import Existing Wallet
             </ModernButton>
 
-            <ModernButton variant="tertiary" size="large" fullWidth onClick={handleConnectHardware}>
+            <ModernButton variant="secondary" size="large" fullWidth onClick={handleConnectHardware}>
               Connect Hardware Wallet
             </ModernButton>
           </motion.div>

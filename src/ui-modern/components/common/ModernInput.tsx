@@ -58,13 +58,13 @@ export const ModernInput: React.FC<ModernInputProps> = ({
   const getBorderColor = () => {
     if (hasError) return 'rgba(255, 59, 48, 0.5)'; // Apple red
     if (hasSuccess) return 'rgba(52, 199, 89, 0.5)'; // Apple green
-    return 'rgba(255, 255, 255, 0.2)';
+    return 'var(--modern-border-color)';
   };
 
   const getFocusBorderColor = () => {
     if (hasError) return 'rgba(255, 59, 48, 0.8)';
     if (hasSuccess) return 'rgba(52, 199, 89, 0.8)';
-    return 'rgba(114, 227, 173, 0.6)'; // Green theme
+    return 'var(--modern-border-focus)';
   };
 
   return (
@@ -118,8 +118,8 @@ export const ModernInput: React.FC<ModernInputProps> = ({
             fontSize: '15px',
             fontWeight: '400',
             color: '#ffffff',
-            backgroundColor: 'rgba(255, 255, 255, 0.06)',
-            border: `1.5px solid ${getBorderColor()}`,
+            backgroundColor: 'var(--modern-bg-secondary)',
+            border: `var(--modern-border-width) solid ${getBorderColor()}`,
             borderRadius: '10px',
             outline: 'none',
             transition: 'border-color 0.2s, background-color 0.2s',
@@ -129,11 +129,11 @@ export const ModernInput: React.FC<ModernInputProps> = ({
           }}
           onFocus={(e) => {
             e.target.style.borderColor = getFocusBorderColor();
-            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+            e.target.style.backgroundColor = 'var(--modern-bg-tertiary)';
           }}
           onBlurCapture={(e) => {
             e.target.style.borderColor = getBorderColor();
-            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
+            e.target.style.backgroundColor = 'var(--modern-bg-secondary)';
           }}
         />
 

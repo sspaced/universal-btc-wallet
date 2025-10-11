@@ -26,7 +26,14 @@ export const modernRoutes = [
   'TxConfirmScreen', // ModernTxConfirmScreen
   'TxSuccessScreen', // ModernTxSuccessScreen
   'TxFailScreen', // ModernTxFailScreen
-  'ExportMnemonicsScreen' // ModernExportMnemonicsScreen
+  'ExportMnemonicsScreen', // ModernExportMnemonicsScreen
+  'AddressTypeScreen', // ModernAddressTypeScreen
+  'LanguageScreen', // ModernLanguageScreen
+  'ChangePasswordScreen', // ModernChangePasswordScreen
+  'LockTimePage', // ModernLockTimeScreen
+  'NetworkTypeScreen', // ModernNetworkTypeScreen
+  'ContactsScreen', // ModernContactsScreen
+  'AboutUsScreen' // ModernAboutUsScreen
   // Ajoutez d'autres routes ici au fur et à mesure
 ];
 

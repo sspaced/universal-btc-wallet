@@ -9,11 +9,17 @@ import SendCAT20Screen from '@/ui/pages/CAT20/SendCAT20Screen';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
+import { ModernAboutUsScreen } from '../../ui-modern/pages/ModernAboutUsScreen';
 import { ModernAssetSelectionScreen } from '../../ui-modern/pages/ModernAssetSelectionScreen';
+import { ModernChangePasswordScreen } from '../../ui-modern/pages/ModernChangePasswordScreen';
+import { ModernContactsScreen } from '../../ui-modern/pages/ModernContactsScreen';
 import { ModernCreateAccountScreen } from '../../ui-modern/pages/ModernCreateAccountScreen';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
 import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
 import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
+import { ModernLanguageScreen } from '../../ui-modern/pages/ModernLanguageScreen';
+import { ModernLockTimeScreen } from '../../ui-modern/pages/ModernLockTimeScreen';
+import { ModernNetworkTypeScreen } from '../../ui-modern/pages/ModernNetworkTypeScreen';
 import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
 import { ModernSendScreen } from '../../ui-modern/pages/ModernSendScreen';
 import { ModernSwapConfirmationScreen } from '../../ui-modern/pages/ModernSwapConfirmationScreen';
@@ -64,18 +70,12 @@ import SplitOrdinalsInscriptionScreen from './Ordinals/SplitOrdinalsInscriptionS
 import PhishingScreen from './Phishing/PhishingScreen';
 import RunesTokenScreen from './Runes/RunesTokenScreen';
 import SendRunesScreen from './Runes/SendRunesScreen';
-import AboutUsScreen from './Settings/AboutUsScreen';
 import AdvancedScreen from './Settings/AdvancedScreen';
-import { LockTimePage } from './Settings/AdvancedScreen/LockTimePage';
-import ChangePasswordScreen from './Settings/ChangePasswordScreen';
-import ContactsScreen from './Settings/ContactsScreen';
 import EditAccountNameScreen from './Settings/EditAccountNameScreen';
 import EditContactScreen from './Settings/EditContactScreen';
 import EditWalletNameScreen from './Settings/EditWalletNameScreen';
 import ExportMnemonicsScreen from './Settings/ExportMnemonicsScreen';
 import ExportPrivateKeyScreen from './Settings/ExportPrivateKeyScreen';
-import LanguageScreen from './Settings/LanguageScreen';
-import NetworkTypeScreen from './Settings/NetworkTypeScreen';
 import UpgradeNoticeScreen from './Settings/UpgradeNoticeScreen';
 import CosmosSignDemo from './Test/CosmosSignDemo';
 import TestScreen from './Test/TestScreen';
@@ -212,11 +212,11 @@ export const routes = {
 
   NetworkTypeScreen: {
     path: '/settings/network-type',
-    element: <NetworkTypeScreen />
+    element: <ModernNetworkTypeScreen />
   },
   ChangePasswordScreen: {
     path: '/settings/password',
-    element: <ChangePasswordScreen />
+    element: <ModernChangePasswordScreen />
   },
   ExportMnemonicsScreen: {
     path: '/settings/export-mnemonics',
@@ -232,11 +232,11 @@ export const routes = {
   },
   LanguageScreen: {
     path: '/settings/language',
-    element: <LanguageScreen />
+    element: <ModernLanguageScreen />
   },
   LockTimePage: {
     path: '/settings/lock-time',
-    element: <LockTimePage />
+    element: <ModernLockTimeScreen />
   },
   HistoryScreen: {
     path: '/wallet/history',
@@ -292,7 +292,7 @@ export const routes = {
   },
   ContactsScreen: {
     path: '/settings/contacts',
-    element: <ContactsScreen />
+    element: <ModernContactsScreen />
   },
   EditContactScreen: {
     path: '/settings/contacts/edit',
@@ -385,7 +385,7 @@ export const routes = {
 
   AboutUsScreen: {
     path: '/settings/about-us',
-    element: <AboutUsScreen />
+    element: <ModernAboutUsScreen />
   },
 
   BRC20SingleStepScreen: {

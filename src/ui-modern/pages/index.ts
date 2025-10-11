@@ -1,0 +1,31 @@
+// Modern UI Pages Exports
+export { ModernAddressTypeScreen } from './ModernAddressTypeScreen';
+export { ModernAssetSelectionScreen } from './ModernAssetSelectionScreen';
+export { ModernCreateAccountScreen } from './ModernCreateAccountScreen';
+export { ModernCreateHDWalletScreen } from './ModernCreateHDWalletScreen';
+export { ModernCreatePasswordScreen } from './ModernCreatePasswordScreen';
+export { ModernExportMnemonicsScreen } from './ModernExportMnemonicsScreen';
+export { ModernHistoryDetail } from './ModernHistoryDetail';
+export { ModernHistoryScreen } from './ModernHistoryScreen';
+export { ModernReceiveScreen } from './ModernReceiveScreen';
+export { ModernRecoveryPhraseImportScreen } from './ModernRecoveryPhraseImportScreen';
+export { ModernRecoveryPhraseScreen } from './ModernRecoveryPhraseScreen';
+export { ModernSendScreen } from './ModernSendScreen';
+export { ModernStep2Screen } from './ModernStep2Screen';
+export { ModernSwapConfirmationScreen } from './ModernSwapConfirmationScreen';
+export { ModernSwapScreen } from './ModernSwapScreen';
+export { ModernTxConfirmScreen } from './ModernTxConfirmScreen';
+export { ModernTxFailScreen } from './ModernTxFailScreen';
+export { ModernTxSuccessScreen } from './ModernTxSuccessScreen';
+export { ModernUnlockScreen } from './ModernUnlockScreen';
+export { ModernWalletSelectionScreen } from './ModernWalletSelectionScreen';
+export { ModernWalletTabScreen } from './ModernWalletTabScreen';
+export { ModernWelcomeScreen } from './ModernWelcomeScreen';
+
+// New Modern Settings Pages
+export { ModernAboutUsScreen } from './ModernAboutUsScreen';
+export { ModernChangePasswordScreen } from './ModernChangePasswordScreen';
+export { ModernContactsScreen } from './ModernContactsScreen';
+export { ModernLanguageScreen } from './ModernLanguageScreen';
+export { ModernLockTimeScreen } from './ModernLockTimeScreen';
+export { ModernNetworkTypeScreen } from './ModernNetworkTypeScreen';

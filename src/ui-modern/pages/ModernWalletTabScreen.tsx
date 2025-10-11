@@ -14,7 +14,7 @@ import { useAppDispatch } from '@/ui/state/hooks';
 import { useCurrentKeyring } from '@/ui/state/keyrings/hooks';
 import { keyringsActions } from '@/ui/state/keyrings/reducer';
 import { useResetUiTxCreateScreen } from '@/ui/state/ui/hooks';
-import { getUiType, useWallet } from '@/ui/utils';
+import { getUiType, useLocationState, useWallet } from '@/ui/utils';
 
 import { BottomNavTab, ModernBottomNav } from '../components/layout/ModernBottomNav';
 import { ModernMainContent } from '../components/layout/ModernMainContent';
@@ -36,6 +36,9 @@ export const ModernWalletTabScreen: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [buyBtcModalVisible, setBuyBtcModalVisible] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+
+  // Listen for navigation state to open settings panel
+  const locationState = useLocationState<{ openSettings?: boolean }>();
 
   // Hooks from original WalletTabScreen
   const accountBalance = useAccountBalance();
@@ -68,6 +71,13 @@ export const ModernWalletTabScreen: React.FC = () => {
       navigate('UnlockScreen');
     }
   }, [isUnlocked, navigate]);
+
+  // Open settings panel when navigation state indicates it
+  useEffect(() => {
+    if (locationState?.openSettings) {
+      setShowSettings(true);
+    }
+  }, [locationState?.openSettings]);
 
   // Accounts data
   const accounts: Account[] = useMemo(() => {

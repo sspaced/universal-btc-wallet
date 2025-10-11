@@ -808,3 +808,34 @@ export interface SimplicityOp {
   to_address: string | null;
   valid: boolean;
 }
+
+// Types pour l'API BIP32 Simplicity
+export interface SimplicityUTXO {
+  txid: string;
+  vout: number;
+  amount: number;
+  scriptPubKey: string;
+  derivationPath: string;
+  publicKey: string;
+  masterFingerprint: string;
+}
+
+export interface SimplicityTransferPSBTRequest {
+  sender: string;
+  receiver: string;
+  amount: number;
+  feeRate: number;
+  utxos: SimplicityUTXO[];
+  ticker: string;
+  changeDerivationPath: string;
+  changePublicKey: string;
+}
+
+export interface SimplicityTransferResult {
+  psbtBase64: string;
+  estimatedFee: number;
+  changeAmount: number;
+  txBytes: number;
+  txVBytes: number;
+  fee: number;
+}

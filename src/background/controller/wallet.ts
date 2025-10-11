@@ -1036,7 +1036,7 @@ export class WalletController extends BaseController {
       memos
     });
 
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   sendAllBTC = async ({
@@ -1070,7 +1070,7 @@ export class WalletController extends BaseController {
       feeRate,
       enableRBF
     });
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   sendOrdinalsInscription = async ({
@@ -1124,7 +1124,7 @@ export class WalletController extends BaseController {
       enableMixed: true
     });
 
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   sendOrdinalsInscriptions = async ({
@@ -1185,7 +1185,7 @@ export class WalletController extends BaseController {
       enableRBF
     });
 
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   splitOrdinalsInscription = async ({
@@ -1991,7 +1991,7 @@ export class WalletController extends BaseController {
       outputValue: outputValue || UTXO_DUST
     });
 
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   getSignedResult = async (psbt: bitcoin.Psbt, toSignInputs: ToSignInput[]) => {
@@ -2527,7 +2527,7 @@ export class WalletController extends BaseController {
     );
 
     const psbt = bitcoin.Psbt.fromBase64(psbtBase64);
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
   // createBabylonDeposit = async (amount: string) => {};
 
@@ -2749,6 +2749,97 @@ export class WalletController extends BaseController {
   // Get Simplicity token prices
   getSimplicitysPrice = async (ticks: string[]) => {
     return simplicityService.getSimplicityTokensPrice(ticks);
+  };
+
+  // Send Simplicity token using BIP32-compatible PSBT
+  sendSimplicityToken = async ({
+    to,
+    ticker,
+    amount,
+    feeRate,
+    enableRBF,
+    btcUtxos
+  }: {
+    to: string;
+    ticker: string;
+    amount: number;
+    feeRate: number;
+    enableRBF: boolean;
+    btcUtxos?: UnspentOutput[];
+  }) => {
+    const account = preferenceService.getCurrentAccount();
+    if (!account) throw new Error('no current account');
+
+    const networkType = this.getNetworkType();
+
+    if (!btcUtxos) {
+      btcUtxos = await this.getBTCUtxos();
+    }
+
+    // Convertir les UTXOs avec les informations BIP32
+    const utxos = btcUtxos.map((utxo) => ({
+      txid: utxo.txid,
+      vout: utxo.vout,
+      amount: utxo.satoshis,
+      scriptPubKey: utxo.scriptPk,
+      derivationPath: utxo.derivationPath || `m/84'/0'/0'/0/${utxo.vout}`, // Fallback si pas défini
+      publicKey: utxo.pubkey,
+      masterFingerprint: utxo.masterFingerprint || '00000000' // Fallback si pas défini
+    }));
+
+    try {
+      console.log('sendSimplicityToken: Calling API with params:', {
+        sender: account.address,
+        receiver: to,
+        amount: amount,
+        feeRate: feeRate,
+        utxos: utxos,
+        ticker: ticker,
+        changeDerivationPath: account.changeDerivationPath || `m/84'/0'/0'/1/0`,
+        changePublicKey: account.changePublicKey || account.pubkey
+      });
+
+      // Appeler votre endpoint externe avec les informations BIP32
+      const transferResult = await simplicityService.createTransferPSBT({
+        sender: account.address,
+        receiver: to,
+        amount: amount,
+        feeRate: feeRate,
+        utxos: utxos,
+        ticker: ticker,
+        changeDerivationPath: account.changeDerivationPath || `m/84'/0'/0'/1/0`, // Fallback
+        changePublicKey: account.changePublicKey || account.pubkey // Fallback
+      });
+
+      console.log('API response:', transferResult);
+
+      // Convertir le PSBT base64 en objet bitcoin.Psbt
+      const psbt = bitcoin.Psbt.fromBase64(transferResult.psbtBase64, {
+        network: toPsbtNetwork(networkType)
+      });
+
+      // Utiliser la méthode existante pour formater les inputs
+      // Maintenant que le PSBT contient les dérivations BIP32, cette méthode fonctionne !
+      console.log('Calling formatOptionsToSignInputs...');
+      const toSignInputs = await this.formatOptionsToSignInputs(psbt.toHex(), { autoFinalized: true });
+      console.log('formatOptionsToSignInputs result:', toSignInputs);
+
+      // Utiliser la méthode existante pour signer
+      console.log('Calling getSignedResult...');
+      const result = await this.getSignedResult(psbt, toSignInputs);
+      console.log('getSignedResult result:', result);
+
+      // Utiliser les vraies fees du service Simplicity au lieu de celles recalculées
+      console.log('Simplicity service fee:', transferResult.fee);
+      console.log('PSBT calculated fee:', result.fee);
+      result.fee = transferResult.fee; // Utiliser les fees du service Simplicity
+      console.log('Updated result with Simplicity fees:', result);
+
+      return result;
+    } catch (error) {
+      console.error('Error in sendSimplicityToken:', error);
+      throw new Error(`Failed to create Simplicity transaction: ${error.message}`);
+    }
   };
 }
 export default new WalletController();

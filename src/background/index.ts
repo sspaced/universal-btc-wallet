@@ -119,7 +119,7 @@ browserRuntimeOnConnect((port) => {
           case 'controller':
           default:
             if (data.method) {
-              return walletController[data.method].apply(null, data.params);
+              return walletController[data.method](...data.params);
             }
         }
       }

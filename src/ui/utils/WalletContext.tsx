@@ -647,6 +647,18 @@ export interface WalletController {
   getSimplicityTokenSummary(address: string, ticker: string): Promise<any>;
   getSimplicityTokenHistory(address: string, ticker: string): Promise<any[]>;
   getSimplicitysPrice(ticks: string[]): Promise<{ [key: string]: { curPrice: number; changePercent: number } }>;
+  sendSimplicityToken(params: {
+    to: string;
+    ticker: string;
+    amount: number;
+    feeRate: number;
+    enableRBF: boolean;
+    btcUtxos?: UnspentOutput[];
+  }): Promise<{
+    psbtHex: string;
+    rawtx: string;
+    fee: number;
+  }>;
 }
 
 const WalletContext = createContext<{

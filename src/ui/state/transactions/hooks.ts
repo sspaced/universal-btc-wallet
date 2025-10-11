@@ -562,3 +562,242 @@ export function usePrepareSendAlkanesCallback() {
   );
   return callback;
 }
+
+export function usePrepareSendSimplicityCallback() {
+  const dispatch = useAppDispatch();
+  const wallet = useWallet();
+  const fromAddress = useAccountAddress();
+  const utxos = useUtxos();
+  const fetchUtxos = useFetchUtxosCallback();
+  const account = useCurrentAccount();
+
+  return useCallback(
+    async ({
+      selectedAsset,
+      toAddressInfo,
+      toAmount,
+      feeRate,
+      enableRBF
+    }: {
+      selectedAsset: any; // Asset type from ModernAssetsList
+      toAddressInfo: ToAddressInfo;
+      toAmount: number;
+      feeRate: number;
+      enableRBF: boolean;
+    }) => {
+      try {
+        console.log('usePrepareSendSimplicityCallback:', {
+          asset: selectedAsset.symbol || selectedAsset.name,
+          to: toAddressInfo.address,
+          amount: toAmount
+        });
+
+        if (!feeRate) {
+          const summary = await wallet.getFeeSummary();
+          feeRate = summary.list[1].feeRate;
+        }
+
+        let btcUtxos = utxos;
+        if (btcUtxos.length === 0) {
+          btcUtxos = await fetchUtxos();
+        }
+
+        // Vérifier que la méthode sendSimplicityToken existe
+        if (!wallet.sendSimplicityToken) {
+          console.error('sendSimplicityToken method not available');
+          throw new Error('sendSimplicityToken method not available. Please restart the extension.');
+        }
+
+        // Appeler la méthode sendSimplicityToken
+        console.log('usePrepareSendSimplicityCallback: Calling sendSimplicityToken with params:', {
+          to: toAddressInfo.address,
+          ticker: selectedAsset.symbol || selectedAsset.name,
+          amount: toAmount,
+          feeRate,
+          enableRBF
+        });
+
+        const res = await wallet.sendSimplicityToken({
+          to: toAddressInfo.address,
+          ticker: selectedAsset.symbol || selectedAsset.name,
+          amount: toAmount,
+          feeRate,
+          enableRBF,
+          btcUtxos
+        });
+
+        console.log('usePrepareSendSimplicityCallback: sendSimplicityToken response:', res);
+        console.log('usePrepareSendSimplicityCallback: Fee from response:', res.fee);
+
+        // Mettre à jour l'état des transactions
+        dispatch(
+          transactionsActions.updateSimplicityTx({
+            rawtx: res.rawtx,
+            psbtHex: res.psbtHex,
+            fromAddress,
+            feeRate,
+            enableRBF,
+            ticker: selectedAsset.symbol || selectedAsset.name,
+            amount: toAmount
+          })
+        );
+
+        const rawTxInfo: RawTxInfo = {
+          psbtHex: res.psbtHex,
+          rawtx: res.rawtx,
+          toAddressInfo,
+          fee: res.fee // S'assurer que les fees sont incluses dans rawTxInfo
+        };
+
+        console.log('usePrepareSendSimplicityCallback: Created rawTxInfo:', rawTxInfo);
+        console.log('usePrepareSendSimplicityCallback: Fee in rawTxInfo:', rawTxInfo.fee);
+
+        return rawTxInfo;
+      } catch (error) {
+        console.error('Error in usePrepareSendSimplicityCallback:', error);
+        throw error;
+      }
+    },
+    [dispatch, wallet, fromAddress, utxos, fetchUtxos, account]
+  );
+}
+
+// Hook unifié pour le send de tous les types d'assets
+export function usePrepareSendUnifiedCallback() {
+  const dispatch = useAppDispatch();
+  const wallet = useWallet();
+  const fromAddress = useAccountAddress();
+  const utxos = useUtxos();
+  const fetchUtxos = useFetchUtxosCallback();
+  const account = useCurrentAccount();
+  const btcUnit = useBTCUnit();
+  const { t } = useI18n();
+
+  // Import existing callbacks
+  const prepareSendBTC = usePrepareSendBTCCallback();
+  const prepareSendRunes = usePrepareSendRunesCallback();
+  const prepareSendOrdinals = usePrepareSendOrdinalsInscriptionCallback();
+  const prepareSendAlkanes = usePrepareSendAlkanesCallback();
+  const prepareSendSimplicity = usePrepareSendSimplicityCallback();
+
+  return useCallback(
+    async ({
+      selectedAsset,
+      toAddressInfo,
+      toAmount,
+      feeRate,
+      enableRBF,
+      memo,
+      memos,
+      disableAutoAdjust
+    }: {
+      selectedAsset: any; // Asset type from ModernAssetsList
+      toAddressInfo: ToAddressInfo;
+      toAmount: number;
+      feeRate?: number;
+      enableRBF: boolean;
+      memo?: string;
+      memos?: string[];
+      disableAutoAdjust?: boolean;
+    }) => {
+      try {
+        console.log('usePrepareSendUnifiedCallback called with:', {
+          selectedAsset,
+          toAddressInfo,
+          toAmount,
+          feeRate,
+          enableRBF
+        });
+
+        console.log('Available callbacks:', {
+          prepareSendBTC: !!prepareSendBTC,
+          prepareSendRunes: !!prepareSendRunes,
+          prepareSendOrdinals: !!prepareSendOrdinals,
+          prepareSendAlkanes: !!prepareSendAlkanes,
+          prepareSendSimplicity: !!prepareSendSimplicity
+        });
+
+        // Route to appropriate send method based on asset type
+        switch (selectedAsset.type) {
+          case 'btc':
+            return await prepareSendBTC({
+              toAddressInfo,
+              toAmount,
+              feeRate,
+              enableRBF,
+              memo,
+              memos,
+              disableAutoAdjust
+            });
+
+          case 'simplicity':
+            console.log('usePrepareSendUnifiedCallback: Routing to Simplicity send...');
+            if (!prepareSendSimplicity) {
+              console.error('prepareSendSimplicity is undefined');
+              throw new Error('Simplicity send not available. Please restart the extension.');
+            }
+
+            const simplicityResult = await prepareSendSimplicity({
+              selectedAsset,
+              toAddressInfo,
+              toAmount,
+              feeRate: feeRate || 5,
+              enableRBF
+            });
+
+            console.log('usePrepareSendUnifiedCallback: Simplicity result:', simplicityResult);
+            console.log('usePrepareSendUnifiedCallback: Fee in result:', simplicityResult.fee);
+
+            return simplicityResult;
+
+          case 'rune':
+            return await prepareSendRunes({
+              toAddressInfo,
+              runeid: selectedAsset.id,
+              runeAmount: toAmount.toString(),
+              feeRate: feeRate || 5,
+              enableRBF
+            });
+
+          case 'ordinal':
+            return await prepareSendOrdinals({
+              toAddressInfo,
+              inscriptionId: selectedAsset.id,
+              feeRate: feeRate || 5,
+              enableRBF
+            });
+
+          case 'alkane':
+            return await prepareSendAlkanes(
+              toAddressInfo,
+              selectedAsset.id,
+              toAmount.toString(),
+              feeRate || 5,
+              enableRBF
+            );
+
+          default:
+            throw new Error(`Unsupported asset type: ${selectedAsset.type}`);
+        }
+      } catch (error) {
+        console.error('Error in usePrepareSendUnifiedCallback:', error);
+        throw error;
+      }
+    },
+    [
+      prepareSendBTC,
+      prepareSendRunes,
+      prepareSendOrdinals,
+      prepareSendAlkanes,
+      prepareSendSimplicity,
+      dispatch,
+      wallet,
+      fromAddress,
+      utxos,
+      fetchUtxos,
+      account,
+      btcUnit,
+      t
+    ]
+  );
+}

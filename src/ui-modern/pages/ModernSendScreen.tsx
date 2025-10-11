@@ -10,7 +10,7 @@ import { useNavigate } from '@/ui/pages/MainRoute';
 import { usePrice } from '@/ui/provider/PriceProvider';
 import { useAccountBalance } from '@/ui/state/accounts/hooks';
 import { useBTCUnit, useChain } from '@/ui/state/settings/hooks';
-import { useBitcoinTx, useFetchUtxosCallback, usePrepareSendBTCCallback } from '@/ui/state/transactions/hooks';
+import { useBitcoinTx, useFetchUtxosCallback, usePrepareSendUnifiedCallback } from '@/ui/state/transactions/hooks';
 import { useUiTxCreateScreen, useUpdateUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { amountToSatoshis, isValidAddress, satoshisToAmount, useWallet } from '@/ui/utils';
 
@@ -58,7 +58,7 @@ export const ModernSendScreen: React.FC = () => {
 
   // Hooks
   const fetchUtxos = useFetchUtxosCallback();
-  const prepareSendBTC = usePrepareSendBTCCallback();
+  const prepareSendUnified = usePrepareSendUnifiedCallback();
 
   // Fonction pour fetch le prix du token spécifique
   const fetchTokenPrice = useCallback(async () => {
@@ -84,6 +84,11 @@ export const ModernSendScreen: React.FC = () => {
   }, [selectedAsset, wallet]);
 
   // Computed values
+  const inputAmountNum = useMemo(() => {
+    if (!inputAmount) return 0;
+    return parseFloat(inputAmount);
+  }, [inputAmount]);
+
   const toSatoshis = useMemo(() => {
     if (!inputAmount) return 0;
     return amountToSatoshis(inputAmount);
@@ -91,6 +96,20 @@ export const ModernSendScreen: React.FC = () => {
 
   const dustAmount = useMemo(() => satoshisToAmount(COIN_DUST), [COIN_DUST]);
   const availableAmount = satoshisToAmount(accountBalance.availableBalance);
+
+  // Calculer le montant BTC nécessaire pour les tokens (frais + 330 sats)
+  const btcAmountForTokens = useMemo(() => {
+    if (!selectedAsset || selectedAsset.type === 'btc') {
+      return toSatoshis; // Pour BTC, utiliser toSatoshis normal
+    }
+
+    // Pour les tokens, calculer le montant BTC nécessaire :
+    // - Frais de transaction (estimés)
+    // - 330 sats pour le destinataire
+    const estimatedFee = 1000; // Estimation des frais en sats
+    const recipientSats = 330; // Sats envoyés au destinataire pour recevoir le token
+    return estimatedFee + recipientSats;
+  }, [selectedAsset, toSatoshis]);
 
   // USD value calculation - SE MET À JOUR EN TEMPS RÉEL selon l'input
   const usdValue = useMemo(() => {
@@ -154,24 +173,51 @@ export const ModernSendScreen: React.FC = () => {
     if (!isValidAddress(toInfo.address)) {
       return;
     }
-    if (!toSatoshis) {
+    if (!inputAmountNum) {
       return;
     }
-    if (toSatoshis < COIN_DUST) {
+
+    // Validation COIN_DUST - IMPORTANT pour les tokens car les frais sont en BTC
+    if (btcAmountForTokens < COIN_DUST) {
       setError(`${t('amount_must_be_at_least')} ${dustAmount} ${btcUnit}`);
       return;
     }
 
-    if (toSatoshis > accountBalance.availableBalance) {
-      setError(t('amount_exceeds_your_available_balance'));
-      return;
+    // Validation spécifique selon le type d'asset
+    if (selectedAsset && selectedAsset.type !== 'btc') {
+      const availableAmount = parseFloat(selectedAsset.amount);
+
+      // Vérifier que l'utilisateur a assez de tokens
+      if (inputAmountNum > availableAmount) {
+        setError(t('amount_exceeds_your_available_balance'));
+        return;
+      }
+
+      // Vérifier que l'utilisateur a assez de BTC pour les frais + 330 sats
+      if (btcAmountForTokens > accountBalance.availableBalance) {
+        setError(t('insufficient_btc_for_fees'));
+        return;
+      }
+    } else {
+      // Pour BTC, validation normale
+      if (toSatoshis > accountBalance.availableBalance) {
+        setError(t('amount_exceeds_your_available_balance'));
+        return;
+      }
     }
 
     if (feeRate <= 0) {
       return;
     }
 
-    prepareSendBTC({ toAddressInfo: toInfo, toAmount: toSatoshis, feeRate, enableRBF })
+    // Utiliser le hook unifié
+    prepareSendUnified({
+      selectedAsset: selectedAsset || { type: 'btc', id: 'btc', name: 'Bitcoin', amount: '0' },
+      toAddressInfo: toInfo,
+      toAmount: selectedAsset && selectedAsset.type !== 'btc' ? inputAmountNum : toSatoshis,
+      feeRate,
+      enableRBF
+    })
       .then((data) => {
         setRawTxInfo(data);
         setDisabled(false);
@@ -179,7 +225,21 @@ export const ModernSendScreen: React.FC = () => {
       .catch((e) => {
         setError(e.message);
       });
-  }, [toInfo, inputAmount, feeRate, enableRBF]);
+  }, [
+    toInfo,
+    inputAmount,
+    feeRate,
+    enableRBF,
+    selectedAsset,
+    inputAmountNum,
+    toSatoshis,
+    btcAmountForTokens,
+    accountBalance,
+    t,
+    dustAmount,
+    btcUnit,
+    prepareSendUnified
+  ]);
 
   // Handlers
   const handleBack = () => {

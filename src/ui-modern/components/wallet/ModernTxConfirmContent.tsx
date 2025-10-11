@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import React, { useMemo } from 'react';
 
 import { RawTxInfo } from '@/shared/types';
+import { useI18n } from '@/ui/hooks/useI18n';
 import { useBTCUnit, useChain } from '@/ui/state/settings/hooks';
 import { satoshisToAmount } from '@/ui/utils';
 
@@ -27,12 +28,22 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
   onConfirm,
   loading = false
 }) => {
+  const { t } = useI18n();
   const btcUnit = useBTCUnit();
   const chain = useChain();
 
   // Calculate amounts
   const sendAmount = useMemo(() => {
-    return satoshisToAmount((rawTxInfo.fee || 0) + toAmountSatoshis);
+    const totalSatoshis = (rawTxInfo.fee || 0) + toAmountSatoshis;
+    const totalAmount = satoshisToAmount(totalSatoshis);
+
+    console.log('ModernTxConfirmContent: Total calculation:');
+    console.log('  - Fee satoshis:', rawTxInfo.fee || 0);
+    console.log('  - To amount satoshis:', toAmountSatoshis);
+    console.log('  - Total satoshis:', totalSatoshis);
+    console.log('  - Total amount:', totalAmount);
+
+    return totalAmount;
   }, [rawTxInfo.fee, toAmountSatoshis]);
 
   const toAmount = useMemo(() => {
@@ -40,8 +51,15 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
   }, [toAmountSatoshis]);
 
   const feeAmount = useMemo(() => {
-    return satoshisToAmount(rawTxInfo.fee || 0);
-  }, [rawTxInfo.fee]);
+    console.log('ModernTxConfirmContent: RawTxInfo:', rawTxInfo);
+    console.log('ModernTxConfirmContent: Fee from rawTxInfo:', rawTxInfo.fee);
+    console.log('ModernTxConfirmContent: FeeRate:', feeRate);
+
+    const calculatedFeeAmount = satoshisToAmount(rawTxInfo.fee || 0);
+    console.log('ModernTxConfirmContent: Calculated fee amount:', calculatedFeeAmount);
+
+    return calculatedFeeAmount;
+  }, [rawTxInfo.fee, feeRate]);
 
   return (
     <div

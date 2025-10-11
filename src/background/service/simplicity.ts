@@ -380,6 +380,56 @@ export class SimplicityService {
       return false;
     }
   };
+
+  // Create transfer PSBT using the new BIP32-compatible API
+  createTransferPSBT = async (request: {
+    sender: string;
+    receiver: string;
+    amount: number;
+    feeRate: number;
+    utxos: Array<{
+      txid: string;
+      vout: number;
+      amount: number;
+      scriptPubKey: string;
+      derivationPath: string;
+      publicKey: string;
+      masterFingerprint: string;
+    }>;
+    ticker: string;
+    changeDerivationPath: string;
+    changePublicKey: string;
+  }): Promise<{
+    psbtBase64: string;
+    estimatedFee: number;
+    changeAmount: number;
+    txBytes: number;
+    txVBytes: number;
+    fee: number;
+  }> => {
+    try {
+      const url = 'https://tx.sspace.fr/api/v1/psbt/transfer';
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-client': 'UniSat Wallet',
+          'x-version': VERSION,
+          'x-channel': CHANNEL
+        },
+        body: JSON.stringify(request)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating Simplicity transfer PSBT:', error);
+      throw error;
+    }
+  };
 }
 
 // Create and export singleton instance

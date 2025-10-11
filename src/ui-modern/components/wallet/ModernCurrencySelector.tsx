@@ -67,7 +67,7 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
         style={{
           width: 'auto',
           background: buttonBg,
-          border: '1px solid rgba(255, 255, 255, 0.14)',
+          border: isOpen ? '1px solid var(--modern-accent-primary)' : '1px solid rgba(255, 255, 255, 0.14)',
           borderRadius: '9999px',
           padding: '6px 10px',
           display: 'flex',

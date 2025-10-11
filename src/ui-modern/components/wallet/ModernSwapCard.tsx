@@ -38,6 +38,19 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
 }) => {
   const isPay = type === 'pay';
 
+  // Calculate font size based on amount length
+  const getFontSize = () => {
+    const length = amount.length;
+    const baseSizePay = 36;
+    const baseSizeReceive = 42;
+    const baseSize = isPay ? baseSizePay : baseSizeReceive;
+
+    if (length <= 6) return baseSize;
+    if (length <= 10) return baseSize * 0.8;
+    if (length <= 15) return baseSize * 0.65;
+    return baseSize * 0.5;
+  };
+
   // Style to hide number input arrows
   const hideNumberInputArrows = `
     input[type="number"]::-webkit-inner-spin-button,
@@ -94,13 +107,14 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
               border: 'none',
               outline: 'none',
               color: '#ffffff',
-              fontSize: isPay ? '36px' : '42px',
+              fontSize: `${getFontSize()}px`,
               fontWeight: '600',
               fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
               letterSpacing: '-0.5px',
               padding: 0,
               margin: 0,
-              width: '100%'
+              width: '100%',
+              transition: 'font-size 0.2s ease'
             }}
           />
 

@@ -246,7 +246,7 @@ export const CHAINS_MAP: { [key: string]: TypeChain } = {
     unisatExplorerUrl: 'https://uniscan.cc',
     okxExplorerUrl: '',
     showPrice: true,
-    defaultExplorer: 'unisat-explorer',
+    defaultExplorer: 'mempool-space',
     enableBrc20Prog: true
   },
   [ChainType.BITCOIN_TESTNET]: {
@@ -513,3 +513,5 @@ export const getAutoLockTimes = () => [
 ];
 
 export const DEFAULT_LOCKTIME_ID = 5;
+
+export const MIN_TRANSACTION_FEE_SATS = 206;

@@ -71,6 +71,7 @@ import {
 } from '@unisat/wallet-bitcoin';
 import { AddressType, ChainType } from '@unisat/wallet-types';
 
+import { MIN_TRANSACTION_FEE_SATS } from '../../shared/constant';
 import { ContactBookItem } from '../service/contactBook';
 import { ConnectedSite } from '../service/permission';
 import BaseController from './base';
@@ -2005,6 +2006,12 @@ export class WalletController extends BaseController {
     try {
       rawtx = psbt.extractTransaction(true).toHex();
       fee = psbt.getFee();
+
+      // Enforce minimum fee of 206 sats
+      if (fee < MIN_TRANSACTION_FEE_SATS) {
+        console.log(`Fee ${fee} sats is below minimum ${MIN_TRANSACTION_FEE_SATS} sats, adjusting...`);
+        fee = MIN_TRANSACTION_FEE_SATS;
+      }
     } catch (e) {
       // ignore
     }

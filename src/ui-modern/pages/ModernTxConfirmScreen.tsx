@@ -9,6 +9,7 @@ import { useLocationState } from '@/ui/utils';
 
 import { ModernHeader } from '../components/layout/ModernHeader';
 import { ModernMainContent } from '../components/layout/ModernMainContent';
+import type { Asset } from '../components/wallet/ModernAssetsList';
 import { ModernTxConfirmContent } from '../components/wallet/ModernTxConfirmContent';
 
 interface LocationState {
@@ -16,11 +17,12 @@ interface LocationState {
   toAmount: number;
   enableRBF: boolean;
   feeRate: number;
+  selectedAsset?: Asset;
 }
 
 export const ModernTxConfirmScreen: React.FC = () => {
   const { t } = useI18n();
-  const { rawTxInfo, toAmount, enableRBF, feeRate } = useLocationState<LocationState>();
+  const { rawTxInfo, toAmount, enableRBF, feeRate, selectedAsset } = useLocationState<LocationState>();
   const navigate = useNavigate();
   const pushBitcoinTx = usePushBitcoinTxCallback();
   const [loading, setLoading] = useState(false);
@@ -81,6 +83,7 @@ export const ModernTxConfirmScreen: React.FC = () => {
           onCancel={handleCancel}
           onConfirm={handleConfirm}
           loading={loading}
+          selectedAsset={selectedAsset}
         />
       </ModernMainContent>
     </motion.div>

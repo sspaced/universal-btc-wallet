@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
+import { MIN_TRANSACTION_FEE_SATS } from '@/shared/constant';
 import { RawTxInfo, ToAddressInfo } from '@/shared/types';
 import { useTools } from '@/ui/components/ActionComponent';
 import { useI18n } from '@/ui/hooks/useI18n';
@@ -12,6 +13,22 @@ import { useAccountAddress, useCurrentAccount } from '../accounts/hooks';
 import { accountActions } from '../accounts/reducer';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { transactionsActions } from './reducer';
+
+// Helper function to ensure minimum fee rate
+function ensureMinimumFeeRate(feeRate: number, assetType = 'Transaction'): number {
+  // Estimate transaction size: 1 input (148 bytes) + 2 outputs (68 bytes) + base (10 bytes) + witness (108 bytes / 4) = ~226 vbytes
+  const estimatedTxSize = 226; // Conservative estimate for P2WPKH transaction
+  const minFeeRate = Math.ceil(MIN_TRANSACTION_FEE_SATS / estimatedTxSize);
+
+  if (feeRate < minFeeRate) {
+    console.log(
+      `${assetType} fee rate ${feeRate} sat/vB is too low for minimum fee of ${MIN_TRANSACTION_FEE_SATS} sats. Adjusting to ${minFeeRate} sat/vB`
+    );
+    return minFeeRate;
+  }
+
+  return feeRate;
+}
 
 export function useTransactionsState(): AppState['transactions'] {
   return useAppSelector((state) => state.transactions);
@@ -62,6 +79,10 @@ export function usePrepareSendBTCCallback() {
         const summary = await wallet.getFeeSummary();
         feeRate = summary.list[1].feeRate;
       }
+
+      // Ensure minimum fee rate
+      feeRate = ensureMinimumFeeRate(feeRate, 'BTC');
+
       let res: {
         psbtHex: string;
         rawtx: string;
@@ -85,6 +106,12 @@ export function usePrepareSendBTCCallback() {
           memo,
           memos
         });
+      }
+
+      // Validate minimum fee
+      if (res.fee < MIN_TRANSACTION_FEE_SATS) {
+        console.log(`Transaction fee ${res.fee} sats is below minimum ${MIN_TRANSACTION_FEE_SATS} sats`);
+        res.fee = MIN_TRANSACTION_FEE_SATS;
       }
 
       dispatch(
@@ -222,6 +249,9 @@ export function usePrepareSendOrdinalsInscriptionCallback() {
         const summary = await wallet.getFeeSummary();
         feeRate = summary.list[1].feeRate;
       }
+
+      // Ensure minimum fee rate
+      feeRate = ensureMinimumFeeRate(feeRate, 'Ordinals');
 
       let btcUtxos = utxos;
       if (btcUtxos.length === 0) {
@@ -496,6 +526,9 @@ export function usePrepareSendRunesCallback() {
         feeRate = summary.list[1].feeRate;
       }
 
+      // Ensure minimum fee rate
+      feeRate = ensureMinimumFeeRate(feeRate, 'Runes');
+
       let btcUtxos = utxos;
       if (btcUtxos.length === 0) {
         btcUtxos = await fetchUtxos();
@@ -597,6 +630,9 @@ export function usePrepareSendSimplicityCallback() {
           feeRate = summary.list[1].feeRate;
         }
 
+        // Ensure minimum fee rate
+        feeRate = ensureMinimumFeeRate(feeRate, 'Simplicity');
+
         let btcUtxos = utxos;
         if (btcUtxos.length === 0) {
           btcUtxos = await fetchUtxos();
@@ -628,6 +664,12 @@ export function usePrepareSendSimplicityCallback() {
 
         console.log('usePrepareSendSimplicityCallback: sendSimplicityToken response:', res);
         console.log('usePrepareSendSimplicityCallback: Fee from response:', res.fee);
+
+        // Validate minimum fee
+        if (res.fee < MIN_TRANSACTION_FEE_SATS) {
+          console.log(`Simplicity transaction fee ${res.fee} sats is below minimum ${MIN_TRANSACTION_FEE_SATS} sats`);
+          res.fee = MIN_TRANSACTION_FEE_SATS;
+        }
 
         // Mettre à jour l'état des transactions
         dispatch(
@@ -717,6 +759,13 @@ export function usePrepareSendUnifiedCallback() {
           prepareSendSimplicity: !!prepareSendSimplicity
         });
 
+        // Ensure minimum fee rate
+        if (!feeRate) {
+          const summary = await wallet.getFeeSummary();
+          feeRate = summary.list[1].feeRate;
+        }
+        feeRate = ensureMinimumFeeRate(feeRate, 'Unified');
+
         // Route to appropriate send method based on asset type
         switch (selectedAsset.type) {
           case 'btc':
@@ -741,7 +790,7 @@ export function usePrepareSendUnifiedCallback() {
               selectedAsset,
               toAddressInfo,
               toAmount,
-              feeRate: feeRate || 5,
+              feeRate,
               enableRBF
             });
 
@@ -756,7 +805,7 @@ export function usePrepareSendUnifiedCallback() {
               toAddressInfo,
               runeid: selectedAsset.id,
               runeAmount: toAmount.toString(),
-              feeRate: feeRate || 5,
+              feeRate,
               enableRBF
             });
 
@@ -764,18 +813,12 @@ export function usePrepareSendUnifiedCallback() {
             return await prepareSendOrdinals({
               toAddressInfo,
               inscriptionId: selectedAsset.id,
-              feeRate: feeRate || 5,
+              feeRate,
               enableRBF
             });
 
           case 'alkane':
-            return await prepareSendAlkanes(
-              toAddressInfo,
-              selectedAsset.id,
-              toAmount.toString(),
-              feeRate || 5,
-              enableRBF
-            );
+            return await prepareSendAlkanes(toAddressInfo, selectedAsset.id, toAmount.toString(), feeRate, enableRBF);
 
           default:
             throw new Error(`Unsupported asset type: ${selectedAsset.type}`);

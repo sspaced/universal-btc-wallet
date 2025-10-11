@@ -10,6 +10,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
 import { ModernAssetSelectionScreen } from '../../ui-modern/pages/ModernAssetSelectionScreen';
+import { ModernCreateAccountScreen } from '../../ui-modern/pages/ModernCreateAccountScreen';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
 import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
 import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
@@ -30,7 +31,6 @@ import { useAppDispatch } from '../state/hooks';
 import { settingsActions } from '../state/settings/reducer';
 import { useWallet } from '../utils';
 import AddKeyringScreen from './Account/AddKeyringScreen';
-import CreateAccountScreen from './Account/CreateAccountScreen';
 import CreateColdWalletScreen from './Account/CreateColdWalletScreen';
 import CreateKeystoneWalletScreen from './Account/CreateKeystoneWalletScreen';
 import CreateSimpleWalletScreen from './Account/CreateSimpleWalletScreen';
@@ -142,7 +142,7 @@ export const routes = {
   },
   CreateAccountScreen: {
     path: '/account/create',
-    element: <CreateAccountScreen />
+    element: <ModernCreateAccountScreen />
   },
   CreatePasswordScreen: {
     path: '/account/create-password',

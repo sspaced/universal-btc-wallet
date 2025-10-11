@@ -259,7 +259,7 @@ export const ModernSendScreen: React.FC = () => {
   };
 
   const handleNext = () => {
-    navigate('TxConfirmScreen', { rawTxInfo, toAmount: toSatoshis, enableRBF, feeRate });
+    navigate('TxConfirmScreen', { rawTxInfo, toAmount: toSatoshis, enableRBF, feeRate, selectedAsset });
   };
 
   const handleMaxAmount = () => {

@@ -6,8 +6,10 @@ import { useI18n } from '@/ui/hooks/useI18n';
 import { useBTCUnit, useChain } from '@/ui/state/settings/hooks';
 import { satoshisToAmount } from '@/ui/utils';
 
+import UniversalLogo from '../../Logo Universal copy.svg';
 import { ModernButton } from '../common/ModernButton';
 import { ModernCard } from '../common/ModernCard';
+import type { Asset } from './ModernAssetsList';
 
 interface ModernTxConfirmContentProps {
   rawTxInfo: RawTxInfo;
@@ -17,6 +19,7 @@ interface ModernTxConfirmContentProps {
   onCancel: () => void;
   onConfirm: () => void;
   loading?: boolean;
+  selectedAsset?: Asset;
 }
 
 export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
@@ -26,11 +29,28 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
   feeRate,
   onCancel,
   onConfirm,
-  loading = false
+  loading = false,
+  selectedAsset
 }) => {
   const { t } = useI18n();
   const btcUnit = useBTCUnit();
   const chain = useChain();
+
+  // Determine token info to display
+  const tokenInfo = useMemo(() => {
+    if (selectedAsset && selectedAsset.type !== 'btc') {
+      return {
+        symbol: selectedAsset.symbol || selectedAsset.name,
+        name: selectedAsset.name,
+        icon: selectedAsset.icon || <span style={{ fontSize: '18px' }}>🪙</span>
+      };
+    }
+    return {
+      symbol: btcUnit,
+      name: 'Bitcoin',
+      icon: <span style={{ fontSize: '18px' }}>₿</span>
+    };
+  }, [selectedAsset, btcUnit]);
 
   // Calculate amounts
   const sendAmount = useMemo(() => {
@@ -71,7 +91,7 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
         gap: '16px',
         overflow: 'hidden'
       }}>
-      {/* Chain Icon */}
+      {/* Token Icon */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -80,15 +100,24 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
           display: 'flex',
           justifyContent: 'center'
         }}>
-        <img src={chain.icon} alt="Chain" style={{ width: '40px', height: '40px' }} />
+        <img
+          src={UniversalLogo}
+          alt="Universal Logo"
+          style={{
+            width: '60px',
+            height: '60px',
+            objectFit: 'contain',
+            filter: 'brightness(0) invert(1)'
+          }}
+        />
       </motion.div>
 
-      {/* Main Amount Card */}
+      {/* Address Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}>
-        <ModernCard padding="md" className="tx-confirm-main-card">
+        <ModernCard padding="md" className="tx-confirm-address-card">
           <div style={{ textAlign: 'center' }}>
             <p
               style={{
@@ -104,7 +133,6 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
                 borderRadius: '8px',
                 padding: '8px',
-                marginBottom: '12px',
                 border: '1px solid rgba(255, 255, 255, 0.1)'
               }}>
               <p
@@ -119,41 +147,44 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
                 {rawTxInfo.toAddressInfo.address}
               </p>
             </div>
+          </div>
+        </ModernCard>
+      </motion.div>
 
-            <div
+      {/* Token Amount Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35, duration: 0.5 }}>
+        <ModernCard padding="md" className="tx-confirm-token-card">
+          <div style={{ textAlign: 'center' }}>
+            <p
               style={{
-                borderTop: '1px dashed rgba(255, 255, 255, 0.1)',
-                margin: '12px 0',
-                paddingTop: '12px'
+                fontSize: '12px',
+                color: 'rgba(255, 255, 255, 0.6)',
+                marginBottom: '8px',
+                fontWeight: '500'
               }}>
-              <p
+              {t('amount')}
+            </p>
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '6px' }}>
+              <span
                 style={{
-                  fontSize: '12px',
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  marginBottom: '8px',
-                  fontWeight: '500'
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  color: '#ffffff',
+                  letterSpacing: '-0.5px'
                 }}>
-                {t('amount')}
-              </p>
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '6px' }}>
-                <span
-                  style={{
-                    fontSize: '24px',
-                    fontWeight: '700',
-                    color: '#ffffff',
-                    letterSpacing: '-0.5px'
-                  }}>
-                  {toAmount}
-                </span>
-                <span
-                  style={{
-                    fontSize: '16px',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    fontWeight: '600'
-                  }}>
-                  {btcUnit}
-                </span>
-              </div>
+                {toAmount}
+              </span>
+              <span
+                style={{
+                  fontSize: '16px',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  fontWeight: '600'
+                }}>
+                {tokenInfo.symbol}
+              </span>
             </div>
           </div>
         </ModernCard>
@@ -205,34 +236,6 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
                 {feeRate} sat/vB
               </span>
             </div>
-
-            {/* Divider */}
-            <div
-              style={{
-                borderTop: '1px dashed rgba(255, 255, 255, 0.1)',
-                margin: '2px 0'
-              }}
-            />
-
-            {/* Total */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span
-                style={{
-                  fontSize: '13px',
-                  color: 'rgba(255, 255, 255, 0.9)',
-                  fontWeight: '700'
-                }}>
-                {t('total')}
-              </span>
-              <span
-                style={{
-                  fontSize: '14px',
-                  color: '#F7931A',
-                  fontWeight: '700'
-                }}>
-                {sendAmount} {btcUnit}
-              </span>
-            </div>
           </div>
         </ModernCard>
       </motion.div>
@@ -248,23 +251,23 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
             alignItems: 'center',
             gap: '6px',
             padding: '8px 12px',
-            backgroundColor: 'rgba(247, 147, 26, 0.1)',
+            backgroundColor: 'rgba(52, 199, 89, 0.1)',
             borderRadius: '8px',
-            border: '1px solid rgba(247, 147, 26, 0.3)'
+            border: '1px solid rgba(52, 199, 89, 0.3)'
           }}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
             <path
               d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-              stroke="#F7931A"
+              stroke="#34c759"
               strokeWidth="2"
             />
-            <path d="M12 8V12" stroke="#F7931A" strokeWidth="2" strokeLinecap="round" />
-            <circle cx="12" cy="16" r="1" fill="#F7931A" />
+            <path d="M12 8V12" stroke="#34c759" strokeWidth="2" strokeLinecap="round" />
+            <circle cx="12" cy="16" r="1" fill="#34c759" />
           </svg>
           <span
             style={{
               fontSize: '11px',
-              color: 'rgba(247, 147, 26, 0.9)',
+              color: 'rgba(52, 199, 89, 0.9)',
               fontWeight: '500'
             }}>
             {t('replace_by_fee_enabled')}
@@ -294,9 +297,14 @@ export const ModernTxConfirmContent: React.FC<ModernTxConfirmContentProps> = ({
       </motion.div>
 
       <style>{`
-        .tx-confirm-main-card {
-          background: linear-gradient(135deg, rgba(247, 147, 26, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
-          border: 1px solid rgba(247, 147, 26, 0.3);
+        .tx-confirm-address-card {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tx-confirm-token-card {
+          background: linear-gradient(135deg, rgba(52, 199, 89, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+          border: 1px solid rgba(52, 199, 89, 0.3);
         }
 
         .tx-confirm-fee-card {

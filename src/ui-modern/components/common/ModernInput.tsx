@@ -7,6 +7,7 @@ export interface ModernInputProps {
   value: string;
   onChange: (value: string) => void;
   onBlur?: () => void;
+  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   type?: 'text' | 'email' | 'number';
   error?: string;
   success?: boolean;
@@ -25,6 +26,7 @@ export const ModernInput: React.FC<ModernInputProps> = ({
   value,
   onChange,
   onBlur,
+  onKeyPress,
   type = 'text',
   error,
   success,
@@ -103,6 +105,7 @@ export const ModernInput: React.FC<ModernInputProps> = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
+          onKeyPress={onKeyPress}
           placeholder={placeholder}
           disabled={disabled}
           autoFocus={autoFocus}
@@ -162,7 +165,13 @@ export const ModernInput: React.FC<ModernInputProps> = ({
               onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)')}
               onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)')}>
               <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                <path d="M1 5L5 1L9 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M1 5L5 1L9 5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
             <button
@@ -182,7 +191,13 @@ export const ModernInput: React.FC<ModernInputProps> = ({
               onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)')}
               onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)')}>
               <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M1 1L5 5L9 1"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           </div>

@@ -94,7 +94,7 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
             height: '16px',
             width: '16px',
             borderRadius: '50%',
-            border: '2px solid white',
+            border: '2px solid #72e3ad',
             borderTop: '2px solid transparent',
             animation: 'spin 1s linear infinite'
           }}

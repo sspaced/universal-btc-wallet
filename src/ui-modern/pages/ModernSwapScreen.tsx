@@ -7,7 +7,6 @@ import { useAccountBalance } from '@/ui/state/accounts/hooks';
 import { ModernButton } from '../components/common/ModernButton';
 import { ModernHeader } from '../components/layout/ModernHeader';
 import { Currency } from '../components/wallet/ModernCurrencySelector';
-import { ModernSlippageSelector } from '../components/wallet/ModernSlippageSelector';
 import { ModernSwapButton } from '../components/wallet/ModernSwapButton';
 import { ModernSwapCard } from '../components/wallet/ModernSwapCard';
 import { useSimplicityTokens } from '../hooks/useSimplicityTokens';
@@ -255,6 +254,9 @@ export const ModernSwapScreen: React.FC = () => {
             placeholder="0"
             balance={fromCurrency.balance}
             onDropdownToggle={setFromDropdownOpen}
+            slippage={slippage}
+            onSlippageChange={setSlippage}
+            showSlippageSettings={true}
           />
         </motion.div>
 
@@ -293,11 +295,6 @@ export const ModernSwapScreen: React.FC = () => {
           />
         </motion.div>
 
-        {/* Slippage Selector */}
-        <div style={{ marginTop: '10px' }}>
-          <ModernSlippageSelector value={slippage} onChange={setSlippage} />
-        </div>
-
         {/* Review Swap Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -332,9 +329,17 @@ export const ModernSwapScreen: React.FC = () => {
                 {fromCurrency.symbol === 'BTC' && toCurrency.symbol === 'USDT' ? '45,000' : '1.00'} {toCurrency.symbol}
               </span>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1px' }}>
-              <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>Fee</span>
-              <span style={{ fontSize: '12px', color: '#34c759', fontWeight: '500' }}>0.1%</span>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1px' }}>
+                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>Slippage</span>
+                <span style={{ fontSize: '12px', color: 'var(--modern-accent-primary)', fontWeight: '500' }}>
+                  {slippage}%
+                </span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1px' }}>
+                <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>Fee</span>
+                <span style={{ fontSize: '12px', color: '#34c759', fontWeight: '500' }}>0.1%</span>
+              </div>
             </div>
           </motion.div>
         )}

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import React from 'react';
+import { SlidersHorizontal } from 'lucide-react';
+import React, { useState } from 'react';
 
 import { Currency, ModernCurrencySelector } from './ModernCurrencySelector';
 
@@ -18,6 +19,9 @@ interface ModernSwapCardProps {
   balance?: string;
   onDropdownToggle?: (isOpen: boolean) => void;
   zIndex?: number;
+  slippage?: number;
+  onSlippageChange?: (value: number) => void;
+  showSlippageSettings?: boolean;
 }
 
 export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
@@ -34,9 +38,17 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
   onQuickAmount,
   balance,
   onDropdownToggle,
-  zIndex = 1
+  zIndex = 1,
+  slippage,
+  onSlippageChange,
+  showSlippageSettings = false
 }) => {
   const isPay = type === 'pay';
+  const [isHovered, setIsHovered] = useState(false);
+  const [showCustomSlippage, setShowCustomSlippage] = useState(false);
+  const [customSlippageValue, setCustomSlippageValue] = useState('');
+  const [maxSlippage, setMaxSlippage] = useState(slippage || 1);
+  const [isMaxSelected, setIsMaxSelected] = useState(false);
 
   // Calculate font size based on amount length
   const getFontSize = () => {
@@ -63,13 +75,139 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
     }
   `;
 
+  const slippageOptions = [
+    { label: '0.5%', value: 0.5 },
+    { label: '1%', value: 1 },
+    { label: '2%', value: 2 },
+    { label: 'Max', value: maxSlippage }
+  ];
+
+  const handleSlippageClick = (option: { label: string; value: number }) => {
+    if (option.label === 'Max') {
+      // Max button uses the maxSlippage value set via the settings overlay
+      setIsMaxSelected(true);
+      if (onSlippageChange) {
+        onSlippageChange(maxSlippage);
+      }
+      return;
+    }
+    // Other buttons deselect Max
+    setIsMaxSelected(false);
+    if (onSlippageChange) {
+      onSlippageChange(option.value);
+    }
+  };
+
+  const handleCustomSlippageSubmit = () => {
+    if (customSlippageValue && !isNaN(parseFloat(customSlippageValue))) {
+      const newMaxSlippage = parseFloat(customSlippageValue);
+      setMaxSlippage(newMaxSlippage);
+      setShowCustomSlippage(false);
+      setCustomSlippageValue('');
+    }
+  };
+
   return (
     <>
       <style>{hideNumberInputArrows}</style>
+
+      {/* Settings Button for Max Slippage */}
+      {showSlippageSettings && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '6px', position: 'relative' }}>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowCustomSlippage(!showCustomSlippage)}
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '50%',
+              width: '28px',
+              height: '28px',
+              color: 'rgba(255, 255, 255, 0.7)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+            <SlidersHorizontal size={14} />
+          </motion.button>
+
+          {/* Custom Slippage Dropdown */}
+          {showCustomSlippage && (
+            <>
+              {/* Invisible overlay to close on outside click */}
+              <div
+                onClick={() => setShowCustomSlippage(false)}
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 99998
+                }}
+              />
+              {/* Horizontal Input expanding from button */}
+              <motion.div
+                initial={{ opacity: 0, width: 0 }}
+                animate={{ opacity: 1, width: 'auto' }}
+                transition={{ duration: 0.2 }}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: '34px',
+                  height: '28px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '8px',
+                  padding: '0 10px',
+                  gap: '4px',
+                  zIndex: 99999
+                }}>
+                <input
+                  type="number"
+                  value={customSlippageValue}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCustomSlippageValue(value);
+                    if (value && !isNaN(parseFloat(value))) {
+                      setMaxSlippage(parseFloat(value));
+                    }
+                  }}
+                  placeholder="Max Slippage"
+                  autoFocus
+                  style={{
+                    width: '90px',
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#ffffff',
+                    fontSize: '11px',
+                    outline: 'none'
+                  }}
+                />
+                <span
+                  style={{
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: '11px',
+                    fontWeight: '500'
+                  }}>
+                  %
+                </span>
+              </motion.div>
+            </>
+          )}
+        </div>
+      )}
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         style={{
           background: isPay ? 'var(--modern-bg-primary)' : 'var(--modern-bg-secondary)',
           backdropFilter: 'blur(12px)',
@@ -118,8 +256,53 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
             }}
           />
 
-          {/* Currency Selector on the right */}
-          <div style={{ flexShrink: 0 }}>
+          {/* Currency Selector on the right with slippage buttons */}
+          <div style={{ flexShrink: 0, position: 'relative' }}>
+            {/* Slippage Buttons (visible on hover, positioned above selector) */}
+            {isHovered && showSlippageSettings && (
+              <motion.div
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                style={{
+                  position: 'absolute',
+                  bottom: '100%',
+                  right: 0,
+                  display: 'flex',
+                  gap: '3px',
+                  marginBottom: '8px',
+                  zIndex: 100
+                }}>
+                {slippageOptions.map((option) => {
+                  const isSelected =
+                    option.label === 'Max' ? isMaxSelected : !isMaxSelected && slippage === option.value;
+                  return (
+                    <motion.button
+                      key={option.label}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleSlippageClick(option)}
+                      style={{
+                        background: 'transparent',
+                        border: isSelected
+                          ? '1px solid var(--modern-accent-primary)'
+                          : '1px solid rgba(255, 255, 255, 0.15)',
+                        borderRadius: '10px',
+                        padding: '3px 7px',
+                        color: isSelected ? 'var(--modern-accent-primary)' : '#ffffff',
+                        fontSize: '9px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        whiteSpace: 'nowrap'
+                      }}>
+                      {option.label}
+                    </motion.button>
+                  );
+                })}
+              </motion.div>
+            )}
+
             <ModernCurrencySelector
               selectedCurrency={selectedCurrency}
               onCurrencySelect={onCurrencySelect}

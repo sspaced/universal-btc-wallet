@@ -131,24 +131,19 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           />
         </motion.div>
 
-        {/* Recovery Grid */}
+        {/* Recovery Grid with integrated Copy Button */}
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
           style={{ marginBottom: '10px' }}>
-          <ModernRecoveryGrid words={words} title="Recovery Phrase" copyable />
-        </motion.div>
-
-        {/* Copy Button */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
-          <ModernButton variant="tertiary" size="small" onClick={handleCopyAll} style={{ maxWidth: '200px' }}>
-            Copy All Words
-          </ModernButton>
+          <ModernRecoveryGrid
+            words={words}
+            title="Recovery Phrase"
+            copyable
+            showCopyButton={true}
+            onCopyAll={handleCopyAll}
+          />
         </motion.div>
 
         {/* Continue Button */}

@@ -35,8 +35,10 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
       style={{
         position: 'relative',
         padding: '6px 8px',
-        backgroundColor: selected ? 'rgba(114, 227, 173, 0.1)' : 'rgba(255, 255, 255, 0.08)',
-        border: selected ? '1.5px solid rgba(114, 227, 173, 0.5)' : '1.5px solid rgba(255, 255, 255, 0.15)',
+        backgroundColor: selected ? 'rgba(114, 227, 173, 0.1)' : 'var(--modern-bg-tertiary)',
+        border: selected
+          ? '2px solid var(--modern-border-focus)'
+          : 'var(--modern-border-width) solid var(--modern-border-color)',
         borderRadius: '8px',
         cursor: onClick || copyable ? 'pointer' : 'default',
         transition: 'all 0.2s',

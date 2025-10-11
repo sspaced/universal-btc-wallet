@@ -240,17 +240,16 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
               alignItems: 'center',
               gap: '12px',
               padding: '16px',
-              background: asset.type === 'btc' ? 'rgba(247, 147, 26, 0.05)' : 'rgba(255, 255, 255, 0.02)',
-              border:
-                asset.type === 'btc' ? '1px solid rgba(247, 147, 26, 0.2)' : '1px solid rgba(255, 255, 255, 0.05)',
+              background: 'var(--modern-bg-secondary)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
               borderRadius: '8px',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               position: 'relative'
             }}
             whileHover={{
-              background: asset.type === 'btc' ? 'rgba(247, 147, 26, 0.08)' : 'rgba(255, 255, 255, 0.04)',
-              borderColor: asset.type === 'btc' ? 'rgba(247, 147, 26, 0.3)' : 'rgba(255, 255, 255, 0.1)'
+              background: 'var(--modern-bg-tertiary)',
+              borderColor: 'rgba(255, 255, 255, 0.1)'
             }}>
             {/* Asset Icon */}
             {getAssetIcon(asset)}

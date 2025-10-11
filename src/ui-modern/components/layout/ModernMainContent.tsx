@@ -17,7 +17,7 @@ export const ModernMainContent: React.FC<ModernMainContentProps> = ({ children, 
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingBottom: noPadding ? '0px' : '80px', // Space for bottom navigation
-        background: '#000000',
+        background: 'var(--modern-bg-primary)',
         scrollbarWidth: 'none', // Firefox
         msOverflowStyle: 'none' // IE and Edge
       }}

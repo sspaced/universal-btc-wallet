@@ -67,7 +67,7 @@
   --modern-bg-primary: #121212; /* Background de page */
   --modern-bg-secondary: #242424; /* Background d'input */
   --modern-bg-tertiary: #313131; /* 3ème couche */
-  --modern-border-width: 2px; /* Épaisseur des liserés */
+  --modern-border-width: 1px; /* Épaisseur des liserés */
   --modern-border-color: rgba(255, 255, 255, 0.1);
   --modern-border-focus: rgba(114, 227, 173, 0.6);
 
@@ -110,7 +110,7 @@
   --modern-bg-primary: #121212;
   --modern-bg-secondary: #242424;
   --modern-bg-tertiary: #313131;
-  --modern-border-width: 2px;
+  --modern-border-width: 1px;
   --modern-border-color: rgba(255, 255, 255, 0.1);
   --modern-border-focus: rgba(114, 227, 173, 0.6);
 

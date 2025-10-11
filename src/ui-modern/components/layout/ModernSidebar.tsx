@@ -190,7 +190,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                     }}
                     style={{
                       width: '100%',
-                      background: isSelected ? 'rgba(114, 227, 173, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+                      background: isSelected ? 'var(--modern-bg-primary)' : 'rgba(255, 255, 255, 0.05)',
                       border: isSelected ? '1px solid rgba(114, 227, 173, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
                       borderRadius: '8px',
                       padding: '12px',
@@ -586,7 +586,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                   onClick={onAddAccount}
                   style={{
                     width: '100%',
-                    background: 'rgba(255, 255, 255, 0.08)',
+                    background: 'var(--modern-bg-secondary)',
                     border: '1px solid rgba(255, 255, 255, 0.15)',
                     borderRadius: '10px',
                     padding: '12px',

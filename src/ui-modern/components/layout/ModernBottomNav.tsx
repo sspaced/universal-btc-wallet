@@ -51,7 +51,7 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
         left: 0,
         right: 0,
         height: '64px',
-        background: 'rgba(0, 0, 0, 0.95)',
+        background: 'var(--modern-bg-primary)',
         backdropFilter: 'blur(20px)',
         borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         display: 'flex',

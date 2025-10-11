@@ -358,8 +358,8 @@ export const useUnifiedAssets = () => {
           });
         });
 
-        // Sort by value (descending) - BTC will likely be first due to its high value
-        allAssets.sort((a, b) => b.value - a.value);
+        // Sort by value (ascending) - assets with lowest value first
+        allAssets.sort((a, b) => a.value - b.value);
 
         console.log('=== ALL ASSETS AFTER SORTING ===');
         allAssets.forEach((asset, index) => {

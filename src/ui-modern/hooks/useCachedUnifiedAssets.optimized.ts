@@ -189,8 +189,8 @@ export const useCachedUnifiedAssets = () => {
         }
       }
 
-      // Sort by value (descending)
-      allAssets.sort((a, b) => b.value - a.value);
+      // Sort by value (ascending)
+      allAssets.sort((a, b) => a.value - b.value);
 
       if (DEBUG) console.log('✅ Assets fetch complete:', allAssets.length);
       return allAssets;
@@ -240,7 +240,12 @@ export const useCachedUnifiedAssets = () => {
 
       try {
         const fetchedAssets = forceRefresh
-          ? await assetCacheService.forceRefresh(currentAccount.address, chainType, supportedAssets.key, fetchAssetsData)
+          ? await assetCacheService.forceRefresh(
+              currentAccount.address,
+              chainType,
+              supportedAssets.key,
+              fetchAssetsData
+            )
           : await assetCacheService.getAssets(currentAccount.address, chainType, supportedAssets.key, fetchAssetsData);
 
         setAssets(fetchedAssets);

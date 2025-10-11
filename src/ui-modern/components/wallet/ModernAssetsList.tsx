@@ -48,12 +48,12 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
     console.log('===============================');
   }, [assets, loading]);
 
-  // Sort assets by value (descending)
+  // Sort assets by value (ascending)
   const sortedAssets = useMemo(() => {
     console.log('=== SORTING ASSETS ===');
     console.log('Assets before sorting:', assets);
 
-    const sorted = [...assets].sort((a, b) => b.value - a.value);
+    const sorted = [...assets].sort((a, b) => a.value - b.value);
 
     console.log('Assets after sorting:', sorted);
     console.log('Sorting complete');

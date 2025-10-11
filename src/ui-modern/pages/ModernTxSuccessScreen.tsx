@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Check, ExternalLink } from 'lucide-react';
+import { Check } from 'lucide-react';
 import React from 'react';
 
 import { useI18n } from '@/ui/hooks/useI18n';
@@ -87,7 +87,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-              <Check size={40} color="#72e3ad" />
+              <Check size={40} color="var(--modern-accent-primary)" />
             </motion.div>
           </motion.div>
 
@@ -169,12 +169,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
               flexDirection: 'column',
               gap: '12px'
             }}>
-            <ModernButton
-              variant="secondary"
-              size="large"
-              fullWidth
-              onClick={handleViewExplorer}
-              leftIcon={<ExternalLink size={16} />}>
+            <ModernButton variant="secondary" size="large" fullWidth onClick={handleViewExplorer}>
               {t('view_on_block_explorer')}
             </ModernButton>
 

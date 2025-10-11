@@ -57,7 +57,7 @@ export const ModernAboutUsScreen: React.FC = () => {
       name: 'Website',
       icon: '🌐',
       action: handleOpenWebsite,
-      color: '#72e3ad'
+      color: 'var(--modern-accent-primary)'
     },
     {
       name: 'Twitter',
@@ -293,7 +293,7 @@ export const ModernAboutUsScreen: React.FC = () => {
               borderRadius: '8px',
               fontSize: '12px',
               fontWeight: '600',
-              color: '#72e3ad'
+              color: 'var(--modern-accent-primary)'
             }}>
             {t('latest') || 'Latest'}
           </div>

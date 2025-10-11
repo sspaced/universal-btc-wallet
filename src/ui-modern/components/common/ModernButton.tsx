@@ -85,8 +85,6 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
       whileTap={!isDisabled ? { scale: 0.97 } : {}}
       transition={{ duration: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
       {...props}>
-      {leftIcon && !loading && <span style={{ marginRight: '8px', flexShrink: 0 }}>{leftIcon}</span>}
-
       {loading && (
         <div
           style={{
@@ -94,16 +92,14 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
             height: '16px',
             width: '16px',
             borderRadius: '50%',
-            border: '2px solid #72e3ad',
+            border: '2px solid var(--modern-accent-primary)',
             borderTop: '2px solid transparent',
             animation: 'spin 1s linear infinite'
           }}
         />
       )}
 
-      <span style={{ flex: leftIcon || rightIcon ? 1 : 'none' }}>{children}</span>
-
-      {rightIcon && !loading && <span style={{ marginLeft: '8px', flexShrink: 0 }}>{rightIcon}</span>}
+      <span>{children}</span>
     </motion.button>
   );
 };

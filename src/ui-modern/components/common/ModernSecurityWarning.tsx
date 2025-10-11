@@ -4,7 +4,7 @@ import React from 'react';
 import { WarningIcon } from './Icons';
 
 export interface ModernSecurityWarningProps {
-  title: string;
+  title?: string;
   message: string;
   variant?: 'warning' | 'error' | 'info';
   icon?: React.ReactNode;
@@ -31,7 +31,7 @@ export const ModernSecurityWarning: React.FC<ModernSecurityWarningProps> = ({
         return {
           border: 'rgba(114, 227, 173, 0.5)',
           background: 'rgba(114, 227, 173, 0.08)',
-          icon: '#72e3ad',
+          icon: 'var(--modern-accent-primary)',
           text: 'rgba(255, 255, 255, 0.9)'
         };
       case 'warning':
@@ -78,16 +78,18 @@ export const ModernSecurityWarning: React.FC<ModernSecurityWarningProps> = ({
 
       {/* Content */}
       <div style={{ flex: 1 }}>
-        <div
-          style={{
-            fontSize: '12px',
-            fontWeight: '600',
-            color: colors.text,
-            marginBottom: '1px',
-            letterSpacing: '-0.08px'
-          }}>
-          {title}
-        </div>
+        {title && (
+          <div
+            style={{
+              fontSize: '12px',
+              fontWeight: '600',
+              color: colors.text,
+              marginBottom: '1px',
+              letterSpacing: '-0.08px'
+            }}>
+            {title}
+          </div>
+        )}
         <div
           style={{
             fontSize: '11px',

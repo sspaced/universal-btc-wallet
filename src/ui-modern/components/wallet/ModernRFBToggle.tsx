@@ -66,7 +66,7 @@ export const ModernRFBToggle: React.FC<ModernRFBToggleProps> = ({
             height: '24px',
             borderRadius: '8px',
             border: 'none',
-            backgroundColor: enabled ? '#72e3ad' : 'rgba(255, 255, 255, 0.2)',
+            backgroundColor: enabled ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.2)',
             cursor: disabled ? 'not-allowed' : 'pointer',
             position: 'relative',
             transition: 'background-color 0.2s ease',

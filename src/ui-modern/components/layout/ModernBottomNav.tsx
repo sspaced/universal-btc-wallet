@@ -81,7 +81,7 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
             }}>
             <div
               style={{
-                color: isActive ? '#72e3ad' : 'rgba(255, 255, 255, 0.6)',
+                color: isActive ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.6)',
                 transition: 'color 0.3s ease'
               }}>
               {item.icon}
@@ -90,7 +90,7 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
               style={{
                 fontSize: '11px',
                 fontWeight: isActive ? '600' : '500',
-                color: isActive ? '#72e3ad' : 'rgba(255, 255, 255, 0.6)',
+                color: isActive ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.6)',
                 transition: 'all 0.3s ease'
               }}>
               {item.label}

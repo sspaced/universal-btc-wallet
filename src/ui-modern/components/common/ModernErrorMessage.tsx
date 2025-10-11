@@ -34,8 +34,8 @@ export const ModernErrorMessage: React.FC<ModernErrorMessageProps> = ({
         return {
           background: 'rgba(114, 227, 173, 0.1)',
           border: 'rgba(114, 227, 173, 0.3)',
-          text: '#72e3ad',
-          icon: '#72e3ad'
+          text: 'var(--modern-accent-primary)',
+          icon: 'var(--modern-accent-primary)'
         };
       default:
         return {

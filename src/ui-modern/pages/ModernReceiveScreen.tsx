@@ -115,7 +115,7 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
           style={{
             width: '100%',
             padding: '12px 16px',
-            backgroundColor: copied ? '#34C759' : '#72e3ad',
+            backgroundColor: copied ? '#34C759' : 'var(--modern-accent-primary)',
             border: 'none',
             color: '#000000',
             fontSize: '14px',
@@ -139,7 +139,7 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
           }}
           onMouseLeave={(e) => {
             if (!copied) {
-              e.currentTarget.style.backgroundColor = '#72e3ad';
+              e.currentTarget.style.backgroundColor = 'var(--modern-accent-primary)';
               e.currentTarget.style.boxShadow = '0 2px 8px rgba(114, 227, 173, 0.25)';
               e.currentTarget.style.transform = 'translateY(0px)';
             }
@@ -301,7 +301,7 @@ export const ModernReceiveScreen: React.FC = () => {
             style={{
               background: 'none',
               border: 'none',
-              color: '#72e3ad',
+              color: 'var(--modern-accent-primary)',
               fontSize: '14px',
               fontWeight: '500',
               fontFamily:

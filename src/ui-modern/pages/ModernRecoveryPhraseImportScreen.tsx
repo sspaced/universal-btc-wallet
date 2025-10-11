@@ -6,10 +6,10 @@ import { OW_HD_PATH } from '@/shared/constant';
 import { AddressType, RestoreWalletType } from '@/shared/types';
 import { useTools } from '@/ui/components/ActionComponent';
 import {
-    ContextData,
-    TabType,
-    UpdateContextDataParams,
-    WordsType
+  ContextData,
+  TabType,
+  UpdateContextDataParams,
+  WordsType
 } from '@/ui/pages/Account/createHDWalletComponents/types';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useCreateAccountCallback } from '@/ui/state/global/hooks';
@@ -114,10 +114,11 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
 
   return (
     <div
+      className="modern-ui-container"
       style={{
         width: '100vw',
         height: '100vh',
-        background: '#121212',
+        background: 'var(--modern-bg-primary)',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden'
@@ -147,10 +148,7 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
             padding: '8px',
             marginRight: '12px'
           }}>
-          <ArrowLeft
-            size={24}
-            color="#72e3ad"
-          />
+          <ArrowLeft size={24} color="var(--modern-accent-primary)" />
         </motion.button>
 
         <h1
@@ -159,7 +157,8 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
             fontWeight: '600',
             color: 'white',
             margin: 0,
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+            fontFamily:
+              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
           }}>
           Secret Recovery Phrase
         </h1>
@@ -180,7 +179,8 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
               margin: '0 0 20px 0',
               lineHeight: '1.6',
               textAlign: 'center',
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+              fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
             }}>
             Import an existing wallet with your secret recovery phrase
           </p>
@@ -204,13 +204,19 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
                     padding: '10px 24px',
                     borderRadius: '10px',
                     border:
-                      contextData.wordsType === item.key ? '1px solid #72e3ad' : '1px solid rgba(255, 255, 255, 0.1)',
+                      contextData.wordsType === item.key
+                        ? '1px solid var(--modern-accent-primary)'
+                        : '1px solid rgba(255, 255, 255, 0.1)',
                     background:
-                      contextData.wordsType === item.key ? 'rgba(114, 227, 173, 0.1)' : 'rgba(255, 255, 255, 0.05)',
-                    color: contextData.wordsType === item.key ? '#72e3ad' : 'rgba(255, 255, 255, 0.7)',
+                      contextData.wordsType === item.key
+                        ? 'rgba(var(--modern-accent-primary-rgb), 0.1)'
+                        : 'var(--modern-bg-secondary)',
+                    color:
+                      contextData.wordsType === item.key ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.7)',
                     fontSize: '14px',
                     fontWeight: '500',
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+                    fontFamily:
+                      "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
                     cursor: 'pointer',
                     transition: 'all 0.3s ease'
                   }}>
@@ -239,7 +245,7 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: 'rgba(255, 255, 255, 0.05)',
+                  background: 'var(--modern-bg-secondary)',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '8px',
                   padding: '6px 10px'
@@ -247,7 +253,7 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
                 <span
                   style={{
                     fontSize: '12px',
-                    color: value.trim() ? '#72e3ad' : 'rgba(255, 255, 255, 0.5)',
+                    color: value.trim() ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.5)',
                     fontWeight: '500',
                     minWidth: '20px',
                     transition: 'color 0.3s ease'

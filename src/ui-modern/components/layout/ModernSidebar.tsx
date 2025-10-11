@@ -221,7 +221,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                         height: '40px',
                         borderRadius: '10px',
                         background: isSelected
-                          ? 'linear-gradient(135deg, #72e3ad 0%, #5dd39a 100%)'
+                          ? 'linear-gradient(135deg, var(--modern-accent-primary) 0%, #5dd39a 100%)'
                           : 'linear-gradient(135deg, #444 0%, #333 100%)',
                         display: 'flex',
                         alignItems: 'center',
@@ -369,7 +369,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                           marginTop: '2px'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.color = '#72e3ad';
+                          e.currentTarget.style.color = 'var(--modern-accent-primary)';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)';
@@ -395,7 +395,7 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: isMenuOpen ? '#72e3ad' : 'rgba(255, 255, 255, 0.6)',
+                        color: isMenuOpen ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.6)',
                         transition: 'color 0.2s ease',
                         flexShrink: 0
                       }}>

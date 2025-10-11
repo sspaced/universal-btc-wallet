@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Check, Copy } from 'lucide-react';
+import { Check } from 'lucide-react';
 import React, { useEffect } from 'react';
 
 import { useTools } from '@/ui/components/ActionComponent';
@@ -98,7 +98,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-            <Check size={40} color="#72e3ad" />
+            <Check size={40} color="var(--modern-accent-primary)" />
           </motion.div>
         </motion.div>
 
@@ -126,7 +126,6 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           transition={{ delay: 0.3, duration: 0.5 }}
           style={{ marginBottom: '12px' }}>
           <ModernSecurityWarning
-            title="Important Security Info"
             message="Write down your recovery phrase and store it safely. Never share it with anyone."
             variant="warning"
           />
@@ -147,12 +146,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
           style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
-          <ModernButton
-            variant="tertiary"
-            size="small"
-            onClick={handleCopyAll}
-            leftIcon={<Copy style={{ width: '16px', height: '16px', color: '#ffffff' }} />}
-            style={{ maxWidth: '200px' }}>
+          <ModernButton variant="tertiary" size="small" onClick={handleCopyAll} style={{ maxWidth: '200px' }}>
             Copy All Words
           </ModernButton>
         </motion.div>

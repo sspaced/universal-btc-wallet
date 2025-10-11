@@ -276,7 +276,7 @@ export const ModernLockTimeScreen: React.FC = () => {
                     width: '24px',
                     height: '24px',
                     borderRadius: '50%',
-                    backgroundColor: '#72e3ad',
+                    backgroundColor: 'var(--modern-accent-primary)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'

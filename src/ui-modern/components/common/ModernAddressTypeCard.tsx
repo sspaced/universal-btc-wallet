@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 
-
 export interface ModernAddressTypeCardProps {
   label: string;
   address: string;
@@ -21,7 +20,8 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
   onClick,
   loading = false
 }) => {
-  const hasAssets = balance && balance !== '--' && balance !== '0';
+  const hasAssets =
+    balance && balance !== '--' && balance !== '0' && balance !== '0.00000000' && parseFloat(balance) > 0;
 
   return (
     <motion.div
@@ -32,8 +32,8 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
       style={{
         width: '100%',
         padding: '16px',
-        backgroundColor: checked ? 'rgba(114, 227, 173, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-        border: checked ? '2px solid rgba(114, 227, 173, 0.5)' : '2px solid rgba(255, 255, 255, 0.1)',
+        backgroundColor: 'var(--modern-bg-secondary)',
+        border: checked ? '2px solid var(--modern-accent-primary)' : '2px solid var(--modern-border-color)',
         borderRadius: '8px',
         cursor: onClick ? 'pointer' : 'default',
         transition: 'all 0.2s',
@@ -70,27 +70,25 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
       </div>
 
       {/* Assets section */}
-      {hasAssets && (
+      {hasAssets && balance && parseFloat(balance) > 0 && (
         <div
           style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: '10px 12px',
-            backgroundColor: 'rgba(114, 227, 173, 0.08)',
-            border: '1px solid rgba(114, 227, 173, 0.2)',
+            backgroundColor: 'var(--modern-bg-tertiary)',
             borderRadius: '8px'
           }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ fontSize: '14px' }}>₿</span>
             <span
               style={{
                 fontSize: '14px',
                 fontWeight: '600',
-                color: '#72e3ad',
+                color: '#ffffff',
                 letterSpacing: '-0.2px'
               }}>
-              {balance}
+              {balance} BTC
             </span>
           </div>
           {inscriptionCount && inscriptionCount > 0 && (
@@ -98,7 +96,7 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
               style={{
                 fontSize: '12px',
                 fontWeight: '600',
-                color: '#72e3ad',
+                color: 'var(--modern-accent-primary)',
                 letterSpacing: '-0.1px'
               }}>
               {inscriptionCount} Inscriptions

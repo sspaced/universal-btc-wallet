@@ -210,7 +210,8 @@ export const ModernContactsScreen: React.FC = () => {
                 fontSize: '14px',
                 fontWeight: '600',
                 color: selectedNetworkFilter === 'all' ? '#121212' : 'rgba(255, 255, 255, 0.7)',
-                backgroundColor: selectedNetworkFilter === 'all' ? '#72e3ad' : 'var(--modern-bg-secondary)',
+                backgroundColor:
+                  selectedNetworkFilter === 'all' ? 'var(--modern-accent-primary)' : 'var(--modern-bg-secondary)',
                 border: 'none',
                 borderRadius: '20px',
                 cursor: 'pointer',
@@ -228,7 +229,8 @@ export const ModernContactsScreen: React.FC = () => {
                   fontSize: '14px',
                   fontWeight: '600',
                   color: selectedNetworkFilter === network ? '#121212' : 'rgba(255, 255, 255, 0.7)',
-                  backgroundColor: selectedNetworkFilter === network ? '#72e3ad' : 'var(--modern-bg-secondary)',
+                  backgroundColor:
+                    selectedNetworkFilter === network ? 'var(--modern-accent-primary)' : 'var(--modern-bg-secondary)',
                   border: 'none',
                   borderRadius: '20px',
                   cursor: 'pointer',
@@ -248,16 +250,7 @@ export const ModernContactsScreen: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.4 }}
         style={{ marginBottom: '24px' }}>
-        <ModernButton
-          variant="secondary"
-          size="large"
-          fullWidth
-          onClick={handleAddContact}
-          leftIcon={
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          }>
+        <ModernButton variant="secondary" size="large" fullWidth onClick={handleAddContact}>
           {t('add_contact') || 'Add Contact'}
         </ModernButton>
       </motion.div>
@@ -280,7 +273,7 @@ export const ModernContactsScreen: React.FC = () => {
                 width: '20px',
                 height: '20px',
                 borderRadius: '50%',
-                border: '2px solid #72e3ad',
+                border: '2px solid var(--modern-accent-primary)',
                 borderTop: '2px solid transparent',
                 animation: 'spin 1s linear infinite'
               }}
@@ -334,14 +327,7 @@ export const ModernContactsScreen: React.FC = () => {
               : t('add_first_contact') || 'Add your first contact to get started'}
           </p>
           {!searchTerm && (
-            <ModernButton
-              variant="primary"
-              onClick={handleAddContact}
-              leftIcon={
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              }>
+            <ModernButton variant="primary" onClick={handleAddContact}>
               {t('add_first_contact') || 'Add First Contact'}
             </ModernButton>
           )}

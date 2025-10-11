@@ -1,7 +1,7 @@
 /* Apple Design System Variables */
 :root {
   /* Apple System Colors */
-  --apple-blue: #72e3ad;
+  --apple-blue: var(--modern-accent-primary);
   --apple-blue-dark: #5dd39a;
   --apple-green: #34c759;
   --apple-indigo: #5856d6;
@@ -70,6 +70,10 @@
   --modern-border-width: 2px; /* Épaisseur des liserés */
   --modern-border-color: rgba(255, 255, 255, 0.1);
   --modern-border-focus: rgba(114, 227, 173, 0.6);
+
+  /* Modern Accent Colors */
+  --modern-accent-primary: #72e4ad; /* Couleur verte principale */
+  --modern-accent-primary-rgb: 114, 228, 173; /* RGB pour rgba() */
 }
 
 /* Apple Dark Mode */
@@ -109,6 +113,10 @@
   --modern-border-width: 2px;
   --modern-border-color: rgba(255, 255, 255, 0.1);
   --modern-border-focus: rgba(114, 227, 173, 0.6);
+
+  /* Modern Accent Colors */
+  --modern-accent-primary: #72e4ad;
+  --modern-accent-primary-rgb: 114, 228, 173;
 }
 
 /* Base styles */
@@ -337,12 +345,12 @@ h6 {
 /* Modern Button System */
 .modern-button-secondary {
   background-color: var(--modern-bg-secondary) !important;
-  border: var(--modern-border-width) solid var(--modern-border-color) !important;
+  border: none !important;
 }
 
 .modern-button-tertiary {
   background-color: var(--modern-bg-tertiary) !important;
-  border: var(--modern-border-width) solid var(--modern-border-color) !important;
+  border: none !important;
 }
 
 /* Modern Card System */
@@ -374,6 +382,17 @@ h6 {
 
 .border-focus {
   border-color: var(--modern-border-focus) !important;
+}
+
+/* Accent Color Utilities */
+.text-accent {
+  color: var(--modern-accent-primary) !important;
+}
+.bg-accent {
+  background-color: var(--modern-accent-primary) !important;
+}
+.border-accent {
+  border-color: var(--modern-accent-primary) !important;
 }
 
 /* Consistent spacing */

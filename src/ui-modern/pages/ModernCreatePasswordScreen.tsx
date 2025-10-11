@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { ArrowLeft, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -222,13 +221,7 @@ export const ModernCreatePasswordScreen: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
           style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
-          <ModernButton
-            variant="secondary"
-            size="large"
-            onClick={handleBack}
-            disabled={loading}
-            leftIcon={<ArrowLeft style={{ width: '16px', height: '16px', color: '#ffffff' }} />}
-            style={{ flex: 1 }}>
+          <ModernButton variant="secondary" size="large" onClick={handleBack} disabled={loading} style={{ flex: 1 }}>
             Back
           </ModernButton>
 
@@ -238,11 +231,6 @@ export const ModernCreatePasswordScreen: React.FC = () => {
             onClick={handleCreate}
             disabled={!isValid || loading}
             loading={loading}
-            leftIcon={
-              <Plus
-                style={{ width: '20px', height: '20px', color: '#000000', display: 'flex', alignItems: 'center' }}
-              />
-            }
             style={{ flex: 2 }}>
             Create Wallet
           </ModernButton>

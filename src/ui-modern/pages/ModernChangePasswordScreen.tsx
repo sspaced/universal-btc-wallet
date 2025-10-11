@@ -395,18 +395,24 @@ export const ModernChangePasswordScreen: React.FC = () => {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path
               d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-              stroke="#72e3ad"
+              stroke="var(--modern-accent-primary)"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <path d="M9 12l2 2 4-4" stroke="#72e3ad" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M9 12l2 2 4-4"
+              stroke="var(--modern-accent-primary)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           <span
             style={{
               fontSize: '14px',
               fontWeight: '600',
-              color: '#72e3ad'
+              color: 'var(--modern-accent-primary)'
             }}>
             {t('security_tip') || 'Security Tip'}
           </span>

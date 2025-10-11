@@ -136,7 +136,7 @@ export const ModernBalanceCard: React.FC<ModernBalanceCardProps> = ({
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#72e3ad',
+                    color: 'var(--modern-accent-primary)',
                     fontSize: '12px',
                     fontWeight: '600',
                     cursor: 'pointer',

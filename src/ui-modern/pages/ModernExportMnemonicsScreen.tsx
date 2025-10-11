@@ -234,7 +234,7 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                 fontSize: '14px',
                 fontWeight: '600',
                 color: '#ffffff',
-                background: disabled ? 'rgba(114, 227, 173, 0.3)' : 'linear-gradient(135deg, #72e3ad 0%, #5dd39a 100%)',
+                background: disabled ? 'rgba(114, 227, 173, 0.3)' : 'linear-gradient(135deg, var(--modern-accent-primary) 0%, #5dd39a 100%)',
                 border: 'none',
                 borderRadius: '10px',
                 cursor: disabled ? 'not-allowed' : 'pointer',

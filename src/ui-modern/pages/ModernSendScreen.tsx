@@ -630,7 +630,7 @@ export const ModernSendScreen: React.FC = () => {
                         flex: 1,
                         padding: '8px 6px',
                         backgroundColor: 'transparent',
-                        border: isSelected ? '2px solid #72e3ad' : '2px solid transparent',
+                        border: isSelected ? '2px solid var(--modern-accent-primary)' : '2px solid transparent',
                         borderBottomRightRadius: isLast ? '12px' : '0',
                         display: 'flex',
                         alignItems: 'center',
@@ -666,7 +666,7 @@ export const ModernSendScreen: React.FC = () => {
                     style={{
                       flex: 1,
                       padding: '8px 6px',
-                      border: isSelected ? '2px solid #72e3ad' : '2px solid transparent',
+                      border: isSelected ? '2px solid var(--modern-accent-primary)' : '2px solid transparent',
                       backgroundColor: 'transparent',
                       borderBottomLeftRadius: isFirst ? '12px' : '0',
                       borderBottomRightRadius: isLast ? '12px' : '0',
@@ -715,7 +715,7 @@ export const ModernSendScreen: React.FC = () => {
               height: '24px',
               borderRadius: '12px',
               border: 'none',
-              backgroundColor: enableRBF ? '#72e3ad' : 'rgba(255, 255, 255, 0.2)',
+              backgroundColor: enableRBF ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.2)',
               cursor: 'pointer',
               position: 'relative',
               transition: 'background-color 0.2s ease'

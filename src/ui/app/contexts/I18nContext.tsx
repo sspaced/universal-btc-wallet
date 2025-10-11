@@ -5,7 +5,6 @@ import { getCurrentLocale } from '@/background/service/i18n';
 import { useWallet } from '@/ui/utils';
 import { LoadingOutlined } from '@ant-design/icons';
 import {
-  BROWSER_TO_APP_LOCALE_MAP,
   changeLanguage,
   FALLBACK_LOCALE,
   getSupportedLocales,
@@ -57,26 +56,9 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const isFirstOpen = await wallet.getIsFirstOpen();
 
             if (isFirstOpen) {
-              const browserLang = navigator.language;
-              log.debug(`New user - Browser language: ${browserLang}`);
-
-              const mappedLocale = BROWSER_TO_APP_LOCALE_MAP[browserLang];
-              if (mappedLocale && getSupportedLocales().includes(mappedLocale)) {
-                localeToUse = mappedLocale;
-                log.debug(`Using mapped browser language: ${mappedLocale}`);
-              } else if (getSupportedLocales().includes(browserLang)) {
-                localeToUse = browserLang;
-                log.debug(`Using browser language: ${browserLang}`);
-              } else {
-                const mainLang = browserLang.split('-')[0];
-                if (getSupportedLocales().includes(mainLang)) {
-                  localeToUse = mainLang;
-                  log.debug(`Using browser main language: ${mainLang}`);
-                } else {
-                  log.debug(`Browser language not supported, using default: ${FALLBACK_LOCALE}`);
-                  localeToUse = FALLBACK_LOCALE;
-                }
-              }
+              // Forcer l'anglais par défaut pour tous les nouveaux utilisateurs
+              log.debug('New user - Using default English instead of browser language');
+              localeToUse = FALLBACK_LOCALE;
             } else {
               log.debug('Existing user - Using default English');
               localeToUse = FALLBACK_LOCALE;

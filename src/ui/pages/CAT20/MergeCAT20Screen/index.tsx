@@ -377,14 +377,14 @@ export default function MergeCAT20Screen() {
                 <Text text={maxUtxoCount} preset="sub" />
               </Row>
 
-              <div 
-                style={{ 
-                  width: '100%', 
-                  height: 1, 
-                  backgroundColor: '#FFFFFF26', 
+              <div
+                style={{
+                  width: '100%',
+                  height: 1,
+                  backgroundColor: '#FFFFFF26',
                   margin: '16px 0',
                   backgroundImage: 'repeating-linear-gradient(to right, transparent, transparent 5px, #FFFFFF26 5px, #FFFFFF26 10px)'
-                }} 
+                }}
               />
 
               <Row justifyBetween>

@@ -1517,6 +1517,9 @@
   "view_on_mempool": {
     "message": "Ver en Mempool"
   },
+  "view_on_nullpool": {
+    "message": "Ver en Nullpool"
+  },
   "from": {
     "message": "De"
   },

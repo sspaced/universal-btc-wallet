@@ -2802,7 +2802,7 @@ export class WalletController extends BaseController {
         feeRate: feeRate,
         utxos: utxos,
         ticker: ticker,
-        changeDerivationPath: account.changeDerivationPath || `m/84'/0'/0'/1/0`,
+        changeDerivationPath: account.changeDerivationPath || 'm/84\'/0\'/0\'/1/0',
         changePublicKey: account.changePublicKey || account.pubkey
       });
 
@@ -2814,7 +2814,7 @@ export class WalletController extends BaseController {
         feeRate: feeRate,
         utxos: utxos,
         ticker: ticker,
-        changeDerivationPath: account.changeDerivationPath || `m/84'/0'/0'/1/0`, // Fallback
+        changeDerivationPath: account.changeDerivationPath || 'm/84\'/0\'/0\'/1/0', // Fallback
         changePublicKey: account.changePublicKey || account.pubkey // Fallback
       });
 

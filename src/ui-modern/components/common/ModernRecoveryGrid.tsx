@@ -111,7 +111,7 @@ export const ModernRecoveryGrid: React.FC<ModernRecoveryGridProps> = ({
             transition: 'all 0.2s ease',
             letterSpacing: '-0.08px',
             fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = 'rgba(114, 227, 173, 0.1)';

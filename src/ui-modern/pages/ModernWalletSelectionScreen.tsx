@@ -107,7 +107,7 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
             color: 'white',
             margin: 0,
             fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
           }}>
           Choose a Wallet
         </h1>
@@ -134,7 +134,7 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
               margin: 0,
               lineHeight: '1.6',
               fontFamily:
-                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
             }}>
             Select the wallet type you want to restore. Each wallet uses a different address derivation path.
           </p>

@@ -74,7 +74,7 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
           marginBottom: '8px',
           letterSpacing: '-0.3px',
           fontFamily:
-            "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+            '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
         }}>
         Your Bitcoin Address
       </motion.p>
@@ -121,7 +121,7 @@ const ModernAddressDisplay: React.FC<{ address: string; onCopy: () => void; copi
             fontSize: '14px',
             fontWeight: '600',
             fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -292,7 +292,7 @@ export const ModernReceiveScreen: React.FC = () => {
               lineHeight: '1.5',
               margin: '0 0 8px 0',
               fontFamily:
-                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
             }}>
             This address can only be used to receive compatible tokens.
           </p>
@@ -305,7 +305,7 @@ export const ModernReceiveScreen: React.FC = () => {
               fontSize: '14px',
               fontWeight: '500',
               fontFamily:
-                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+                '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif',
               cursor: 'pointer',
               textDecoration: 'underline'
             }}>

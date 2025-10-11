@@ -1547,6 +1547,9 @@
   "view_on_mempool": {
     "message": "View on Mempool"
   },
+  "view_on_nullpool": {
+    "message": "View on Nullpool"
+  },
   "from": {
     "message": "From"
   },

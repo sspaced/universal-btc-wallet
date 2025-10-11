@@ -1505,6 +1505,9 @@
   "view_on_mempool": {
     "message": "在 Mempool 上查看"
   },
+  "view_on_nullpool": {
+    "message": "在 Nullpool 上查看"
+  },
   "from": {
     "message": "从"
   },

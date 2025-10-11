@@ -61,7 +61,7 @@ export const ModernAddressTypeCard: React.FC<ModernAddressTypeCardProps> = ({
           fontSize: '12px',
           fontWeight: '400',
           color: 'rgba(255, 255, 255, 0.6)',
-          fontFamily: "'SF Mono', 'Monaco', 'Courier New', monospace",
+          fontFamily: '\'SF Mono\', \'Monaco\', \'Courier New\', monospace',
           marginBottom: hasAssets ? '12px' : '0',
           wordBreak: 'break-all',
           letterSpacing: '-0.1px'

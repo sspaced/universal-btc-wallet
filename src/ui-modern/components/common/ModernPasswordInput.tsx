@@ -145,7 +145,7 @@ export const ModernPasswordInput: React.FC<ModernPasswordInputProps> = ({
             transition: 'border-color 0.2s, background-color 0.2s',
             letterSpacing: '-0.022em',
             fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
           }}
         />
 

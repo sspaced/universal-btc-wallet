@@ -31,7 +31,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '16px 20px',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        backgroundColor: 'var(--apple-blue)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         position: 'sticky',
@@ -53,10 +53,10 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({
               width: '32px',
               height: '32px',
               borderRadius: '8px',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              backgroundColor: 'rgba(0, 0, 0, 0.1)',
               border: 'none',
               cursor: 'pointer',
-              color: '#ffffff'
+              color: '#000000'
             }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path
@@ -85,7 +85,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({
             style={{
               fontSize: '18px',
               fontWeight: '600',
-              color: '#ffffff',
+              color: '#000000',
               margin: 0,
               letterSpacing: '-0.3px'
             }}>
@@ -96,7 +96,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({
           <p
             style={{
               fontSize: '14px',
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: 'rgba(0, 0, 0, 0.7)',
               margin: '2px 0 0 0',
               fontWeight: '400'
             }}>

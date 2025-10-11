@@ -520,7 +520,7 @@ export default function BRC20TokenScreen() {
                     preset="swap"
                     icon="swap_deposit"
                     onClick={(e) => {
-                      window.open(`https://pizzaswap.io/swap?tab=deposit`);
+                      window.open('https://pizzaswap.io/swap?tab=deposit');
                     }}
                     iconSize={{
                       width: 12,
@@ -546,7 +546,7 @@ export default function BRC20TokenScreen() {
                     preset="swap"
                     icon="swap_send"
                     onClick={(e) => {
-                      window.open(`https://pizzaswap.io/swap/assets/account`);
+                      window.open('https://pizzaswap.io/swap/assets/account');
                     }}
                     iconSize={{
                       width: 12,

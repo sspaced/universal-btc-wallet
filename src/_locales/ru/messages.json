@@ -1515,6 +1515,9 @@
   "view_on_mempool": {
     "message": "Посмотреть в Mempool"
   },
+  "view_on_nullpool": {
+    "message": "Посмотреть в Nullpool"
+  },
   "from": {
     "message": "От"
   },

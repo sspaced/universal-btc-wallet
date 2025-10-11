@@ -70,7 +70,7 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
           fontWeight: '500',
           color: '#ffffff',
           textAlign: 'center',
-          fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif',
           letterSpacing: '0.01em',
           filter: blurred ? 'blur(4px)' : 'none',
           userSelect: 'text',

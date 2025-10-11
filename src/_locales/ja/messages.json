@@ -1515,6 +1515,9 @@
   "view_on_mempool": {
     "message": "Mempoolで表示"
   },
+  "view_on_nullpool": {
+    "message": "Nullpoolで表示"
+  },
   "from": {
     "message": "送信元"
   },

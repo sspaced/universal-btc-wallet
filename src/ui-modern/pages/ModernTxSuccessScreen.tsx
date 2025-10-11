@@ -105,7 +105,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
                 marginBottom: '8px',
                 letterSpacing: '-0.5px',
                 fontFamily:
-                  "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                  '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
               }}>
               {t('payment_sent')}
             </h1>
@@ -117,7 +117,7 @@ export const ModernTxSuccessScreen: React.FC = () => {
                 lineHeight: '1.5',
                 margin: 0,
                 fontFamily:
-                  "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                  '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
               }}>
               {t('your_transaction_has_been_successfully_sent')}
             </p>

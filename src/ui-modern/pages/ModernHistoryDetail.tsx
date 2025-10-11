@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import BigNumber from 'bignumber.js';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ import { runesUtils } from '@/shared/lib/runes-utils';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useChain } from '@/ui/state/settings/hooks';
 import { satoshisToBTC } from '@/ui/utils';
+
 import { ModernHeader } from '../components/layout/ModernHeader';
 import { HistoryItem } from './ModernHistoryScreen';
 
@@ -111,7 +112,7 @@ export const ModernHistoryDetail: React.FC = () => {
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '20px'
+          padding: '16px'
         }}>
         {/* Status Card */}
         <motion.div
@@ -120,28 +121,28 @@ export const ModernHistoryDetail: React.FC = () => {
           transition={{ duration: 0.3 }}
           style={{
             background: 'rgba(255, 255, 255, 0.03)',
-            borderRadius: '16px',
-            padding: '32px 24px',
+            borderRadius: '12px',
+            padding: '20px 16px',
             border: '1px solid rgba(255, 255, 255, 0.08)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '24px',
-            marginBottom: '20px'
+            gap: '16px',
+            marginBottom: '16px'
           }}>
           {/* Status Icon */}
           {detail.confirmations > 0 ? (
             <div
               style={{
-                width: '64px',
-                height: '64px',
-                borderRadius: '32px',
+                width: '48px',
+                height: '48px',
+                borderRadius: '24px',
                 background: 'rgba(52, 199, 89, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
                 <path
                   d="M9 16l5 5 9-10"
                   stroke="#34c759"
@@ -154,15 +155,15 @@ export const ModernHistoryDetail: React.FC = () => {
           ) : (
             <div
               style={{
-                width: '64px',
-                height: '64px',
-                borderRadius: '32px',
+                width: '48px',
+                height: '48px',
+                borderRadius: '24px',
                 background: 'rgba(255, 159, 10, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
                 <circle cx="16" cy="16" r="2" fill="#ff9f0a" />
                 <circle cx="16" cy="16" r="8" stroke="#ff9f0a" strokeWidth="2" opacity="0.5" />
               </svg>
@@ -172,7 +173,7 @@ export const ModernHistoryDetail: React.FC = () => {
           {/* Status Text */}
           <span
             style={{
-              fontSize: '16px',
+              fontSize: '14px',
               fontWeight: '600',
               color: detail.confirmations > 0 ? '#34c759' : '#ff9f0a'
             }}>
@@ -180,7 +181,7 @@ export const ModernHistoryDetail: React.FC = () => {
           </span>
 
           {/* Amount */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center', width: '100%' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', width: '100%' }}>
             <AmountItem
               inDetail
               item={{
@@ -207,7 +208,7 @@ export const ModernHistoryDetail: React.FC = () => {
           />
 
           {/* Transaction Details */}
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {/* Address */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.5)' }}>
@@ -220,9 +221,9 @@ export const ModernHistoryDetail: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   gap: '8px',
-                  padding: '12px',
+                  padding: '8px',
                   background: 'rgba(255, 255, 255, 0.05)',
-                  borderRadius: '8px',
+                  borderRadius: '6px',
                   cursor: 'pointer'
                 }}>
                 <span style={{ fontSize: '13px', color: '#ffffff', fontFamily: 'monospace' }}>
@@ -259,9 +260,9 @@ export const ModernHistoryDetail: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   gap: '8px',
-                  padding: '12px',
+                  padding: '8px',
                   background: 'rgba(255, 255, 255, 0.05)',
-                  borderRadius: '8px',
+                  borderRadius: '6px',
                   cursor: 'pointer'
                 }}>
                 <span style={{ fontSize: '13px', color: '#ffffff', fontFamily: 'monospace' }}>
@@ -290,22 +291,22 @@ export const ModernHistoryDetail: React.FC = () => {
 
             {/* Network Fee */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.5)' }}>Network fee</span>
-              <span style={{ fontSize: '14px', color: '#ffffff', fontWeight: '600' }}>
+              <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)' }}>Network fee</span>
+              <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600' }}>
                 {Number(Math.abs(satoshisToBTC(detail.fee))).toLocaleString('en', { minimumFractionDigits: 8 })} BTC
               </span>
             </div>
 
             {/* Fee Rate */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.5)' }}>Network fee rate</span>
-              <span style={{ fontSize: '14px', color: '#ffffff', fontWeight: '600' }}>{detail.feeRate} sats/vB</span>
+              <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)' }}>Network fee rate</span>
+              <span style={{ fontSize: '13px', color: '#ffffff', fontWeight: '600' }}>{detail.feeRate} sats/vB</span>
             </div>
 
             {/* Date */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.5)' }}>Date</span>
-              <span style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }}>
+              <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)' }}>Date</span>
+              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)' }}>
                 {new Date(detail.timestamp).toLocaleString()}
               </span>
             </div>
@@ -317,65 +318,34 @@ export const ModernHistoryDetail: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {chain.unisatExplorerUrl && (
-            <button
-              onClick={() => window.open(`${chain.unisatExplorerUrl}/tx/${detail.txid}`)}
-              style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: '12px',
-                padding: '16px',
-                color: '#ffffff',
-                fontSize: '15px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
-              }}>
-              View on Unisat Explorer
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M12 8.667V12a1.333 1.333 0 01-1.333 1.333H4A1.333 1.333 0 012.667 12V5.333A1.333 1.333 0 014 4h3.333M10 2.667h3.333V6M6.667 9.333L13.333 2.667"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          )}
-          {chain.mempoolSpaceUrl && (
-            <button
-              onClick={() => window.open(`${chain.mempoolSpaceUrl}/tx/${detail.txid}`)}
-              style={{
-                background: 'transparent',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: '12px',
-                padding: '16px',
-                color: '#ffffff',
-                fontSize: '15px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
-              }}>
-              View on Mempool
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M12 8.667V12a1.333 1.333 0 01-1.333 1.333H4A1.333 1.333 0 012.667 12V5.333A1.333 1.333 0 014 4h3.333M10 2.667h3.333V6M6.667 9.333L13.333 2.667"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          )}
+          style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <button
+            onClick={() => window.open(`https://nullpool.space/tx/${detail.txid}`)}
+            style={{
+              background: 'var(--apple-blue)',
+              border: 'none',
+              borderRadius: '10px',
+              padding: '12px',
+              color: '#000000',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px'
+            }}>
+            View on Nullpool
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M12 8.667V12a1.333 1.333 0 01-1.333 1.333H4A1.333 1.333 0 012.667 12V5.333A1.333 1.333 0 014 4h3.333M10 2.667h3.333V6M6.667 9.333L13.333 2.667"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
         </motion.div>
       </div>
     </div>

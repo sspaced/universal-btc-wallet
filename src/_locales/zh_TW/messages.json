@@ -2437,5 +2437,26 @@
   },
   "select_network": {
     "message": "選擇網絡"
+  },
+  "search_contacts": {
+    "message": "搜尋聯絡人"
+  },
+  "add_contact": {
+    "message": "新增聯絡人"
+  },
+  "no_contacts": {
+    "message": "暫無聯絡人"
+  },
+  "add_first_contact": {
+    "message": "新增您的第一個聯絡人"
+  },
+  "no_contacts_found": {
+    "message": "未找到聯絡人"
+  },
+  "try_different_search": {
+    "message": "嘗試不同的搜尋詞"
+  },
+  "all_networks": {
+    "message": "所有網絡"
   }
 }

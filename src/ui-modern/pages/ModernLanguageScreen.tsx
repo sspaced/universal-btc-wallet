@@ -8,7 +8,7 @@ import { useWallet } from '../../ui/utils';
 export const ModernLanguageScreen: React.FC = () => {
   const wallet = useWallet();
   const navigate = useNavigate();
-  const { t, locale } = useI18n();
+  const { t, locale, changeLocale } = useI18n();
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const [loading, setLoading] = useState(false);
 
@@ -32,8 +32,9 @@ export const ModernLanguageScreen: React.FC = () => {
 
     setLoading(true);
     try {
-      await wallet.setLocale(languageCode);
       setSelectedLocale(languageCode);
+      // Use the proper changeLocale method from i18n context
+      await changeLocale(languageCode);
       // Reload the page to apply the new language
       window.location.reload();
     } catch (error) {

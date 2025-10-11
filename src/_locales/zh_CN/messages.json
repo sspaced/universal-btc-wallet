@@ -2344,5 +2344,26 @@
   },
   "select_network": {
     "message": "选择网络"
+  },
+  "search_contacts": {
+    "message": "搜索联系人"
+  },
+  "add_contact": {
+    "message": "添加联系人"
+  },
+  "no_contacts": {
+    "message": "暂无联系人"
+  },
+  "add_first_contact": {
+    "message": "添加您的第一个联系人"
+  },
+  "no_contacts_found": {
+    "message": "未找到联系人"
+  },
+  "try_different_search": {
+    "message": "尝试不同的搜索词"
+  },
+  "all_networks": {
+    "message": "所有网络"
   }
 }

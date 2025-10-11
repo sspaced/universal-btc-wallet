@@ -2525,5 +2525,26 @@
   },
   "select_network": {
     "message": "Sélectionner le réseau"
+  },
+  "search_contacts": {
+    "message": "Rechercher des contacts"
+  },
+  "add_contact": {
+    "message": "Ajouter un contact"
+  },
+  "no_contacts": {
+    "message": "Aucun contact"
+  },
+  "add_first_contact": {
+    "message": "Ajouter votre premier contact"
+  },
+  "no_contacts_found": {
+    "message": "Aucun contact trouvé"
+  },
+  "try_different_search": {
+    "message": "Essayez un terme de recherche différent"
+  },
+  "all_networks": {
+    "message": "Tous les réseaux"
   }
 }

@@ -2419,5 +2419,26 @@
   },
   "select_network": {
     "message": "Seleccionar red"
+  },
+  "search_contacts": {
+    "message": "Buscar contactos"
+  },
+  "add_contact": {
+    "message": "Agregar contacto"
+  },
+  "no_contacts": {
+    "message": "Sin contactos"
+  },
+  "add_first_contact": {
+    "message": "Agregar tu primer contacto"
+  },
+  "no_contacts_found": {
+    "message": "No se encontraron contactos"
+  },
+  "try_different_search": {
+    "message": "Prueba con un término de búsqueda diferente"
+  },
+  "all_networks": {
+    "message": "Todas las redes"
   }
 }

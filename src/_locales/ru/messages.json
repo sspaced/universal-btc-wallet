@@ -2426,5 +2426,26 @@
   },
   "select_network": {
     "message": "Выбрать сеть"
+  },
+  "search_contacts": {
+    "message": "Поиск контактов"
+  },
+  "add_contact": {
+    "message": "Добавить контакт"
+  },
+  "no_contacts": {
+    "message": "Нет контактов"
+  },
+  "add_first_contact": {
+    "message": "Добавить первый контакт"
+  },
+  "no_contacts_found": {
+    "message": "Контакты не найдены"
+  },
+  "try_different_search": {
+    "message": "Попробуйте другой поисковый запрос"
+  },
+  "all_networks": {
+    "message": "Все сети"
   }
 }

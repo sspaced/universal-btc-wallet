@@ -2429,5 +2429,26 @@
   },
   "select_network": {
     "message": "ネットワークを選択"
+  },
+  "search_contacts": {
+    "message": "連絡先を検索"
+  },
+  "add_contact": {
+    "message": "連絡先を追加"
+  },
+  "no_contacts": {
+    "message": "連絡先なし"
+  },
+  "add_first_contact": {
+    "message": "最初の連絡先を追加"
+  },
+  "no_contacts_found": {
+    "message": "連絡先が見つかりません"
+  },
+  "try_different_search": {
+    "message": "別の検索語を試してください"
+  },
+  "all_networks": {
+    "message": "すべてのネットワーク"
   }
 }

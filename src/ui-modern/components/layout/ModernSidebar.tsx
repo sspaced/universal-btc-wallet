@@ -10,6 +10,7 @@ export interface Account {
   alianName?: string;
   index: number;
   type?: string; // Keyring type
+  keyringIndex?: number; // Index du keyring pour référence
 }
 
 interface ModernSidebarProps {

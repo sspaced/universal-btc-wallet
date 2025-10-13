@@ -11,7 +11,7 @@ import {
 } from '@/ui/state/accounts/hooks';
 import { useIsUnlocked } from '@/ui/state/global/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
-import { useCurrentKeyring } from '@/ui/state/keyrings/hooks';
+import { useCurrentKeyring, useKeyrings } from '@/ui/state/keyrings/hooks';
 import { keyringsActions } from '@/ui/state/keyrings/reducer';
 import { useResetUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { getUiType, useLocationState, useWallet } from '@/ui/utils';
@@ -44,6 +44,7 @@ export const ModernWalletTabScreen: React.FC = () => {
   const accountBalance = useAccountBalance();
   const currentAccount = useCurrentAccount();
   const currentKeyring = useCurrentKeyring();
+  const allKeyrings = useKeyrings();
   const isUnlocked = useIsUnlocked();
   const fetchBalance = useFetchBalanceCallback();
   const resetUiTxCreateScreen = useResetUiTxCreateScreen();
@@ -83,15 +84,31 @@ export const ModernWalletTabScreen: React.FC = () => {
   const accounts: Account[] = useMemo(() => {
     console.log('All accounts:', allAccounts);
     console.log('Current keyring type:', currentKeyring.type);
+    console.log('All keyrings:', allKeyrings);
 
-    // Convert all accounts to the format expected by ModernSidebar
-    return allAccounts.map((account, index) => ({
-      address: account.address || '',
-      alianName: account.alianName || `Account ${index + 1}`,
-      index: account.index || index,
-      type: account.type || currentKeyring.type
-    }));
-  }, [allAccounts, currentKeyring]);
+    // Convert all accounts to the format expected by ModernSidebar with keyring indicators
+    return allAccounts.map((account, index) => {
+      // Trouver le keyring qui contient ce compte
+      const keyring = allKeyrings.find((k) => k.accounts.some((acc) => acc.address === account.address));
+
+      // Générer un nom avec indicateur de keyring
+      const keyringIndex = keyring ? keyring.index + 1 : 1;
+      const accountIndex = account.index + 1;
+      const keyringIndicator = `HD${keyringIndex}`;
+
+      // Si le compte a déjà un nom personnalisé, l'utiliser, sinon générer un nom avec indicateur
+      const baseName = account.alianName || `Account ${accountIndex}`;
+      const displayName = account.alianName ? `${baseName} (${keyringIndicator})` : `${keyringIndicator} - ${baseName}`;
+
+      return {
+        address: account.address || '',
+        alianName: displayName,
+        index: account.index || index,
+        type: account.type || currentKeyring.type,
+        keyringIndex: keyringIndex
+      };
+    });
+  }, [allAccounts, currentKeyring, allKeyrings]);
 
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
 

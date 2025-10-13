@@ -154,21 +154,38 @@ export const ModernWalletTabScreen: React.FC = () => {
 
   const handleSelectAccount = async (account: Account) => {
     setSelectedAccount(account);
-    // Switch to selected account in wallet state
+
     try {
       const targetAccount = allAccounts.find((acc) => acc.address === account.address);
       if (targetAccount && currentAccount.address !== targetAccount.address) {
-        // Use changeKeyring to switch to the selected account
-        await wallet.changeKeyring(currentKeyring, targetAccount.index);
-        // Update the current account in the state
-        const newCurrentAccount = await wallet.getCurrentAccount();
-        setCurrentAccount(newCurrentAccount);
-        // Reload accounts to update current account
-        await reloadAccounts();
+        // Trouver le keyring qui contient ce compte
+        const allKeyrings = await wallet.getKeyrings();
+        const targetKeyring = allKeyrings.find((keyring) =>
+          keyring.accounts.some((acc) => acc.address === account.address)
+        );
+
+        if (targetKeyring) {
+          if (currentKeyring.key !== targetKeyring.key) {
+            // Changer de keyring si nécessaire
+            await wallet.changeKeyring(targetKeyring);
+            dispatch(keyringsActions.setCurrent(targetKeyring));
+          } else {
+            // Changer de compte dans le même keyring
+            await wallet.changeKeyring(currentKeyring, targetAccount.index);
+          }
+
+          // Mettre à jour le compte actuel
+          const newCurrentAccount = await wallet.getCurrentAccount();
+          setCurrentAccount(newCurrentAccount);
+
+          // Recharger les comptes
+          await reloadAccounts();
+        }
       }
     } catch (error) {
       console.error('Failed to switch account:', error);
     }
+
     console.log('Selected account:', account);
   };
 

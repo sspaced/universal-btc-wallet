@@ -115,8 +115,12 @@ export const ModernSwapScreen: React.FC = () => {
     icon: getAssetIcon('BTC人生', 'BTC人生', 'simplicity')
   });
 
-  // Convert user assets to currencies for the "from" selector
-  const availableFromCurrencies: Currency[] = useMemo(() => {
+  // Convert user assets to currencies for the "from" selector - now as state
+  const [availableFromCurrencies, setAvailableFromCurrencies] = useState<Currency[]>([]);
+  const [availableToCurrencies, setAvailableToCurrencies] = useState<Currency[]>([]);
+
+  // Calculate currencies from user assets
+  const calculateFromCurrencies = useMemo(() => {
     const currencies: Currency[] = [];
 
     // Add BTC first if user has BTC balance
@@ -145,8 +149,8 @@ export const ModernSwapScreen: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAssets, btcBalance]);
 
-  // Convert Simplicity tokens to currencies for the "to" selector
-  const availableToCurrencies: Currency[] = useMemo(() => {
+  // Calculate currencies from Simplicity tokens
+  const calculateToCurrencies = useMemo(() => {
     const currencies: Currency[] = [];
 
     // Add Simplicity tokens from API
@@ -165,6 +169,19 @@ export const ModernSwapScreen: React.FC = () => {
     return currencies;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [simplicityTokens]);
+
+  // Initialize available currencies when data is loaded
+  useEffect(() => {
+    if (!assetsLoading && calculateFromCurrencies.length > 0) {
+      setAvailableFromCurrencies(calculateFromCurrencies);
+    }
+  }, [calculateFromCurrencies, assetsLoading]);
+
+  useEffect(() => {
+    if (!simplicityLoading && calculateToCurrencies.length > 0) {
+      setAvailableToCurrencies(calculateToCurrencies);
+    }
+  }, [calculateToCurrencies, simplicityLoading]);
 
   // Update fromCurrency when assets are loaded and available
   useEffect(() => {
@@ -191,11 +208,23 @@ export const ModernSwapScreen: React.FC = () => {
   }, [availableToCurrencies, simplicityLoading, toCurrency.symbol]);
 
   const handleSwapCurrencies = () => {
-    const temp = fromCurrency;
+    // Sauvegarder les valeurs actuelles
+    const tempCurrency = fromCurrency;
+    const tempAmount = fromAmount;
+    const tempFromCurrencies = availableFromCurrencies;
+    const tempToCurrencies = availableToCurrencies;
+
+    // Inverser les devises
     setFromCurrency(toCurrency);
-    setToCurrency(temp);
+    setToCurrency(tempCurrency);
+
+    // Inverser les montants
     setFromAmount(toAmount);
-    setToAmount(fromAmount);
+    setToAmount(tempAmount);
+
+    // Inverser les listes disponibles
+    setAvailableFromCurrencies(tempToCurrencies);
+    setAvailableToCurrencies(tempFromCurrencies);
   };
 
   const handleFromAmountChange = (value: string) => {

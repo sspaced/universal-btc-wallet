@@ -183,8 +183,8 @@ export const ModernWalletTabScreen: React.FC = () => {
 
         if (targetKeyring) {
           if (currentKeyring.key !== targetKeyring.key) {
-            // Changer de keyring si nécessaire
-            await wallet.changeKeyring(targetKeyring);
+            // Changer de keyring ET sélectionner le bon compte
+            await wallet.changeKeyring(targetKeyring, targetAccount.index);
             dispatch(keyringsActions.setCurrent(targetKeyring));
           } else {
             // Changer de compte dans le même keyring

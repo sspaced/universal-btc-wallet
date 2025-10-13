@@ -245,7 +245,8 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
         style={{
           textAlign: 'center',
           marginBottom: '8px',
-          position: 'relative'
+          position: 'relative',
+          width: '100%'
         }}>
         <div
           style={{
@@ -281,19 +282,6 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
           </span>
         </div>
 
-        {/* Portfolio info */}
-        {!assetsLoading && assets.length > 0 && (
-          <div
-            style={{
-              fontSize: '14px',
-              color: 'rgba(255, 255, 255, 0.6)',
-              marginTop: '4px',
-              textAlign: 'center'
-            }}>
-            Total Portfolio ({assets.length} assets)
-          </div>
-        )}
-
         {/* Portfolio Breakdown Tooltip */}
         {showTooltip && (
           <motion.div
@@ -304,18 +292,18 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
             style={{
               position: 'absolute',
               top: '100%',
-              left: '50%',
-              transform: 'translateX(-50%)',
+              left: '5%',
               marginTop: '4px',
               width: 'fit-content',
+              maxWidth: 'calc(100vw - 40px)',
               backgroundColor: 'rgba(0, 0, 0, 0.9)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               borderRadius: '8px',
               padding: '16px',
-              minWidth: '300px',
+              minWidth: '280px',
               zIndex: 1000,
               backdropFilter: 'blur(8px)',
-              transformOrigin: 'top center'
+              transformOrigin: 'top left'
             }}>
             <div
               style={{

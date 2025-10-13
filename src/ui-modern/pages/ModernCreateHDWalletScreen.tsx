@@ -3,10 +3,10 @@ import { useLocation } from 'react-router-dom';
 
 import { AddressType, RestoreWalletType } from '@/shared/types';
 import {
-    ContextData,
-    TabType,
-    UpdateContextDataParams,
-    WordsType
+  ContextData,
+  TabType,
+  UpdateContextDataParams,
+  WordsType
 } from '@/ui/pages/Account/createHDWalletComponents/types';
 
 import { useNavigate } from '../../ui/pages/MainRoute';
@@ -30,7 +30,7 @@ export const ModernCreateHDWalletScreen: React.FC = () => {
     passphrase: '',
     addressType: AddressType.P2WPKH,
     step1Completed: false,
-    tabType: isImport && !initialRestoreWalletType ? TabType.STEP1 : (isImport ? TabType.STEP2 : TabType.STEP1),
+    tabType: isImport && !initialRestoreWalletType ? TabType.STEP1 : isImport ? TabType.STEP2 : TabType.STEP1,
     restoreWalletType: initialRestoreWalletType || RestoreWalletType.UNISAT,
     isRestore: isImport,
     isCustom: false,
@@ -44,6 +44,11 @@ export const ModernCreateHDWalletScreen: React.FC = () => {
 
   const updateContextData = useCallback(
     (params: UpdateContextDataParams) => {
+      // Si on est en mode import et qu'on revient à STEP1, on doit revenir à la sélection de wallet
+      if (contextData.isRestore && params.tabType === TabType.STEP1 && contextData.tabType === TabType.STEP2) {
+        setShowWalletSelection(true);
+        return;
+      }
       setContextData(Object.assign({}, contextData, params));
     },
     [contextData, setContextData]
@@ -53,7 +58,7 @@ export const ModernCreateHDWalletScreen: React.FC = () => {
     (walletType: RestoreWalletType) => {
       updateContextData({
         restoreWalletType: walletType,
-        tabType: TabType.STEP2,
+        tabType: TabType.STEP2
       });
       setShowWalletSelection(false);
     },

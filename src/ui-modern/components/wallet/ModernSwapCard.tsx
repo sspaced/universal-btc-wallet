@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { SlidersHorizontal } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { Currency, ModernCurrencySelector } from './ModernCurrencySelector';
@@ -45,8 +44,6 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
 }) => {
   const isPay = type === 'pay';
   const [isHovered, setIsHovered] = useState(false);
-  const [showCustomSlippage, setShowCustomSlippage] = useState(false);
-  const [customSlippageValue, setCustomSlippageValue] = useState('');
   const [maxSlippage, setMaxSlippage] = useState(slippage || 1);
   const [isMaxSelected, setIsMaxSelected] = useState(false);
 
@@ -98,109 +95,9 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
     }
   };
 
-  const handleCustomSlippageSubmit = () => {
-    if (customSlippageValue && !isNaN(parseFloat(customSlippageValue))) {
-      const newMaxSlippage = parseFloat(customSlippageValue);
-      setMaxSlippage(newMaxSlippage);
-      setShowCustomSlippage(false);
-      setCustomSlippageValue('');
-    }
-  };
-
   return (
     <>
       <style>{hideNumberInputArrows}</style>
-
-      {/* Settings Button for Max Slippage */}
-      {showSlippageSettings && (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '6px', position: 'relative' }}>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowCustomSlippage(!showCustomSlippage)}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '50%',
-              width: '28px',
-              height: '28px',
-              color: 'rgba(255, 255, 255, 0.7)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-            <SlidersHorizontal size={14} />
-          </motion.button>
-
-          {/* Custom Slippage Dropdown */}
-          {showCustomSlippage && (
-            <>
-              {/* Invisible overlay to close on outside click */}
-              <div
-                onClick={() => setShowCustomSlippage(false)}
-                style={{
-                  position: 'fixed',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  zIndex: 99998
-                }}
-              />
-              {/* Horizontal Input expanding from button */}
-              <motion.div
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: 'auto' }}
-                transition={{ duration: 0.2 }}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: '34px',
-                  height: '28px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '8px',
-                  padding: '0 10px',
-                  gap: '4px',
-                  zIndex: 99999
-                }}>
-                <input
-                  type="number"
-                  value={customSlippageValue}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setCustomSlippageValue(value);
-                    if (value && !isNaN(parseFloat(value))) {
-                      setMaxSlippage(parseFloat(value));
-                    }
-                  }}
-                  placeholder="Max Slippage"
-                  autoFocus
-                  style={{
-                    width: '90px',
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#ffffff',
-                    fontSize: '11px',
-                    outline: 'none'
-                  }}
-                />
-                <span
-                  style={{
-                    color: 'rgba(255, 255, 255, 0.5)',
-                    fontSize: '11px',
-                    fontWeight: '500'
-                  }}>
-                  %
-                </span>
-              </motion.div>
-            </>
-          )}
-        </div>
-      )}
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}

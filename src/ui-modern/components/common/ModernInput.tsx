@@ -118,22 +118,22 @@ export const ModernInput: React.FC<ModernInputProps> = ({
             fontSize: '15px',
             fontWeight: '400',
             color: '#ffffff',
-            backgroundColor: 'var(--modern-bg-secondary)',
+            backgroundColor: '#242424',
             border: `var(--modern-border-width) solid ${getBorderColor()}`,
             borderRadius: '10px',
             outline: 'none',
             transition: 'border-color 0.2s, background-color 0.2s',
             letterSpacing: '-0.022em',
             fontFamily:
-              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
+              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
           }}
           onFocus={(e) => {
             e.target.style.borderColor = getFocusBorderColor();
-            e.target.style.backgroundColor = 'var(--modern-bg-tertiary)';
+            e.target.style.backgroundColor = '#242424';
           }}
           onBlurCapture={(e) => {
             e.target.style.borderColor = getBorderColor();
-            e.target.style.backgroundColor = 'var(--modern-bg-secondary)';
+            e.target.style.backgroundColor = '#242424';
           }}
         />
 

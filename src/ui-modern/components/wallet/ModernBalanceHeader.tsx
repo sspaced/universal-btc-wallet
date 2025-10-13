@@ -5,6 +5,7 @@ import { ChainType } from '@/shared/constant';
 import { usePrice } from '@/ui/provider/PriceProvider';
 import { useBTCUnit, useChainType } from '@/ui/state/settings/hooks';
 
+import { useAssets } from '../../providers/AssetProvider';
 import { RefreshIcon } from '../common/ModernIcons';
 
 interface ModernBalanceHeaderProps {
@@ -28,6 +29,7 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
   const btcUnit = useBTCUnit();
   const [showTooltip, setShowTooltip] = useState(false); // Back to hover mode
   const { coinPrice, isLoadingCoinPrice } = usePrice();
+  const { assets, loading: assetsLoading } = useAssets();
 
   // State for price change data
   const [priceChange, setPriceChange] = useState<{
@@ -90,13 +92,26 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
 
   const totalAmount = satoshisToAmount(accountBalance.availableBalance);
 
-  // Calculate USD value
+  // Calculate total portfolio value in USD (sum of all assets)
   const usdValue = useMemo(() => {
-    if (!priceChange) return '0.00';
-    const btcAmount = parseFloat(totalAmount);
-    const usdAmount = btcAmount * priceChange.currentPrice;
-    return usdAmount.toFixed(2);
-  }, [totalAmount, priceChange]);
+    if (assetsLoading || assets.length === 0) {
+      // Fallback to BTC-only calculation if assets are not loaded yet
+      if (!priceChange) return '0.00';
+      const btcAmount = parseFloat(totalAmount);
+      const usdAmount = btcAmount * priceChange.currentPrice;
+      return usdAmount.toFixed(2);
+    }
+
+    // Calculate the sum of all assets' USD values
+    const totalUSD = assets.reduce((sum, asset) => {
+      // Extract numeric value from usdValue (format: "$123.45")
+      const usdValueStr = asset.usdValue.replace('$', '').replace(',', '');
+      const usdValue = parseFloat(usdValueStr) || 0;
+      return sum + usdValue;
+    }, 0);
+
+    return totalUSD.toFixed(2);
+  }, [assets, assetsLoading, totalAmount, priceChange]);
 
   // Calculate detailed balance amounts for tooltip
   const balanceDetails = useMemo(() => {
@@ -266,7 +281,20 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
           </span>
         </div>
 
-        {/* Balance Details Tooltip - Positioned with left: 20% */}
+        {/* Portfolio info */}
+        {!assetsLoading && assets.length > 0 && (
+          <div
+            style={{
+              fontSize: '14px',
+              color: 'rgba(255, 255, 255, 0.6)',
+              marginTop: '4px',
+              textAlign: 'center'
+            }}>
+            Total Portfolio ({assets.length} assets)
+          </div>
+        )}
+
+        {/* Portfolio Breakdown Tooltip */}
         {showTooltip && (
           <motion.div
             initial={{ opacity: 0, y: -10, scaleY: 0 }}
@@ -276,60 +304,117 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
             style={{
               position: 'absolute',
               top: '100%',
-              left: '20%',
+              left: '50%',
+              transform: 'translateX(-50%)',
               marginTop: '4px',
               width: 'fit-content',
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              backgroundColor: 'rgba(0, 0, 0, 0.9)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '6px',
-              padding: '8px 12px',
-              minWidth: '200px',
+              borderRadius: '8px',
+              padding: '16px',
+              minWidth: '300px',
               zIndex: 1000,
               backdropFilter: 'blur(8px)',
               transformOrigin: 'top center'
             }}>
             <div
               style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                marginBottom: '12px',
+                color: '#ffffff',
+                textAlign: 'center'
+              }}>
+              Portfolio Breakdown
+            </div>
+
+            {/* BTC Balance Details */}
+            <div
+              style={{
                 fontSize: '12px',
                 color: 'rgba(255, 255, 255, 0.7)',
                 textAlign: 'center',
-                lineHeight: '1.4'
+                lineHeight: '1.4',
+                marginBottom: '8px'
               }}>
-              <span>Available </span>
+              <span>BTC Available </span>
               <span style={{ color: '#34c759', fontWeight: '500' }}>
                 {balanceDetails.available} {btcUnit}
               </span>
             </div>
+
             {accountBalance.unavailableBalance > 0 && (
               <div
                 style={{
                   fontSize: '12px',
                   color: 'rgba(255, 255, 255, 0.7)',
-                  marginTop: '4px',
                   textAlign: 'center',
-                  lineHeight: '1.4'
+                  lineHeight: '1.4',
+                  marginBottom: '8px'
                 }}>
-                <span>Unavailable </span>
+                <span>BTC Unavailable </span>
                 <span style={{ color: '#ff9500', fontWeight: '500' }}>
                   {balanceDetails.unavailable} {btcUnit}
                 </span>
               </div>
             )}
-            <div
-              style={{
-                fontSize: '12px',
-                color: 'rgba(255, 255, 255, 0.7)',
-                marginTop: '4px',
-                paddingTop: '4px',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                textAlign: 'center',
-                lineHeight: '1.4'
-              }}>
-              <span>Total </span>
-              <span style={{ color: '#ffffff', fontWeight: '500' }}>
-                {balanceDetails.total} {btcUnit}
-              </span>
-            </div>
+
+            {/* Assets breakdown */}
+            {!assetsLoading && assets.length > 0 && (
+              <>
+                <div
+                  style={{
+                    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                    paddingTop: '8px',
+                    marginTop: '8px'
+                  }}>
+                  {assets.slice(0, 5).map((asset) => {
+                    const usdValueStr = asset.usdValue.replace('$', '').replace(',', '');
+                    const usdValue = parseFloat(usdValueStr) || 0;
+                    return (
+                      <div
+                        key={asset.id}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          marginBottom: '4px',
+                          fontSize: '12px'
+                        }}>
+                        <span style={{ color: 'rgba(255, 255, 255, 0.8)', textTransform: 'capitalize' }}>
+                          {asset.type === 'btc' ? 'Bitcoin' : asset.name}
+                        </span>
+                        <span style={{ color: '#ffffff', fontWeight: '500' }}>${usdValue.toFixed(2)}</span>
+                      </div>
+                    );
+                  })}
+                  {assets.length > 5 && (
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        color: 'rgba(255, 255, 255, 0.6)',
+                        textAlign: 'center',
+                        marginTop: '4px'
+                      }}>
+                      +{assets.length - 5} more assets
+                    </div>
+                  )}
+                </div>
+
+                <div
+                  style={{
+                    borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+                    paddingTop: '8px',
+                    marginTop: '8px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  <span style={{ color: '#ffffff' }}>Total Portfolio</span>
+                  <span style={{ color: '#34C759' }}>${usdValue}</span>
+                </div>
+              </>
+            )}
           </motion.div>
         )}
       </div>

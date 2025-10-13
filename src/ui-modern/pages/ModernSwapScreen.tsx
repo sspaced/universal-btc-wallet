@@ -9,6 +9,7 @@ import { ModernHeader } from '../components/layout/ModernHeader';
 import { Currency } from '../components/wallet/ModernCurrencySelector';
 import { ModernSwapButton } from '../components/wallet/ModernSwapButton';
 import { ModernSwapCard } from '../components/wallet/ModernSwapCard';
+import { getAssetLogo } from '../config/asset-logos';
 import { useSimplicityTokens } from '../hooks/useSimplicityTokens';
 import { useAssets } from '../providers/AssetProvider';
 
@@ -28,6 +29,66 @@ export const ModernSwapScreen: React.FC = () => {
   // Use real BTC balance from wallet
   const btcBalance = accountBalance?.amount || '0';
 
+  // Helper function to get asset icon
+  const getAssetIcon = (symbol: string, name: string, type: string, size = 22) => {
+    // BTC gets a special gradient icon
+    if (type === 'btc' || symbol === 'BTC') {
+      return (
+        <div
+          style={{
+            width: `${size}px`,
+            height: `${size}px`,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #f7931a 0%, #ffb347 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: `${Math.floor(size * 0.6)}px`,
+            fontWeight: 'bold',
+            color: '#ffffff'
+          }}>
+          ₿
+        </div>
+      );
+    }
+
+    // Try to get asset logo from config
+    const logoPath = getAssetLogo(symbol, name, type);
+    if (logoPath) {
+      return (
+        <img
+          src={logoPath}
+          alt={name}
+          style={{
+            width: `${size}px`,
+            height: `${size}px`,
+            borderRadius: '50%',
+            objectFit: 'cover'
+          }}
+        />
+      );
+    }
+
+    // Fallback to text with first letter
+    return (
+      <div
+        style={{
+          width: `${size}px`,
+          height: `${size}px`,
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#ffffff',
+          fontSize: `${Math.floor(size * 0.4)}px`,
+          fontWeight: '600'
+        }}>
+        {symbol?.charAt(0) || name.charAt(0)}
+      </div>
+    );
+  };
+
   // Initialize currencies with first available asset or default BTC
   const [fromCurrency, setFromCurrency] = useState<Currency>(() => {
     if (parseFloat(btcBalance) > 0) {
@@ -35,7 +96,7 @@ export const ModernSwapScreen: React.FC = () => {
         symbol: 'BTC',
         name: 'Bitcoin',
         balance: btcBalance,
-        icon: <span style={{ fontSize: '18px' }}>₿</span>
+        icon: getAssetIcon('BTC', 'Bitcoin', 'btc')
       };
     }
     // Fallback to first available asset
@@ -43,7 +104,7 @@ export const ModernSwapScreen: React.FC = () => {
       symbol: 'BTC',
       name: 'Bitcoin',
       balance: '0',
-      icon: <span style={{ fontSize: '18px' }}>₿</span>
+      icon: getAssetIcon('BTC', 'Bitcoin', 'btc')
     };
   });
 
@@ -51,7 +112,7 @@ export const ModernSwapScreen: React.FC = () => {
     symbol: 'BTC人生',
     name: 'BTC人生',
     balance: '0',
-    icon: <span style={{ fontSize: '18px' }}>⚡</span>
+    icon: getAssetIcon('BTC人生', 'BTC人生', 'simplicity')
   });
 
   // Convert user assets to currencies for the "from" selector
@@ -64,39 +125,24 @@ export const ModernSwapScreen: React.FC = () => {
         symbol: 'BTC',
         name: 'Bitcoin',
         balance: btcBalance,
-        icon: <span style={{ fontSize: '18px' }}>₿</span>
+        icon: getAssetIcon('BTC', 'Bitcoin', 'btc', 28)
       });
     }
 
     // Add other assets that user owns (filter out BTC as it's already added)
     userAssets.forEach((asset) => {
       if (asset.type !== 'btc' && parseFloat(asset.amount) > 0) {
-        // Get appropriate icon based on asset type
-        let icon = <span style={{ fontSize: '18px' }}>●</span>;
-        if (asset.type === 'rune') {
-          icon = <span style={{ fontSize: '18px' }}>ᚱ</span>;
-        } else if (asset.type === 'ordinal') {
-          icon = <span style={{ fontSize: '18px' }}>◉</span>;
-        } else if (asset.type === 'brc20') {
-          icon = <span style={{ fontSize: '18px' }}>₮</span>;
-        } else if (asset.type === 'alkane') {
-          icon = <span style={{ fontSize: '18px' }}>⚡</span>;
-        } else if (asset.type === 'cat20') {
-          icon = <span style={{ fontSize: '18px' }}>🐱</span>;
-        } else if (asset.type === 'cat721') {
-          icon = <span style={{ fontSize: '18px' }}>🎨</span>;
-        }
-
         currencies.push({
           symbol: asset.symbol || asset.name,
           name: asset.name,
           balance: asset.amount,
-          icon: icon
+          icon: getAssetIcon(asset.symbol || asset.name, asset.name, asset.type, 28)
         });
       }
     });
 
     return currencies;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAssets, btcBalance]);
 
   // Convert Simplicity tokens to currencies for the "to" selector
@@ -111,12 +157,13 @@ export const ModernSwapScreen: React.FC = () => {
           symbol: token.ticker,
           name: token.ticker,
           balance: '0', // User doesn't own these tokens initially
-          icon: <span style={{ fontSize: '18px' }}>⚡</span> // Simplicity icon
+          icon: getAssetIcon(token.ticker, token.ticker, 'simplicity', 28)
         });
       }
     });
 
     return currencies;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [simplicityTokens]);
 
   // Update fromCurrency when assets are loaded and available
@@ -250,7 +297,7 @@ export const ModernSwapScreen: React.FC = () => {
             selectedCurrency={fromCurrency}
             onCurrencySelect={handleFromCurrencySelect}
             availableCurrencies={availableFromCurrencies}
-            label="Vendre"
+            label="Sell"
             placeholder="0"
             balance={fromCurrency.balance}
             onDropdownToggle={setFromDropdownOpen}
@@ -288,7 +335,7 @@ export const ModernSwapScreen: React.FC = () => {
             selectedCurrency={toCurrency}
             onCurrencySelect={handleToCurrencySelect}
             availableCurrencies={availableToCurrencies}
-            label="Acheter"
+            label="Buy"
             placeholder="0"
             balance={toCurrency.balance}
             onDropdownToggle={setToDropdownOpen}

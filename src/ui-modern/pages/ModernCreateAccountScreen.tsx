@@ -66,6 +66,16 @@ export const ModernCreateAccountScreen: React.FC = () => {
     }
   };
 
+  const handleImportAccount = async () => {
+    // Utilise la même logique que le welcome screen
+    const isBooted = await wallet.isBooted();
+    if (isBooted) {
+      navigate('CreateHDWalletScreen', { isImport: true });
+    } else {
+      navigate('CreatePasswordScreen', { isNewAccount: false });
+    }
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !isLoading) {
       handleCreateAccount();
@@ -233,6 +243,10 @@ export const ModernCreateAccountScreen: React.FC = () => {
             disabled={isLoading || !accountName.trim()}
             loading={isLoading}>
             {isLoading ? 'Creating Account...' : 'Create Account'}
+          </ModernButton>
+
+          <ModernButton variant="secondary" size="large" fullWidth onClick={handleImportAccount} disabled={isLoading}>
+            Import Account
           </ModernButton>
 
           <ModernButton variant="tertiary" size="large" fullWidth onClick={handleBack} disabled={isLoading}>

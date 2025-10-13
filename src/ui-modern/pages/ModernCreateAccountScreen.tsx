@@ -90,169 +90,153 @@ export const ModernCreateAccountScreen: React.FC = () => {
     <div
       className="modern-ui-container"
       style={{
-        minHeight: '100vh',
+        height: '100vh',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '16px',
-        backgroundColor: 'var(--modern-bg-primary)'
+        flexDirection: 'column',
+        backgroundColor: 'var(--modern-bg-primary)',
+        overflow: 'hidden'
       }}>
+      {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        style={{ width: '100%', maxWidth: '448px' }}>
-        {/* Header with Back Button */}
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '16px 20px',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+        {/* Back button */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleBack}
+          style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '12px',
+            backgroundColor: 'var(--modern-bg-secondary)',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer'
+          }}>
+          <ArrowLeft size={20} color="#ffffff" />
+        </motion.button>
+
+        {/* Title */}
+        <motion.h1
+          initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.5 }}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            marginBottom: '32px'
+            fontSize: '18px',
+            fontWeight: '700',
+            color: '#ffffff',
+            margin: 0,
+            letterSpacing: '-0.3px'
           }}>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleBack}
+          Add Account
+        </motion.h1>
+
+        {/* Spacer */}
+        <div style={{ width: '40px' }} />
+      </motion.div>
+
+      {/* Main Content */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '32px 20px',
+          overflow: 'auto'
+        }}>
+        <div style={{ width: '100%', maxWidth: '448px' }}>
+          {/* Account Icon */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
             style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
-              backgroundColor: 'var(--modern-bg-secondary)',
-              border: 'none',
               display: 'flex',
-              alignItems: 'center',
               justifyContent: 'center',
-              cursor: 'pointer'
+              marginBottom: '32px'
             }}>
-            <ArrowLeft size={20} color="#ffffff" />
-          </motion.button>
-
-          <div>
-            <h1
+            <div
               style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#ffffff',
-                margin: 0,
-                letterSpacing: '-0.5px'
+                width: '80px',
+                height: '80px',
+                borderRadius: '12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
               }}>
-              Add Account
-            </h1>
-            <p
-              style={{
-                fontSize: '14px',
-                color: 'rgba(255, 255, 255, 0.6)',
-                margin: '4px 0 0 0',
-                fontWeight: '400'
-              }}>
-              Create a new account for your wallet
-            </p>
-          </div>
-        </motion.div>
+              <User size={32} color="#ffffff" />
+            </div>
+          </motion.div>
 
-        {/* Account Icon */}
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginBottom: '32px'
-          }}>
-          <div
+          {/* Form */}
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <ModernInput
+              label="Account Name"
+              value={accountName}
+              onChange={(value) => {
+                setAccountName(value);
+                setError('');
+              }}
+              onKeyPress={handleKeyPress}
+              placeholder="Enter account name"
+              disabled={isLoading}
+              error={error}
+              autoFocus
+            />
+          </motion.div>
+
+          {/* Action Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
             style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '12px',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
+              flexDirection: 'column',
+              gap: '12px',
+              marginTop: '32px'
             }}>
-            <User size={32} color="#ffffff" />
-          </div>
-        </motion.div>
+            <ModernButton
+              variant="primary"
+              size="large"
+              fullWidth
+              onClick={handleCreateAccount}
+              disabled={isLoading || !accountName.trim()}
+              loading={isLoading}>
+              {isLoading ? 'Creating Account...' : 'Create Account'}
+            </ModernButton>
 
-        {/* Form */}
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <ModernInput
-            label="Account Name"
-            value={accountName}
-            onChange={(value) => {
-              setAccountName(value);
-              setError('');
-            }}
-            onKeyPress={handleKeyPress}
-            placeholder="Enter account name"
-            disabled={isLoading}
-            error={error}
-            autoFocus
-          />
-        </motion.div>
+            <ModernButton variant="secondary" size="large" fullWidth onClick={handleImportAccount} disabled={isLoading}>
+              Import Account
+            </ModernButton>
 
-        {/* Info Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          style={{
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '12px',
-            padding: '16px',
-            marginTop: '24px',
-            marginBottom: '32px'
-          }}>
-          <p
-            style={{
-              fontSize: '14px',
-              color: 'rgba(255, 255, 255, 0.7)',
-              margin: 0,
-              lineHeight: '1.5'
-            }}>
-            Your new account will be derived from your existing wallet seed phrase. This ensures maximum security while
-            allowing you to manage multiple accounts.
-          </p>
-        </motion.div>
-
-        {/* Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px'
-          }}>
-          <ModernButton
-            variant="primary"
-            size="large"
-            fullWidth
-            onClick={handleCreateAccount}
-            disabled={isLoading || !accountName.trim()}
-            loading={isLoading}>
-            {isLoading ? 'Creating Account...' : 'Create Account'}
-          </ModernButton>
-
-          <ModernButton variant="secondary" size="large" fullWidth onClick={handleImportAccount} disabled={isLoading}>
-            Import Account
-          </ModernButton>
-
-          <ModernButton variant="tertiary" size="large" fullWidth onClick={handleBack} disabled={isLoading}>
-            Cancel
-          </ModernButton>
-        </motion.div>
+            <ModernButton variant="tertiary" size="large" fullWidth onClick={handleBack} disabled={isLoading}>
+              Cancel
+            </ModernButton>
+          </motion.div>
+        </div>
       </motion.div>
     </div>
   );

@@ -67,13 +67,8 @@ export const ModernCreateAccountScreen: React.FC = () => {
   };
 
   const handleImportAccount = async () => {
-    // Utilise la même logique que le welcome screen
-    const isBooted = await wallet.isBooted();
-    if (isBooted) {
-      navigate('CreateHDWalletScreen', { isImport: true });
-    } else {
-      navigate('CreatePasswordScreen', { isNewAccount: false });
-    }
+    // Navigate to wallet selection screen to choose between seed phrase or private key
+    navigate('WalletSelectionScreen');
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {

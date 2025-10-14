@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Wallet } from 'lucide-react';
+import { Check, Wallet } from 'lucide-react';
 import React from 'react';
 
 interface ModernWalletCardProps {
@@ -7,9 +7,16 @@ interface ModernWalletCardProps {
   description?: string;
   onClick: () => void;
   index?: number;
+  isSelected?: boolean;
 }
 
-export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({ walletName, description, onClick, index = 0 }) => {
+export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
+  walletName,
+  description,
+  onClick,
+  index = 0,
+  isSelected = false
+}) => {
   const [isHovered, setIsHovered] = React.useState(false);
 
   return (
@@ -23,14 +30,22 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({ walletName, 
       }}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick();
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="modern-wallet-card"
       style={{
-        background: 'var(--modern-bg-secondary)',
+        background: isSelected ? 'rgba(114, 227, 173, 0.1)' : 'var(--modern-bg-secondary)',
         backdropFilter: 'blur(10px)',
-        border: isHovered ? '1px solid rgba(114, 227, 173, 0.6)' : '1px solid rgba(255, 255, 255, 0.1)',
+        border: isSelected
+          ? '1px solid var(--modern-accent-primary)'
+          : isHovered
+          ? '1px solid rgba(114, 227, 173, 0.6)'
+          : '1px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '8px',
         padding: '16px',
         cursor: 'pointer',
@@ -40,14 +55,38 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({ walletName, 
         alignItems: 'center',
         justifyContent: 'center',
         gap: '8px',
-        minHeight: '110px'
+        minHeight: '110px',
+        position: 'relative'
       }}>
+      {/* Selection indicator */}
+      {isSelected && (
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            position: 'absolute',
+            top: '8px',
+            right: '8px',
+            width: '20px',
+            height: '20px',
+            borderRadius: '50%',
+            background: 'var(--modern-accent-primary)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'none'
+          }}>
+          <Check size={12} color="white" />
+        </motion.div>
+      )}
+
       <div
         style={{
           width: '36px',
           height: '36px',
           borderRadius: '10px',
-          background: 'rgba(114, 227, 173, 0.15)',
+          background: isSelected ? 'rgba(114, 227, 173, 0.25)' : 'rgba(114, 227, 173, 0.15)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'

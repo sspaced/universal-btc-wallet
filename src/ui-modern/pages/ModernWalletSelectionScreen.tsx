@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { RestoreWalletType } from '@/shared/types';
 
+import { ModernButton } from '../components/common/ModernButton';
 import { ModernWalletCard } from '../components/common/ModernWalletCard';
 
 interface ModernWalletSelectionScreenProps {
@@ -13,6 +14,7 @@ interface ModernWalletSelectionScreenProps {
 
 export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenProps> = ({ onWalletSelect }) => {
   const navigate = useNavigate();
+  const [selectedWallet, setSelectedWallet] = useState<RestoreWalletType | null>(null);
 
   const wallets = [
     {
@@ -43,17 +45,32 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
   ];
 
   const handleWalletSelect = (walletType: RestoreWalletType) => {
+    setSelectedWallet(walletType);
+  };
+
+  const handleImportMethod = (method: 'seed' | 'privateKey') => {
+    if (selectedWallet === null) return;
+
     if (onWalletSelect) {
-      onWalletSelect(walletType);
+      onWalletSelect(selectedWallet);
     } else {
-      // Navigate to CreateHDWallet with selected wallet type
-      navigate('/account/create-hd-wallet', {
-        state: {
-          isImport: true,
-          fromUnlock: false,
-          restoreWalletType: walletType
-        }
-      });
+      if (method === 'seed') {
+        // Navigate to seed phrase import (existing flow)
+        navigate('/account/create-hd-wallet', {
+          state: {
+            isImport: true,
+            fromUnlock: false,
+            restoreWalletType: selectedWallet
+          }
+        });
+      } else {
+        // Navigate to private key import (existing flow)
+        navigate('/account/create-simple-wallet', {
+          state: {
+            restoreWalletType: selectedWallet
+          }
+        });
+      }
     }
   };
 
@@ -146,7 +163,8 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '12px',
-            maxWidth: '400px'
+            maxWidth: '400px',
+            marginBottom: '24px'
           }}>
           {wallets.map((wallet, index) => (
             <ModernWalletCard
@@ -155,9 +173,74 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
               description={wallet.description}
               onClick={() => handleWalletSelect(wallet.type)}
               index={index}
+              isSelected={selectedWallet === wallet.type}
             />
           ))}
         </div>
+
+        {/* Selection message */}
+        {selectedWallet !== null && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              textAlign: 'center',
+              marginBottom: '16px'
+            }}>
+            <p
+              style={{
+                fontSize: '14px',
+                color: 'var(--modern-accent-primary)',
+                margin: 0,
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
+              }}>
+              Selected: {wallets.find((w) => w.type === selectedWallet)?.name}
+            </p>
+          </motion.div>
+        )}
+
+        {/* Import Method Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          style={{
+            display: 'flex',
+            gap: '12px',
+            maxWidth: '400px',
+            margin: '0 auto'
+          }}>
+          <ModernButton
+            variant="secondary"
+            size="large"
+            fullWidth
+            disabled={selectedWallet === null}
+            onClick={() => handleImportMethod('seed')}
+            style={{
+              background: selectedWallet !== null ? 'var(--modern-bg-secondary)' : 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: selectedWallet !== null ? 'white' : 'rgba(255, 255, 255, 0.3)',
+              cursor: selectedWallet !== null ? 'pointer' : 'not-allowed'
+            }}>
+            Seed Phrase
+          </ModernButton>
+
+          <ModernButton
+            variant="primary"
+            size="large"
+            fullWidth
+            disabled={selectedWallet === null}
+            onClick={() => handleImportMethod('privateKey')}
+            style={{
+              background: selectedWallet !== null ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.1)',
+              color: selectedWallet !== null ? 'white' : 'rgba(255, 255, 255, 0.3)',
+              cursor: selectedWallet !== null ? 'pointer' : 'not-allowed'
+            }}>
+            Private Key
+          </ModernButton>
+        </motion.div>
       </div>
     </div>
   );

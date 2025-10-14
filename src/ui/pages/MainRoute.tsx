@@ -14,6 +14,7 @@ import { ModernAssetSelectionScreen } from '../../ui-modern/pages/ModernAssetSel
 import { ModernChangePasswordScreen } from '../../ui-modern/pages/ModernChangePasswordScreen';
 import { ModernContactsScreen } from '../../ui-modern/pages/ModernContactsScreen';
 import { ModernCreateAccountScreen } from '../../ui-modern/pages/ModernCreateAccountScreen';
+import { ModernCreateSimpleWalletScreen } from '../../ui-modern/pages/ModernCreateSimpleWalletScreen';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
 import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
 import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
@@ -28,6 +29,7 @@ import { ModernTxConfirmScreen } from '../../ui-modern/pages/ModernTxConfirmScre
 import { ModernTxFailScreen } from '../../ui-modern/pages/ModernTxFailScreen';
 import { ModernTxSuccessScreen } from '../../ui-modern/pages/ModernTxSuccessScreen';
 import { ModernUnlockScreen } from '../../ui-modern/pages/ModernUnlockScreen';
+import { ModernWalletSelectionScreen } from '../../ui-modern/pages/ModernWalletSelectionScreen';
 import { Content, Icon } from '../components';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { accountActions } from '../state/accounts/reducer';
@@ -143,6 +145,10 @@ export const routes = {
   CreateAccountScreen: {
     path: '/account/create',
     element: <ModernCreateAccountScreen />
+  },
+  WalletSelectionScreen: {
+    path: '/account/wallet-selection',
+    element: <ModernWalletSelectionScreen />
   },
   CreatePasswordScreen: {
     path: '/account/create-password',
@@ -272,7 +278,11 @@ export const routes = {
   },
   CreateSimpleWalletScreen: {
     path: '/account/create-simple-wallet',
-    element: <CreateSimpleWalletScreen />
+    element: shouldUseModernUI('CreateSimpleWalletScreen') ? (
+      <ModernCreateSimpleWalletScreen />
+    ) : (
+      <CreateSimpleWalletScreen />
+    )
   },
   CreateKeystoneWalletScreen: {
     path: '/account/create-keystone-wallet',

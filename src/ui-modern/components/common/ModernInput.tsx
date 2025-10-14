@@ -1,237 +1,116 @@
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-export interface ModernInputProps {
-  label?: string;
-  placeholder?: string;
-  value: string;
-  onChange: (value: string) => void;
-  onBlur?: () => void;
-  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  type?: 'text' | 'email' | 'number';
-  error?: string;
-  success?: boolean;
-  disabled?: boolean;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+interface ModernInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  variant?: 'primary' | 'secondary';
+  size?: 'small' | 'medium' | 'large';
+  fullWidth?: boolean;
+  error?: boolean;
   helperText?: string;
-  autoFocus?: boolean;
-  maxLength?: number;
-  className?: string;
 }
 
-export const ModernInput: React.FC<ModernInputProps> = ({
-  label,
-  placeholder,
-  value,
-  onChange,
-  onBlur,
-  onKeyPress,
-  type = 'text',
-  error,
-  success,
-  disabled = false,
-  leftIcon,
-  rightIcon,
-  helperText,
-  autoFocus,
-  maxLength,
-  className = ''
-}) => {
-  const hasError = Boolean(error);
-  const hasSuccess = success && !hasError;
+export const ModernInput = forwardRef<HTMLInputElement, ModernInputProps>(
+  (
+    {
+      variant = 'primary',
+      size = 'medium',
+      fullWidth = false,
+      error = false,
+      helperText,
+      className = '',
+      style = {},
+      ...props
+    },
+    ref
+  ) => {
+    const getVariantStyles = () => {
+      switch (variant) {
+        case 'primary':
+          return {
+            background: 'var(--modern-bg-secondary)',
+            border: error ? '1px solid #ff4757' : '1px solid rgba(255, 255, 255, 0.1)',
+            color: 'white'
+          };
+        case 'secondary':
+          return {
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: error ? '1px solid #ff4757' : '1px solid rgba(255, 255, 255, 0.05)',
+            color: 'rgba(255, 255, 255, 0.8)'
+          };
+        default:
+          return {};
+      }
+    };
 
-  const handleIncrement = () => {
-    if (type === 'number' && !disabled) {
-      const currentValue = parseFloat(value) || 0;
-      onChange((currentValue + 1).toString());
-    }
-  };
-
-  const handleDecrement = () => {
-    if (type === 'number' && !disabled) {
-      const currentValue = parseFloat(value) || 0;
-      onChange((currentValue - 1).toString());
-    }
-  };
-
-  const getBorderColor = () => {
-    if (hasError) return 'rgba(255, 59, 48, 0.5)'; // Apple red
-    if (hasSuccess) return 'rgba(52, 199, 89, 0.5)'; // Apple green
-    return 'var(--modern-border-color)';
-  };
-
-  const getFocusBorderColor = () => {
-    if (hasError) return 'rgba(255, 59, 48, 0.8)';
-    if (hasSuccess) return 'rgba(52, 199, 89, 0.8)';
-    return 'var(--modern-border-focus)';
-  };
-
-  return (
-    <div className={`modern-input-container ${className}`} style={{ width: '100%' }}>
-      {label && (
-        <label
-          style={{
-            display: 'block',
-            fontSize: '13px',
-            fontWeight: '600',
-            color: '#ffffff',
-            marginBottom: '6px',
-            letterSpacing: '-0.08px'
-          }}>
-          {label}
-        </label>
-      )}
-
-      <div style={{ position: 'relative', width: '100%' }}>
-        {leftIcon && (
-          <div
-            style={{
-              position: 'absolute',
-              left: '14px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              display: 'flex',
-              alignItems: 'center',
-              pointerEvents: 'none',
-              color: 'rgba(255, 255, 255, 0.5)'
-            }}>
-            {leftIcon}
-          </div>
-        )}
-
-        <motion.input
-          type={type}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onBlur={onBlur}
-          onKeyPress={onKeyPress}
-          placeholder={placeholder}
-          disabled={disabled}
-          autoFocus={autoFocus}
-          maxLength={maxLength}
-          whileFocus={{ scale: 1.01 }}
-          transition={{ duration: 0.15 }}
-          style={{
-            width: '100%',
-            padding: leftIcon ? '10px 12px 10px 40px' : rightIcon ? '10px 40px 10px 12px' : '10px 12px',
+    const getSizeStyles = () => {
+      switch (size) {
+        case 'small':
+          return {
+            padding: '8px 12px',
+            fontSize: '14px',
+            height: '36px'
+          };
+        case 'medium':
+          return {
+            padding: '12px 16px',
             fontSize: '15px',
-            fontWeight: '400',
-            color: '#ffffff',
-            backgroundColor: '#242424',
-            border: `var(--modern-border-width) solid ${getBorderColor()}`,
-            borderRadius: '10px',
-            outline: 'none',
-            transition: 'border-color 0.2s, background-color 0.2s',
-            letterSpacing: '-0.022em',
-            fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          }}
-          onFocus={(e) => {
-            e.target.style.borderColor = getFocusBorderColor();
-            e.target.style.backgroundColor = '#242424';
-          }}
-          onBlurCapture={(e) => {
-            e.target.style.borderColor = getBorderColor();
-            e.target.style.backgroundColor = '#242424';
-          }}
+            height: '44px'
+          };
+        case 'large':
+          return {
+            padding: '16px 20px',
+            fontSize: '16px',
+            height: '52px'
+          };
+        default:
+          return {};
+      }
+    };
+
+    const baseStyles = {
+      borderRadius: '8px',
+      outline: 'none',
+      transition: 'all 0.3s ease',
+      fontFamily:
+        '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif',
+      width: fullWidth ? '100%' : 'auto',
+      ...getVariantStyles(),
+      ...getSizeStyles(),
+      ...style
+    };
+
+    const focusStyles = {
+      border: error ? '1px solid #ff4757' : '1px solid var(--modern-accent-primary)',
+      boxShadow: error ? '0 0 0 3px rgba(255, 71, 87, 0.1)' : '0 0 0 3px rgba(114, 227, 173, 0.1)'
+    };
+
+    return (
+      <div style={{ width: fullWidth ? '100%' : 'auto' }}>
+        <motion.input
+          ref={ref}
+          className={`modern-input ${className}`}
+          style={baseStyles}
+          whileFocus={focusStyles}
+          placeholder={props.placeholder}
+          {...props}
         />
-
-        {type === 'number' && !disabled ? (
-          <div
+        {helperText && (
+          <motion.div
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
             style={{
-              position: 'absolute',
-              right: '8px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '2px'
+              fontSize: '12px',
+              color: error ? '#ff4757' : 'rgba(255, 255, 255, 0.6)',
+              marginTop: '4px',
+              fontFamily:
+                '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
             }}>
-            <button
-              type="button"
-              onClick={handleIncrement}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                padding: '2px 4px',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'rgba(255, 255, 255, 0.6)',
-                transition: 'color 0.2s'
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)')}>
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                <path
-                  d="M1 5L5 1L9 5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={handleDecrement}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                padding: '2px 4px',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'rgba(255, 255, 255, 0.6)',
-                transition: 'color 0.2s'
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)')}>
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                <path
-                  d="M1 1L5 5L9 1"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-        ) : rightIcon ? (
-          <div
-            style={{
-              position: 'absolute',
-              right: '14px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              display: 'flex',
-              alignItems: 'center',
-              color: 'rgba(255, 255, 255, 0.5)'
-            }}>
-            {rightIcon}
-          </div>
-        ) : null}
+            {helperText}
+          </motion.div>
+        )}
       </div>
+    );
+  }
+);
 
-      {(error || helperText) && (
-        <motion.div
-          initial={{ opacity: 0, y: -4 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          style={{
-            marginTop: '6px',
-            fontSize: '12px',
-            fontWeight: '400',
-            color: hasError ? '#ff3b30' : 'rgba(255, 255, 255, 0.5)',
-            letterSpacing: '-0.08px'
-          }}>
-          {error || helperText}
-        </motion.div>
-      )}
-    </div>
-  );
-};
+ModernInput.displayName = 'ModernInput';

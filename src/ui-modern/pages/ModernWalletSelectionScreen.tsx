@@ -124,7 +124,7 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
             color: 'white',
             margin: 0,
             fontFamily:
-              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
+              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
           }}>
           Choose a Wallet
         </h1>
@@ -134,72 +134,54 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
       <div
         style={{
           flex: 1,
-          overflowY: 'auto',
-          padding: '16px 24px'
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '12px 20px',
+          justifyContent: 'space-between'
         }}>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          style={{
-            marginBottom: '12px'
-          }}>
-          <p
-            style={{
-              fontSize: '15px',
-              color: 'rgba(255, 255, 255, 0.7)',
-              margin: 0,
-              lineHeight: '1.6',
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
-            }}>
-            Select the wallet type you want to restore. Each wallet uses a different address derivation path.
-          </p>
-        </motion.div>
-
-        {/* Wallet Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '12px',
-            maxWidth: '400px',
-            marginBottom: '24px'
-          }}>
-          {wallets.map((wallet, index) => (
-            <ModernWalletCard
-              key={wallet.type}
-              walletName={wallet.name}
-              description={wallet.description}
-              onClick={() => handleWalletSelect(wallet.type)}
-              index={index}
-              isSelected={selectedWallet === wallet.type}
-            />
-          ))}
-        </div>
-
-        {/* Selection message */}
-        {selectedWallet !== null && (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
             style={{
-              textAlign: 'center',
-              marginBottom: '16px'
+              marginBottom: '12px'
             }}>
             <p
               style={{
-                fontSize: '14px',
-                color: 'var(--modern-accent-primary)',
+                fontSize: '13px',
+                color: 'rgba(255, 255, 255, 0.7)',
                 margin: 0,
+                lineHeight: '1.4',
                 fontFamily:
-                  '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
+                  "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
               }}>
-              Selected: {wallets.find((w) => w.type === selectedWallet)?.name}
+              Select the wallet type you want to restore. Each wallet uses a different address derivation path.
             </p>
           </motion.div>
-        )}
+
+          {/* Wallet Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '12px',
+              maxWidth: '400px',
+              flex: 1,
+              alignContent: 'start'
+            }}>
+            {wallets.map((wallet, index) => (
+              <ModernWalletCard
+                key={wallet.type}
+                walletName={wallet.name}
+                description={wallet.description}
+                onClick={() => handleWalletSelect(wallet.type)}
+                index={index}
+                isSelected={selectedWallet === wallet.type}
+              />
+            ))}
+          </div>
+        </div>
 
         {/* Import Method Buttons */}
         <motion.div
@@ -208,9 +190,8 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
           transition={{ duration: 0.5, delay: 0.4 }}
           style={{
             display: 'flex',
-            gap: '12px',
-            maxWidth: '400px',
-            margin: '0 auto'
+            gap: '8px',
+            width: '100%'
           }}>
           <ModernButton
             variant="secondary"
@@ -222,7 +203,10 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
               background: selectedWallet !== null ? 'var(--modern-bg-secondary)' : 'rgba(255, 255, 255, 0.1)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               color: selectedWallet !== null ? 'white' : 'rgba(255, 255, 255, 0.3)',
-              cursor: selectedWallet !== null ? 'pointer' : 'not-allowed'
+              cursor: selectedWallet !== null ? 'pointer' : 'not-allowed',
+              height: '44px',
+              fontSize: '16px',
+              borderRadius: '12px'
             }}>
             Seed Phrase
           </ModernButton>
@@ -235,8 +219,13 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
             onClick={() => handleImportMethod('privateKey')}
             style={{
               background: selectedWallet !== null ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.1)',
-              color: selectedWallet !== null ? 'white' : 'rgba(255, 255, 255, 0.3)',
-              cursor: selectedWallet !== null ? 'pointer' : 'not-allowed'
+              color: selectedWallet !== null ? 'black' : 'rgba(255, 255, 255, 0.3)',
+              cursor: selectedWallet !== null ? 'pointer' : 'not-allowed',
+              height: '44px',
+              fontSize: '16px',
+              borderRadius: '12px',
+              border: 'none',
+              boxShadow: 'none'
             }}>
             Private Key
           </ModernButton>

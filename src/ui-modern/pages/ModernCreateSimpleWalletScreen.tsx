@@ -286,6 +286,7 @@ export const ModernCreateSimpleWalletScreen: React.FC = () => {
                   }
                 }}
                 autoFocus
+                fullWidth
               />
             </div>
 
@@ -298,8 +299,10 @@ export const ModernCreateSimpleWalletScreen: React.FC = () => {
               onClick={handlePrivateKeySubmit}
               style={{
                 background: contextData.wif ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.1)',
-                color: contextData.wif ? 'white' : 'rgba(255, 255, 255, 0.3)',
-                cursor: contextData.wif ? 'pointer' : 'not-allowed'
+                color: contextData.wif ? 'black' : 'rgba(255, 255, 255, 0.3)',
+                cursor: contextData.wif ? 'pointer' : 'not-allowed',
+                border: 'none',
+                boxShadow: 'none'
               }}>
               Continue
             </ModernButton>

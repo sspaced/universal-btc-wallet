@@ -47,15 +47,16 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
           ? '1px solid rgba(114, 227, 173, 0.6)'
           : '1px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '8px',
-        padding: '16px',
+        padding: '12px',
         cursor: 'pointer',
         transition: 'all 0.3s ease',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '8px',
-        minHeight: '110px',
+        gap: '6px',
+        minHeight: '100px',
+        height: '100%',
         position: 'relative'
       }}>
       {/* Selection indicator */}
@@ -83,15 +84,15 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
 
       <div
         style={{
-          width: '36px',
-          height: '36px',
-          borderRadius: '10px',
+          width: '28px',
+          height: '28px',
+          borderRadius: '8px',
           background: isSelected ? 'rgba(114, 227, 173, 0.25)' : 'rgba(114, 227, 173, 0.15)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-        <Wallet size={20} color="var(--modern-accent-primary)" />
+        <Wallet size={16} color="var(--modern-accent-primary)" />
       </div>
 
       <div
@@ -101,23 +102,23 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
         }}>
         <div
           style={{
-            fontSize: '14px',
+            fontSize: '12px',
             fontWeight: '600',
             color: 'white',
-            marginBottom: '2px',
+            marginBottom: '1px',
             fontFamily:
-              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
+              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
           }}>
           {walletName}
         </div>
         {description && (
           <div
             style={{
-              fontSize: '11px',
+              fontSize: '10px',
               color: 'rgba(255, 255, 255, 0.5)',
-              lineHeight: '1.3',
+              lineHeight: '1.2',
               fontFamily:
-                '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
+                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
             }}>
             {description}
           </div>

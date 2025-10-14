@@ -186,20 +186,29 @@ export const ModernCreateAccountScreen: React.FC = () => {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <ModernInput
-              label="Account Name"
-              value={accountName}
-              onChange={(value) => {
-                setAccountName(value);
-                setError('');
-              }}
-              onKeyPress={handleKeyPress}
-              placeholder="Enter account name"
-              disabled={isLoading}
-              error={error}
-              autoFocus
-            />
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+              alignItems: 'center',
+              width: '100%'
+            }}>
+            <div style={{ width: '100%', maxWidth: '320px' }}>
+              <ModernInput
+                label="Account Name"
+                value={accountName}
+                onChange={(value) => {
+                  setAccountName(value);
+                  setError('');
+                }}
+                onKeyPress={handleKeyPress}
+                placeholder="Enter account name"
+                disabled={isLoading}
+                error={error}
+                autoFocus
+                fullWidth
+              />
+            </div>
           </motion.div>
 
           {/* Action Buttons */}
@@ -227,7 +236,7 @@ export const ModernCreateAccountScreen: React.FC = () => {
               Import Account
             </ModernButton>
 
-            <ModernButton variant="tertiary" size="large" fullWidth onClick={handleBack} disabled={isLoading}>
+            <ModernButton variant="secondary" size="large" fullWidth onClick={handleBack} disabled={isLoading}>
               Cancel
             </ModernButton>
           </motion.div>

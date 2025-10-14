@@ -107,7 +107,7 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
             color: 'white',
             marginBottom: '1px',
             fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
           }}>
           {walletName}
         </div>
@@ -118,7 +118,7 @@ export const ModernWalletCard: React.FC<ModernWalletCardProps> = ({
               color: 'rgba(255, 255, 255, 0.5)',
               lineHeight: '1.2',
               fontFamily:
-                "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
             }}>
             {description}
           </div>

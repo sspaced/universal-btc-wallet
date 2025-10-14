@@ -3,6 +3,8 @@ import './styles/apple-theme.css';
 
 // Components
 export * from './components/common';
+export { ModernErrorBoundary } from './components/ModernErrorBoundary';
+export { ModernErrorBoundaryWrapper } from './components/ModernErrorBoundaryWrapper';
 
 // Pages
 export { ModernAddressTypeScreen } from './pages/ModernAddressTypeScreen';

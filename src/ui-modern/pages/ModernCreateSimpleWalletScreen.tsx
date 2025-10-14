@@ -205,7 +205,7 @@ export const ModernCreateSimpleWalletScreen: React.FC = () => {
             color: 'white',
             margin: 0,
             fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
           }}>
           {contextData.currentStep === 'input' ? 'Import Private Key' : 'Choose Address Type'}
         </h1>
@@ -257,7 +257,7 @@ export const ModernCreateSimpleWalletScreen: React.FC = () => {
                   color: 'white',
                   margin: '0 0 8px 0',
                   fontFamily:
-                    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                    '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
                 }}>
                 Import {getWalletName()}
               </h2>
@@ -268,7 +268,7 @@ export const ModernCreateSimpleWalletScreen: React.FC = () => {
                   margin: 0,
                   lineHeight: '1.6',
                   fontFamily:
-                    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                    '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
                 }}>
                 Enter your private key to import your existing wallet
               </p>
@@ -328,7 +328,7 @@ export const ModernCreateSimpleWalletScreen: React.FC = () => {
                   color: 'white',
                   margin: '0 0 8px 0',
                   fontFamily:
-                    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                    '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
                 }}>
                 Choose Address Type
               </h2>
@@ -338,7 +338,7 @@ export const ModernCreateSimpleWalletScreen: React.FC = () => {
                   color: 'rgba(255, 255, 255, 0.7)',
                   margin: 0,
                   fontFamily:
-                    "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                    '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
                 }}>
                 Select the address type for your {getWalletName()}
               </p>
@@ -401,7 +401,7 @@ export const ModernCreateSimpleWalletScreen: React.FC = () => {
                           fontWeight: '600',
                           color: 'white',
                           fontFamily:
-                            "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                            '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
                         }}>
                         {addressType.name}
                       </div>

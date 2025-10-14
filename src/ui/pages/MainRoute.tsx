@@ -8,6 +8,7 @@ import MergeCAT20Screen from '@/ui/pages/CAT20/MergeCAT20Screen';
 import SendCAT20Screen from '@/ui/pages/CAT20/SendCAT20Screen';
 import { LoadingOutlined } from '@ant-design/icons';
 
+import { ModernErrorBoundaryWrapper } from '../../ui-modern/components/ModernErrorBoundaryWrapper';
 import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
 import { ModernAboutUsScreen } from '../../ui-modern/pages/ModernAboutUsScreen';
 import { ModernAssetSelectionScreen } from '../../ui-modern/pages/ModernAssetSelectionScreen';
@@ -31,7 +32,6 @@ import { ModernTxSuccessScreen } from '../../ui-modern/pages/ModernTxSuccessScre
 import { ModernUnlockScreen } from '../../ui-modern/pages/ModernUnlockScreen';
 import { ModernWalletSelectionScreen } from '../../ui-modern/pages/ModernWalletSelectionScreen';
 import { Content, Icon } from '../components';
-import { ErrorBoundary } from '../components/ErrorBoundary';
 import { accountActions } from '../state/accounts/reducer';
 import { useIsReady, useIsUnlocked } from '../state/global/hooks';
 import { globalActions } from '../state/global/reducer';
@@ -613,7 +613,11 @@ const Main = () => {
           {Object.keys(routes)
             .map((v) => routes[v])
             .map((v) => (
-              <Route key={v.path} path={v.path} element={<ErrorBoundary>{v.element}</ErrorBoundary>} />
+              <Route
+                key={v.path}
+                path={v.path}
+                element={<ModernErrorBoundaryWrapper>{v.element}</ModernErrorBoundaryWrapper>}
+              />
             ))}
         </Routes>
       </AssetProvider>

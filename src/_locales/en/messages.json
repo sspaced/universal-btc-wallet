@@ -1796,6 +1796,45 @@
   "about_us": {
     "message": "About us"
   },
+  "about_us_description": {
+    "message": "The most popular Bitcoin wallet for Ordinals and inscriptions"
+  },
+  "secure_wallet": {
+    "message": "Secure Wallet"
+  },
+  "secure_wallet_desc": {
+    "message": "Your private keys are encrypted and stored locally"
+  },
+  "fast_transactions": {
+    "message": "Fast Transactions"
+  },
+  "fast_transactions_desc": {
+    "message": "Quick and reliable Bitcoin transactions"
+  },
+  "ordinals_support": {
+    "message": "Ordinals Support"
+  },
+  "ordinals_support_desc": {
+    "message": "Full support for Bitcoin Ordinals and inscriptions"
+  },
+  "multi_network": {
+    "message": "Multi-Network"
+  },
+  "multi_network_desc": {
+    "message": "Support for Bitcoin mainnet and testnet"
+  },
+  "build_info": {
+    "message": "Build 1.7.4"
+  },
+  "latest": {
+    "message": "Latest"
+  },
+  "made_with_love": {
+    "message": "Made with ❤️ for the Bitcoin community"
+  },
+  "all_rights_reserved": {
+    "message": "All rights reserved."
+  },
   "seconds": {
     "message": "Seconds"
   },

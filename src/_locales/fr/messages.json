@@ -1770,6 +1770,45 @@
   "about_us": {
     "message": "À propos de nous"
   },
+  "about_us_description": {
+    "message": "Le portefeuille Bitcoin le plus populaire pour les Ordinals et inscriptions"
+  },
+  "secure_wallet": {
+    "message": "Portefeuille Sécurisé"
+  },
+  "secure_wallet_desc": {
+    "message": "Vos clés privées sont chiffrées et stockées localement"
+  },
+  "fast_transactions": {
+    "message": "Transactions Rapides"
+  },
+  "fast_transactions_desc": {
+    "message": "Transactions Bitcoin rapides et fiables"
+  },
+  "ordinals_support": {
+    "message": "Support Ordinals"
+  },
+  "ordinals_support_desc": {
+    "message": "Support complet pour les Bitcoin Ordinals et inscriptions"
+  },
+  "multi_network": {
+    "message": "Multi-Réseau"
+  },
+  "multi_network_desc": {
+    "message": "Support pour Bitcoin mainnet et testnet"
+  },
+  "build_info": {
+    "message": "Version 1.7.4"
+  },
+  "latest": {
+    "message": "Dernière"
+  },
+  "made_with_love": {
+    "message": "Fait avec ❤️ pour la communauté Bitcoin"
+  },
+  "all_rights_reserved": {
+    "message": "Tous droits réservés."
+  },
   "seconds": {
     "message": "Secondes"
   },

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useI18n } from '../../ui/hooks/useI18n';
 import { useNavigate } from '../../ui/pages/MainRoute';
@@ -11,6 +11,11 @@ export const ModernLanguageScreen: React.FC = () => {
   const { t, locale, changeLocale } = useI18n();
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const [loading, setLoading] = useState(false);
+
+  // Update selectedLocale when locale changes
+  useEffect(() => {
+    setSelectedLocale(locale);
+  }, [locale]);
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -33,12 +38,23 @@ export const ModernLanguageScreen: React.FC = () => {
     setLoading(true);
     try {
       setSelectedLocale(languageCode);
+
       // Use the proper changeLocale method from i18n context
       await changeLocale(languageCode);
-      // Reload the page to apply the new language
-      window.location.reload();
+
+      // Send message to background script for language change
+      if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
+        chrome.runtime.sendMessage({ type: 'CHANGE_LANGUAGE', locale: languageCode });
+      }
+
+      // Navigate back instead of reloading the page
+      setTimeout(() => {
+        navigate('MainScreen', { openSettings: true });
+      }, 500); // Small delay to ensure language change is processed
     } catch (error) {
       console.error('Failed to change language:', error);
+      // Revert the selection on error
+      setSelectedLocale(locale);
     } finally {
       setLoading(false);
     }

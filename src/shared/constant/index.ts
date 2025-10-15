@@ -90,15 +90,27 @@ export const LANGS = [
   },
   {
     value: 'zh_CN',
-    label: 'Chinese'
+    label: '简体中文'
+  },
+  {
+    value: 'zh_TW',
+    label: '繁體中文'
   },
   {
     value: 'ja',
-    label: 'Japanese'
+    label: '日本語'
   },
   {
     value: 'es',
-    label: 'Spanish'
+    label: 'Español'
+  },
+  {
+    value: 'fr',
+    label: 'Français'
+  },
+  {
+    value: 'ru',
+    label: 'Русский'
   }
 ];
 

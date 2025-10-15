@@ -7,6 +7,8 @@ if (chrome && chrome.runtime && chrome.runtime.onMessage) {
   chrome.runtime.onMessage.addListener((message) => {
     if (message && message.type === 'CHANGE_LANGUAGE' && message.locale) {
       changeLanguage(message.locale);
+      // Also update chrome storage
+      chrome.storage.local.set({ i18nextLng: message.locale });
     }
   });
 }

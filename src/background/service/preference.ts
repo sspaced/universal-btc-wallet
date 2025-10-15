@@ -92,7 +92,7 @@ export interface PreferenceStore {
   developerMode: boolean;
 }
 
-const SUPPORTED_LOCALES = ['en', 'zh_TW', 'fr', 'es', 'ru', 'ja'];
+const SUPPORTED_LOCALES = ['en', 'zh_CN', 'zh_TW', 'fr', 'es', 'ru', 'ja'];
 
 class PreferenceService {
   store!: PreferenceStore;

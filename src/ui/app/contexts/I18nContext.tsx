@@ -98,8 +98,12 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('userSelectedLanguage', 'true');
       localStorage.setItem('i18nextLng', newLocale);
       chrome.storage.local.set({ i18nextLng: newLocale });
+
+      // Notify other parts of the app about language change
+      window.dispatchEvent(new CustomEvent('languageChanged', { detail: newLocale }));
     } catch (error) {
       setError(error instanceof Error ? error : new Error('Unknown error'));
+      throw error; // Re-throw to allow error handling in components
     }
   };
 

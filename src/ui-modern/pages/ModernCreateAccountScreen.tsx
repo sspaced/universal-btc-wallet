@@ -9,6 +9,7 @@ import { useSetCurrentAccountCallback } from '../../ui/state/accounts/hooks';
 import { useCurrentKeyring } from '../../ui/state/keyrings/hooks';
 import { useWallet } from '../../ui/utils';
 import { ModernButton } from '../components/common/ModernButton';
+import { ModernErrorMessage } from '../components/common/ModernErrorMessage';
 import { ModernInput } from '../components/common/ModernInput';
 
 export const ModernCreateAccountScreen: React.FC = () => {
@@ -29,8 +30,10 @@ export const ModernCreateAccountScreen: React.FC = () => {
     const init = async () => {
       try {
         const accountName = await wallet.getNextAlianName(currentKeyring);
-        setDefaultName(accountName);
-        setAccountName(accountName);
+        // Vérification de sécurité pour s'assurer que accountName est une string
+        const safeAccountName = typeof accountName === 'string' ? accountName : 'Account 1';
+        setDefaultName(safeAccountName);
+        setAccountName(safeAccountName);
       } catch (error) {
         console.error('Failed to get default account name:', error);
         setDefaultName('Account 1');
@@ -41,7 +44,8 @@ export const ModernCreateAccountScreen: React.FC = () => {
   }, [wallet, currentKeyring]);
 
   const handleCreateAccount = async () => {
-    if (!accountName.trim()) {
+    // Vérification de sécurité pour s'assurer que accountName est une string
+    if (!accountName || typeof accountName !== 'string' || !accountName.trim()) {
       setError('Account name is required');
       return;
     }
@@ -197,18 +201,29 @@ export const ModernCreateAccountScreen: React.FC = () => {
               <ModernInput
                 label="Account Name"
                 value={accountName}
-                onChange={(value) => {
-                  setAccountName(value);
+                onChange={(e) => {
+                  setAccountName(e.target.value);
                   setError('');
                 }}
                 onKeyPress={handleKeyPress}
                 placeholder="Enter account name"
                 disabled={isLoading}
-                error={error}
+                error={!!error}
                 autoFocus
                 fullWidth
               />
             </div>
+
+            {/* Error Message Display */}
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{ width: '100%', maxWidth: '320px' }}>
+                <ModernErrorMessage message={error} type="error" showIcon={true} onDismiss={() => setError('')} />
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Action Buttons */}

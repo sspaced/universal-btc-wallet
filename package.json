@@ -1,14 +1,14 @@
 {
-  "name": "unisat-extension",
+  "name": "universal-extension",
   "version": "1.7.4",
   "private": true,
-  "homepage": "https://github.com/unisat-wallet/extension#readme",
+  "homepage": "https://www.blacknode.co/",
   "bugs": {
-    "url": "https://github.com/unisat-wallet/extension/issues"
+    "url": "https://www.blacknode.co/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/unisat-wallet/extension.git"
+    "url": "https://github.com/The-Universal-BRC-20-Extension"
   },
   "scripts": {
     "clean": "mkdir -p dist && rm -rf dist/* && cp -r build/_raw/* dist",

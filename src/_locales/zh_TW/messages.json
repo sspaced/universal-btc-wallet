@@ -1,5 +1,5 @@
 {
-  "appName": { "message": "UniSat 錢包" },
+  "appName": { "message": "universal 錢包" },
   "appDescription": {
     "message": "在世界第一個開源 Ordinals Chrome 錢包中銘刻並儲存您的銘文！"
   },
@@ -839,7 +839,7 @@
     "message": "由於此頁面可能不安全，UniSat 錢包已限制您對其的存取。"
   },
   "reject_blocked_by_unisat_wallet": {
-    "message": "拒絕 (已被 UniSat 錢包阻擋)"
+    "message": "拒絕 (已被 universal 錢包阻擋)"
   },
   "warning": {
     "message": "警告"
@@ -848,7 +848,7 @@
     "message": "我已了解相關風險"
   },
   "connect_with_unisat_wallet": {
-    "message": "連接 UniSat 錢包"
+    "message": "連接 universal 錢包"
   },
   "select_the_account_to_use_on_this_site": {
     "message": "選擇要在此網站上使用的帳戶"
@@ -1154,8 +1154,8 @@
   "confirm": {
     "message": "確認"
   },
-  "unisat": {
-    "message": "UNISAT"
+  "universal": {
+    "message": "universal"
   },
   "try_again": {
     "message": "再試一次"
@@ -1353,7 +1353,7 @@
     "message": "危險！偵測到潛在的釣魚網站"
   },
   "this_website_has_been_identified_as_malicious_by_unisat_and_may": {
-    "message": "此網站已被 UniSat 識別為惡意網站，可能："
+    "message": "此網站已被 universal 識別為惡意網站，可能："
   },
   "steal_your_private_keys_or_seed_phrases": {
     "message": "竊取您的私鑰或助記詞"
@@ -1509,7 +1509,7 @@
     "message": "日期"
   },
   "view_on_unisat_explorer": {
-    "message": "在 UniSat 瀏覽器上查看"
+    "message": "在 universal 瀏覽器上查看"
   },
   "view_on_okx_explorer": {
     "message": "在 OKX 瀏覽器上查看"
@@ -1668,7 +1668,7 @@
     "message": "地址或域名 (.fb)"
   },
   "address_or_name_sats_unisat_etc": {
-    "message": "地址或域名 (.sats, .unisat, ...)"
+    "message": "地址或域名 (.sats, .universal, ...)"
   },
   "does_not_exist": {
     "message": "不存在"
@@ -2175,7 +2175,7 @@
     "message": "合併失敗"
   },
   "create_cold_wallet": {
-    "message": "連接 UniSat Cold Wallet"
+    "message": "連接 universal Cold Wallet"
   },
   "msg_sign": {
     "message": "訊息簽署"
@@ -2265,10 +2265,10 @@
     "message": "我已簽名，掃描結果"
   },
   "cold_wallet": {
-    "message": "連接 UniSat 冷錢包"
+    "message": "連接 universal 冷錢包"
   },
   "linked_to_unisat_cold_wallet": {
-    "message": "已連接至 UniSat 冷錢包"
+    "message": "已連接至 universal 冷錢包"
   },
   "signature_successful": {
     "message": "簽名成功"

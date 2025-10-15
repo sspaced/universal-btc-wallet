@@ -339,7 +339,8 @@ export const ModernWalletTabScreen: React.FC = () => {
       <ModernSettingsPanel
         visible={showSettings}
         onClose={() => setShowSettings(false)}
-        onNavigate={(route: any) => navigate(route)}
+        onNavigate={(route: any, state?: any) => navigate(route, state)}
+        currentKeyring={currentKeyring}
       />
     </div>
   );

@@ -5,9 +5,15 @@ interface ModernSettingsPanelProps {
   visible: boolean;
   onClose: () => void;
   onNavigate: (route: any, state?: any, pathState?: any) => void;
+  currentKeyring?: any;
 }
 
-export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({ visible, onClose, onNavigate }) => {
+export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({
+  visible,
+  onClose,
+  onNavigate,
+  currentKeyring
+}) => {
   const settingsItems = [
     {
       id: 'language',
@@ -56,7 +62,7 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({ visibl
           <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
       ),
-      action: () => onNavigate('ExportMnemonicsScreen')
+      action: () => onNavigate('ExportMnemonicsScreen', { keyring: currentKeyring })
     },
     {
       id: 'private-key',

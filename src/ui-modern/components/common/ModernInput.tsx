@@ -14,7 +14,7 @@ export const ModernInput = forwardRef<HTMLInputElement, ModernInputProps>(
     {
       variant = 'primary',
       size = 'medium',
-      fullWidth = false,
+      fullWidth = true,
       error = false,
       helperText,
       className = '',

@@ -124,7 +124,7 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
             color: 'white',
             margin: 0,
             fontFamily:
-              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
+              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
           }}>
           Choose a Wallet
         </h1>
@@ -154,7 +154,7 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
                 margin: 0,
                 lineHeight: '1.4',
                 fontFamily:
-                  '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
+                  "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
               }}>
               Select the wallet type you want to restore. Each wallet uses a different address derivation path.
             </p>
@@ -212,20 +212,19 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
           </ModernButton>
 
           <ModernButton
-            variant="primary"
+            variant="secondary"
             size="large"
             fullWidth
             disabled={selectedWallet === null}
             onClick={() => handleImportMethod('privateKey')}
             style={{
-              background: selectedWallet !== null ? 'var(--modern-accent-primary)' : 'rgba(255, 255, 255, 0.1)',
-              color: selectedWallet !== null ? 'black' : 'rgba(255, 255, 255, 0.3)',
+              background: selectedWallet !== null ? 'var(--modern-bg-secondary)' : 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: selectedWallet !== null ? 'white' : 'rgba(255, 255, 255, 0.3)',
               cursor: selectedWallet !== null ? 'pointer' : 'not-allowed',
               height: '44px',
               fontSize: '16px',
-              borderRadius: '12px',
-              border: 'none',
-              boxShadow: 'none'
+              borderRadius: '12px'
             }}>
             Private Key
           </ModernButton>

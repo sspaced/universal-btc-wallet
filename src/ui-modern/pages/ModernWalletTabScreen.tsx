@@ -341,6 +341,7 @@ export const ModernWalletTabScreen: React.FC = () => {
         onClose={() => setShowSettings(false)}
         onNavigate={(route: any, state?: any) => navigate(route, state)}
         currentKeyring={currentKeyring}
+        currentAccount={currentAccount}
       />
     </div>
   );

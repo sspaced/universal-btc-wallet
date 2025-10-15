@@ -58,7 +58,7 @@ export const ModernContactsScreen: React.FC = () => {
   };
 
   const handleAddContact = () => {
-    navigate('EditContactScreen', { state: { selectedNetworkFilter } });
+    navigate('AddAddressScreen', { state: { selectedNetworkFilter } });
   };
 
   const handleEditContact = (contact: Contact) => {
@@ -292,20 +292,6 @@ export const ModernContactsScreen: React.FC = () => {
             padding: '40px',
             textAlign: 'center'
           }}>
-          <div
-            style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '16px',
-              fontSize: '32px'
-            }}>
-            📇
-          </div>
           <h3
             style={{
               fontSize: '18px',

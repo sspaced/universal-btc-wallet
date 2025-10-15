@@ -1827,6 +1827,18 @@
   "save": {
     "message": "Enregistrer"
   },
+  "name_required": {
+    "message": "Le nom est requis"
+  },
+  "name_too_short": {
+    "message": "Le nom doit contenir au moins 2 caractères"
+  },
+  "invalid_address_format": {
+    "message": "Format d'adresse invalide"
+  },
+  "network_required": {
+    "message": "Le réseau est requis"
+  },
   "new_update_available": {
     "message": "Nouvelle mise à jour disponible"
   },

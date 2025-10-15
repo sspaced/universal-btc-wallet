@@ -1,10 +1,12 @@
 // Modern UI Pages Exports
+export { ModernAddAddressScreen } from './ModernAddAddressScreen';
 export { ModernAddressTypeScreen } from './ModernAddressTypeScreen';
 export { ModernAssetSelectionScreen } from './ModernAssetSelectionScreen';
 export { ModernCreateAccountScreen } from './ModernCreateAccountScreen';
 export { ModernCreateHDWalletScreen } from './ModernCreateHDWalletScreen';
 export { ModernCreatePasswordScreen } from './ModernCreatePasswordScreen';
 export { ModernExportMnemonicsScreen } from './ModernExportMnemonicsScreen';
+export { ModernExportPrivateKeyScreen } from './ModernExportPrivateKeyScreen';
 export { ModernHistoryDetail } from './ModernHistoryDetail';
 export { ModernHistoryScreen } from './ModernHistoryScreen';
 export { ModernReceiveScreen } from './ModernReceiveScreen';

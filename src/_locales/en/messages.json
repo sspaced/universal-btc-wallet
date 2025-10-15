@@ -1853,6 +1853,18 @@
   "save": {
     "message": "Save"
   },
+  "name_required": {
+    "message": "Name is required"
+  },
+  "name_too_short": {
+    "message": "Name must be at least 2 characters"
+  },
+  "invalid_address_format": {
+    "message": "Invalid address format"
+  },
+  "network_required": {
+    "message": "Network is required"
+  },
   "new_update_available": {
     "message": "New Update Available"
   },

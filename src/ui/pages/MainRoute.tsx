@@ -11,12 +11,14 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { ModernErrorBoundaryWrapper } from '../../ui-modern/components/ModernErrorBoundaryWrapper';
 import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
 import { ModernAboutUsScreen } from '../../ui-modern/pages/ModernAboutUsScreen';
+import { ModernAddAddressScreen } from '../../ui-modern/pages/ModernAddAddressScreen';
 import { ModernAssetSelectionScreen } from '../../ui-modern/pages/ModernAssetSelectionScreen';
 import { ModernChangePasswordScreen } from '../../ui-modern/pages/ModernChangePasswordScreen';
 import { ModernContactsScreen } from '../../ui-modern/pages/ModernContactsScreen';
 import { ModernCreateAccountScreen } from '../../ui-modern/pages/ModernCreateAccountScreen';
 import { ModernCreateSimpleWalletScreen } from '../../ui-modern/pages/ModernCreateSimpleWalletScreen';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
+import { ModernExportPrivateKeyScreen } from '../../ui-modern/pages/ModernExportPrivateKeyScreen';
 import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
 import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
 import { ModernLanguageScreen } from '../../ui-modern/pages/ModernLanguageScreen';
@@ -87,6 +89,10 @@ import './index.module.less';
 // Composant wrapper pour l'évaluation dynamique
 const ExportMnemonicsScreenWrapper = () => {
   return shouldUseModernUI('ExportMnemonicsScreen') ? <ModernExportMnemonicsScreen /> : <ExportMnemonicsScreen />;
+};
+
+const ExportPrivateKeyScreenWrapper = () => {
+  return shouldUseModernUI('ExportPrivateKeyScreen') ? <ModernExportPrivateKeyScreen /> : <ExportPrivateKeyScreen />;
 };
 
 const ModernWelcomeScreen = lazy(() =>
@@ -230,7 +236,7 @@ export const routes = {
   },
   ExportPrivateKeyScreen: {
     path: '/settings/export-privatekey',
-    element: <ExportPrivateKeyScreen />
+    element: <ExportPrivateKeyScreenWrapper />
   },
   AdvancedScreen: {
     path: '/settings/advanced',
@@ -303,6 +309,10 @@ export const routes = {
   ContactsScreen: {
     path: '/settings/contacts',
     element: <ModernContactsScreen />
+  },
+  AddAddressScreen: {
+    path: '/settings/contacts/add',
+    element: <ModernAddAddressScreen />
   },
   EditContactScreen: {
     path: '/settings/contacts/edit',

@@ -28,6 +28,7 @@ import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
 import { ModernSendScreen } from '../../ui-modern/pages/ModernSendScreen';
 import { ModernSwapConfirmationScreen } from '../../ui-modern/pages/ModernSwapConfirmationScreen';
 import { ModernSwapScreen } from '../../ui-modern/pages/ModernSwapScreen';
+import { ModernTokenDetail } from '../../ui-modern/pages/ModernTokenDetail';
 import { ModernTxConfirmScreen } from '../../ui-modern/pages/ModernTxConfirmScreen';
 import { ModernTxFailScreen } from '../../ui-modern/pages/ModernTxFailScreen';
 import { ModernTxSuccessScreen } from '../../ui-modern/pages/ModernTxSuccessScreen';
@@ -261,6 +262,10 @@ export const routes = {
   ModernHistoryDetail: {
     path: '/wallet/history/detail',
     element: <ModernHistoryDetail />
+  },
+  ModernTokenDetail: {
+    path: '/wallet/token/detail',
+    element: <ModernTokenDetail />
   },
   ApprovalScreen: {
     path: '/approval',

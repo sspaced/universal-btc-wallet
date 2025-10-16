@@ -16,6 +16,7 @@ export { ModernSendScreen } from './ModernSendScreen';
 export { ModernStep2Screen } from './ModernStep2Screen';
 export { ModernSwapConfirmationScreen } from './ModernSwapConfirmationScreen';
 export { ModernSwapScreen } from './ModernSwapScreen';
+export { ModernTokenDetail } from './ModernTokenDetail';
 export { ModernTxConfirmScreen } from './ModernTxConfirmScreen';
 export { ModernTxFailScreen } from './ModernTxFailScreen';
 export { ModernTxSuccessScreen } from './ModernTxSuccessScreen';

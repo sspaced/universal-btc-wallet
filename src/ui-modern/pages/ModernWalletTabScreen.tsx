@@ -251,6 +251,18 @@ export const ModernWalletTabScreen: React.FC = () => {
   const handleAssetClick = (asset: Asset) => {
     // Navigate to asset detail screen based on type
     switch (asset.type) {
+      case 'simplicity':
+        navigate('ModernTokenDetail', {
+          tokenId: asset.id,
+          name: asset.name,
+          symbol: asset.symbol || '',
+          balance: asset.amount,
+          usdValue: asset.usdValue,
+          icon: asset.icon,
+          contractAddress: asset.id,
+          network: 'Simplicity'
+        });
+        break;
       case 'rune':
         navigate('RunesTokenScreen', { runeid: asset.id });
         break;

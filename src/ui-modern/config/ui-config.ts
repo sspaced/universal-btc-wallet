@@ -36,7 +36,8 @@ export const modernRoutes = [
   'NetworkTypeScreen', // ModernNetworkTypeScreen
   'ContactsScreen', // ModernContactsScreen
   'AddAddressScreen', // ModernAddAddressScreen
-  'AboutUsScreen' // ModernAboutUsScreen
+  'AboutUsScreen', // ModernAboutUsScreen
+  'ModernTokenDetail' // ModernTokenDetail
   // Ajoutez d'autres routes ici au fur et à mesure
 ];
 

@@ -242,7 +242,7 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
         padding: '0 20px 20px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '8px'
+        gap: '6px'
       }}>
       {sortedAssets.map((asset, index) => {
         console.log(`Rendering asset ${index + 1}: ${asset.name} (${asset.type})`);

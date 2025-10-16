@@ -47,7 +47,7 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
     <div
       style={{
         position: 'fixed',
-        bottom: '16px',
+        bottom: '8px',
         left: '16px',
         right: '16px',
         height: '64px',
@@ -55,7 +55,8 @@ export const ModernBottomNav: React.FC<ModernBottomNavProps> = ({ activeTab, onT
         backdropFilter: 'blur(20px)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '32px',
-        boxShadow: '0 -8px 32px rgba(0, 0, 0, 0.15)',
+        boxShadow:
+          '0 -40px 100px rgba(0, 0, 0, 0.8), 0 -16px 40px rgba(0, 0, 0, 0.6), 0 -8px 20px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',

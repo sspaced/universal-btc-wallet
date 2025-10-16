@@ -10,6 +10,7 @@ import {
   simplicityService
 } from '@/background/service/simplicity';
 import { useNavigate } from '@/ui/pages/MainRoute';
+import { useCurrentAddress } from '@/ui/state/accounts/hooks';
 
 import { HistoryIcon, PaperPlaneIcon, QRCodeIcon, SwapIcon } from '../components/common/CustomIcons';
 import { ModernHeader } from '../components/layout/ModernHeader';
@@ -36,18 +37,44 @@ const TokenPriceChart: React.FC<{
 }> = ({ timeframe, tradingData, loading }) => {
   if (loading) {
     return (
-      <div
-        style={{
-          height: '160px',
-          background: 'var(--modern-bg-secondary)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '12px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'rgba(255, 255, 255, 0.6)'
-        }}>
-        Loading chart...
+      <div style={{ width: '100%', height: '160px', position: 'relative' }}>
+        {/* Skeleton Chart */}
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 340 160"
+          preserveAspectRatio="none"
+          style={{ overflow: 'visible' }}>
+          {/* Skeleton grid lines */}
+          <defs>
+            <linearGradient id="skeletonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.1)" />
+              <stop offset="50%" stopColor="rgba(255, 255, 255, 0.2)" />
+              <stop offset="100%" stopColor="rgba(255, 255, 255, 0.1)" />
+            </linearGradient>
+          </defs>
+
+          {/* Horizontal grid lines */}
+          <line x1="0" y1="30" x2="340" y2="30" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1" />
+          <line x1="0" y1="60" x2="340" y2="60" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1" />
+          <line x1="0" y1="90" x2="340" y2="90" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1" />
+          <line x1="0" y1="120" x2="340" y2="120" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1" />
+
+          {/* Skeleton chart line */}
+          <path
+            d="M0,100 Q80,60 140,80 T260,70 T340,50"
+            stroke="url(#skeletonGradient)"
+            strokeWidth="2"
+            fill="none"
+            strokeDasharray="5,5">
+            <animate attributeName="stroke-dashoffset" values="0;10" dur="1.5s" repeatCount="indefinite" />
+          </path>
+
+          {/* Skeleton area fill */}
+          <path d="M0,100 Q80,60 140,80 T260,70 T340,50 L340,160 L0,160 Z" fill="url(#skeletonGradient)" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.3;0.1" dur="2s" repeatCount="indefinite" />
+          </path>
+        </svg>
       </div>
     );
   }
@@ -70,16 +97,97 @@ const TokenPriceChart: React.FC<{
     );
   }
 
-  // Convert trading data to chart format
-  const data = Array.isArray(tradingData)
-    ? tradingData.map((item, i) => ({
-        x: i,
-        y: item.close / 100000000 // Convert satoshis to BTC
-      }))
-    : [];
+  // Filter trading data based on timeframe
+  const filterDataByTimeframe = (data: BlacknodeTradingData[], timeframe: TimeFrame): BlacknodeTradingData[] => {
+    if (!Array.isArray(data) || data.length === 0) return [];
+
+    const now = Date.now() / 1000; // Current time in seconds
+    let timeLimit: number;
+
+    switch (timeframe) {
+      case '1H':
+        timeLimit = now - 1 * 60 * 60; // 1 hour ago
+        break;
+      case '1J':
+        timeLimit = now - 24 * 60 * 60; // 1 day ago
+        break;
+      case '1S':
+        timeLimit = now - 7 * 24 * 60 * 60; // 1 week ago
+        break;
+      case '1M':
+        timeLimit = now - 30 * 24 * 60 * 60; // 1 month ago
+        break;
+      case 'YTD':
+        timeLimit = now - 365 * 24 * 60 * 60; // 1 year ago
+        break;
+      default:
+        return data; // Return all data for 'TOUT'
+    }
+
+    return data.filter((item) => item.time >= timeLimit);
+  };
+
+  // Filter and convert trading data to chart format
+  const filteredData = filterDataByTimeframe(tradingData, timeframe);
+  const data = filteredData.map((item, i) => ({
+    x: i,
+    y: item.close / 100000000 // Convert satoshis to BTC
+  }));
+
+  // If no data for timeframe, show a flat chart
+  if (data.length === 0) {
+    const width = 340;
+    const height = 200;
+    const padding = 0;
+
+    // Create a flat line in the middle of the chart
+    const flatY = height / 2;
+    const flatLine = `M0,${flatY} L${width},${flatY}`;
+    const flatArea = `M0,${flatY} L${width},${flatY} L${width},${height} L0,${height} Z`;
+
+    return (
+      <div style={{ width: '100%', height: '160px', position: 'relative' }}>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox={`0 0 ${width} ${height}`}
+          preserveAspectRatio="none"
+          style={{ overflow: 'visible' }}>
+          {/* Gradient for flat area */}
+          <defs>
+            <linearGradient id="flatGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="rgba(114, 228, 173, 0.1)" />
+              <stop offset="100%" stopColor="rgba(114, 228, 173, 0)" />
+            </linearGradient>
+          </defs>
+
+          {/* Flat area fill */}
+          <motion.path
+            d={flatArea}
+            fill="url(#flatGradient)"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+
+          {/* Flat line */}
+          <motion.path
+            d={flatLine}
+            stroke="var(--modern-accent-primary)"
+            strokeWidth="2"
+            fill="none"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+          />
+        </svg>
+      </div>
+    );
+  }
+
   const width = 340;
   const height = 200;
-  const padding = 10;
+  const padding = 0;
 
   // Normaliser les données pour le SVG
   const maxY = Math.max(...data.map((d) => d.y));
@@ -190,45 +298,37 @@ const ActionButton: React.FC<{
 }> = ({ icon, label, onClick }) => {
   return (
     <motion.button
-      whileTap={{ scale: 0.95 }}
       onClick={onClick}
       style={{
+        background: 'transparent',
+        border: 'none',
+        padding: '0',
+        cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '6px',
-        background: 'var(--modern-bg-secondary)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '10px',
-        padding: '12px 8px',
-        flex: 1,
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-        minWidth: 0,
-        aspectRatio: '1' // Force square aspect ratio
-      }}>
+        gap: '8px'
+      }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}>
       <div
         style={{
-          width: '28px',
-          height: '28px',
-          borderRadius: '50%',
-          background: 'rgba(114, 228, 173, 0.15)',
+          width: '48px',
+          height: '48px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'var(--modern-accent-primary)'
+          color: '#ffffff'
         }}>
         {icon}
       </div>
       <span
         style={{
-          fontSize: '11px',
-          color: 'rgba(255, 255, 255, 0.8)',
+          fontSize: '13px',
           fontWeight: '500',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: '100%'
+          color: 'rgba(255, 255, 255, 0.8)',
+          textAlign: 'center'
         }}>
         {label}
       </span>
@@ -240,9 +340,10 @@ const ActionButton: React.FC<{
 export const ModernTokenDetail: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const currentAddress = useCurrentAddress();
   const tokenData = location.state as TokenDetailState;
 
-  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1J');
+  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('YTD');
   const [copiedContract, setCopiedContract] = useState(false);
   const [tickerInfo, setTickerInfo] = useState<BlacknodeTickerInfo | null>(null);
   const [tickerStats, setTickerStats] = useState<BlacknodeTickerStats | null>(null);
@@ -289,9 +390,7 @@ export const ModernTokenDetail: React.FC = () => {
   // Fetch address history separately (we need the current address)
   useEffect(() => {
     const fetchAddressHistory = async () => {
-      // We need to get the current address from the wallet context
-      // For now, we'll use a placeholder - this should be replaced with actual wallet address
-      const currentAddress = 'bc1q9mm84kf402nh6t2a29ahff9hvrr6tnq55fgy42'; // Placeholder
+      // Use the current address from the hook
 
       try {
         setHistoryLoading(true);
@@ -299,6 +398,22 @@ export const ModernTokenDetail: React.FC = () => {
 
         // Filter history to only show transactions for the current ticker
         const filteredHistory = history.filter((item) => item.ticker === tokenData?.symbol);
+
+        // Debug logs
+        console.log('Address History Debug:', {
+          currentAddress,
+          totalHistory: history.length,
+          filteredHistory: filteredHistory.length,
+          sampleTransaction: filteredHistory[0],
+          allTransactions: filteredHistory.map((tx) => ({
+            id: tx.id,
+            from: tx.from_address,
+            to: tx.to_address,
+            amount: tx.amount,
+            ticker: tx.ticker
+          }))
+        });
+
         setAddressHistory(filteredHistory);
       } catch (error) {
         console.error('Error fetching address history:', error);
@@ -308,14 +423,16 @@ export const ModernTokenDetail: React.FC = () => {
       }
     };
 
-    if (tokenData?.symbol) {
+    if (tokenData?.symbol && currentAddress) {
       fetchAddressHistory();
     }
-  }, [tokenData?.symbol]);
+  }, [tokenData?.symbol, currentAddress]);
 
   if (!tokenData) {
     return null;
   }
+
+  // Current wallet address from hook
 
   // Mock data pour la démo
   const currentPrice = tokenData.usdValue || '$1,749.74';
@@ -371,8 +488,18 @@ export const ModernTokenDetail: React.FC = () => {
 
   const getTransactionType = (op: string, fromAddress: string, toAddress: string, currentAddress: string): string => {
     if (op === 'transfer') {
-      if (fromAddress === currentAddress) return 'Sent';
-      if (toAddress === currentAddress) return 'Received';
+      // Debug logs
+      console.log('Transaction Debug:', {
+        op,
+        fromAddress,
+        toAddress,
+        currentAddress,
+        isReceived: toAddress === currentAddress,
+        isSent: toAddress !== currentAddress
+      });
+
+      // Si to_address == currentAddress alors entrant, sinon sortant
+      return toAddress === currentAddress ? 'Received' : 'Sent';
     }
     return op.charAt(0).toUpperCase() + op.slice(1);
   };
@@ -403,600 +530,614 @@ export const ModernTokenDetail: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: 'var(--modern-bg-primary)',
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
-      {/* Header */}
-      <ModernHeader title={tokenData.name} onBack={() => navigate('#back')} showBackButton={true} />
-
-      {/* Scrollable Content */}
+    <>
+      <style>
+        {`
+          .modern-token-detail-scroll::-webkit-scrollbar {
+            display: none;
+          }
+          .modern-token-detail-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}
+      </style>
       <div
-        className="hide-scrollbar"
         style={{
-          flex: 1,
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          scrollbarWidth: 'none', // Firefox
-          msOverflowStyle: 'none' // IE and Edge
+          minHeight: '100vh',
+          background: 'var(--modern-bg-primary)',
+          display: 'flex',
+          flexDirection: 'column'
         }}>
-        {/* Price Section - Removed to match screenshot */}
+        {/* Header */}
+        <ModernHeader title={tokenData.name} onBack={() => navigate('#back')} showBackButton={true} />
 
-        {/* Token Name and Price Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
+        {/* Scrollable Content */}
+        <div
+          className="modern-token-detail-scroll"
           style={{
-            padding: '20px',
-            textAlign: 'center'
+            flex: 1,
+            overflowY: 'auto',
+            overflowX: 'hidden'
           }}>
-          <div style={{ fontSize: '16px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)', marginBottom: '8px' }}>
-            {tokenData.name}
-          </div>
-          <div style={{ fontSize: '40px', fontWeight: '700', color: '#ffffff', marginBottom: '8px' }}>
-            {currentPrice}
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '16px', color: '#34c759', fontWeight: '600' }}>{priceChange}</span>
-            <span
-              style={{
-                fontSize: '14px',
-                padding: '4px 8px',
-                background: 'rgba(52, 199, 89, 0.15)',
-                borderRadius: '6px',
-                color: '#34c759',
-                fontWeight: '600'
-              }}>
-              {priceChangePercent}
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Chart Section */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          style={{ padding: '0 20px' }}>
-          <TokenPriceChart timeframe={selectedTimeframe} tradingData={tradingData} loading={chartLoading} />
-        </motion.div>
-
-        {/* Timeframe Selector */}
-        <TimeframeSelector selected={selectedTimeframe} onChange={setSelectedTimeframe} />
-
-        {/* Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.3 }}
-          style={{
-            display: 'flex',
-            gap: '8px',
-            padding: '0 20px 16px'
-          }}>
-          <ActionButton
-            icon={<QRCodeIcon size={16} color="var(--modern-accent-primary)" />}
-            label="Receive"
-            onClick={() => navigate('ReceiveScreen')}
-          />
-          <ActionButton
-            icon={<PaperPlaneIcon size={16} color="var(--modern-accent-primary)" />}
-            label="Send"
-            onClick={() => navigate('TxCreateScreen')}
-          />
-          <ActionButton
-            icon={<SwapIcon size={16} color="var(--modern-accent-primary)" />}
-            label="Swap"
-            onClick={() => navigate('ModernSwapScreen')}
-          />
-          <ActionButton
-            icon={<HistoryIcon size={16} color="var(--modern-accent-primary)" />}
-            label="History"
-            onClick={() => navigate('HistoryScreen')}
-          />
-        </motion.div>
-
-        {/* Your Position Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.4 }}
-          style={{ padding: '0 20px 16px' }}>
-          <h3
+          {/* Token Price Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
             style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: '#ffffff',
-              marginBottom: '12px'
+              padding: '20px',
+              textAlign: 'center'
             }}>
-            Your Position
-          </h3>
-
-          <div
-            style={{
-              background: 'var(--modern-bg-secondary)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '12px',
-              padding: '14px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px'
-            }}>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              {/* Balance Card */}
-              <div
+            <div style={{ fontSize: '40px', fontWeight: '700', color: '#ffffff', marginBottom: '8px' }}>
+              {currentPrice}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '16px', color: '#34c759', fontWeight: '600' }}>{priceChange}</span>
+              <span
                 style={{
-                  flex: 1,
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  borderRadius: '8px',
-                  padding: '14px'
+                  fontSize: '14px',
+                  padding: '4px 8px',
+                  background: 'rgba(52, 199, 89, 0.15)',
+                  borderRadius: '6px',
+                  color: '#34c759',
+                  fontWeight: '600'
                 }}>
-                <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '6px' }}>Balance</div>
-                <div style={{ fontSize: '20px', fontWeight: '700', color: '#ffffff', wordBreak: 'break-all' }}>
-                  {formatTokenAmount(balance)}
+                {priceChangePercent}
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Chart Section */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            style={{ padding: '0 20px' }}>
+            <TokenPriceChart timeframe={selectedTimeframe} tradingData={tradingData} loading={chartLoading} />
+          </motion.div>
+
+          {/* Timeframe Selector */}
+          <TimeframeSelector selected={selectedTimeframe} onChange={setSelectedTimeframe} />
+
+          {/* Action Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '12px',
+              padding: '0 20px 16px'
+            }}>
+            <ActionButton
+              icon={<QRCodeIcon size={24} color="#ffffff" />}
+              label="Receive"
+              onClick={() => navigate('ReceiveScreen')}
+            />
+            <ActionButton
+              icon={<PaperPlaneIcon size={24} color="#ffffff" />}
+              label="Send"
+              onClick={() => navigate('TxCreateScreen')}
+            />
+            <ActionButton
+              icon={<SwapIcon size={24} color="#ffffff" />}
+              label="Swap"
+              onClick={() => navigate('ModernSwapScreen')}
+            />
+            <ActionButton
+              icon={<HistoryIcon size={24} color="#ffffff" />}
+              label="History"
+              onClick={() => navigate('HistoryScreen')}
+            />
+          </motion.div>
+
+          {/* Your Position Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.4 }}
+            style={{ padding: '0 20px 16px' }}>
+            <h3
+              style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: '#ffffff',
+                marginBottom: '12px'
+              }}>
+              Your Position
+            </h3>
+
+            <div
+              style={{
+                background: 'var(--modern-bg-secondary)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '12px',
+                padding: '14px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px'
+              }}>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                {/* Balance Card */}
+                <div
+                  style={{
+                    flex: 1,
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    borderRadius: '8px',
+                    padding: '14px'
+                  }}>
+                  <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '6px' }}>
+                    Balance
+                  </div>
+                  <div style={{ fontSize: '20px', fontWeight: '700', color: '#ffffff', wordBreak: 'break-all' }}>
+                    {formatTokenAmount(balance)}
+                  </div>
+                </div>
+
+                {/* Value Card */}
+                <div
+                  style={{
+                    flex: 1,
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    borderRadius: '8px',
+                    padding: '14px'
+                  }}>
+                  <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '6px' }}>Value</div>
+                  <div style={{ fontSize: '20px', fontWeight: '700', color: '#ffffff' }}>{value}</div>
                 </div>
               </div>
 
-              {/* Value Card */}
+              {/* 24h Return */}
               <div
                 style={{
-                  flex: 1,
                   background: 'rgba(255, 255, 255, 0.03)',
                   borderRadius: '8px',
-                  padding: '14px'
+                  padding: '12px 14px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
                 }}>
-                <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '6px' }}>Value</div>
-                <div style={{ fontSize: '20px', fontWeight: '700', color: '#ffffff' }}>{value}</div>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)' }}>24h Return</span>
+                <span style={{ fontSize: '15px', fontWeight: '600', color: '#ff453a' }}>{return24h}</span>
               </div>
             </div>
+          </motion.div>
 
-            {/* 24h Return */}
+          {/* Performance Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
+            style={{ padding: '0 20px 16px' }}>
+            <h3
+              style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: '#ffffff',
+                marginBottom: '12px'
+              }}>
+              Performance
+            </h3>
+
             <div
               style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                borderRadius: '8px',
-                padding: '12px 14px',
+                background: 'var(--modern-bg-secondary)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '12px',
+                padding: '14px',
                 display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
+                flexDirection: 'column',
+                gap: '10px'
               }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)' }}>24h Return</span>
-              <span style={{ fontSize: '15px', fontWeight: '600', color: '#ff453a' }}>{return24h}</span>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Performance Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.5 }}
-          style={{ padding: '0 20px 16px' }}>
-          <h3
-            style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: '#ffffff',
-              marginBottom: '12px'
-            }}>
-            Performance
-          </h3>
-
-          <div
-            style={{
-              background: 'var(--modern-bg-secondary)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '12px',
-              padding: '14px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px'
-            }}>
-            {/* Total Trades */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-              <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Trades</span>
-              <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
-                {statsLoading
-                  ? '...'
-                  : tickerStats?.data?.total_trades_for_ticker
-                  ? parseInt(tickerStats.data.total_trades_for_ticker).toLocaleString()
-                  : 'N/A'}
-              </span>
-            </div>
-
-            {/* Total Volume */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-              <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Volume</span>
-              <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
-                {statsLoading
-                  ? '...'
-                  : tickerStats?.data?.total_volume_satoshis_for_ticker
-                  ? `${satoshisToBTC(tickerStats.data.total_volume_satoshis_for_ticker)} BTC`
-                  : 'N/A'}
-              </span>
-            </div>
-
-            {/* Active Listings */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-              <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Active Listings</span>
-              <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
-                {statsLoading
-                  ? '...'
-                  : tickerStats?.data?.active_listings
-                  ? parseInt(tickerStats.data.active_listings).toLocaleString()
-                  : 'N/A'}
-              </span>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Informations Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.6 }}
-          style={{ padding: '0 20px 16px' }}>
-          <h3
-            style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: '#ffffff',
-              marginBottom: '12px'
-            }}>
-            Information
-          </h3>
-
-          <div
-            style={{
-              background: 'var(--modern-bg-secondary)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '12px',
-              overflow: 'hidden'
-            }}>
-            {/* Nom */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 14px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
-              }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Name</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>{tokenData.name}</span>
-            </div>
-
-            {/* Symbole */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 14px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
-              }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Symbol</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>{tokenData.symbol}</span>
-            </div>
-
-            {/* Réseau */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 14px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
-              }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Network</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
-                {tokenData.network || 'Base'}
-              </span>
-            </div>
-
-            {/* Contrat */}
-            {(tickerInfo?.deploy_tx_id || tokenData.contractAddress) && (
+              {/* Total Trades */}
               <div
-                onClick={handleCopyContract}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Trades</span>
+                <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
+                  {statsLoading
+                    ? '...'
+                    : tickerStats?.data?.total_trades_for_ticker
+                    ? parseInt(tickerStats.data.total_trades_for_ticker).toLocaleString()
+                    : 'N/A'}
+                </span>
+              </div>
+
+              {/* Total Volume */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Volume</span>
+                <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
+                  {statsLoading
+                    ? '...'
+                    : tickerStats?.data?.total_volume_satoshis_for_ticker
+                    ? `${satoshisToBTC(tickerStats.data.total_volume_satoshis_for_ticker)} BTC`
+                    : 'N/A'}
+                </span>
+              </div>
+
+              {/* Active Listings */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Active Listings</span>
+                <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
+                  {statsLoading
+                    ? '...'
+                    : tickerStats?.data?.active_listings
+                    ? parseInt(tickerStats.data.active_listings).toLocaleString()
+                    : 'N/A'}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Informations Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.6 }}
+            style={{ padding: '0 20px 16px' }}>
+            <h3
+              style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: '#ffffff',
+                marginBottom: '12px'
+              }}>
+              Information
+            </h3>
+
+            <div
+              style={{
+                background: 'var(--modern-bg-secondary)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '12px',
+                overflow: 'hidden'
+              }}>
+              {/* Nom */}
+              <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   padding: '12px 14px',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                  cursor: 'pointer'
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
                 }}>
-                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Contract</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ fontSize: '12px', fontWeight: '600', color: '#ffffff', fontFamily: 'monospace' }}>
-                    {shortenAddress(tickerInfo?.deploy_tx_id || tokenData.contractAddress || '')}
-                  </span>
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={copiedContract ? '#34c759' : 'rgba(255, 255, 255, 0.6)'}
-                    strokeWidth="2">
-                    {copiedContract ? (
-                      <path d="M20 6L9 17l-5-5" />
-                    ) : (
-                      <>
-                        <rect x="9" y="9" width="13" height="13" rx="2" />
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                      </>
-                    )}
-                  </svg>
-                </div>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Name</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>{tokenData.name}</span>
               </div>
-            )}
 
-            {/* Decimals */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 14px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
-              }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Decimals</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
-                {loading ? '...' : tickerInfo?.decimals || 'N/A'}
-              </span>
-            </div>
-
-            {/* Max Supply */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 14px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
-              }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Max Supply</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
-                {loading ? '...' : tickerInfo?.max_supply ? parseFloat(tickerInfo.max_supply).toLocaleString() : 'N/A'}
-              </span>
-            </div>
-
-            {/* Current Supply */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 14px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
-              }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Current Supply</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
-                {loading
-                  ? '...'
-                  : tickerInfo?.current_supply
-                  ? parseFloat(tickerInfo.current_supply).toLocaleString()
-                  : 'N/A'}
-              </span>
-            </div>
-
-            {/* Holders */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 14px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
-              }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Holders</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
-                {loading ? '...' : tickerInfo?.holders ? tickerInfo.holders.toLocaleString() : 'N/A'}
-              </span>
-            </div>
-
-            {/* Created */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 14px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
-              }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Created</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
-                {loading
-                  ? '...'
-                  : tickerInfo?.deploy_timestamp
-                  ? new Date(tickerInfo.deploy_timestamp).toLocaleDateString()
-                  : 'N/A'}
-              </span>
-            </div>
-
-            {/* Deploy Transaction */}
-            {tickerInfo?.deploy_tx_id && (
+              {/* Symbole */}
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '12px 14px'
+                  padding: '12px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
                 }}>
-                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Deploy TX</span>
-                <a
-                  href={`https://nullpool.space/tx/${tickerInfo.deploy_tx_id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Symbol</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>{tokenData.symbol}</span>
+              </div>
+
+              {/* Réseau */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '12px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Network</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                  {tokenData.network || 'Base'}
+                </span>
+              </div>
+
+              {/* Contrat */}
+              {(tickerInfo?.deploy_tx_id || tokenData.contractAddress) && (
+                <div
+                  onClick={handleCopyContract}
                   style={{
-                    fontSize: '12px',
-                    fontWeight: '600',
-                    color: 'var(--modern-accent-primary)',
-                    fontFamily: 'monospace',
-                    textDecoration: 'none',
                     display: 'flex',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
-                    gap: '4px'
+                    padding: '12px 14px',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                    cursor: 'pointer'
                   }}>
-                  {shortenAddress(tickerInfo.deploy_tx_id)}
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15,3 21,3 21,9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
-                </a>
-              </div>
-            )}
-          </div>
-        </motion.div>
+                  <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Contract</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: '600', color: '#ffffff', fontFamily: 'monospace' }}>
+                      {shortenAddress(tickerInfo?.deploy_tx_id || tokenData.contractAddress || '')}
+                    </span>
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={copiedContract ? '#34c759' : 'rgba(255, 255, 255, 0.6)'}
+                      strokeWidth="2">
+                      {copiedContract ? (
+                        <path d="M20 6L9 17l-5-5" />
+                      ) : (
+                        <>
+                          <rect x="9" y="9" width="13" height="13" rx="2" />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </>
+                      )}
+                    </svg>
+                  </div>
+                </div>
+              )}
 
-        {/* Activité Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.7 }}
-          style={{ padding: '0 20px 40px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <h3
-              style={{
-                fontSize: '20px',
-                fontWeight: '600',
-                color: '#ffffff'
-              }}>
-              Activity
-            </h3>
-          </div>
-
-          <div
-            style={{
-              background: 'var(--modern-bg-secondary)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '12px',
-              padding: '14px'
-            }}>
-            {historyLoading ? (
-              <div style={{ textAlign: 'center', padding: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>
-                Loading transactions...
+              {/* Decimals */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '12px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Decimals</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                  {loading ? '...' : tickerInfo?.decimals || 'N/A'}
+                </span>
               </div>
-            ) : addressHistory.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '20px' }}>
+
+              {/* Max Supply */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '12px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Max Supply</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                  {loading
+                    ? '...'
+                    : tickerInfo?.max_supply
+                    ? parseFloat(tickerInfo.max_supply).toLocaleString()
+                    : 'N/A'}
+                </span>
+              </div>
+
+              {/* Current Supply */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '12px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Current Supply</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                  {loading
+                    ? '...'
+                    : tickerInfo?.current_supply
+                    ? parseFloat(tickerInfo.current_supply).toLocaleString()
+                    : 'N/A'}
+                </span>
+              </div>
+
+              {/* Holders */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '12px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Holders</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                  {loading ? '...' : tickerInfo?.holders ? tickerInfo.holders.toLocaleString() : 'N/A'}
+                </span>
+              </div>
+
+              {/* Created */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '12px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Created</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                  {loading
+                    ? '...'
+                    : tickerInfo?.deploy_timestamp
+                    ? new Date(tickerInfo.deploy_timestamp).toLocaleDateString()
+                    : 'N/A'}
+                </span>
+              </div>
+
+              {/* Deploy Transaction */}
+              {tickerInfo?.deploy_tx_id && (
                 <div
                   style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.1)',
                     display: 'flex',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 12px',
-                    color: 'rgba(255, 255, 255, 0.4)'
+                    padding: '12px 14px'
                   }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 6v6l4 2" />
-                  </svg>
-                </div>
-                <div style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '4px' }}>
-                  No transactions found
-                </div>
-                <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.4)' }}>
-                  Transactions for {tokenData.symbol} will appear here
-                </div>
-              </div>
-            ) : (
-              addressHistory.slice(0, 5).map((tx, index) => {
-                const currentAddress = 'bc1q9mm84kf402nh6t2a29ahff9hvrr6tnq55fgy42'; // Placeholder
-                const type = getTransactionType(tx.op, tx.from_address, tx.to_address, currentAddress);
-                const isReceived = type === 'Received';
-                const isSent = type === 'Sent';
-
-                return (
-                  <div
-                    key={tx.id}
-                    onClick={() => window.open(`https://nullpool.space/tx/${tx.tx_id}`, '_blank')}
+                  <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Deploy TX</span>
+                  <a
+                    href={`https://nullpool.space/tx/${tickerInfo.deploy_tx_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      color: 'var(--modern-accent-primary)',
+                      fontFamily: 'monospace',
+                      textDecoration: 'none',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '12px',
-                      padding: '12px',
-                      margin: '0 -14px',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      transition: 'background-color 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'transparent';
+                      gap: '4px'
                     }}>
+                    {shortenAddress(tickerInfo.deploy_tx_id)}
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15,3 21,3 21,9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                  </a>
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Activité Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.7 }}
+            style={{ padding: '0 20px 40px' }}>
+            <div
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <h3
+                style={{
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  color: '#ffffff'
+                }}>
+                Activity
+              </h3>
+            </div>
+
+            <div
+              style={{
+                background: 'var(--modern-bg-secondary)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '12px',
+                padding: '14px'
+              }}>
+              {historyLoading ? (
+                <div style={{ textAlign: 'center', padding: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                  Loading transactions...
+                </div>
+              ) : addressHistory.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '20px' }}>
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '50%',
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 12px',
+                      color: 'rgba(255, 255, 255, 0.4)'
+                    }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 6v6l4 2" />
+                    </svg>
+                  </div>
+                  <div style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '4px' }}>
+                    No transactions found
+                  </div>
+                  <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.4)' }}>
+                    Transactions for {tokenData.symbol} will appear here
+                  </div>
+                </div>
+              ) : (
+                addressHistory.slice(0, 5).map((tx, index) => {
+                  // Use the current address variable
+                  const type = getTransactionType(tx.op, tx.from_address, tx.to_address, currentAddress);
+                  const isReceived = type === 'Received';
+                  const isSent = type === 'Sent';
+
+                  return (
                     <div
+                      key={tx.id}
+                      onClick={() => window.open(`https://nullpool.space/tx/${tx.tx_id}`, '_blank')}
                       style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        background: isReceived
-                          ? 'rgba(52, 199, 89, 0.15)'
-                          : isSent
-                          ? 'rgba(255, 69, 58, 0.15)'
-                          : 'rgba(255, 255, 255, 0.1)',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        color: isReceived ? '#34c759' : isSent ? '#ff453a' : 'rgba(255, 255, 255, 0.6)'
+                        gap: '12px',
+                        padding: '12px',
+                        margin: '0 -14px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
                       }}>
-                      {getTransactionIcon(tx.op, tx.from_address, tx.to_address, currentAddress)}
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff', marginBottom: '2px' }}>
-                        {type}
-                      </div>
-                      <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
-                        {isSent ? `To ${shortenAddress(tx.to_address)}` : `From ${shortenAddress(tx.from_address)}`}
-                      </div>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
                       <div
                         style={{
-                          fontSize: '13px',
-                          fontWeight: '600',
-                          color: isReceived ? '#34c759' : isSent ? '#ff453a' : '#ffffff',
-                          marginBottom: '2px'
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '50%',
+                          background: isReceived
+                            ? 'rgba(52, 199, 89, 0.15)'
+                            : isSent
+                            ? 'rgba(255, 69, 58, 0.15)'
+                            : 'rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: isReceived ? '#34c759' : isSent ? '#ff453a' : 'rgba(255, 255, 255, 0.6)'
                         }}>
-                        {isReceived ? '+' : isSent ? '-' : ''}
-                        {formatTokenAmount(tx.amount)} {tx.ticker}
+                        {getTransactionIcon(tx.op, tx.from_address, tx.to_address, currentAddress)}
                       </div>
-                      <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
-                        {formatTimeAgo(tx.timestamp)}
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff', marginBottom: '2px' }}>
+                          {type}
+                        </div>
+                        <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                          {isSent ? `To ${shortenAddress(tx.to_address)}` : `From ${shortenAddress(tx.from_address)}`}
+                        </div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <div
+                          style={{
+                            fontSize: '13px',
+                            fontWeight: '600',
+                            color: isReceived ? '#34c759' : isSent ? '#ff453a' : '#ffffff',
+                            marginBottom: '2px'
+                          }}>
+                          {isReceived ? '+' : isSent ? '-' : ''}
+                          {formatTokenAmount(tx.amount)} {tx.ticker}
+                        </div>
+                        <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                          {formatTimeAgo(tx.timestamp)}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </motion.div>
+                  );
+                })
+              )}
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -43,6 +43,24 @@ export const ModernAddressInput: React.FC<ModernAddressInputProps> = ({
     }
   };
 
+  // Wrapper pour gérer l'événement onChange de motion.input
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    handleChange(newValue);
+  };
+
+  // Gestionnaire pour l'événement onPaste
+  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const pastedText = event.clipboardData?.getData('text/plain') || '';
+
+    // Nettoyer le texte collé (supprimer les espaces, retours à la ligne, etc.)
+    const cleanedText = pastedText.trim().replace(/\s+/g, '');
+
+    // Mettre à jour la valeur
+    handleChange(cleanedText);
+  };
+
   const handleFocus = () => {
     setIsFocused(true);
   };
@@ -74,7 +92,8 @@ export const ModernAddressInput: React.FC<ModernAddressInputProps> = ({
         label={label || t('recipient_address')}
         placeholder={placeholder || t('enter_bitcoin_address')}
         value={value}
-        onChange={handleChange}
+        onChange={handleInputChange}
+        onPaste={handlePaste}
         onFocus={handleFocus}
         onBlur={handleBlur}
         disabled={disabled}

@@ -311,7 +311,7 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
               <div
                 style={{
                   fontSize: '16px',
-                  fontWeight: '600',
+                  fontWeight: '300',
                   color: '#ffffff',
                   marginBottom: '2px'
                 }}>

@@ -76,6 +76,31 @@ export interface BlacknodeAddressHistoryItem {
   valid: boolean;
 }
 
+// Blacknode trading data interface
+export interface BlacknodeTradingData {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+  tradeCount: number;
+}
+
+// Blacknode trading response interface
+export interface BlacknodeTradingResponse {
+  code: number;
+  message: string;
+  data: {
+    originalTradeCount: number;
+    validTradeCount: number;
+    filteredTradeCount: number;
+    filteredOutCount: number;
+    filterPercentage: string;
+    chartData: BlacknodeTradingData[];
+  };
+}
+
 export interface SimplicityOp {
   id: number;
   tx_id: string;
@@ -553,6 +578,38 @@ export class SimplicityService {
     } catch (error) {
       console.error('Error fetching address history from Blacknode:', error);
       throw error;
+    }
+  };
+
+  // Get trading data from Blacknode API
+  getBlacknodeTradingData = async (ticker: string): Promise<BlacknodeTradingData[]> => {
+    try {
+      const url = `https://www.blacknode.co/api/market/v1/brc20/tickers/${ticker}/filtered-trades`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-client': 'UniSat Wallet',
+          'x-version': VERSION,
+          'x-channel': CHANNEL
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseData: BlacknodeTradingResponse = await response.json();
+
+      // Extract chartData from the response
+      if (responseData && responseData.data && Array.isArray(responseData.data.chartData)) {
+        return responseData.data.chartData;
+      }
+
+      return [];
+    } catch (error) {
+      console.error('Error fetching trading data from Blacknode:', error);
+      return []; // Return empty array instead of throwing
     }
   };
 }

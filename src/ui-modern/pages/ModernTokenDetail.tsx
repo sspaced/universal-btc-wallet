@@ -6,6 +6,7 @@ import {
   BlacknodeAddressHistoryItem,
   BlacknodeTickerInfo,
   BlacknodeTickerStats,
+  BlacknodeTradingData,
   simplicityService
 } from '@/background/service/simplicity';
 import { useNavigate } from '@/ui/pages/MainRoute';
@@ -28,17 +29,54 @@ interface TokenDetailState {
 type TimeFrame = '1H' | '1J' | '1S' | '1M' | 'YTD' | 'TOUT';
 
 // Token Price Chart Component
-const TokenPriceChart: React.FC<{ timeframe: TimeFrame }> = ({ timeframe }) => {
-  // Génération de données fictives pour le graphique
-  const generateChartData = (timeframe: TimeFrame) => {
-    const dataPoints = timeframe === '1H' ? 60 : timeframe === '1J' ? 24 : 30;
-    return Array.from({ length: dataPoints }, (_, i) => ({
-      x: i,
-      y: 0.98 + Math.random() * 0.04 // Prix entre 0.98 et 1.02 pour stablecoin
-    }));
-  };
+const TokenPriceChart: React.FC<{
+  timeframe: TimeFrame;
+  tradingData: BlacknodeTradingData[];
+  loading: boolean;
+}> = ({ timeframe, tradingData, loading }) => {
+  if (loading) {
+    return (
+      <div
+        style={{
+          height: '160px',
+          background: 'var(--modern-bg-secondary)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'rgba(255, 255, 255, 0.6)'
+        }}>
+        Loading chart...
+      </div>
+    );
+  }
 
-  const data = generateChartData(timeframe);
+  if (!tradingData || !Array.isArray(tradingData) || tradingData.length === 0) {
+    return (
+      <div
+        style={{
+          height: '160px',
+          background: 'var(--modern-bg-secondary)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'rgba(255, 255, 255, 0.6)'
+        }}>
+        No trading data available
+      </div>
+    );
+  }
+
+  // Convert trading data to chart format
+  const data = Array.isArray(tradingData)
+    ? tradingData.map((item, i) => ({
+        x: i,
+        y: item.close / 100000000 // Convert satoshis to BTC
+      }))
+    : [];
   const width = 340;
   const height = 200;
   const padding = 10;
@@ -209,9 +247,11 @@ export const ModernTokenDetail: React.FC = () => {
   const [tickerInfo, setTickerInfo] = useState<BlacknodeTickerInfo | null>(null);
   const [tickerStats, setTickerStats] = useState<BlacknodeTickerStats | null>(null);
   const [addressHistory, setAddressHistory] = useState<BlacknodeAddressHistoryItem[]>([]);
+  const [tradingData, setTradingData] = useState<BlacknodeTradingData[]>([]);
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(true);
   const [historyLoading, setHistoryLoading] = useState(true);
+  const [chartLoading, setChartLoading] = useState(true);
 
   // Fetch ticker information from Blacknode API
   useEffect(() => {
@@ -222,20 +262,24 @@ export const ModernTokenDetail: React.FC = () => {
         setLoading(true);
         setStatsLoading(true);
         setHistoryLoading(true);
+        setChartLoading(true);
 
-        // Fetch ticker info and stats in parallel
-        const [info, stats] = await Promise.all([
+        // Fetch ticker info, stats and trading data in parallel
+        const [info, stats, trading] = await Promise.all([
           simplicityService.getBlacknodeTickerInfo(tokenData.symbol),
-          simplicityService.getTickerStats(tokenData.symbol)
+          simplicityService.getTickerStats(tokenData.symbol),
+          simplicityService.getBlacknodeTradingData(tokenData.symbol)
         ]);
 
         setTickerInfo(info);
         setTickerStats(stats);
+        setTradingData(trading);
       } catch (error) {
         console.error('Error fetching ticker data:', error);
       } finally {
         setLoading(false);
         setStatsLoading(false);
+        setChartLoading(false);
       }
     };
 
@@ -302,6 +346,16 @@ export const ModernTokenDetail: React.FC = () => {
   const satoshisToBTC = (satoshis: string): string => {
     const btc = parseFloat(satoshis) / 100000000;
     return btc.toFixed(8);
+  };
+
+  const formatTokenAmount = (amount: string): string => {
+    const num = parseFloat(amount);
+    if (num === 0) return '0';
+    if (num < 0.000001) return num.toExponential(2);
+    if (num < 0.01) return num.toFixed(6);
+    if (num < 1) return num.toFixed(4);
+    if (num < 1000) return num.toFixed(2);
+    return num.toLocaleString();
   };
 
   const formatTimeAgo = (timestamp: string): string => {
@@ -408,7 +462,7 @@ export const ModernTokenDetail: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           style={{ padding: '0 20px' }}>
-          <TokenPriceChart timeframe={selectedTimeframe} />
+          <TokenPriceChart timeframe={selectedTimeframe} tradingData={tradingData} loading={chartLoading} />
         </motion.div>
 
         {/* Timeframe Selector */}
@@ -483,7 +537,7 @@ export const ModernTokenDetail: React.FC = () => {
                 }}>
                 <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)', marginBottom: '6px' }}>Balance</div>
                 <div style={{ fontSize: '20px', fontWeight: '700', color: '#ffffff', wordBreak: 'break-all' }}>
-                  {balance}
+                  {formatTokenAmount(balance)}
                 </div>
               </div>
 
@@ -884,14 +938,14 @@ export const ModernTokenDetail: React.FC = () => {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '12px',
-                      padding: '12px 0',
-                      borderBottom:
-                        index < addressHistory.slice(0, 5).length - 1 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
+                      padding: '12px',
+                      margin: '0 -14px',
+                      borderRadius: '8px',
                       cursor: 'pointer',
                       transition: 'background-color 0.2s ease'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.backgroundColor = 'transparent';
@@ -930,7 +984,7 @@ export const ModernTokenDetail: React.FC = () => {
                           marginBottom: '2px'
                         }}>
                         {isReceived ? '+' : isSent ? '-' : ''}
-                        {parseFloat(tx.amount).toLocaleString()} {tx.ticker}
+                        {formatTokenAmount(tx.amount)} {tx.ticker}
                       </div>
                       <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
                         {formatTimeAgo(tx.timestamp)}

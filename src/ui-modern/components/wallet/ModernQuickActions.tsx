@@ -99,7 +99,7 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, 
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '8px',
+              gap: '0px',
               opacity: action.disabled ? 0.5 : 1
             }}>
             <motion.div

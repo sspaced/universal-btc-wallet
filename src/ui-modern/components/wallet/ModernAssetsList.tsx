@@ -177,10 +177,10 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
-              padding: '16px',
-              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '8px 15px',
+              background: 'transparent',
               border: '1px solid rgba(255, 255, 255, 0.05)',
-              borderRadius: '8px',
+              borderRadius: '15px',
               animation: 'pulse 2s infinite'
             }}>
             <div
@@ -225,7 +225,9 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.5)'
         }}>
-        <PackageIcon size={48} style={{ marginBottom: '16px', opacity: 0.3 }} />
+        <div style={{ marginBottom: '16px', opacity: 0.3 }}>
+          <PackageIcon size={48} />
+        </div>
         <div style={{ fontSize: '16px', fontWeight: '500', marginBottom: '8px' }}>{t('no_assets_found')}</div>
         <div style={{ fontSize: '14px', opacity: 0.7 }}>{t('assets_will_appear_here')}</div>
       </div>
@@ -256,17 +258,17 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
-              padding: '16px',
-              background: 'var(--modern-bg-secondary)',
+              padding: '8px 15px',
+              background: 'transparent',
               border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderRadius: '8px',
+              borderRadius: '15px',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               position: 'relative'
             }}
             whileHover={{
-              background: 'var(--modern-bg-tertiary)',
-              borderColor: 'rgba(255, 255, 255, 0.1)'
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderColor: 'rgba(255, 255, 255, 0.3)'
             }}>
             {/* Asset Icon */}
             {getAssetIcon(asset)}
@@ -277,8 +279,7 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  marginBottom: '4px'
+                  gap: '8px'
                 }}>
                 <span
                   style={{
@@ -295,7 +296,7 @@ export const ModernAssetsList: React.FC<ModernAssetsListProps> = ({ assets, load
 
               <div
                 style={{
-                  fontSize: '14px',
+                  fontSize: '12px',
                   color: 'rgba(255, 255, 255, 0.7)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',

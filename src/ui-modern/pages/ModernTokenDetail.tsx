@@ -573,15 +573,17 @@ export const ModernTokenDetail: React.FC = () => {
               {currentPrice}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '16px', color: '#34c759', fontWeight: '600' }}>{priceChange}</span>
+              <span style={{ fontSize: '16px', color: 'var(--modern-accent-primary)', fontWeight: '500' }}>
+                {priceChange}
+              </span>
               <span
                 style={{
                   fontSize: '14px',
                   padding: '4px 8px',
-                  background: 'rgba(52, 199, 89, 0.15)',
+                  background: 'rgba(114, 228, 173, 0.15)',
                   borderRadius: '6px',
-                  color: '#34c759',
-                  fontWeight: '600'
+                  color: 'var(--modern-accent-primary)',
+                  fontWeight: '400'
                 }}>
                 {priceChangePercent}
               </span>

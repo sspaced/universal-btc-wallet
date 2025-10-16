@@ -263,22 +263,12 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
           <span
             style={{
               fontSize: '36px',
-              fontWeight: '700',
+              fontWeight: '500',
               color: '#ffffff',
               letterSpacing: '-0.5px',
               lineHeight: 1
             }}>
             ${usdValue}
-          </span>
-          <span
-            style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: 'rgba(255, 255, 255, 0.8)',
-              marginLeft: '6px',
-              letterSpacing: '-0.5px'
-            }}>
-            USD
           </span>
         </div>
 

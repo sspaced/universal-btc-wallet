@@ -119,6 +119,16 @@
   --modern-accent-primary-rgb: 114, 228, 173;
 }
 
+/* Hide scrollbar utility */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 /* Base styles */
 * {
   box-sizing: border-box;

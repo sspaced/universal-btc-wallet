@@ -26,6 +26,56 @@ export interface SimplicityBrc20Info {
   holders: number;
 }
 
+// Blacknode API response interface
+export interface BlacknodeTickerInfo {
+  ticker: string;
+  decimals: number;
+  max_supply: string;
+  limit_per_mint: string;
+  actual_deploy_txid_for_api: string;
+  deploy_tx_id: string;
+  deploy_block_height: number;
+  deploy_timestamp: string;
+  creator_address: string;
+  remaining_supply: string;
+  current_supply: string;
+  holders: number;
+}
+
+// Blacknode market stats interface
+export interface BlacknodeTickerStats {
+  code: number;
+  msg: string;
+  data: {
+    total_listings: string;
+    active_listings: string;
+    total_trades_for_ticker: string;
+    total_volume_token_amount_for_ticker: string;
+    total_volume_satoshis_for_ticker: string;
+    avg_price_per_token_traded_for_ticker: string;
+    min_price_per_token_traded_for_ticker: string;
+    max_price_per_token_traded_for_ticker: string;
+    current_floor_price_satoshis_active_listings: string;
+  };
+}
+
+// Blacknode address history interface
+export interface BlacknodeAddressHistoryItem {
+  id: number;
+  tx_id: string;
+  txid: string;
+  op: 'deploy' | 'mint' | 'transfer';
+  ticker: string;
+  amount: string;
+  block_height: number;
+  block_hash: string;
+  tx_index: number;
+  timestamp: string;
+  from_address: string;
+  to_address: string;
+  valid: boolean;
+}
+
 export interface SimplicityOp {
   id: number;
   tx_id: string;
@@ -427,6 +477,81 @@ export class SimplicityService {
       return await response.json();
     } catch (error) {
       console.error('Error creating Simplicity transfer PSBT:', error);
+      throw error;
+    }
+  };
+
+  // Get ticker information from Blacknode API
+  getBlacknodeTickerInfo = async (ticker: string): Promise<BlacknodeTickerInfo> => {
+    try {
+      const url = `https://www.blacknode.co/api/brc20/tickers/${ticker}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-client': 'UniSat Wallet',
+          'x-version': VERSION,
+          'x-channel': CHANNEL
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching ticker info from Blacknode:', error);
+      throw error;
+    }
+  };
+
+  // Get ticker market stats from Blacknode API
+  getTickerStats = async (ticker: string): Promise<BlacknodeTickerStats> => {
+    try {
+      const url = `https://www.blacknode.co/api/market/v1/brc20/tickers/${ticker}/stats`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-client': 'UniSat Wallet',
+          'x-version': VERSION,
+          'x-channel': CHANNEL
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching ticker stats from Blacknode:', error);
+      throw error;
+    }
+  };
+
+  // Get address history from Blacknode API
+  getBlacknodeAddressHistory = async (address: string, limit: number = 100): Promise<BlacknodeAddressHistoryItem[]> => {
+    try {
+      const url = `https://www.blacknode.co/api/brc20/addresses/${address}/history?limit=${limit}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-client': 'UniSat Wallet',
+          'x-version': VERSION,
+          'x-channel': CHANNEL
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching address history from Blacknode:', error);
       throw error;
     }
   };

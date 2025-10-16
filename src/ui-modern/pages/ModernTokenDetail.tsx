@@ -1,7 +1,13 @@
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import {
+  BlacknodeAddressHistoryItem,
+  BlacknodeTickerInfo,
+  BlacknodeTickerStats,
+  simplicityService
+} from '@/background/service/simplicity';
 import { useNavigate } from '@/ui/pages/MainRoute';
 
 import { HistoryIcon, PaperPlaneIcon, QRCodeIcon, SwapIcon } from '../components/common/CustomIcons';
@@ -160,12 +166,13 @@ const ActionButton: React.FC<{
         flex: 1,
         cursor: 'pointer',
         transition: 'all 0.2s ease',
-        minWidth: 0
+        minWidth: 0,
+        aspectRatio: '1' // Force square aspect ratio
       }}>
       <div
         style={{
-          width: '36px',
-          height: '36px',
+          width: '28px',
+          height: '28px',
           borderRadius: '50%',
           background: 'rgba(114, 228, 173, 0.15)',
           display: 'flex',
@@ -199,13 +206,75 @@ export const ModernTokenDetail: React.FC = () => {
 
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1J');
   const [copiedContract, setCopiedContract] = useState(false);
+  const [tickerInfo, setTickerInfo] = useState<BlacknodeTickerInfo | null>(null);
+  const [tickerStats, setTickerStats] = useState<BlacknodeTickerStats | null>(null);
+  const [addressHistory, setAddressHistory] = useState<BlacknodeAddressHistoryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [historyLoading, setHistoryLoading] = useState(true);
+
+  // Fetch ticker information from Blacknode API
+  useEffect(() => {
+    const fetchTickerData = async () => {
+      if (!tokenData?.symbol) return;
+
+      try {
+        setLoading(true);
+        setStatsLoading(true);
+        setHistoryLoading(true);
+
+        // Fetch ticker info and stats in parallel
+        const [info, stats] = await Promise.all([
+          simplicityService.getBlacknodeTickerInfo(tokenData.symbol),
+          simplicityService.getTickerStats(tokenData.symbol)
+        ]);
+
+        setTickerInfo(info);
+        setTickerStats(stats);
+      } catch (error) {
+        console.error('Error fetching ticker data:', error);
+      } finally {
+        setLoading(false);
+        setStatsLoading(false);
+      }
+    };
+
+    fetchTickerData();
+  }, [tokenData?.symbol]);
+
+  // Fetch address history separately (we need the current address)
+  useEffect(() => {
+    const fetchAddressHistory = async () => {
+      // We need to get the current address from the wallet context
+      // For now, we'll use a placeholder - this should be replaced with actual wallet address
+      const currentAddress = 'bc1q9mm84kf402nh6t2a29ahff9hvrr6tnq55fgy42'; // Placeholder
+
+      try {
+        setHistoryLoading(true);
+        const history = await simplicityService.getBlacknodeAddressHistory(currentAddress, 100);
+
+        // Filter history to only show transactions for the current ticker
+        const filteredHistory = history.filter((item) => item.ticker === tokenData?.symbol);
+        setAddressHistory(filteredHistory);
+      } catch (error) {
+        console.error('Error fetching address history:', error);
+        setAddressHistory([]);
+      } finally {
+        setHistoryLoading(false);
+      }
+    };
+
+    if (tokenData?.symbol) {
+      fetchAddressHistory();
+    }
+  }, [tokenData?.symbol]);
 
   if (!tokenData) {
     return null;
   }
 
   // Mock data pour la démo
-  const currentPrice = '$1.00';
+  const currentPrice = tokenData.usdValue || '$1,749.74';
   const priceChange = '+$0.00058039';
   const priceChangePercent = '+0.06%';
   const balance = tokenData.balance || '1,750';
@@ -213,9 +282,10 @@ export const ModernTokenDetail: React.FC = () => {
   const return24h = '-$0.03';
 
   const handleCopyContract = async () => {
-    if (tokenData.contractAddress) {
+    const contractAddress = tickerInfo?.deploy_tx_id || tokenData.contractAddress;
+    if (contractAddress) {
       try {
-        await navigator.clipboard.writeText(tokenData.contractAddress);
+        await navigator.clipboard.writeText(contractAddress);
         setCopiedContract(true);
         setTimeout(() => setCopiedContract(false), 2000);
       } catch (err) {
@@ -227,6 +297,55 @@ export const ModernTokenDetail: React.FC = () => {
   const shortenAddress = (address: string): string => {
     if (!address || address.length < 16) return address;
     return `${address.slice(0, 8)}...${address.slice(-5)}`;
+  };
+
+  const satoshisToBTC = (satoshis: string): string => {
+    const btc = parseFloat(satoshis) / 100000000;
+    return btc.toFixed(8);
+  };
+
+  const formatTimeAgo = (timestamp: string): string => {
+    const now = new Date();
+    const txTime = new Date(timestamp);
+    const diffInSeconds = Math.floor((now.getTime() - txTime.getTime()) / 1000);
+
+    if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  };
+
+  const getTransactionType = (op: string, fromAddress: string, toAddress: string, currentAddress: string): string => {
+    if (op === 'transfer') {
+      if (fromAddress === currentAddress) return 'Sent';
+      if (toAddress === currentAddress) return 'Received';
+    }
+    return op.charAt(0).toUpperCase() + op.slice(1);
+  };
+
+  const getTransactionIcon = (op: string, fromAddress: string, toAddress: string, currentAddress: string) => {
+    const type = getTransactionType(op, fromAddress, toAddress, currentAddress);
+
+    if (type === 'Received') {
+      return (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 5v14M5 12l7 7 7-7" />
+        </svg>
+      );
+    } else if (type === 'Sent') {
+      return (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 19V5M5 12l7-7 7 7" />
+        </svg>
+      );
+    } else {
+      return (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 6v6l4 2" />
+        </svg>
+      );
+    }
   };
 
   return (
@@ -242,10 +361,13 @@ export const ModernTokenDetail: React.FC = () => {
 
       {/* Scrollable Content */}
       <div
+        className="hide-scrollbar"
         style={{
           flex: 1,
           overflowY: 'auto',
-          overflowX: 'hidden'
+          overflowX: 'hidden',
+          scrollbarWidth: 'none', // Firefox
+          msOverflowStyle: 'none' // IE and Edge
         }}>
         {/* Price Section - Removed to match screenshot */}
 
@@ -303,22 +425,22 @@ export const ModernTokenDetail: React.FC = () => {
             padding: '0 20px 16px'
           }}>
           <ActionButton
-            icon={<QRCodeIcon size={20} color="var(--modern-accent-primary)" />}
+            icon={<QRCodeIcon size={16} color="var(--modern-accent-primary)" />}
             label="Receive"
             onClick={() => navigate('ReceiveScreen')}
           />
           <ActionButton
-            icon={<PaperPlaneIcon size={20} color="var(--modern-accent-primary)" />}
+            icon={<PaperPlaneIcon size={16} color="var(--modern-accent-primary)" />}
             label="Send"
             onClick={() => navigate('TxCreateScreen')}
           />
           <ActionButton
-            icon={<SwapIcon size={20} color="var(--modern-accent-primary)" />}
+            icon={<SwapIcon size={16} color="var(--modern-accent-primary)" />}
             label="Swap"
             onClick={() => navigate('ModernSwapScreen')}
           />
           <ActionButton
-            icon={<HistoryIcon size={20} color="var(--modern-accent-primary)" />}
+            icon={<HistoryIcon size={16} color="var(--modern-accent-primary)" />}
             label="History"
             onClick={() => navigate('HistoryScreen')}
           />
@@ -394,11 +516,90 @@ export const ModernTokenDetail: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Informations Section */}
+        {/* Performance Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.5 }}
+          style={{ padding: '0 20px 16px' }}>
+          <h3
+            style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              color: '#ffffff',
+              marginBottom: '12px'
+            }}>
+            Performance
+          </h3>
+
+          <div
+            style={{
+              background: 'var(--modern-bg-secondary)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '12px',
+              padding: '14px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px'
+            }}>
+            {/* Total Trades */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+              <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Trades</span>
+              <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
+                {statsLoading
+                  ? '...'
+                  : tickerStats?.data?.total_trades_for_ticker
+                  ? parseInt(tickerStats.data.total_trades_for_ticker).toLocaleString()
+                  : 'N/A'}
+              </span>
+            </div>
+
+            {/* Total Volume */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+              <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Volume</span>
+              <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
+                {statsLoading
+                  ? '...'
+                  : tickerStats?.data?.total_volume_satoshis_for_ticker
+                  ? `${satoshisToBTC(tickerStats.data.total_volume_satoshis_for_ticker)} BTC`
+                  : 'N/A'}
+              </span>
+            </div>
+
+            {/* Active Listings */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+              <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Active Listings</span>
+              <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
+                {statsLoading
+                  ? '...'
+                  : tickerStats?.data?.active_listings
+                  ? parseInt(tickerStats.data.active_listings).toLocaleString()
+                  : 'N/A'}
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Informations Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.6 }}
           style={{ padding: '0 20px 16px' }}>
           <h3
             style={{
@@ -459,7 +660,7 @@ export const ModernTokenDetail: React.FC = () => {
             </div>
 
             {/* Contrat */}
-            {tokenData.contractAddress && (
+            {(tickerInfo?.deploy_tx_id || tokenData.contractAddress) && (
               <div
                 onClick={handleCopyContract}
                 style={{
@@ -473,7 +674,7 @@ export const ModernTokenDetail: React.FC = () => {
                 <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Contract</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span style={{ fontSize: '12px', fontWeight: '600', color: '#ffffff', fontFamily: 'monospace' }}>
-                    {shortenAddress(tokenData.contractAddress)}
+                    {shortenAddress(tickerInfo?.deploy_tx_id || tokenData.contractAddress || '')}
                   </span>
                   <svg
                     width="14"
@@ -495,7 +696,7 @@ export const ModernTokenDetail: React.FC = () => {
               </div>
             )}
 
-            {/* Mock data */}
+            {/* Decimals */}
             <div
               style={{
                 display: 'flex',
@@ -504,10 +705,13 @@ export const ModernTokenDetail: React.FC = () => {
                 padding: '12px 14px',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
               }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Market Cap</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>$4.14B</span>
+              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Decimals</span>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                {loading ? '...' : tickerInfo?.decimals || 'N/A'}
+              </span>
             </div>
 
+            {/* Max Supply */}
             <div
               style={{
                 display: 'flex',
@@ -516,10 +720,13 @@ export const ModernTokenDetail: React.FC = () => {
                 padding: '12px 14px',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
               }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Supply</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>76.08B</span>
+              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Max Supply</span>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                {loading ? '...' : tickerInfo?.max_supply ? parseFloat(tickerInfo.max_supply).toLocaleString() : 'N/A'}
+              </span>
             </div>
 
+            {/* Current Supply */}
             <div
               style={{
                 display: 'flex',
@@ -528,10 +735,17 @@ export const ModernTokenDetail: React.FC = () => {
                 padding: '12px 14px',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
               }}>
-              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Circulating Supply</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>76.07B</span>
+              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Current Supply</span>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                {loading
+                  ? '...'
+                  : tickerInfo?.current_supply
+                  ? parseFloat(tickerInfo.current_supply).toLocaleString()
+                  : 'N/A'}
+              </span>
             </div>
 
+            {/* Holders */}
             <div
               style={{
                 display: 'flex',
@@ -541,115 +755,63 @@ export const ModernTokenDetail: React.FC = () => {
                 borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
               }}>
               <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Holders</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>5.7M</span>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                {loading ? '...' : tickerInfo?.holders ? tickerInfo.holders.toLocaleString() : 'N/A'}
+              </span>
             </div>
 
+            {/* Created */}
             <div
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: '12px 14px'
+                padding: '12px 14px',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
               }}>
               <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Created</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>Aug 18, 2023</span>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                {loading
+                  ? '...'
+                  : tickerInfo?.deploy_timestamp
+                  ? new Date(tickerInfo.deploy_timestamp).toLocaleDateString()
+                  : 'N/A'}
+              </span>
             </div>
-          </div>
-        </motion.div>
 
-        {/* À propos Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.6 }}
-          style={{ padding: '0 20px 16px' }}>
-          <h3
-            style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: '#ffffff',
-              marginBottom: '12px'
-            }}>
-            About
-          </h3>
-
-          <div
-            style={{
-              background: 'var(--modern-bg-secondary)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '12px',
-              padding: '14px'
-            }}>
-            <p
-              style={{
-                fontSize: '13px',
-                lineHeight: '1.6',
-                color: 'rgba(255, 255, 255, 0.7)',
-                marginBottom: '10px'
-              }}>
-              USDC is a fully collateralized US dollar stablecoin. USDC is the bridge between dollars and trading on
-              cryptocurrency...
-            </p>
-            <button
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--modern-accent-primary)',
-                fontSize: '13px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                padding: 0
-              }}>
-              Show more
-            </button>
-
-            {/* Social Links */}
-            <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-              <button
+            {/* Deploy Transaction */}
+            {tickerInfo?.deploy_tx_id && (
+              <div
                 style={{
-                  flex: 1,
                   display: 'flex',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  padding: '9px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '8px',
-                  color: '#ffffff',
-                  fontSize: '12px',
-                  fontWeight: '500',
-                  cursor: 'pointer'
+                  padding: '12px 14px'
                 }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M2 12h20" />
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                </svg>
-                Website
-              </button>
-              <button
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  padding: '9px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '8px',
-                  color: '#ffffff',
-                  fontSize: '12px',
-                  fontWeight: '500',
-                  cursor: 'pointer'
-                }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" />
-                </svg>
-                Discord
-              </button>
-            </div>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Deploy TX</span>
+                <a
+                  href={`https://nullpool.space/tx/${tickerInfo.deploy_tx_id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    color: 'var(--modern-accent-primary)',
+                    fontFamily: 'monospace',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}>
+                  {shortenAddress(tickerInfo.deploy_tx_id)}
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15,3 21,3 21,9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+              </div>
+            )}
           </div>
         </motion.div>
 
@@ -668,18 +830,6 @@ export const ModernTokenDetail: React.FC = () => {
               }}>
               Activity
             </h3>
-            <button
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--modern-accent-primary)',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                padding: 0
-              }}>
-              See more
-            </button>
           </div>
 
           <div
@@ -689,36 +839,107 @@ export const ModernTokenDetail: React.FC = () => {
               borderRadius: '12px',
               padding: '14px'
             }}>
-            {/* Transaction Item */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
-                  background: 'rgba(114, 228, 173, 0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--modern-accent-primary)'
-                }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 5v14M5 12l7-7 7 7" />
-                </svg>
+            {historyLoading ? (
+              <div style={{ textAlign: 'center', padding: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                Loading transactions...
               </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff', marginBottom: '3px' }}>
-                  Received
+            ) : addressHistory.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '20px' }}>
+                <div
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 12px',
+                    color: 'rgba(255, 255, 255, 0.4)'
+                  }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                  </svg>
                 </div>
-                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>From 0x589a...a8dc</div>
-              </div>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '13px', fontWeight: '600', color: '#34c759', marginBottom: '3px' }}>
-                  +1,750 {tokenData.symbol}
+                <div style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '4px' }}>
+                  No transactions found
                 </div>
-                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>2h ago</div>
+                <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.4)' }}>
+                  Transactions for {tokenData.symbol} will appear here
+                </div>
               </div>
-            </div>
+            ) : (
+              addressHistory.slice(0, 5).map((tx, index) => {
+                const currentAddress = 'bc1q9mm84kf402nh6t2a29ahff9hvrr6tnq55fgy42'; // Placeholder
+                const type = getTransactionType(tx.op, tx.from_address, tx.to_address, currentAddress);
+                const isReceived = type === 'Received';
+                const isSent = type === 'Sent';
+
+                return (
+                  <div
+                    key={tx.id}
+                    onClick={() => window.open(`https://nullpool.space/tx/${tx.tx_id}`, '_blank')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      padding: '12px 0',
+                      borderBottom:
+                        index < addressHistory.slice(0, 5).length - 1 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
+                      cursor: 'pointer',
+                      transition: 'background-color 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        background: isReceived
+                          ? 'rgba(52, 199, 89, 0.15)'
+                          : isSent
+                          ? 'rgba(255, 69, 58, 0.15)'
+                          : 'rgba(255, 255, 255, 0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: isReceived ? '#34c759' : isSent ? '#ff453a' : 'rgba(255, 255, 255, 0.6)'
+                      }}>
+                      {getTransactionIcon(tx.op, tx.from_address, tx.to_address, currentAddress)}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff', marginBottom: '2px' }}>
+                        {type}
+                      </div>
+                      <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                        {isSent ? `To ${shortenAddress(tx.to_address)}` : `From ${shortenAddress(tx.from_address)}`}
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div
+                        style={{
+                          fontSize: '13px',
+                          fontWeight: '600',
+                          color: isReceived ? '#34c759' : isSent ? '#ff453a' : '#ffffff',
+                          marginBottom: '2px'
+                        }}>
+                        {isReceived ? '+' : isSent ? '-' : ''}
+                        {parseFloat(tx.amount).toLocaleString()} {tx.ticker}
+                      </div>
+                      <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                        {formatTimeAgo(tx.timestamp)}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </motion.div>
       </div>

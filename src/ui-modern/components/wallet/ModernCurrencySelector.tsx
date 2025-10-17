@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 export interface Currency {
   symbol: string;
@@ -29,6 +29,7 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
   variant = 'primary'
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const dropdownBg = variant === 'primary' ? 'rgba(18, 18, 18, 0.98)' : 'rgba(36, 36, 36, 0.98)';
   const buttonBg = variant === 'primary' ? '#121212' : '#242424';
@@ -36,7 +37,22 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
   const toggleDropdown = (open: boolean) => {
     setIsOpen(open);
     onDropdownToggle?.(open);
+    if (!open) {
+      setSearchQuery(''); // Clear search when closing dropdown
+    }
   };
+
+  // Filter currencies based on search query
+  const filteredCurrencies = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return availableCurrencies;
+    }
+
+    const query = searchQuery.toLowerCase().trim();
+    return availableCurrencies.filter(
+      (currency) => currency.symbol.toLowerCase().includes(query) || currency.name.toLowerCase().includes(query)
+    );
+  }, [availableCurrencies, searchQuery]);
 
   const handleCurrencyClick = (currency: Currency) => {
     if (!currency.disabled) {
@@ -193,98 +209,139 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
             overflowY: 'auto',
             boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)'
           }}>
-          {availableCurrencies.map((currency, index) => (
-            <motion.button
-              key={currency.symbol}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.03 }}
-              whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => handleCurrencyClick(currency)}
-              disabled={currency.disabled}
+          {/* Search Input */}
+          <div style={{ padding: '8px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+            <input
+              type="text"
+              placeholder="Search tokens..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: '100%',
-                background: 'transparent',
-                border: 'none',
-                borderRadius: '10px',
-                padding: '10px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                cursor: currency.disabled ? 'not-allowed' : 'pointer',
-                opacity: currency.disabled ? 0.5 : 1,
-                transition: 'background-color 0.15s ease'
-              }}>
-              <div
-                style={{
-                  width: '20px',
-                  height: '20px',
-                  minWidth: '20px',
-                  minHeight: '20px',
-                  maxWidth: '20px',
-                  maxHeight: '20px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative',
-                  flexShrink: 0,
-                  boxSizing: 'border-box'
-                }}>
-                {currency.icon}
-                {currency.disabled && (
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                padding: '8px 12px',
+                color: '#ffffff',
+                fontSize: '14px',
+                outline: 'none',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif'
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  toggleDropdown(false);
+                }
+              }}
+            />
+          </div>
+
+          {/* Currency List */}
+          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+            {filteredCurrencies.length > 0 ? (
+              filteredCurrencies.map((currency, index) => (
+                <motion.button
+                  key={currency.symbol}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.03 }}
+                  whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => handleCurrencyClick(currency)}
+                  disabled={currency.disabled}
+                  style={{
+                    width: '100%',
+                    background: 'transparent',
+                    border: 'none',
+                    borderRadius: '10px',
+                    padding: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    cursor: currency.disabled ? 'not-allowed' : 'pointer',
+                    opacity: currency.disabled ? 0.5 : 1,
+                    transition: 'background-color 0.15s ease'
+                  }}>
                   <div
                     style={{
-                      position: 'absolute',
-                      top: '-2px',
-                      left: '-2px',
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
-                      background: 'rgba(255, 59, 48, 0.8)',
+                      width: '20px',
+                      height: '20px',
+                      minWidth: '20px',
+                      minHeight: '20px',
+                      maxWidth: '20px',
+                      maxHeight: '20px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '8px',
-                      color: 'white'
+                      position: 'relative',
+                      flexShrink: 0,
+                      boxSizing: 'border-box'
                     }}>
-                    ✕
+                    {currency.icon}
+                    {currency.disabled && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '-2px',
+                          left: '-2px',
+                          width: '12px',
+                          height: '12px',
+                          borderRadius: '50%',
+                          background: 'rgba(255, 59, 48, 0.8)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '8px',
+                          color: 'white'
+                        }}>
+                        ✕
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <div style={{ flex: 1, textAlign: 'left' }}>
-                <div
-                  style={{
-                    fontSize: '15px',
-                    fontWeight: '600',
-                    color: '#ffffff',
-                    letterSpacing: '-0.022em'
-                  }}>
-                  {currency.symbol}
-                </div>
-                {currency.name !== currency.symbol && (
-                  <div
-                    style={{
-                      fontSize: '11px',
-                      color: 'rgba(255, 255, 255, 0.45)',
-                      marginTop: '2px'
-                    }}>
-                    {currency.name}
+                  <div style={{ flex: 1, textAlign: 'left' }}>
+                    <div
+                      style={{
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        color: '#ffffff',
+                        letterSpacing: '-0.022em'
+                      }}>
+                      {currency.symbol}
+                    </div>
+                    {currency.name !== currency.symbol && (
+                      <div
+                        style={{
+                          fontSize: '11px',
+                          color: 'rgba(255, 255, 255, 0.45)',
+                          marginTop: '2px'
+                        }}>
+                        {currency.name}
+                      </div>
+                    )}
                   </div>
-                )}
+                  {currency.balance && parseFloat(currency.balance) > 0 && (
+                    <div
+                      style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.45)',
+                        textAlign: 'right'
+                      }}>
+                      {currency.balance}
+                    </div>
+                  )}
+                </motion.button>
+              ))
+            ) : (
+              <div
+                style={{
+                  padding: '20px',
+                  textAlign: 'center',
+                  color: 'rgba(255, 255, 255, 0.5)',
+                  fontSize: '14px'
+                }}>
+                No tokens found
               </div>
-              {currency.balance && parseFloat(currency.balance) > 0 && (
-                <div
-                  style={{
-                    fontSize: '11px',
-                    color: 'rgba(255, 255, 255, 0.45)',
-                    textAlign: 'right'
-                  }}>
-                  {currency.balance}
-                </div>
-              )}
-            </motion.button>
-          ))}
+            )}
+          </div>
         </motion.div>
       )}
     </div>

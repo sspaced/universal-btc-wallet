@@ -233,13 +233,15 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                 padding: '11px',
                 fontSize: '14px',
                 fontWeight: '600',
-                color: '#ffffff',
-                background: disabled ? 'rgba(114, 227, 173, 0.3)' : 'linear-gradient(135deg, var(--modern-accent-primary) 0%, #5dd39a 100%)',
+                color: '#000000',
+                background: disabled
+                  ? 'rgba(114, 227, 173, 0.3)'
+                  : 'linear-gradient(135deg, var(--modern-accent-primary) 0%, #5dd39a 100%)',
                 border: 'none',
                 borderRadius: '10px',
                 cursor: disabled ? 'not-allowed' : 'pointer',
                 opacity: disabled ? 0.6 : 1,
-                boxShadow: disabled ? 'none' : '0 4px 16px rgba(114, 227, 173, 0.4)',
+                boxShadow: 'none',
                 letterSpacing: '-0.3px',
                 transition: 'all 0.3s ease'
               }}>

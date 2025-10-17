@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { RestoreWalletType } from '@/shared/types';
 
+import { useNavigate } from '../../ui/pages/MainRoute';
 import { ModernButton } from '../components/common/ModernButton';
 import { ModernWalletCard } from '../components/common/ModernWalletCard';
 
@@ -56,26 +56,22 @@ export const ModernWalletSelectionScreen: React.FC<ModernWalletSelectionScreenPr
     } else {
       if (method === 'seed') {
         // Navigate to seed phrase import (existing flow)
-        navigate('/account/create-hd-wallet', {
-          state: {
-            isImport: true,
-            fromUnlock: false,
-            restoreWalletType: selectedWallet
-          }
+        navigate('CreateHDWalletScreen', {
+          isImport: true,
+          fromUnlock: false,
+          restoreWalletType: selectedWallet
         });
       } else {
         // Navigate to private key import (existing flow)
-        navigate('/account/create-simple-wallet', {
-          state: {
-            restoreWalletType: selectedWallet
-          }
+        navigate('CreateSimpleWalletScreen', {
+          restoreWalletType: selectedWallet
         });
       }
     }
   };
 
   const handleBack = () => {
-    navigate(-1);
+    navigate('#back');
   };
 
   return (

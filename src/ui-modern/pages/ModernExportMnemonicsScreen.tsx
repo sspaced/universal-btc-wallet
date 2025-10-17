@@ -280,7 +280,7 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
               transition={{ delay: 0.3, duration: 0.5 }}
               style={{
                 background: 'rgba(255, 255, 255, 0.06)',
-                border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                border: 'none',
                 borderRadius: '11px',
                 padding: '11px',
                 backdropFilter: 'blur(20px)'
@@ -304,7 +304,7 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                       gap: '7px',
                       padding: '7px 9px',
                       background: 'rgba(255, 255, 255, 0.08)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      border: 'none',
                       borderRadius: '7px'
                     }}>
                     <span
@@ -356,7 +356,7 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
                   fontWeight: '600',
                   color: '#ffffff',
                   background: 'rgba(255, 255, 255, 0.12)',
-                  border: '1.5px solid rgba(255, 255, 255, 0.25)',
+                  border: 'none',
                   borderRadius: '8px',
                   cursor: 'pointer',
                   letterSpacing: '-0.3px',
@@ -374,7 +374,7 @@ export const ModernExportMnemonicsScreen: React.FC = () => {
               transition={{ delay: 0.9, duration: 0.5 }}
               style={{
                 background: 'rgba(255, 255, 255, 0.06)',
-                border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                border: 'none',
                 borderRadius: '11px',
                 padding: '11px',
                 backdropFilter: 'blur(20px)'

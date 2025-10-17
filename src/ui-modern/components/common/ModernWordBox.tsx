@@ -36,9 +36,7 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
         position: 'relative',
         padding: '6px 8px',
         backgroundColor: selected ? 'rgba(114, 227, 173, 0.1)' : 'var(--modern-bg-tertiary)',
-        border: selected
-          ? '2px solid var(--modern-border-focus)'
-          : 'var(--modern-border-width) solid var(--modern-border-color)',
+        border: selected ? '2px solid var(--modern-border-focus)' : 'none',
         borderRadius: '8px',
         cursor: onClick || copyable ? 'pointer' : 'default',
         transition: 'all 0.2s',
@@ -70,7 +68,7 @@ export const ModernWordBox: React.FC<ModernWordBoxProps> = ({
           fontWeight: '500',
           color: '#ffffff',
           textAlign: 'center',
-          fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif',
+          fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
           letterSpacing: '0.01em',
           filter: blurred ? 'blur(4px)' : 'none',
           userSelect: 'text',

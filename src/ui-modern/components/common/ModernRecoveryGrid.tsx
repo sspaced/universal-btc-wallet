@@ -49,7 +49,8 @@ export const ModernRecoveryGrid: React.FC<ModernRecoveryGridProps> = ({
         width: '100%',
         padding: '14px',
         backgroundColor: 'var(--modern-bg-secondary)',
-        borderRadius: '10px'
+        borderRadius: '10px',
+        border: 'none'
       }}>
       {/* Title */}
       {title && (
@@ -111,7 +112,7 @@ export const ModernRecoveryGrid: React.FC<ModernRecoveryGridProps> = ({
             transition: 'all 0.2s ease',
             letterSpacing: '-0.08px',
             fontFamily:
-              '-apple-system, BlinkMacSystemFont, \'SF Pro Display\', \'SF Pro Text\', \'Helvetica Neue\', Helvetica, Arial, sans-serif'
+              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = 'rgba(114, 227, 173, 0.1)';

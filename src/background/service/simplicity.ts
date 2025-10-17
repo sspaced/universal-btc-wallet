@@ -557,7 +557,7 @@ export class SimplicityService {
   };
 
   // Get address history from Blacknode API
-  getBlacknodeAddressHistory = async (address: string, limit: number = 100): Promise<BlacknodeAddressHistoryItem[]> => {
+  getBlacknodeAddressHistory = async (address: string, limit = 100): Promise<BlacknodeAddressHistoryItem[]> => {
     try {
       const url = `https://www.blacknode.co/api/brc20/addresses/${address}/history?limit=${limit}`;
       const response = await fetch(url, {

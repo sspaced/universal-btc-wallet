@@ -82,12 +82,18 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
             <>
               <div
                 style={{
-                  width: '22px',
-                  height: '22px',
+                  width: '18px',
+                  height: '18px',
+                  minWidth: '18px',
+                  minHeight: '18px',
+                  maxWidth: '18px',
+                  maxHeight: '18px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  position: 'relative'
+                  position: 'relative',
+                  flexShrink: 0,
+                  boxSizing: 'border-box'
                 }}>
                 {selectedCurrency.icon}
                 {selectedCurrency.disabled && (
@@ -212,12 +218,18 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
               }}>
               <div
                 style={{
-                  width: '28px',
-                  height: '28px',
+                  width: '20px',
+                  height: '20px',
+                  minWidth: '20px',
+                  minHeight: '20px',
+                  maxWidth: '20px',
+                  maxHeight: '20px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  position: 'relative'
+                  position: 'relative',
+                  flexShrink: 0,
+                  boxSizing: 'border-box'
                 }}>
                 {currency.icon}
                 {currency.disabled && (

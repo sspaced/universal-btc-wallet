@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Currency, ModernCurrencySelector } from './ModernCurrencySelector';
 
@@ -21,6 +21,8 @@ interface ModernSwapCardProps {
   slippage?: number;
   onSlippageChange?: (value: number) => void;
   showSlippageSettings?: boolean;
+  btcPrice?: number;
+  tokenPrice?: number;
 }
 
 export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
@@ -40,12 +42,44 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
   zIndex = 1,
   slippage,
   onSlippageChange,
-  showSlippageSettings = false
+  showSlippageSettings = false,
+  btcPrice = 0,
+  tokenPrice = 0
 }) => {
   const isPay = type === 'pay';
   const [isHovered, setIsHovered] = useState(false);
   const [maxSlippage, setMaxSlippage] = useState(slippage || 1);
   const [isMaxSelected, setIsMaxSelected] = useState(false);
+
+  // Calculate USD value
+  const usdValue = useMemo(() => {
+    if (!amount || parseFloat(amount) === 0) return '0.00';
+
+    const amountNum = parseFloat(amount);
+
+    if (!selectedCurrency) return '0.00';
+
+    // For BTC
+    if (selectedCurrency.symbol === 'BTC') {
+      if (btcPrice > 0) {
+        const usd = amountNum * btcPrice;
+        return usd.toFixed(2);
+      }
+      return '0.00';
+    }
+
+    // For tokens - use tokenPrice (in satoshis per token)
+    if (tokenPrice > 0) {
+      // Calculate value in satoshis
+      const valueInSats = amountNum * tokenPrice;
+      // Convert satoshis to BTC then to USD
+      const btcValue = valueInSats / 100000000;
+      const usd = btcValue * btcPrice;
+      return usd.toFixed(2);
+    }
+
+    return '0.00';
+  }, [amount, selectedCurrency, btcPrice, tokenPrice]);
 
   // Calculate font size based on amount length
   const getFontSize = () => {
@@ -211,9 +245,20 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
           </div>
         </div>
 
-        {/* Balance Info */}
-        {balance && (
-          <div style={{ marginTop: '4px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        {/* Balance Info and USD Price */}
+        <div style={{ marginTop: '4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {/* USD Price on the left */}
+          <span
+            style={{
+              fontSize: '10px',
+              color: 'rgba(255, 255, 255, 0.5)',
+              letterSpacing: '-0.2px'
+            }}>
+            ${usdValue}
+          </span>
+
+          {/* Balance on the right */}
+          {balance && (
             <span
               style={{
                 fontSize: '10px',
@@ -222,8 +267,8 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
               }}>
               Balance: {balance}
             </span>
-          </div>
-        )}
+          )}
+        </div>
       </motion.div>
     </>
   );

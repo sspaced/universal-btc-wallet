@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
+import { usePrice } from '@/ui/provider/PriceProvider';
 import { useAccountBalance } from '@/ui/state/accounts/hooks';
 
 import { ModernButton } from '../components/common/ModernButton';
@@ -18,6 +19,7 @@ export const ModernSwapScreen: React.FC = () => {
   const accountBalance = useAccountBalance();
   const { assets: userAssets, loading: assetsLoading } = useAssets();
   const { tokens: simplicityTokens, loading: simplicityLoading } = useSimplicityTokens();
+  const { coinPrice } = usePrice();
 
   // States
   const [fromAmount, setFromAmount] = useState('');
@@ -29,6 +31,9 @@ export const ModernSwapScreen: React.FC = () => {
   // Use real BTC balance from wallet
   const btcBalance = accountBalance?.amount || '0';
 
+  console.log('Account Balance object:', accountBalance);
+  console.log('BTC Balance from account:', btcBalance);
+
   // Helper function to get asset icon
   const getAssetIcon = (symbol: string, name: string, type: string, size = 22) => {
     // BTC gets a special gradient icon
@@ -38,6 +43,10 @@ export const ModernSwapScreen: React.FC = () => {
           style={{
             width: `${size}px`,
             height: `${size}px`,
+            minWidth: `${size}px`,
+            minHeight: `${size}px`,
+            maxWidth: `${size}px`,
+            maxHeight: `${size}px`,
             borderRadius: '50%',
             background: 'linear-gradient(135deg, #f7931a 0%, #ffb347 100%)',
             display: 'flex',
@@ -45,7 +54,9 @@ export const ModernSwapScreen: React.FC = () => {
             justifyContent: 'center',
             fontSize: `${Math.floor(size * 0.6)}px`,
             fontWeight: 'bold',
-            color: '#ffffff'
+            color: '#ffffff',
+            flexShrink: 0,
+            boxSizing: 'border-box'
           }}>
           ₿
         </div>
@@ -89,6 +100,13 @@ export const ModernSwapScreen: React.FC = () => {
     );
   };
 
+  // Helper function to get token price (simplified - returns 0 if no price data)
+  const getTokenPrice = (symbol: string): number => {
+    // For now, return 0 as we don't have token price data readily available
+    // This could be enhanced to fetch from an API or use cached price data
+    return 0;
+  };
+
   // Initialize currencies with first available asset or default BTC
   const [fromCurrency, setFromCurrency] = useState<Currency>(() => {
     if (parseFloat(btcBalance) > 0) {
@@ -123,28 +141,53 @@ export const ModernSwapScreen: React.FC = () => {
   const calculateFromCurrencies = useMemo(() => {
     const currencies: Currency[] = [];
 
+    console.log('User assets for Sell calculation:', userAssets);
+    console.log('BTC Balance:', btcBalance, 'Type:', typeof btcBalance);
+    console.log('BTC Balance parsed:', parseFloat(btcBalance));
+
     // Add BTC first if user has BTC balance
     if (parseFloat(btcBalance) > 0) {
+      console.log('Adding BTC to currencies from accountBalance');
       currencies.push({
         symbol: 'BTC',
         name: 'Bitcoin',
         balance: btcBalance,
-        icon: getAssetIcon('BTC', 'Bitcoin', 'btc', 28)
+        icon: getAssetIcon('BTC', 'Bitcoin', 'btc', 18)
       });
+    } else {
+      console.log('BTC balance is 0 or invalid from accountBalance, checking userAssets');
+      // Fallback: check if BTC is in userAssets
+      const btcAsset = userAssets.find((asset) => asset.type === 'btc' || asset.symbol === 'BTC');
+      if (btcAsset && parseFloat(btcAsset.amount) > 0) {
+        console.log('Adding BTC to currencies from userAssets');
+        currencies.push({
+          symbol: 'BTC',
+          name: 'Bitcoin',
+          balance: btcAsset.amount,
+          icon: getAssetIcon('BTC', 'Bitcoin', 'btc', 18)
+        });
+      } else {
+        console.log('No BTC found in userAssets either');
+      }
     }
 
-    // Add other assets that user owns (filter out BTC as it's already added)
+    // Add all other assets that user owns (including Simplicity tokens, BRC20, etc.)
     userAssets.forEach((asset) => {
+      console.log('Processing asset for Sell:', asset);
+      // Skip BTC as it's already added above, but also check if BTC is in userAssets
       if (asset.type !== 'btc' && parseFloat(asset.amount) > 0) {
         currencies.push({
           symbol: asset.symbol || asset.name,
           name: asset.name,
           balance: asset.amount,
-          icon: getAssetIcon(asset.symbol || asset.name, asset.name, asset.type, 28)
+          icon: getAssetIcon(asset.symbol || asset.name, asset.name, asset.type, 18)
         });
+      } else if (asset.type === 'btc' && parseFloat(asset.amount) > 0) {
+        console.log('Found BTC in userAssets, but already added above');
       }
     });
 
+    console.log('Available currencies for Sell:', currencies);
     return currencies;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAssets, btcBalance]);
@@ -161,7 +204,7 @@ export const ModernSwapScreen: React.FC = () => {
           symbol: token.ticker,
           name: token.ticker,
           balance: '0', // User doesn't own these tokens initially
-          icon: getAssetIcon(token.ticker, token.ticker, 'simplicity', 28)
+          icon: getAssetIcon(token.ticker, token.ticker, 'simplicity', 18)
         });
       }
     });
@@ -333,6 +376,8 @@ export const ModernSwapScreen: React.FC = () => {
             slippage={slippage}
             onSlippageChange={setSlippage}
             showSlippageSettings={true}
+            btcPrice={coinPrice?.btc || 0}
+            tokenPrice={fromCurrency?.symbol && fromCurrency.symbol !== 'BTC' ? getTokenPrice(fromCurrency.symbol) : 0}
           />
         </motion.div>
 
@@ -368,6 +413,8 @@ export const ModernSwapScreen: React.FC = () => {
             placeholder="0"
             balance={toCurrency.balance}
             onDropdownToggle={setToDropdownOpen}
+            btcPrice={coinPrice?.btc || 0}
+            tokenPrice={toCurrency?.symbol && toCurrency.symbol !== 'BTC' ? getTokenPrice(toCurrency.symbol) : 0}
           />
         </motion.div>
 

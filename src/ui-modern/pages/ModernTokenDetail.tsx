@@ -640,7 +640,21 @@ export const ModernTokenDetail: React.FC = () => {
             <ActionButton
               icon={<SwapIcon size={24} color="#ffffff" />}
               label="Swap"
-              onClick={() => navigate('ModernSwapScreen')}
+              onClick={() =>
+                navigate('ModernSwapScreen', {
+                  selectedAsset: {
+                    id: tokenData.tokenId,
+                    name: tokenData.name,
+                    symbol: tokenData.symbol,
+                    amount: tokenData.balance,
+                    usdValue: tokenData.usdValue,
+                    type: 'simplicity',
+                    icon: tokenData.icon,
+                    contractAddress: tokenData.contractAddress,
+                    network: tokenData.network
+                  }
+                })
+              }
             />
             <ActionButton
               icon={<HistoryIcon size={24} color="#ffffff" />}

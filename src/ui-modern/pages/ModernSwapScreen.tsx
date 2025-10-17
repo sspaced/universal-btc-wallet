@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { usePrice } from '@/ui/provider/PriceProvider';
@@ -16,10 +17,16 @@ import { useAssets } from '../providers/AssetProvider';
 
 export const ModernSwapScreen: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const accountBalance = useAccountBalance();
   const { assets: userAssets, loading: assetsLoading } = useAssets();
   const { tokens: simplicityTokens, loading: simplicityLoading } = useSimplicityTokens();
   const { coinPrice } = usePrice();
+
+  // Get selected asset from navigation state
+  const selectedAsset = (location.state as any)?.selectedAsset;
+
+  console.log('ModernSwapScreen - Selected asset:', selectedAsset);
 
   // States
   const [fromAmount, setFromAmount] = useState('');
@@ -107,8 +114,19 @@ export const ModernSwapScreen: React.FC = () => {
     return 0;
   };
 
-  // Initialize currencies with first available asset or default BTC
+  // Initialize currencies with selected asset or default BTC
   const [fromCurrency, setFromCurrency] = useState<Currency>(() => {
+    // If we have a selected asset from navigation, use it
+    if (selectedAsset) {
+      return {
+        symbol: selectedAsset.symbol,
+        name: selectedAsset.name,
+        balance: selectedAsset.amount,
+        icon: getAssetIcon(selectedAsset.symbol, selectedAsset.name, selectedAsset.type)
+      };
+    }
+
+    // Otherwise, use BTC if available
     if (parseFloat(btcBalance) > 0) {
       return {
         symbol: 'BTC',
@@ -229,6 +247,15 @@ export const ModernSwapScreen: React.FC = () => {
   // Update fromCurrency when assets are loaded and available
   useEffect(() => {
     if (!assetsLoading && availableFromCurrencies.length > 0) {
+      // If we have a selected asset, try to find it in available currencies
+      if (selectedAsset) {
+        const selectedCurrency = availableFromCurrencies.find((currency) => currency.symbol === selectedAsset.symbol);
+        if (selectedCurrency) {
+          setFromCurrency(selectedCurrency);
+          return;
+        }
+      }
+
       // If current fromCurrency is not in available currencies, update it
       const currentFromExists = availableFromCurrencies.some((currency) => currency.symbol === fromCurrency.symbol);
 
@@ -236,7 +263,7 @@ export const ModernSwapScreen: React.FC = () => {
         setFromCurrency(availableFromCurrencies[0]);
       }
     }
-  }, [availableFromCurrencies, assetsLoading, fromCurrency.symbol]);
+  }, [availableFromCurrencies, assetsLoading, fromCurrency.symbol, selectedAsset]);
 
   // Update toCurrency when Simplicity tokens are loaded
   useEffect(() => {

@@ -378,6 +378,7 @@ export const ModernSwapScreen: React.FC = () => {
             showSlippageSettings={true}
             btcPrice={coinPrice?.btc || 0}
             tokenPrice={fromCurrency?.symbol && fromCurrency.symbol !== 'BTC' ? getTokenPrice(fromCurrency.symbol) : 0}
+            loading={assetsLoading}
           />
         </motion.div>
 
@@ -415,6 +416,7 @@ export const ModernSwapScreen: React.FC = () => {
             onDropdownToggle={setToDropdownOpen}
             btcPrice={coinPrice?.btc || 0}
             tokenPrice={toCurrency?.symbol && toCurrency.symbol !== 'BTC' ? getTokenPrice(toCurrency.symbol) : 0}
+            loading={simplicityLoading}
           />
         </motion.div>
 

@@ -23,6 +23,7 @@ interface ModernSwapCardProps {
   showSlippageSettings?: boolean;
   btcPrice?: number;
   tokenPrice?: number;
+  loading?: boolean;
 }
 
 export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
@@ -44,7 +45,8 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
   onSlippageChange,
   showSlippageSettings = false,
   btcPrice = 0,
-  tokenPrice = 0
+  tokenPrice = 0,
+  loading = false
 }) => {
   const isPay = type === 'pay';
   const [isHovered, setIsHovered] = useState(false);
@@ -241,6 +243,7 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
               disabled={disabled}
               onDropdownToggle={onDropdownToggle}
               variant={isPay ? 'primary' : 'secondary'}
+              loading={loading}
             />
           </div>
         </div>

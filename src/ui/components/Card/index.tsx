@@ -16,7 +16,8 @@ const $baseViewStyle = {
   backgroundColor: colors.black_dark,
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: 5
+  borderRadius: 5,
+  border: 'none'
 } as CSSProperties;
 
 const $viewPresets = {
@@ -37,7 +38,8 @@ const $viewPresets = {
     paddingTop: spacingGap.sm,
     paddingBottom: spacingGap.sm,
     paddingLeft: spacingGap.lg,
-    paddingRight: spacingGap.lg
+    paddingRight: spacingGap.lg,
+    border: 'none'
   }) as CSSProperties,
   style3: Object.assign({}, $baseViewStyle, {
     paddingTop: spacingGap.xs,

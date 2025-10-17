@@ -85,7 +85,7 @@ export const ModernRecoveryPhraseScreen: React.FC<ModernRecoveryPhraseScreenProp
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 24px',
-            border: '2px solid rgba(114, 227, 173, 0.3)'
+            border: 'none'
           }}>
           <motion.div
             initial={{ scale: 0, opacity: 0 }}

@@ -6,10 +6,10 @@ import { OW_HD_PATH } from '@/shared/constant';
 import { AddressType, RestoreWalletType } from '@/shared/types';
 import { useTools } from '@/ui/components/ActionComponent';
 import {
-  ContextData,
-  TabType,
-  UpdateContextDataParams,
-  WordsType
+    ContextData,
+    TabType,
+    UpdateContextDataParams,
+    WordsType
 } from '@/ui/pages/Account/createHDWalletComponents/types';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useCreateAccountCallback } from '@/ui/state/global/hooks';
@@ -246,7 +246,7 @@ export const ModernRecoveryPhraseImportScreen: React.FC<ModernRecoveryPhraseImpo
                   alignItems: 'center',
                   gap: '6px',
                   background: 'var(--modern-bg-secondary)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  border: 'none',
                   borderRadius: '8px',
                   padding: '6px 10px'
                 }}>

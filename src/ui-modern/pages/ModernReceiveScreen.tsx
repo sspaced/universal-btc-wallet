@@ -298,6 +298,7 @@ export const ModernReceiveScreen: React.FC = () => {
           </p>
           <motion.button
             whileHover={{ scale: 1.02 }}
+            onClick={() => window.open('https://blacknode.co/docs', '_blank')}
             style={{
               background: 'none',
               border: 'none',

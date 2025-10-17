@@ -3,7 +3,8 @@ import React from 'react';
 
 import { useI18n } from '@/ui/hooks/useI18n';
 
-import { HistoryIcon, PaperPlaneIcon, QRCodeIcon, SwapIcon } from '../common/CustomIcons';
+import { ReactComponent as QRCodeIconSVG } from '../../qr-code_10897258.svg';
+import { HistoryIcon, PaperPlaneIcon, SwapIcon } from '../common/CustomIcons';
 
 interface ActionButton {
   id: string;
@@ -27,7 +28,7 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onSend, 
     {
       id: 'receive',
       label: t('receive'),
-      icon: <QRCodeIcon size={24} color="#ffffff" />,
+      icon: <QRCodeIconSVG style={{ width: '24px', height: '24px', fill: '#ffffff' }} />,
       onClick: onReceive
     },
     {

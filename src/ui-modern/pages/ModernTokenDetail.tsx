@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import {
-  BlacknodeAddressHistoryItem,
-  BlacknodeTickerInfo,
-  BlacknodeTickerStats,
-  BlacknodeTradingData,
-  simplicityService
+    BlacknodeAddressHistoryItem,
+    BlacknodeTickerInfo,
+    BlacknodeTickerStats,
+    BlacknodeTradingData,
+    simplicityService
 } from '@/background/service/simplicity';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useCurrentAddress } from '@/ui/state/accounts/hooks';
@@ -756,20 +756,19 @@ export const ModernTokenDetail: React.FC = () => {
                 background: 'var(--modern-bg-secondary)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
                 borderRadius: '12px',
-                padding: '14px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '10px'
+                overflow: 'hidden'
               }}>
               {/* Total Trades */}
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  padding: '12px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
                 }}>
-                <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Trades</span>
-                <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Trades</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
                   {statsLoading
                     ? '...'
                     : tickerStats?.data?.total_trades_for_ticker
@@ -783,10 +782,12 @@ export const ModernTokenDetail: React.FC = () => {
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  padding: '12px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
                 }}>
-                <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Volume</span>
-                <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Total Volume</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
                   {statsLoading
                     ? '...'
                     : tickerStats?.data?.total_volume_satoshis_for_ticker
@@ -800,10 +801,11 @@ export const ModernTokenDetail: React.FC = () => {
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  padding: '12px 14px'
                 }}>
-                <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>Active Listings</span>
-                <span style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff' }}>
+                <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.6)' }}>Active Listings</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
                   {statsLoading
                     ? '...'
                     : tickerStats?.data?.active_listings

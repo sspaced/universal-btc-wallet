@@ -17,7 +17,6 @@ interface ModernSwapCardProps {
   onQuickAmount?: (percentage: number) => void;
   balance?: string;
   onDropdownToggle?: (isOpen: boolean) => void;
-  zIndex?: number;
   slippage?: number;
   onSlippageChange?: (value: number) => void;
   showSlippageSettings?: boolean;
@@ -40,7 +39,6 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
   onQuickAmount,
   balance,
   onDropdownToggle,
-  zIndex = 1,
   slippage,
   onSlippageChange,
   showSlippageSettings = false,
@@ -148,8 +146,7 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
           borderRadius: '14px',
           padding: '10px 16px',
           position: 'relative',
-          overflow: 'visible',
-          zIndex
+          overflow: 'visible'
         }}>
         {/* Label */}
         <div
@@ -204,7 +201,7 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
                   display: 'flex',
                   gap: '3px',
                   marginBottom: '8px',
-                  zIndex: 100
+                  zIndex: 60
                 }}>
                 {slippageOptions.map((option) => {
                   const isSelected =

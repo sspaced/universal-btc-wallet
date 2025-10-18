@@ -45,7 +45,7 @@ export const ModernSwapScreen: React.FC = () => {
   const [priceLoading, setPriceLoading] = useState<Record<string, boolean>>({});
 
   // Use real BTC balance from wallet
-  const btcBalance = accountBalance?.amount || '0';
+  const btcBalance = accountBalance?.availableBalance ? (accountBalance.availableBalance / 100000000).toFixed(8) : '0';
 
   console.log('Account Balance object:', accountBalance);
   console.log('BTC Balance from account:', btcBalance);
@@ -443,7 +443,10 @@ export const ModernSwapScreen: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          style={{ position: 'relative', zIndex: fromDropdownOpen ? 10 : toDropdownOpen ? 1 : 2 }}>
+          style={{
+            position: 'relative',
+            zIndex: fromDropdownOpen ? 100 : 1
+          }}>
           <ModernSwapCard
             type="pay"
             amount={fromAmount}
@@ -474,7 +477,7 @@ export const ModernSwapScreen: React.FC = () => {
             justifyContent: 'center',
             margin: '0',
             position: 'relative',
-            zIndex: fromDropdownOpen || toDropdownOpen ? 0 : 50
+            zIndex: 5
           }}>
           <ModernSwapButton onSwap={handleSwapCurrencies} disabled={false} />
         </motion.div>
@@ -484,7 +487,10 @@ export const ModernSwapScreen: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.3 }}
-          style={{ position: 'relative', zIndex: toDropdownOpen ? 10 : fromDropdownOpen ? 1 : 2 }}>
+          style={{
+            position: 'relative',
+            zIndex: toDropdownOpen ? 100 : 1
+          }}>
           <ModernSwapCard
             type="receive"
             amount={toAmount}

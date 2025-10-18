@@ -35,7 +35,6 @@ export const ModernSwapButton: React.FC<ModernSwapButtonProps> = ({ onSwap, disa
           alignItems: 'center',
           justifyContent: 'center',
           boxShadow: 'none',
-          zIndex: 10,
           position: 'relative',
           opacity: isDisabled ? 0.6 : 1,
           transition: 'all 0.3s ease'

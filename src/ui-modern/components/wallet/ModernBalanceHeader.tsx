@@ -17,13 +17,15 @@ interface ModernBalanceHeaderProps {
   enableRefresh?: boolean;
   onRefresh?: () => void;
   isRefreshing?: boolean;
+  isSwitching?: boolean;
 }
 
 export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
   accountBalance,
   enableRefresh = false,
   onRefresh,
-  isRefreshing = false
+  isRefreshing = false,
+  isSwitching = false
 }) => {
   const chainType = useChainType();
   const btcUnit = useBTCUnit();
@@ -258,19 +260,40 @@ export const ModernBalanceHeader: React.FC<ModernBalanceHeaderProps> = ({
             cursor: 'pointer',
             width: '100%'
           }}
-          onMouseEnter={() => setShowTooltip(true)}
+          onMouseEnter={() => !isSwitching && setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}>
-          <span
-            style={{
-              fontSize: '36px',
-              fontWeight: '500',
-              color: '#ffffff',
-              letterSpacing: '-0.5px',
-              lineHeight: 1
-            }}>
-            ${usdValue}
-          </span>
+          {isSwitching ? (
+            // Skeleton loader pendant le switch
+            <div
+              style={{
+                width: '200px',
+                height: '44px',
+                background: 'linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 1.5s infinite',
+                borderRadius: '8px'
+              }}
+            />
+          ) : (
+            <span
+              style={{
+                fontSize: '36px',
+                fontWeight: '500',
+                color: '#ffffff',
+                letterSpacing: '-0.5px',
+                lineHeight: 1
+              }}>
+              ${usdValue}
+            </span>
+          )}
         </div>
+        
+        <style>{`
+          @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+          }
+        `}</style>
 
         {/* Portfolio Breakdown Tooltip */}
         {showTooltip && (

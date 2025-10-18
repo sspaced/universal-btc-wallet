@@ -408,9 +408,29 @@ export const useCachedUnifiedAssets = () => {
     if (currentAccount.address) {
       const currentParams = `${currentAccount.address}-${chainType}-${supportedAssets.key}`;
       if (lastFetchParams.current !== currentParams) {
-        console.log('Address changed, resetting state');
+        console.log('[Asset Switch] Address changed, resetting state and clearing assets');
+        
+        // Réinitialiser complètement l'état
         setHasInitialLoad(false);
+        setAssets([]); // Vider immédiatement les assets pour éviter d'afficher l'ancien compte
+        assetsRef.current = [];
         lastFetchParams.current = '';
+        
+        // Vérifier immédiatement si on a du cache pour le nouveau compte
+        const cacheKey = `${currentAccount.address}-${chainType}-${supportedAssets.key}`;
+        const cachedData = assetCacheService.getCachedData(cacheKey);
+        
+        if (cachedData) {
+          console.log('[Asset Switch] Found cache for new account, loading immediately');
+          setAssets(cachedData.assets);
+          assetsRef.current = cachedData.assets;
+          setHasInitialLoad(true);
+          lastFetchParams.current = currentParams;
+          setLoading(false);
+        } else {
+          console.log('[Asset Switch] No cache for new account, will load from API');
+          setLoading(true);
+        }
       }
     }
   }, [currentAccount.address, chainType, supportedAssets.key]);

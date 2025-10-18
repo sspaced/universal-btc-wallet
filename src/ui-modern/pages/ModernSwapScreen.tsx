@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
@@ -24,6 +25,7 @@ export const ModernSwapScreen: React.FC = () => {
   const { tokens: simplicityTokens, loading: simplicityLoading } = useSimplicityTokens();
   const { coinPrice } = usePrice();
   const wallet = useWallet();
+  const { t } = useTranslation();
 
   // Get selected asset from navigation state
   const selectedAsset = (location.state as any)?.selectedAsset;

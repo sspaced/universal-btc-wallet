@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
@@ -11,6 +12,7 @@ import { ModernHeader } from '../components/layout/ModernHeader';
 export const ModernSwapConfirmationScreen: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   // Get swap data from navigation state
   const swapData = location.state || {};

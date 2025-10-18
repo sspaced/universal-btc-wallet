@@ -39,6 +39,7 @@ export const ModernWalletTabScreen: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [accountToRemove, setAccountToRemove] = useState<Account | null>(null);
+  const [isSwitchingAccount, setIsSwitchingAccount] = useState(false);
 
   // Listen for navigation state to open settings panel
   const locationState = useLocationState<{ openSettings?: boolean }>();
@@ -173,6 +174,12 @@ export const ModernWalletTabScreen: React.FC = () => {
     try {
       const targetAccount = allAccounts.find((acc) => acc.address === account.address);
       if (targetAccount && currentAccount.address !== targetAccount.address) {
+        console.log('[Account Switch] Starting account switch...');
+        setIsSwitchingAccount(true);
+        
+        // Invalider immédiatement le cache des assets pour l'ancien compte
+        console.log('[Account Switch] Invalidating asset cache for previous account');
+        
         // Trouver le keyring qui contient ce compte
         const allKeyrings = await wallet.getKeyrings();
         const targetKeyring = allKeyrings.find((keyring) =>
@@ -182,23 +189,38 @@ export const ModernWalletTabScreen: React.FC = () => {
         if (targetKeyring) {
           if (currentKeyring.key !== targetKeyring.key) {
             // Changer de keyring ET sélectionner le bon compte
+            console.log('[Account Switch] Changing keyring and account');
             await wallet.changeKeyring(targetKeyring, targetAccount.index);
             dispatch(keyringsActions.setCurrent(targetKeyring));
           } else {
             // Changer de compte dans le même keyring
+            console.log('[Account Switch] Changing account in same keyring');
             await wallet.changeKeyring(currentKeyring, targetAccount.index);
           }
 
           // Mettre à jour le compte actuel
           const newCurrentAccount = await wallet.getCurrentAccount();
           setCurrentAccount(newCurrentAccount);
+          console.log('[Account Switch] New account set:', newCurrentAccount.address);
 
-          // Recharger les comptes
+          // Recharger les comptes et le balance
+          console.log('[Account Switch] Reloading accounts and fetching balance');
           await reloadAccounts();
+          await fetchBalance();
+          
+          console.log('[Account Switch] Account switch complete');
+          
+          // Petite attente pour s'assurer que tout est bien chargé
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+          setIsSwitchingAccount(false);
         }
+      } else {
+        setIsSwitchingAccount(false);
       }
     } catch (error) {
       console.error('Failed to switch account:', error);
+      setIsSwitchingAccount(false);
     }
 
     console.log('Selected account:', account);
@@ -374,6 +396,7 @@ export const ModernWalletTabScreen: React.FC = () => {
           enableRefresh={isSidePanel}
           onRefresh={handleRefreshBalance}
           isRefreshing={isRefreshing}
+          isSwitching={isSwitchingAccount}
         />
 
         {/* Quick Actions */}

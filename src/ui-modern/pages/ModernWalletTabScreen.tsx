@@ -16,6 +16,7 @@ import { keyringsActions } from '@/ui/state/keyrings/reducer';
 import { useResetUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { getUiType, useLocationState, useWallet } from '@/ui/utils';
 
+import { ModernRemoveWalletModal } from '../components/common/ModernRemoveWalletModal';
 import { BottomNavTab, ModernBottomNav } from '../components/layout/ModernBottomNav';
 import { ModernMainContent } from '../components/layout/ModernMainContent';
 import { Account, ModernSidebar } from '../components/layout/ModernSidebar';
@@ -36,6 +37,8 @@ export const ModernWalletTabScreen: React.FC = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [buyBtcModalVisible, setBuyBtcModalVisible] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
+  const [accountToRemove, setAccountToRemove] = useState<Account | null>(null);
 
   // Listen for navigation state to open settings panel
   const locationState = useLocationState<{ openSettings?: boolean }>();
@@ -242,10 +245,39 @@ export const ModernWalletTabScreen: React.FC = () => {
     setSidebarVisible(false);
   };
 
-  const handleRemoveWallet = (account: Account) => {
-    // TODO: Show confirmation modal then remove wallet
-    console.log('Remove wallet:', account);
+  const handleRemoveWallet = async (account: Account) => {
+    setAccountToRemove(account);
+    setShowRemoveModal(true);
     setSidebarVisible(false);
+  };
+
+  const confirmRemoveWallet = async () => {
+    if (!accountToRemove) return;
+
+    try {
+      // Supprimer le compte
+      await wallet.removeAccount(accountToRemove);
+      
+      // Recharger les comptes
+      await reloadAccounts();
+      
+      // Fermer le modal
+      setShowRemoveModal(false);
+      setAccountToRemove(null);
+      
+      // Afficher un message de succès
+      console.log('Account removed successfully');
+    } catch (error: any) {
+      console.error('Failed to remove account:', error);
+      alert(error.message || 'Failed to remove account. Please try again.');
+      setShowRemoveModal(false);
+      setAccountToRemove(null);
+    }
+  };
+
+  const cancelRemoveWallet = () => {
+    setShowRemoveModal(false);
+    setAccountToRemove(null);
   };
 
   const handleAssetClick = (asset: Asset) => {
@@ -361,6 +393,21 @@ export const ModernWalletTabScreen: React.FC = () => {
         onNavigate={(route: any, state?: any) => navigate(route, state)}
         currentKeyring={currentKeyring}
         currentAccount={currentAccount}
+      />
+
+      {/* Remove Wallet Confirmation Modal */}
+      <ModernRemoveWalletModal
+        visible={showRemoveModal}
+        walletName={accountToRemove?.alianName || `Account ${(accountToRemove?.index || 0) + 1}`}
+        walletAddress={accountToRemove?.address || ''}
+        isLastKeyring={allKeyrings.length === 1}
+        isLastAccountInKeyring={
+          allKeyrings.find((k) => k.accounts.some((acc) => acc.address === accountToRemove?.address))?.accounts
+            .length === 1 || false
+        }
+        totalAccountsInWallet={allAccounts.length}
+        onConfirm={confirmRemoveWallet}
+        onCancel={cancelRemoveWallet}
       />
     </div>
   );

@@ -5,49 +5,49 @@ import { ContactBookItem } from '@/background/service/contactBook';
 import { ConnectedSite } from '@/background/service/permission';
 import { AddressFlagType, ChainType } from '@/shared/constant';
 import {
-  Account,
-  AddressAlkanesTokenSummary,
-  AddressCAT20TokenSummary,
-  AddressCAT20UtxoSummary,
-  AddressCAT721CollectionSummary,
-  AddressRunesTokenSummary,
-  AddressSummary,
-  AddressTokenSummary,
-  AlkanesBalance,
-  AlkanesCollection,
-  AlkanesInfo,
-  AppInfo,
-  AppSummary,
-  BabylonAddressSummary,
-  BitcoinBalance,
-  BitcoinBalanceV2,
-  BRC20HistoryItem,
-  BtcChannelItem,
-  CAT20Balance,
-  CAT20MergeOrder,
-  CAT721Balance,
-  CoinPrice,
-  CosmosBalance,
-  CosmosSignDataType,
-  DecodedPsbt,
-  FeeSummary,
-  InscribeOrder,
-  Inscription,
-  InscriptionSummary,
-  NetworkType,
-  RuneBalance,
-  SignPsbtOptions,
-  TickPriceItem,
-  TokenBalance,
-  TokenTransfer,
-  TxHistoryItem,
-  UserToSignInput,
-  UTXO,
-  UTXO_Detail,
-  VersionDetail,
-  WalletConfig,
-  WalletKeyring,
-  WebsiteResult
+    Account,
+    AddressAlkanesTokenSummary,
+    AddressCAT20TokenSummary,
+    AddressCAT20UtxoSummary,
+    AddressCAT721CollectionSummary,
+    AddressRunesTokenSummary,
+    AddressSummary,
+    AddressTokenSummary,
+    AlkanesBalance,
+    AlkanesCollection,
+    AlkanesInfo,
+    AppInfo,
+    AppSummary,
+    BabylonAddressSummary,
+    BitcoinBalance,
+    BitcoinBalanceV2,
+    BRC20HistoryItem,
+    BtcChannelItem,
+    CAT20Balance,
+    CAT20MergeOrder,
+    CAT721Balance,
+    CoinPrice,
+    CosmosBalance,
+    CosmosSignDataType,
+    DecodedPsbt,
+    FeeSummary,
+    InscribeOrder,
+    Inscription,
+    InscriptionSummary,
+    NetworkType,
+    RuneBalance,
+    SignPsbtOptions,
+    TickPriceItem,
+    TokenBalance,
+    TokenTransfer,
+    TxHistoryItem,
+    UserToSignInput,
+    UTXO,
+    UTXO_Detail,
+    VersionDetail,
+    WalletConfig,
+    WalletKeyring,
+    WebsiteResult
 } from '@/shared/types';
 import { BabylonConfigV2 } from '@unisat/babylon-service/types';
 import { ContactBookStore } from '@unisat/contact-book';
@@ -173,6 +173,7 @@ export interface WalletController {
     accountCount?: number
   ): Promise<WalletKeyring>;
   removeKeyring(keyring: WalletKeyring): Promise<WalletKeyring>;
+  removeAccount(account: Account): Promise<boolean>;
   deriveNewAccountFromMnemonic(keyring: WalletKeyring, alianName?: string): Promise<string[]>;
   getAccountsCount(): Promise<number>;
   getAllAlianName: () => (ContactBookItem | undefined)[];
@@ -678,3 +679,4 @@ const useWallet = () => {
 };
 
 export { useWallet, WalletProvider };
+

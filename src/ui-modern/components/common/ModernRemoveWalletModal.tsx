@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 
-import { TrashIcon } from './ModernIcons';
+import { ModernButton } from './ModernButton';
 
 interface ModernRemoveWalletModalProps {
   visible: boolean;
@@ -24,11 +24,8 @@ export const ModernRemoveWalletModal: React.FC<ModernRemoveWalletModalProps> = (
   onConfirm,
   onCancel
 }) => {
-  // Can't remove if it's the last account in the last keyring
-  const cannotRemove = isLastKeyring && isLastAccountInKeyring;
-
-  // Will remove entire keyring if it's the last account in the keyring
-  const willRemoveKeyring = isLastAccountInKeyring;
+  // Can't remove if it's the last account in its keyring (backend constraint)
+  const cannotRemove = isLastAccountInKeyring;
 
   return (
     <AnimatePresence>
@@ -66,50 +63,32 @@ export const ModernRemoveWalletModal: React.FC<ModernRemoveWalletModalProps> = (
 
           {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.2 }}
             style={{
               position: 'relative',
               width: '90%',
               maxWidth: '400px',
               background: 'rgba(28, 28, 30, 0.98)',
               backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderRadius: '16px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '12px',
               padding: '24px',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6)'
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
             }}>
-            {/* Icon */}
-            <div
-              style={{
-                width: '56px',
-                height: '56px',
-                borderRadius: '50%',
-                background: cannotRemove
-                  ? 'linear-gradient(135deg, rgba(255, 149, 0, 0.2) 0%, rgba(255, 69, 58, 0.2) 100%)'
-                  : 'linear-gradient(135deg, rgba(255, 59, 48, 0.2) 0%, rgba(255, 45, 85, 0.2) 100%)',
-                border: cannotRemove ? '2px solid rgba(255, 149, 0, 0.5)' : '2px solid rgba(255, 59, 48, 0.5)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 20px'
-              }}>
-              <TrashIcon size={24} color={cannotRemove ? '#FF9500' : '#ff3b30'} />
-            </div>
-
             {/* Title */}
             <h2
               style={{
-                margin: '0 0 12px',
-                fontSize: '22px',
-                fontWeight: '700',
+                margin: '0 0 16px',
+                fontSize: '18px',
+                fontWeight: '600',
                 color: '#ffffff',
-                textAlign: 'center',
-                letterSpacing: '-0.5px'
+                textAlign: 'left',
+                letterSpacing: '-0.3px'
               }}>
-              {cannotRemove ? 'Cannot Remove Account' : willRemoveKeyring ? 'Remove Keyring?' : 'Remove Account?'}
+              {cannotRemove ? 'Cannot Remove Account' : 'Remove Account'}
             </h2>
 
             {/* Description */}
@@ -120,111 +99,53 @@ export const ModernRemoveWalletModal: React.FC<ModernRemoveWalletModalProps> = (
               {cannotRemove ? (
                 <p
                   style={{
-                    margin: '0 0 16px',
-                    fontSize: '15px',
+                    margin: '0',
+                    fontSize: '14px',
                     lineHeight: '1.5',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    textAlign: 'center'
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    letterSpacing: '-0.022em'
                   }}>
-                  You cannot remove your last account. You must have at least one account to use the extension.
+                  You cannot remove the last account from this wallet.
                 </p>
               ) : (
                 <>
-                  {/* Wallet Info Card */}
+                  {/* Wallet Info */}
                   <div
                     style={{
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: '12px',
-                      padding: '16px',
                       marginBottom: '16px'
                     }}>
                     <div
                       style={{
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        color: '#ffffff',
-                        marginBottom: '8px',
-                        textAlign: 'center'
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        marginBottom: '4px',
+                        letterSpacing: '-0.022em'
                       }}>
                       {walletName}
                     </div>
                     <div
                       style={{
-                        fontSize: '13px',
+                        fontSize: '12px',
                         fontFamily: 'monospace',
-                        color: 'rgba(255, 255, 255, 0.5)',
-                        textAlign: 'center',
-                        wordBreak: 'break-all'
+                        color: 'rgba(255, 255, 255, 0.4)',
+                        letterSpacing: '0'
                       }}>
-                      {walletAddress.substring(0, 12)}...
-                      {walletAddress.substring(walletAddress.length - 12)}
+                      {walletAddress.substring(0, 12)}...{walletAddress.substring(walletAddress.length - 12)}
                     </div>
                   </div>
 
-                  {/* Info Message for Keyring deletion */}
-                  {willRemoveKeyring && (
-                    <div
-                      style={{
-                        background: 'rgba(94, 158, 214, 0.15)',
-                        border: '1px solid rgba(94, 158, 214, 0.3)',
-                        borderRadius: '10px',
-                        padding: '12px 16px',
-                        marginBottom: '12px'
-                      }}>
-                      <p
-                        style={{
-                          margin: 0,
-                          fontSize: '14px',
-                          lineHeight: '1.5',
-                          color: '#5E9ED6',
-                          fontWeight: '500'
-                        }}>
-                        ℹ️ This is the last account in this keyring. The entire keyring will be removed.
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Warning Messages */}
-                  <div
+                  {/* Warning */}
+                  <p
                     style={{
-                      background: 'rgba(255, 149, 0, 0.1)',
-                      border: '1px solid rgba(255, 149, 0, 0.3)',
-                      borderRadius: '10px',
-                      padding: '12px 16px',
-                      marginBottom: '12px'
+                      margin: 0,
+                      fontSize: '13px',
+                      lineHeight: '1.5',
+                      color: 'rgba(255, 255, 255, 0.6)',
+                      letterSpacing: '-0.022em'
                     }}>
-                    <p
-                      style={{
-                        margin: 0,
-                        fontSize: '14px',
-                        lineHeight: '1.5',
-                        color: '#FF9500',
-                        fontWeight: '500'
-                      }}>
-                      ⚠️ Please ensure you have backed up your{' '}
-                      {willRemoveKeyring ? 'recovery phrase or private key' : 'private key'}
-                    </p>
-                  </div>
-
-                  <div
-                    style={{
-                      background: 'rgba(255, 59, 48, 0.1)',
-                      border: '1px solid rgba(255, 59, 48, 0.3)',
-                      borderRadius: '10px',
-                      padding: '12px 16px'
-                    }}>
-                    <p
-                      style={{
-                        margin: 0,
-                        fontSize: '14px',
-                        lineHeight: '1.5',
-                        color: '#ff3b30',
-                        fontWeight: '500'
-                      }}>
-                      🚨 This action is irreversible and cannot be undone
-                    </p>
-                  </div>
+                    This action cannot be undone. Make sure you have backed up your private key.
+                  </p>
                 </>
               )}
             </div>
@@ -236,85 +157,19 @@ export const ModernRemoveWalletModal: React.FC<ModernRemoveWalletModalProps> = (
                 gap: '12px',
                 flexDirection: cannotRemove ? 'column' : 'row'
               }}>
-              {!cannotRemove && (
+              {!cannotRemove ? (
                 <>
-                  <motion.button
-                    whileTap={{ scale: 0.98 }}
-                    onClick={onCancel}
-                    style={{
-                      flex: 1,
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      cursor: 'pointer',
-                      color: '#ffffff',
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                    }}>
+                  <ModernButton variant="secondary" onClick={onCancel} style={{ flex: 1 }}>
                     Cancel
-                  </motion.button>
-
-                  <motion.button
-                    whileTap={{ scale: 0.98 }}
-                    onClick={onConfirm}
-                    style={{
-                      flex: 1,
-                      background: 'linear-gradient(135deg, #ff3b30 0%, #ff2d55 100%)',
-                      border: 'none',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      cursor: 'pointer',
-                      color: '#ffffff',
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      transition: 'all 0.2s ease',
-                      boxShadow: '0 4px 12px rgba(255, 59, 48, 0.3)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = '0 6px 16px rgba(255, 59, 48, 0.4)';
-                      e.currentTarget.style.transform = 'translateY(-1px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 59, 48, 0.3)';
-                      e.currentTarget.style.transform = 'translateY(0)';
-                    }}>
-                    {willRemoveKeyring ? 'Remove Keyring' : 'Remove Account'}
-                  </motion.button>
+                  </ModernButton>
+                  <ModernButton variant="primary" onClick={onConfirm} style={{ flex: 1 }}>
+                    Remove
+                  </ModernButton>
                 </>
-              )}
-
-              {cannotRemove && (
-                <motion.button
-                  whileTap={{ scale: 0.98 }}
-                  onClick={onCancel}
-                  style={{
-                    width: '100%',
-                    background: 'var(--modern-accent-primary)',
-                    border: 'none',
-                    borderRadius: '12px',
-                    padding: '14px',
-                    cursor: 'pointer',
-                    color: '#000000',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.opacity = '0.9';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.opacity = '1';
-                  }}>
+              ) : (
+                <ModernButton variant="primary" onClick={onCancel} fullWidth>
                   OK
-                </motion.button>
+                </ModernButton>
               )}
             </div>
           </motion.div>
@@ -323,3 +178,4 @@ export const ModernRemoveWalletModal: React.FC<ModernRemoveWalletModalProps> = (
     </AnimatePresence>
   );
 };
+

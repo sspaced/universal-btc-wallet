@@ -4,52 +4,52 @@ import { pubkeyInScript } from 'bitcoinjs-lib/src/psbt/psbtutils';
 import bitcore from 'bitcore-lib';
 
 import {
-  contactBookService,
-  keyringService,
-  notificationService,
-  permissionService,
-  preferenceService,
-  sessionService,
-  simplicityService,
-  walletApiService
+    contactBookService,
+    keyringService,
+    notificationService,
+    permissionService,
+    preferenceService,
+    sessionService,
+    simplicityService,
+    walletApiService
 } from '@/background/service';
 import { psbtFromString } from '@/background/utils/psbt-utils';
 import {
-  ADDRESS_TYPES,
-  AddressFlagType,
-  AUTO_LOCK_TIMES,
-  BRAND_ALIAN_TYPE_TEXT,
-  CHAINS_MAP,
-  COIN_NAME,
-  COIN_SYMBOL,
-  DEFAULT_LOCKTIME_ID,
-  EVENTS,
-  KEYRING_TYPES,
-  NETWORK_TYPES
+    ADDRESS_TYPES,
+    AddressFlagType,
+    AUTO_LOCK_TIMES,
+    BRAND_ALIAN_TYPE_TEXT,
+    CHAINS_MAP,
+    COIN_NAME,
+    COIN_SYMBOL,
+    DEFAULT_LOCKTIME_ID,
+    EVENTS,
+    KEYRING_TYPES,
+    NETWORK_TYPES
 } from '@/shared/constant';
 import eventBus from '@/shared/eventBus';
 import { runesUtils } from '@/shared/lib/runes-utils';
 import {
-  Account,
-  AddressUserToSignInput,
-  BitcoinBalance,
-  BRC20HistoryItem,
-  CosmosBalance,
-  CosmosSignDataType,
-  NetworkType,
-  PublicKeyUserToSignInput,
-  SignPsbtOptions,
-  UTXO,
-  WalletKeyring
+    Account,
+    AddressUserToSignInput,
+    BitcoinBalance,
+    BRC20HistoryItem,
+    CosmosBalance,
+    CosmosSignDataType,
+    NetworkType,
+    PublicKeyUserToSignInput,
+    SignPsbtOptions,
+    UTXO,
+    WalletKeyring
 } from '@/shared/types';
 import { getChainInfo } from '@/shared/utils';
 import {
-  BabylonConfigV2,
-  COSMOS_CHAINS_MAP,
-  CosmosChainInfo,
-  CosmosKeyring,
-  DelegationV2StakingState,
-  getDelegationsV2
+    BabylonConfigV2,
+    COSMOS_CHAINS_MAP,
+    CosmosChainInfo,
+    CosmosKeyring,
+    DelegationV2StakingState,
+    getDelegationsV2
 } from '@unisat/babylon-service';
 import { t } from '@unisat/i18n';
 import { ColdWalletKeyring, KeystoneKeyring } from '@unisat/keyring-service';
@@ -58,16 +58,16 @@ import * as txHelpers from '@unisat/tx-helpers';
 import { signMessageOfBIP322Simple, UnspentOutput } from '@unisat/tx-helpers';
 import { CAT_VERSION } from '@unisat/wallet-api';
 import {
-  bitcoin,
-  eccManager,
-  genPsbtOfBIP322Simple,
-  getSignatureFromPsbtOfBIP322Simple,
-  isValidAddress,
-  publicKeyToAddress,
-  scriptPkToAddress,
-  toPsbtNetwork,
-  toXOnly,
-  UTXO_DUST
+    bitcoin,
+    eccManager,
+    genPsbtOfBIP322Simple,
+    getSignatureFromPsbtOfBIP322Simple,
+    isValidAddress,
+    publicKeyToAddress,
+    scriptPkToAddress,
+    toPsbtNetwork,
+    toXOnly,
+    UTXO_DUST
 } from '@unisat/wallet-bitcoin';
 import { AddressType, ChainType } from '@unisat/wallet-types';
 
@@ -477,6 +477,80 @@ export class WalletController extends BaseController {
       this.changeKeyring(nextKeyring);
       return nextKeyring;
     }
+  };
+
+  removeAccount = async (account: Account) => {
+    // Get all wallet keyrings to find the correct one
+    const walletKeyrings = await this.getKeyrings();
+
+    // Find the wallet keyring that contains this account
+    let targetWalletKeyring: WalletKeyring | null = null;
+    let accountToRemove: Account | null = null;
+    for (const wk of walletKeyrings) {
+      const foundAccount = wk.accounts.find((acc) => acc.address === account.address);
+      if (foundAccount) {
+        targetWalletKeyring = wk;
+        accountToRemove = foundAccount;
+        break;
+      }
+    }
+
+    if (!targetWalletKeyring || !accountToRemove) {
+      throw new Error('Account not found in any keyring');
+    }
+
+    // Cannot remove the last account from a keyring
+    if (targetWalletKeyring.accounts.length === 1) {
+      throw new Error('Cannot remove the last account. Please remove the entire wallet instead.');
+    }
+
+    // Get the actual keyring from keyringService
+    const targetKeyring = keyringService.keyrings[targetWalletKeyring.index];
+
+    // Get all pubkeys from the keyring
+    const allPubkeys = await targetKeyring.getAccounts();
+
+    // Find the pubkey that corresponds to this account's address
+    // We need to convert each pubkey to an address and compare
+    const networkType = this.getNetworkType();
+    const addressType = targetWalletKeyring.addressType;
+    let pubkeyToRemove: string | null = null;
+
+    for (const pubkey of allPubkeys) {
+      const addr = publicKeyToAddress(pubkey, addressType, networkType);
+      if (addr === account.address) {
+        pubkeyToRemove = pubkey;
+        break;
+      }
+    }
+
+    if (!pubkeyToRemove) {
+      throw new Error('Public key not found for this account');
+    }
+
+    // Remove the account using the found pubkey
+    // Call the keyring's removeAccount method directly (not through keyringService)
+    // because keyringService.removeAccount expects an address but keyrings expect a pubkey
+    await targetKeyring.removeAccount(pubkeyToRemove);
+
+    // Now persist the changes and update cache (same as keyringService.removeAccount does)
+    await keyringService.persistAllKeyrings();
+    await keyringService._updateMemStoreKeyrings();
+    keyringService.cachedDisplayedKeyring = null;
+    await keyringService.fullUpdate();
+
+    // If we removed the current account, switch to another account
+    const currentAccount = await this.getCurrentAccount();
+    if (currentAccount.address === account.address) {
+      // Reload keyrings and switch to first account of this keyring
+      await this.changeKeyring(targetWalletKeyring, 0);
+    }
+
+    // Clean up preferences
+    preferenceService.removeAddressBalance(account.address);
+    preferenceService.removeAddressHistory(account.address);
+
+    return true;
   };
 
   getKeyringByType = (type: string) => {

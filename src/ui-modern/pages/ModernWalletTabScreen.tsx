@@ -89,26 +89,21 @@ export const ModernWalletTabScreen: React.FC = () => {
     console.log('Current keyring type:', currentKeyring.type);
     console.log('All keyrings:', allKeyrings);
 
-    // Convert all accounts to the format expected by ModernSidebar with keyring indicators
+    // Convert all accounts to the format expected by ModernSidebar
     return allAccounts.map((account, index) => {
       // Trouver le keyring qui contient ce compte
       const keyring = allKeyrings.find((k) => k.accounts.some((acc) => acc.address === account.address));
-
-      // Générer un nom avec indicateur de keyring
-      const keyringIndex = keyring ? keyring.index + 1 : 1;
       const accountIndex = account.index + 1;
-      const keyringIndicator = `HD${keyringIndex}`;
 
-      // Si le compte a déjà un nom personnalisé, l'utiliser, sinon générer un nom avec indicateur
-      const baseName = account.alianName || `Account ${accountIndex}`;
-      const displayName = account.alianName ? `${baseName} (${keyringIndicator})` : `${keyringIndicator} - ${baseName}`;
+      // Utiliser le nom personnalisé ou générer "Account X"
+      const displayName = account.alianName || `Account ${accountIndex}`;
 
       return {
         address: account.address || '',
         alianName: displayName,
         index: account.index || index,
         type: account.type || currentKeyring.type,
-        keyringIndex: keyringIndex
+        keyringIndex: keyring ? keyring.index + 1 : 1
       };
     });
   }, [allAccounts, currentKeyring, allKeyrings]);
@@ -226,12 +221,22 @@ export const ModernWalletTabScreen: React.FC = () => {
   }, [isUnlocked, reloadAccounts]);
 
   const handleEditWalletName = async (account: Account) => {
-    // Update wallet name via API
+    // Update account name via API
     try {
-      const newKeyring = await wallet.setKeyringAlianName(currentKeyring, account.alianName || '');
-      dispatch(keyringsActions.updateKeyringName(newKeyring));
+      // Find the actual account object from allAccounts
+      const accountToUpdate = allAccounts.find((acc) => acc.address === account.address);
+      if (!accountToUpdate) {
+        console.error('Account not found');
+        return;
+      }
+      
+      // Update the account name
+      await wallet.setAccountAlianName(accountToUpdate, account.alianName || '');
+      
+      // Reload accounts to reflect the change
+      await reloadAccounts();
     } catch (error) {
-      console.error('Failed to update wallet name:', error);
+      console.error('Failed to update account name:', error);
     }
   };
 

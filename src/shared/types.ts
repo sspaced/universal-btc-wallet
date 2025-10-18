@@ -10,11 +10,11 @@ export enum NetworkType {
 }
 
 export enum RestoreWalletType {
-  UNISAT,
-  SPARROW,
-  XVERSE,
-  OW,
-  OTHERS
+  UNISAT = 1,
+  SPARROW = 2,
+  XVERSE = 3,
+  OW = 4,
+  OTHERS = 5
 }
 
 /**

@@ -39,7 +39,7 @@ export const ModernWelcomeScreen: React.FC = () => {
   const handleImportWallet = async () => {
     const isBooted = await wallet.isBooted();
     if (isBooted) {
-      navigate('CreateHDWalletScreen', { isImport: true });
+      navigate('WalletSelectionScreen');
     } else {
       navigate('CreatePasswordScreen', { isNewAccount: false });
     }

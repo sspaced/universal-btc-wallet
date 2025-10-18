@@ -16,6 +16,7 @@ import { ModernAssetSelectionScreen } from '../../ui-modern/pages/ModernAssetSel
 import { ModernChangePasswordScreen } from '../../ui-modern/pages/ModernChangePasswordScreen';
 import { ModernContactsScreen } from '../../ui-modern/pages/ModernContactsScreen';
 import { ModernCreateAccountScreen } from '../../ui-modern/pages/ModernCreateAccountScreen';
+import { ModernCreateHDWalletScreen } from '../../ui-modern/pages/ModernCreateHDWalletScreen';
 import { ModernCreateSimpleWalletScreen } from '../../ui-modern/pages/ModernCreateSimpleWalletScreen';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
 import { ModernExportPrivateKeyScreen } from '../../ui-modern/pages/ModernExportPrivateKeyScreen';
@@ -102,11 +103,6 @@ const ModernWelcomeScreen = lazy(() =>
 const ModernCreatePasswordScreen = lazy(() =>
   import('../../ui-modern/pages/ModernCreatePasswordScreen').then((module) => ({
     default: module.ModernCreatePasswordScreen
-  }))
-);
-const ModernCreateHDWalletScreen = lazy(() =>
-  import('../../ui-modern/pages/ModernCreateHDWalletScreen').then((module) => ({
-    default: module.ModernCreateHDWalletScreen
   }))
 );
 const ModernWalletTabScreen = lazy(() =>

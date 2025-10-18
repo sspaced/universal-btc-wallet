@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { usePrice } from '@/ui/provider/PriceProvider';
 import { useAccountBalance } from '@/ui/state/accounts/hooks';
+import { useWallet } from '@/ui/utils';
 
 import { ModernButton } from '../components/common/ModernButton';
 import { ModernHeader } from '../components/layout/ModernHeader';
@@ -22,6 +23,7 @@ export const ModernSwapScreen: React.FC = () => {
   const { assets: userAssets, loading: assetsLoading } = useAssets();
   const { tokens: simplicityTokens, loading: simplicityLoading } = useSimplicityTokens();
   const { coinPrice } = usePrice();
+  const wallet = useWallet();
 
   // Get selected asset from navigation state
   const selectedAsset = (location.state as any)?.selectedAsset;
@@ -34,6 +36,11 @@ export const ModernSwapScreen: React.FC = () => {
   const [fromDropdownOpen, setFromDropdownOpen] = useState(false);
   const [toDropdownOpen, setToDropdownOpen] = useState(false);
   const [slippage, setSlippage] = useState(1);
+
+  // Token price states
+  const [fromTokenPrice, setFromTokenPrice] = useState<number>(0);
+  const [toTokenPrice, setToTokenPrice] = useState<number>(0);
+  const [priceLoading, setPriceLoading] = useState<Record<string, boolean>>({});
 
   // Use real BTC balance from wallet
   const btcBalance = accountBalance?.amount || '0';
@@ -107,12 +114,40 @@ export const ModernSwapScreen: React.FC = () => {
     );
   };
 
-  // Helper function to get token price (simplified - returns 0 if no price data)
-  const getTokenPrice = (symbol: string): number => {
-    // For now, return 0 as we don't have token price data readily available
-    // This could be enhanced to fetch from an API or use cached price data
-    return 0;
-  };
+  // Function to fetch token price from the API
+  const fetchTokenPrice = useCallback(
+    async (symbol: string, type: 'from' | 'to') => {
+      if (symbol === 'BTC') {
+        return;
+      }
+
+      setPriceLoading((prev) => ({ ...prev, [symbol]: true }));
+
+      try {
+        const priceMap = await wallet.getSimplicitysPrice([symbol]);
+        const price = priceMap[symbol];
+        const priceValue = price ? price.curPrice : 0;
+
+        console.log(`Token price for ${symbol}:`, priceValue);
+
+        if (type === 'from') {
+          setFromTokenPrice(priceValue);
+        } else {
+          setToTokenPrice(priceValue);
+        }
+      } catch (error) {
+        console.error('Failed to fetch token price for', symbol, error);
+        if (type === 'from') {
+          setFromTokenPrice(0);
+        } else {
+          setToTokenPrice(0);
+        }
+      } finally {
+        setPriceLoading((prev) => ({ ...prev, [symbol]: false }));
+      }
+    },
+    [wallet]
+  );
 
   // Initialize currencies with selected asset or default BTC
   const [fromCurrency, setFromCurrency] = useState<Currency>(() => {
@@ -277,6 +312,24 @@ export const ModernSwapScreen: React.FC = () => {
     }
   }, [availableToCurrencies, simplicityLoading, toCurrency.symbol]);
 
+  // Fetch price when fromCurrency changes
+  useEffect(() => {
+    if (fromCurrency?.symbol && fromCurrency.symbol !== 'BTC') {
+      fetchTokenPrice(fromCurrency.symbol, 'from');
+    } else {
+      setFromTokenPrice(0);
+    }
+  }, [fromCurrency, fetchTokenPrice]);
+
+  // Fetch price when toCurrency changes
+  useEffect(() => {
+    if (toCurrency?.symbol && toCurrency.symbol !== 'BTC') {
+      fetchTokenPrice(toCurrency.symbol, 'to');
+    } else {
+      setToTokenPrice(0);
+    }
+  }, [toCurrency, fetchTokenPrice]);
+
   const handleSwapCurrencies = () => {
     // Sauvegarder les valeurs actuelles
     const tempCurrency = fromCurrency;
@@ -404,8 +457,8 @@ export const ModernSwapScreen: React.FC = () => {
             onSlippageChange={setSlippage}
             showSlippageSettings={true}
             btcPrice={coinPrice?.btc || 0}
-            tokenPrice={fromCurrency?.symbol && fromCurrency.symbol !== 'BTC' ? getTokenPrice(fromCurrency.symbol) : 0}
-            loading={assetsLoading}
+            tokenPrice={fromTokenPrice}
+            loading={assetsLoading || priceLoading[fromCurrency?.symbol || '']}
           />
         </motion.div>
 
@@ -442,8 +495,8 @@ export const ModernSwapScreen: React.FC = () => {
             balance={toCurrency.balance}
             onDropdownToggle={setToDropdownOpen}
             btcPrice={coinPrice?.btc || 0}
-            tokenPrice={toCurrency?.symbol && toCurrency.symbol !== 'BTC' ? getTokenPrice(toCurrency.symbol) : 0}
-            loading={simplicityLoading}
+            tokenPrice={toTokenPrice}
+            loading={simplicityLoading || priceLoading[toCurrency?.symbol || '']}
           />
         </motion.div>
 

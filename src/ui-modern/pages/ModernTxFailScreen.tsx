@@ -142,7 +142,7 @@ export const ModernTxFailScreen: React.FC = () => {
                     marginBottom: '12px',
                     fontWeight: '500'
                   }}>
-                  Error Details
+                  {t('error_details')}
                 </p>
                 <p
                   style={{

@@ -436,6 +436,9 @@
   "home": {
     "message": "Inicio"
   },
+  "swap": {
+    "message": "Intercambiar"
+  },
   "discover": {
     "message": "Descubrir"
   },
@@ -2443,5 +2446,17 @@
   },
   "all_networks": {
     "message": "Todas las redes"
+  },
+  "swap_confirmation": {
+    "message": "Confirmación de intercambio"
+  },
+  "error_details": {
+    "message": "Detalles del error"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "El tipo de dirección de billetera fría no se puede cambiar"
+  },
+  "address_type_changed_successfully": {
+    "message": "Tipo de dirección cambiado con éxito"
   }
 }

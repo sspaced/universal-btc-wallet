@@ -436,6 +436,9 @@
   "home": {
     "message": "首頁"
   },
+  "swap": {
+    "message": "兌換"
+  },
   "discover": {
     "message": "探索"
   },
@@ -2461,5 +2464,17 @@
   },
   "all_networks": {
     "message": "所有網絡"
+  },
+  "swap_confirmation": {
+    "message": "兌換確認"
+  },
+  "error_details": {
+    "message": "錯誤詳情"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "冷錢包地址類型無法更改"
+  },
+  "address_type_changed_successfully": {
+    "message": "地址類型更改成功"
   }
 }

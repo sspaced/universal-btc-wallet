@@ -23,6 +23,19 @@ export const ModernStep2Screen: React.FC<{
 
   const hdPathOptions = useMemo(() => {
     const restoreWallet = getRestoreWallets()[contextData.restoreWalletType];
+    
+    // If restoreWallet is not found, return all non-legacy address types
+    if (!restoreWallet) {
+      return ADDRESS_TYPES.filter((v) => v.displayIndex >= 0 && !v.isUnisatLegacy)
+        .sort((a, b) => a.displayIndex - b.displayIndex)
+        .map((v) => ({
+          label: v.name,
+          hdPath: v.hdPath,
+          addressType: v.value,
+          isUnisatLegacy: v.isUnisatLegacy
+        }));
+    }
+    
     return ADDRESS_TYPES.filter((v) => {
       if (v.displayIndex < 0) {
         return false;

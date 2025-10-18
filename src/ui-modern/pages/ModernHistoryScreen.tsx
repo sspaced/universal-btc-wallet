@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion';
 import BigNumber from 'bignumber.js';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 import { runesUtils } from '@/shared/lib/runes-utils';
+import { useNavigate } from '@/ui/pages/MainRoute';
 import { useAccountAddress } from '@/ui/state/accounts/hooks';
 import { satoshisToBTC, shortAddress, useWallet } from '@/ui/utils';
-import { useNavigate } from '@/ui/pages/MainRoute';
 import { ModernHeader } from '../components/layout/ModernHeader';
 
 interface ExtraItem {
@@ -218,7 +218,7 @@ export const ModernHistoryScreen: React.FC = () => {
       }}>
       {/* Header */}
       <ModernHeader
-        title="History"
+        title={t('history')}
         onBack={() => navigate('MainScreen')}
         showBackButton={true}
       />

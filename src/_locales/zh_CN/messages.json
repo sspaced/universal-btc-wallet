@@ -2368,5 +2368,17 @@
   },
   "all_networks": {
     "message": "所有网络"
+  },
+  "swap_confirmation": {
+    "message": "兑换确认"
+  },
+  "error_details": {
+    "message": "错误详情"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "冷钱包地址类型无法更改"
+  },
+  "address_type_changed_successfully": {
+    "message": "地址类型更改成功"
   }
 }

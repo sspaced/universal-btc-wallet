@@ -19,8 +19,7 @@ export const ModernLanguageScreen: React.FC = () => {
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'zh_CN', name: '简体中文', flag: '🇨🇳' },
-    { code: 'zh_TW', name: '繁體中文', flag: '🇹🇼' },
+    { code: 'zh_TW', name: '中文 (繁體/简体)', flag: '🇨🇳' },
     { code: 'ja', name: '日本語', flag: '🇯🇵' },
     { code: 'es', name: 'Español', flag: '🇪🇸' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
@@ -39,18 +38,25 @@ export const ModernLanguageScreen: React.FC = () => {
     try {
       setSelectedLocale(languageCode);
 
-      // Use the proper changeLocale method from i18n context
-      await changeLocale(languageCode);
+      // 1. Set flag to indicate user explicitly chose a language
+      localStorage.setItem('userSelectedLanguage', 'true');
 
-      // Send message to background script for language change
+      // Map zh_CN to zh_TW since @unisat/i18n only supports zh_TW
+      const mappedLocale = languageCode === 'zh_CN' ? 'zh_TW' : languageCode;
+
+      // 2. Change locale via i18n context (updates localStorage and chrome.storage)
+      await changeLocale(mappedLocale);
+
+      // 3. Persist in backend PreferenceService (use original code for UI display)
+      await wallet.setLocale(languageCode);
+
+      // 4. Notify background script for synchronization
       if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
-        chrome.runtime.sendMessage({ type: 'CHANGE_LANGUAGE', locale: languageCode });
+        chrome.runtime.sendMessage({ type: 'CHANGE_LANGUAGE', locale: mappedLocale });
       }
 
-      // Navigate back instead of reloading the page
-      setTimeout(() => {
-        navigate('MainScreen', { openSettings: true });
-      }, 500); // Small delay to ensure language change is processed
+      // 5. Navigate back immediately
+      navigate('MainScreen', { openSettings: true });
     } catch (error) {
       console.error('Failed to change language:', error);
       // Revert the selection on error

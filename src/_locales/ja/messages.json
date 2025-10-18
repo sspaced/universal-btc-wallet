@@ -438,6 +438,9 @@
   "home": {
     "message": "ホーム"
   },
+  "swap": {
+    "message": "スワップ"
+  },
   "discover": {
     "message": "発見"
   },
@@ -2453,5 +2456,17 @@
   },
   "all_networks": {
     "message": "すべてのネットワーク"
+  },
+  "swap_confirmation": {
+    "message": "スワップ確認"
+  },
+  "error_details": {
+    "message": "エラー詳細"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "コールドウォレットのアドレスタイプは変更できません"
+  },
+  "address_type_changed_successfully": {
+    "message": "アドレスタイプが正常に変更されました"
   }
 }

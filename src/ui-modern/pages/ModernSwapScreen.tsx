@@ -424,7 +424,7 @@ export const ModernSwapScreen: React.FC = () => {
         overflow: 'hidden'
       }}>
       {/* Header */}
-      <ModernHeader title="Swap" onBack={() => navigate('MainScreen')} showBackButton={true} />
+      <ModernHeader title={t('swap')} onBack={() => navigate('MainScreen')} showBackButton={true} />
 
       {/* Main Content */}
       <div

@@ -2635,5 +2635,17 @@
   },
   "all_networks": {
     "message": "All Networks"
+  },
+  "swap_confirmation": {
+    "message": "Swap Confirmation"
+  },
+  "error_details": {
+    "message": "Error Details"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "Cold wallet address type cannot be changed"
+  },
+  "address_type_changed_successfully": {
+    "message": "Address type changed successfully"
   }
 }

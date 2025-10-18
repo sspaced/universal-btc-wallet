@@ -2600,5 +2600,17 @@
   },
   "all_networks": {
     "message": "Tous les réseaux"
+  },
+  "swap_confirmation": {
+    "message": "Confirmation d'échange"
+  },
+  "error_details": {
+    "message": "Détails de l'erreur"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "Le type d'adresse du portefeuille froid ne peut pas être modifié"
+  },
+  "address_type_changed_successfully": {
+    "message": "Type d'adresse modifié avec succès"
   }
 }

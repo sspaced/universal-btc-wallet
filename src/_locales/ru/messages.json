@@ -438,6 +438,9 @@
   "home": {
     "message": "Главная"
   },
+  "swap": {
+    "message": "Обмен"
+  },
   "discover": {
     "message": "Обзор"
   },
@@ -2450,5 +2453,17 @@
   },
   "all_networks": {
     "message": "Все сети"
+  },
+  "swap_confirmation": {
+    "message": "Подтверждение обмена"
+  },
+  "error_details": {
+    "message": "Детали ошибки"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "Тип адреса холодного кошелька нельзя изменить"
+  },
+  "address_type_changed_successfully": {
+    "message": "Тип адреса успешно изменен"
   }
 }

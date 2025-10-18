@@ -207,14 +207,14 @@ export const ModernAddressTypeScreen: React.FC = () => {
 
                   // Cold wallets do not allow switching address types
                   if (currentKeyring.type === KeyringType.ColdWalletKeyring) {
-                    tools.toastError('Cold wallet address type cannot be changed');
+                    tools.toastError(t('cold_wallet_address_type_cannot_be_changed'));
                     return;
                   }
 
                   await wallet.changeAddressType(item.value);
                   reloadAccounts();
                   navigate('MainScreen');
-                  tools.toastSuccess('Address type changed successfully');
+                  tools.toastSuccess(t('address_type_changed_successfully'));
                 }}
               />
             </motion.div>

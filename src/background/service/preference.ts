@@ -5,15 +5,15 @@ import { createPersistStore } from '@/background/utils';
 import { AddressFlagType, CHAINS, ChainType, DEFAULT_LOCKTIME_ID, EVENTS } from '@/shared/constant';
 import eventBus from '@/shared/eventBus';
 import {
-  Account,
-  AddressTokenSummary,
-  AppSummary,
-  BitcoinBalance,
-  Inscription,
-  NetworkType,
-  TokenBalance,
-  TokenTransfer,
-  TxHistoryItem
+    Account,
+    AddressTokenSummary,
+    AppSummary,
+    BitcoinBalance,
+    Inscription,
+    NetworkType,
+    TokenBalance,
+    TokenTransfer,
+    TxHistoryItem
 } from '@/shared/types';
 import { AddressType } from '@unisat/wallet-types';
 
@@ -92,7 +92,7 @@ export interface PreferenceStore {
   developerMode: boolean;
 }
 
-const SUPPORTED_LOCALES = ['en', 'zh_CN', 'zh_TW', 'fr', 'es', 'ru', 'ja'];
+const SUPPORTED_LOCALES = ['en', 'zh_TW', 'fr', 'es', 'ru', 'ja'];
 
 class PreferenceService {
   store!: PreferenceStore;

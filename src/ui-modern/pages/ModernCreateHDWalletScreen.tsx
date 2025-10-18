@@ -3,10 +3,10 @@ import { useLocation } from 'react-router-dom';
 
 import { AddressType, RestoreWalletType } from '@/shared/types';
 import {
-  ContextData,
-  TabType,
-  UpdateContextDataParams,
-  WordsType
+    ContextData,
+    TabType,
+    UpdateContextDataParams,
+    WordsType
 } from '@/ui/pages/Account/createHDWalletComponents/types';
 
 import { useNavigate } from '../../ui/pages/MainRoute';
@@ -34,7 +34,7 @@ export const ModernCreateHDWalletScreen: React.FC = () => {
     addressType: AddressType.P2WPKH,
     step1Completed: false,
     tabType: isImport && !initialRestoreWalletType ? TabType.STEP1 : isImport ? TabType.STEP2 : TabType.STEP1,
-    restoreWalletType: initialRestoreWalletType as RestoreWalletType,
+    restoreWalletType: initialRestoreWalletType || RestoreWalletType.UNISAT,
     isRestore: isImport,
     isCustom: false,
     customHdPath: '',

@@ -5,12 +5,12 @@ import { getCurrentLocale } from '@/background/service/i18n';
 import { useWallet } from '@/ui/utils';
 import { LoadingOutlined } from '@ant-design/icons';
 import {
-  changeLanguage,
-  FALLBACK_LOCALE,
-  getSupportedLocales,
-  initI18n,
-  LOCALE_NAMES,
-  t as translate
+    changeLanguage,
+    FALLBACK_LOCALE,
+    getSupportedLocales,
+    initI18n,
+    LOCALE_NAMES,
+    t as translate
 } from '@unisat/i18n';
 
 interface I18nContextType {
@@ -70,10 +70,12 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
         localStorage.setItem('i18nextLng', localeToUse);
-        await initI18n(localeToUse);
+        
+        // Map zh_CN to zh_TW since @unisat/i18n only supports zh_TW
+        const mappedLocale = localeToUse === 'zh_CN' ? 'zh_TW' : localeToUse;
+        await initI18n(mappedLocale);
 
-        chrome.storage.local.set({ i18nextLng: localeToUse });
-        await initI18n(localeToUse);
+        chrome.storage.local.set({ i18nextLng: mappedLocale });
         const currentLocale = await getCurrentLocale();
 
         setLocale(currentLocale);
@@ -93,14 +95,17 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Change language
   const changeLocale = async (newLocale: string) => {
     try {
-      await changeLanguage(newLocale);
-      setLocale(newLocale);
+      // Map zh_CN to zh_TW since @unisat/i18n only supports zh_TW
+      const mappedLocale = newLocale === 'zh_CN' ? 'zh_TW' : newLocale;
+      
+      await changeLanguage(mappedLocale);
+      setLocale(mappedLocale);
       localStorage.setItem('userSelectedLanguage', 'true');
-      localStorage.setItem('i18nextLng', newLocale);
-      chrome.storage.local.set({ i18nextLng: newLocale });
+      localStorage.setItem('i18nextLng', mappedLocale);
+      chrome.storage.local.set({ i18nextLng: mappedLocale });
 
       // Notify other parts of the app about language change
-      window.dispatchEvent(new CustomEvent('languageChanged', { detail: newLocale }));
+      window.dispatchEvent(new CustomEvent('languageChanged', { detail: mappedLocale }));
     } catch (error) {
       setError(error instanceof Error ? error : new Error('Unknown error'));
       throw error; // Re-throw to allow error handling in components

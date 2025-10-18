@@ -1,6 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 
+import { useI18n } from '@/ui/hooks/useI18n';
+
 interface ModernSettingsPanelProps {
   visible: boolean;
   onClose: () => void;
@@ -16,10 +18,12 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({
   currentKeyring,
   currentAccount
 }) => {
+  const { t } = useI18n();
+
   const settingsItems = [
     {
       id: 'language',
-      title: 'Language',
+      title: t('language'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="10" />
@@ -31,7 +35,7 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({
     },
     {
       id: 'network',
-      title: 'Network',
+      title: t('network'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="10" />
@@ -44,7 +48,7 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({
     },
     {
       id: 'password',
-      title: 'Change Password',
+      title: t('change_password'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -56,7 +60,7 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({
     },
     {
       id: 'export',
-      title: 'Export Mnemonics',
+      title: t('show_secret_recovery_phrase'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -68,7 +72,7 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({
     },
     {
       id: 'private-key',
-      title: 'Export Private Key',
+      title: t('export_private_key'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
@@ -78,7 +82,7 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({
     },
     {
       id: 'contacts',
-      title: 'Contacts',
+      title: t('address_book'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -91,7 +95,7 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({
     },
     {
       id: 'about',
-      title: 'About Us',
+      title: t('about_us'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="10" />
@@ -164,7 +168,7 @@ export const ModernSettingsPanel: React.FC<ModernSettingsPanelProps> = ({
                   color: '#ffffff',
                   letterSpacing: '-0.5px'
                 }}>
-                Settings
+                {t('settings')}
               </h2>
               <motion.button
                 whileTap={{ scale: 0.95 }}

@@ -29,7 +29,7 @@ export const ModernSwapConfirmationScreen: React.FC = () => {
         overflow: 'hidden'
       }}>
       {/* Header */}
-      <ModernHeader title="Swap Confirmation" onBack={() => navigate('ModernSwapScreen')} showBackButton={true} />
+      <ModernHeader title={t('swap_confirmation')} onBack={() => navigate('ModernSwapScreen')} showBackButton={true} />
 
       {/* Main Content */}
       <div

@@ -6,6 +6,7 @@ import { runesUtils } from '@/shared/lib/runes-utils';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useAccountAddress } from '@/ui/state/accounts/hooks';
 import { satoshisToBTC, shortAddress, useWallet } from '@/ui/utils';
+import { useTranslation } from 'react-i18next';
 import { ModernHeader } from '../components/layout/ModernHeader';
 
 interface ExtraItem {
@@ -71,6 +72,7 @@ export const ModernHistoryScreen: React.FC = () => {
   const navigate = useNavigate();
   const address = useAccountAddress();
   const wallet = useWallet();
+  const { t } = useTranslation();
 
   const [page, setPage] = useState(1);
   const [historyGroups, setHistoryGroups] = useState<GroupItem[]>([]);

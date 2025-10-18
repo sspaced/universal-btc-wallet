@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
@@ -8,6 +8,13 @@ import { useWallet } from '@/ui/utils';
 
 import { HistoryIcon, PaperPlaneIcon, QRCodeIcon, SwapIcon } from '../components/common/CustomIcons';
 import { ModernHeader } from '../components/layout/ModernHeader';
+import {
+    binanceWebSocket,
+    ChartDataPoint,
+    fetchBTCHistoricalData,
+    getBinanceInterval,
+    TimeRange
+} from '../services/BinanceService';
 
 // Types
 interface BTCDetailState {
@@ -16,7 +23,8 @@ interface BTCDetailState {
   icon?: string;
 }
 
-type TimeFrame = '1H' | '1J' | '1S' | '1M' | 'YTD' | 'TOUT';
+// Use TimeRange from BinanceService
+type TimeFrame = TimeRange;
 
 interface BTCHistoryItem {
   txid: string;
@@ -30,18 +38,13 @@ interface BTCHistoryItem {
   timestamp: number;
 }
 
-// Mock trading data for BTC (you'll need to replace with real API data)
-interface BTCTradingData {
-  time: number;
-  close: number; // Price in USD
-}
-
 // Token Price Chart Component
 const BTCPriceChart: React.FC<{
   timeframe: TimeFrame;
-  tradingData: BTCTradingData[];
+  tradingData: ChartDataPoint[];
   loading: boolean;
 }> = ({ timeframe, tradingData, loading }) => {
+  const [hoveredPoint, setHoveredPoint] = useState<{ x: number; y: number; price: number; timestamp: number } | null>(null);
   if (loading) {
     return (
       <div style={{ width: '100%', height: '160px', position: 'relative' }}>
@@ -104,41 +107,13 @@ const BTCPriceChart: React.FC<{
     );
   }
 
-  // Filter trading data based on timeframe
-  const filterDataByTimeframe = (data: BTCTradingData[], timeframe: TimeFrame): BTCTradingData[] => {
-    if (!Array.isArray(data) || data.length === 0) return [];
-
-    const now = Date.now() / 1000; // Current time in seconds
-    let timeLimit: number;
-
-    switch (timeframe) {
-      case '1H':
-        timeLimit = now - 1 * 60 * 60; // 1 hour ago
-        break;
-      case '1J':
-        timeLimit = now - 24 * 60 * 60; // 1 day ago
-        break;
-      case '1S':
-        timeLimit = now - 7 * 24 * 60 * 60; // 1 week ago
-        break;
-      case '1M':
-        timeLimit = now - 30 * 24 * 60 * 60; // 1 month ago
-        break;
-      case 'YTD':
-        timeLimit = now - 365 * 24 * 60 * 60; // 1 year ago
-        break;
-      default:
-        return data; // Return all data for 'TOUT'
-    }
-
-    return data.filter((item) => item.time >= timeLimit);
-  };
-
-  // Filter and convert trading data to chart format
-  const filteredData = filterDataByTimeframe(tradingData, timeframe);
+  // Data is already pre-filtered by the Binance API call
+  const filteredData = tradingData;
+  
+  // Convert trading data to chart format
   const data = filteredData.map((item, i) => ({
     x: i,
-    y: item.close
+    y: item.price // Use 'price' field from ChartDataPoint
   }));
 
   // If no data for timeframe, show a flat chart
@@ -201,20 +176,69 @@ const BTCPriceChart: React.FC<{
   const minY = Math.min(...data.map((d) => d.y));
   const rangeY = maxY - minY || 0.01;
 
-  const points = data
-    .map((point, i) => {
-      const x = padding + (i / (data.length - 1)) * (width - padding * 2);
-      const y = height - padding - ((point.y - minY) / rangeY) * (height - padding * 2);
-      return `${x},${y}`;
-    })
-    .join(' ');
+  // Calculate SVG coordinates for each point
+  const svgPoints = data.map((point, i) => {
+    const x = padding + (i / (data.length - 1)) * (width - padding * 2);
+    const y = height - padding - ((point.y - minY) / rangeY) * (height - padding * 2);
+    return { x, y, index: i };
+  });
+
+  const points = svgPoints.map((p) => `${p.x},${p.y}`).join(' ');
 
   // Créer le path pour l'area fill
-  const firstPoint = data[0];
-  const lastPoint = data[data.length - 1];
   const firstX = padding;
   const lastX = padding + (width - padding * 2);
   const areaPath = `M${firstX},${height - padding} L${points} L${lastX},${height - padding} Z`;
+
+  // Handle mouse move to show tooltip
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    const svg = e.currentTarget;
+    const rect = svg.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    
+    // Convert mouse position to viewBox coordinates
+    const viewBoxX = (mouseX / rect.width) * width;
+
+    // Find closest point
+    let closestPoint = svgPoints[0];
+    let minDistance = Math.abs(svgPoints[0].x - viewBoxX);
+
+    svgPoints.forEach((point) => {
+      const distance = Math.abs(point.x - viewBoxX);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestPoint = point;
+      }
+    });
+
+    // Get the actual data for this point
+    const dataPoint = filteredData[closestPoint.index];
+    setHoveredPoint({
+      x: closestPoint.x,
+      y: closestPoint.y,
+      price: dataPoint.price,
+      timestamp: dataPoint.timestamp
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredPoint(null);
+  };
+
+  // Format timestamp for tooltip
+  const formatTooltipTime = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) {
+      return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    } else if (diffDays < 7) {
+      return date.toLocaleDateString('en-US', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
+    } else {
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+  };
 
   return (
     <div style={{ width: '100%', height: '160px', position: 'relative' }}>
@@ -223,7 +247,9 @@ const BTCPriceChart: React.FC<{
         height="100%"
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="none"
-        style={{ overflow: 'visible' }}>
+        style={{ overflow: 'visible', cursor: 'crosshair' }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}>
         {/* Gradient pour l'area */}
         <defs>
           <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -253,7 +279,71 @@ const BTCPriceChart: React.FC<{
           animate={{ pathLength: 1 }}
           transition={{ duration: 1, ease: 'easeInOut' }}
         />
+
+        {/* Vertical line and indicator when hovering */}
+        {hoveredPoint && (
+          <>
+            {/* Vertical line */}
+            <line
+              x1={hoveredPoint.x}
+              y1={0}
+              x2={hoveredPoint.x}
+              y2={height}
+              stroke="rgba(255, 255, 255, 0.2)"
+              strokeWidth="1"
+              strokeDasharray="4,4"
+            />
+
+            {/* Circle indicator on the line */}
+            <circle
+              cx={hoveredPoint.x}
+              cy={hoveredPoint.y}
+              r="4"
+              fill="var(--modern-accent-primary)"
+              stroke="#121212"
+              strokeWidth="2"
+            />
+
+            {/* Outer glow circle */}
+            <circle
+              cx={hoveredPoint.x}
+              cy={hoveredPoint.y}
+              r="8"
+              fill="none"
+              stroke="var(--modern-accent-primary)"
+              strokeWidth="1"
+              opacity="0.3"
+            />
+          </>
+        )}
       </svg>
+
+      {/* Tooltip */}
+      {hoveredPoint && (
+        <div
+          style={{
+            position: 'absolute',
+            left: `${(hoveredPoint.x / width) * 100}%`,
+            top: `${((hoveredPoint.y - 40) / height) * 100}%`,
+            transform: 'translate(-50%, -100%)',
+            background: 'rgba(18, 18, 18, 0.95)',
+            border: '1px solid rgba(114, 228, 173, 0.3)',
+            borderRadius: '8px',
+            padding: '8px 12px',
+            pointerEvents: 'none',
+            zIndex: 10,
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
+            backdropFilter: 'blur(10px)',
+            minWidth: '120px'
+          }}>
+          <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--modern-accent-primary)', marginBottom: '4px' }}>
+            ${hoveredPoint.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </div>
+          <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
+            {formatTooltipTime(hoveredPoint.timestamp)}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -263,7 +353,7 @@ const TimeframeSelector: React.FC<{
   selected: TimeFrame;
   onChange: (timeframe: TimeFrame) => void;
 }> = ({ selected, onChange }) => {
-  const timeframes: TimeFrame[] = ['1H', '1J', '1S', '1M', 'YTD', 'TOUT'];
+  const timeframes: TimeFrame[] = ['1H', '1D', '1W', '1M', 'YTD', 'ALL'];
 
   return (
     <div
@@ -352,47 +442,50 @@ export const ModernBTCDetail: React.FC = () => {
   const btcData = location.state as BTCDetailState;
 
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('YTD');
-  const [tradingData, setTradingData] = useState<BTCTradingData[]>([]);
+  const [tradingData, setTradingData] = useState<ChartDataPoint[]>([]);
   const [btcHistory, setBTCHistory] = useState<BTCHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [chartLoading, setChartLoading] = useState(true);
   const [historyLoading, setHistoryLoading] = useState(true);
+  const [currentPrice, setCurrentPrice] = useState<string>('$0.00');
+  const [priceChangePercent, setPriceChangePercent] = useState<string>('+0.00%');
+  const [isPricePositive, setIsPricePositive] = useState<boolean>(true);
+  const isWebSocketActive = useRef(false);
 
-  // Mock BTC price data (you'll need to replace with real API data)
-  const currentPrice = '$96,842.50';
-  const priceChange = '+$1,245.32';
-  const priceChangePercent = '+1.30%';
   const balance = btcData?.balance || '0.5';
   const value = btcData?.usdValue || '$48,421.25';
   const return24h = '+$625.15';
 
-  // Fetch BTC trading data (you'll need to implement this with a real API)
+  // Fetch BTC trading data from Binance API
   useEffect(() => {
     const fetchBTCData = async () => {
       try {
-        setLoading(true);
         setChartLoading(true);
+        setLoading(true);
 
-        // TODO: Replace with real BTC price API (e.g., CoinGecko, Binance, etc.)
-        // For now, using mock data
-        const mockData: BTCTradingData[] = [];
-        const now = Date.now() / 1000;
-        const basePrice = 96842.5;
+        console.log(`[ModernBTCDetail] Fetching data for timeframe: ${selectedTimeframe}`);
 
-        // Generate mock data for the last year
-        for (let i = 365; i >= 0; i--) {
-          const time = now - i * 24 * 60 * 60;
-          const randomVariation = (Math.random() - 0.5) * 10000;
-          const trendVariation = (365 - i) * 100; // Upward trend
-          mockData.push({
-            time,
-            close: basePrice + randomVariation + trendVariation
-          });
+        // Fetch historical data from Binance
+        const data = await fetchBTCHistoricalData(selectedTimeframe);
+        
+        console.log(`[ModernBTCDetail] Received ${data.length} data points`);
+        setTradingData(data);
+
+        // Calculate current price and changes
+        if (data.length > 0) {
+          const latestPrice = data[data.length - 1].price;
+          const oldestPrice = data[0].price;
+          const priceDiff = latestPrice - oldestPrice;
+          const priceChangePerc = (priceDiff / oldestPrice) * 100;
+
+          setCurrentPrice(`$${latestPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+          setPriceChangePercent(`${priceChangePerc >= 0 ? '+' : ''}${priceChangePerc.toFixed(2)}%`);
+          setIsPricePositive(priceChangePerc >= 0);
         }
-
-        setTradingData(mockData);
       } catch (error) {
-        console.error('Error fetching BTC data:', error);
+        console.error('[ModernBTCDetail] Error fetching BTC data from Binance:', error);
+        // Keep empty data on error
+        setTradingData([]);
       } finally {
         setLoading(false);
         setChartLoading(false);
@@ -400,7 +493,57 @@ export const ModernBTCDetail: React.FC = () => {
     };
 
     fetchBTCData();
-  }, []);
+  }, [selectedTimeframe]);
+
+  // Setup WebSocket for real-time updates
+  useEffect(() => {
+    if (tradingData.length === 0) return;
+
+    const interval = getBinanceInterval(selectedTimeframe);
+    console.log(`[ModernBTCDetail] Connecting WebSocket for interval: ${interval}`);
+
+    isWebSocketActive.current = true;
+
+    binanceWebSocket.connect(interval, (newData: ChartDataPoint) => {
+      if (!isWebSocketActive.current) return;
+
+      console.log(`[ModernBTCDetail] WebSocket update:`, newData);
+
+      setTradingData((prevData) => {
+        if (prevData.length === 0) return [newData];
+
+        // Calculate price change percentage with first data point
+        const oldestPrice = prevData[0].price;
+        const latestPrice = newData.price;
+        const priceDiff = latestPrice - oldestPrice;
+        const priceChangePerc = (priceDiff / oldestPrice) * 100;
+
+        // Update current price and percentage
+        setCurrentPrice(`$${latestPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+        setPriceChangePercent(`${priceChangePerc >= 0 ? '+' : ''}${priceChangePerc.toFixed(2)}%`);
+        setIsPricePositive(priceChangePerc >= 0);
+
+        // If candlestick is closed, add a new point
+        if (newData.isClosed) {
+          console.log('[ModernBTCDetail] New candlestick closed, adding point');
+          return [...prevData, newData];
+        } else {
+          // If candlestick is still open, update the last point
+          console.log('[ModernBTCDetail] Updating current candlestick');
+          const updated = [...prevData];
+          updated[updated.length - 1] = newData;
+          return updated;
+        }
+      });
+    });
+
+    // Cleanup on unmount or timeframe change
+    return () => {
+      console.log('[ModernBTCDetail] Disconnecting WebSocket');
+      isWebSocketActive.current = false;
+      binanceWebSocket.disconnect();
+    };
+  }, [selectedTimeframe, tradingData.length]);
 
   // Fetch BTC transaction history
   useEffect(() => {
@@ -507,17 +650,14 @@ export const ModernBTCDetail: React.FC = () => {
               {currentPrice}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '16px', color: 'var(--modern-accent-primary)', fontWeight: '500' }}>
-                {priceChange}
-              </span>
               <span
                 style={{
-                  fontSize: '14px',
+                  fontSize: '16px',
                   padding: '4px 8px',
-                  background: 'rgba(114, 228, 173, 0.15)',
+                  background: isPricePositive ? 'rgba(114, 228, 173, 0.15)' : 'rgba(239, 68, 68, 0.15)',
                   borderRadius: '6px',
-                  color: 'var(--modern-accent-primary)',
-                  fontWeight: '400'
+                  color: isPricePositive ? 'var(--modern-accent-primary)' : '#ef4444',
+                  fontWeight: '500'
                 }}>
                 {priceChangePercent}
               </span>

@@ -19,14 +19,17 @@ import { ModernContactsScreen } from '../../ui-modern/pages/ModernContactsScreen
 import { ModernCreateAccountScreen } from '../../ui-modern/pages/ModernCreateAccountScreen';
 import { ModernCreateHDWalletScreen } from '../../ui-modern/pages/ModernCreateHDWalletScreen';
 import { ModernCreateSimpleWalletScreen } from '../../ui-modern/pages/ModernCreateSimpleWalletScreen';
+import { ModernDeleteWalletScreen } from '../../ui-modern/pages/ModernDeleteWalletScreen';
 import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
 import { ModernExportPrivateKeyScreen } from '../../ui-modern/pages/ModernExportPrivateKeyScreen';
+import { ModernForgotPasswordScreen } from '../../ui-modern/pages/ModernForgotPasswordScreen';
 import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
 import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
 import { ModernLanguageScreen } from '../../ui-modern/pages/ModernLanguageScreen';
 import { ModernLockTimeScreen } from '../../ui-modern/pages/ModernLockTimeScreen';
 import { ModernNetworkTypeScreen } from '../../ui-modern/pages/ModernNetworkTypeScreen';
 import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
+import { ModernResetWalletScreen } from '../../ui-modern/pages/ModernResetWalletScreen';
 import { ModernSendScreen } from '../../ui-modern/pages/ModernSendScreen';
 import { ModernSwapConfirmationScreen } from '../../ui-modern/pages/ModernSwapConfirmationScreen';
 import { ModernSwapScreen } from '../../ui-modern/pages/ModernSwapScreen';
@@ -161,6 +164,18 @@ export const routes = {
   UnlockScreen: {
     path: '/account/unlock',
     element: <ModernUnlockScreen />
+  },
+  ForgotPasswordScreen: {
+    path: '/account/forgot-password',
+    element: <ModernForgotPasswordScreen />
+  },
+  ResetWalletScreen: {
+    path: '/account/reset-wallet',
+    element: <ModernResetWalletScreen />
+  },
+  DeleteWalletScreen: {
+    path: '/settings/delete-wallet',
+    element: <ModernDeleteWalletScreen />
   },
   SwitchAccountScreen: {
     path: '/account/switch-account',

@@ -34,3 +34,8 @@ export { ModernLanguageScreen } from './ModernLanguageScreen';
 export { ModernLockTimeScreen } from './ModernLockTimeScreen';
 export { ModernNetworkTypeScreen } from './ModernNetworkTypeScreen';
 
+// Wallet Reset/Delete Pages
+export { ModernDeleteWalletScreen } from './ModernDeleteWalletScreen';
+export { ModernForgotPasswordScreen } from './ModernForgotPasswordScreen';
+export { ModernResetWalletScreen } from './ModernResetWalletScreen';
+

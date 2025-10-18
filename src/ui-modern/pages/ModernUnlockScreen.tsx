@@ -230,6 +230,39 @@ export const ModernUnlockScreen: React.FC = () => {
         <ModernButton variant="primary" size="large" fullWidth onClick={btnClick} disabled={disabled} loading={loading}>
           {loading ? 'Unlocking...' : 'Unlock Wallet'}
         </ModernButton>
+
+        {/* Forgot Password Link */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          style={{
+            marginTop: '16px',
+            textAlign: 'center'
+          }}>
+          <button
+            onClick={() => navigate('ForgotPasswordScreen')}
+            disabled={loading}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontSize: '13px',
+              fontWeight: '500',
+              cursor: 'pointer',
+              padding: '8px',
+              textDecoration: 'underline',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#0A84FF';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)';
+            }}>
+            Forgot password?
+          </button>
+        </motion.div>
       </motion.div>
 
       {/* Subtle Decorative Elements */}

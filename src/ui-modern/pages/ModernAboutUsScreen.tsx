@@ -12,11 +12,11 @@ export const ModernAboutUsScreen: React.FC = () => {
   };
 
   const handleOpenWebsite = () => {
-    window.open('https://www.blacknode.co/', '_blank');
+    window.open('https://www.universalfinance.app/', '_blank');
   };
 
   const handleOpenTwitter = () => {
-    window.open('https://x.com/theblacknode', '_blank');
+    window.open('https://x.com/universal_fi', '_blank');
   };
 
   const handleOpenTelegram = () => {

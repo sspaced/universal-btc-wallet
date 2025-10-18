@@ -13,6 +13,7 @@ import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
 import { ModernAboutUsScreen } from '../../ui-modern/pages/ModernAboutUsScreen';
 import { ModernAddAddressScreen } from '../../ui-modern/pages/ModernAddAddressScreen';
 import { ModernAssetSelectionScreen } from '../../ui-modern/pages/ModernAssetSelectionScreen';
+import { ModernBTCDetail } from '../../ui-modern/pages/ModernBTCDetail';
 import { ModernChangePasswordScreen } from '../../ui-modern/pages/ModernChangePasswordScreen';
 import { ModernContactsScreen } from '../../ui-modern/pages/ModernContactsScreen';
 import { ModernCreateAccountScreen } from '../../ui-modern/pages/ModernCreateAccountScreen';
@@ -266,6 +267,10 @@ export const routes = {
   ModernTokenDetail: {
     path: '/wallet/token/detail',
     element: <ModernTokenDetail />
+  },
+  ModernBTCDetail: {
+    path: '/wallet/btc/detail',
+    element: <ModernBTCDetail />
   },
   ApprovalScreen: {
     path: '/approval',

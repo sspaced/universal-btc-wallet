@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { useNavigate } from '@/ui/pages/MainRoute';
 import {
-  useAccountBalance,
-  useAccounts,
-  useCurrentAccount,
-  useFetchBalanceCallback,
-  useReloadAccounts,
-  useSetCurrentAccountCallback
+    useAccountBalance,
+    useAccounts,
+    useCurrentAccount,
+    useFetchBalanceCallback,
+    useReloadAccounts,
+    useSetCurrentAccountCallback
 } from '@/ui/state/accounts/hooks';
 import { useIsUnlocked } from '@/ui/state/global/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
@@ -251,6 +251,13 @@ export const ModernWalletTabScreen: React.FC = () => {
   const handleAssetClick = (asset: Asset) => {
     // Navigate to asset detail screen based on type
     switch (asset.type) {
+      case 'btc':
+        navigate('ModernBTCDetail', {
+          balance: asset.amount,
+          usdValue: asset.usdValue,
+          icon: asset.icon
+        });
+        break;
       case 'simplicity':
         navigate('ModernTokenDetail', {
           tokenId: asset.id,

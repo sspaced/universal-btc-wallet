@@ -2,6 +2,7 @@
 export { ModernAddAddressScreen } from './ModernAddAddressScreen';
 export { ModernAddressTypeScreen } from './ModernAddressTypeScreen';
 export { ModernAssetSelectionScreen } from './ModernAssetSelectionScreen';
+export { ModernBTCDetail } from './ModernBTCDetail';
 export { ModernCreateAccountScreen } from './ModernCreateAccountScreen';
 export { ModernCreateHDWalletScreen } from './ModernCreateHDWalletScreen';
 export { ModernCreatePasswordScreen } from './ModernCreatePasswordScreen';
@@ -32,3 +33,4 @@ export { ModernContactsScreen } from './ModernContactsScreen';
 export { ModernLanguageScreen } from './ModernLanguageScreen';
 export { ModernLockTimeScreen } from './ModernLockTimeScreen';
 export { ModernNetworkTypeScreen } from './ModernNetworkTypeScreen';
+

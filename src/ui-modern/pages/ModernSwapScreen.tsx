@@ -589,7 +589,7 @@ export const ModernSwapScreen: React.FC = () => {
           transition={{ duration: 0.3, delay: 0.1 }}
           style={{
             position: 'relative',
-            zIndex: fromDropdownOpen ? 100 : 1
+            zIndex: fromDropdownOpen ? 200 : 10
           }}>
           <ModernSwapCard
             type="pay"
@@ -621,7 +621,7 @@ export const ModernSwapScreen: React.FC = () => {
             justifyContent: 'center',
             margin: '0',
             position: 'relative',
-            zIndex: fromDropdownOpen || toDropdownOpen ? 50 : 5
+            zIndex: 150 // Entre les cards (10) et les dropdowns (200)
           }}>
           <ModernSwapButton onSwap={handleSwapCurrencies} disabled={false} />
         </motion.div>
@@ -633,7 +633,7 @@ export const ModernSwapScreen: React.FC = () => {
           transition={{ duration: 0.3, delay: 0.3 }}
           style={{
             position: 'relative',
-            zIndex: toDropdownOpen ? 100 : 1
+            zIndex: 10
           }}>
           <ModernSwapCard
             type="receive"

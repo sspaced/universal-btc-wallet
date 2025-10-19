@@ -256,7 +256,7 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
               left: 0,
               right: 0,
               bottom: 0,
-              zIndex: 100
+              zIndex: 999
             }}
           />
         )}
@@ -279,7 +279,7 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
               border: '1px solid rgba(255, 255, 255, 0.12)',
               borderRadius: '12px',
               padding: '6px',
-              zIndex: 101,
+              zIndex: 1000,
               maxHeight: '280px',
               overflowY: 'auto',
               boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)'

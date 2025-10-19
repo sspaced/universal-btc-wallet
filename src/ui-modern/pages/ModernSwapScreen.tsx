@@ -621,7 +621,7 @@ export const ModernSwapScreen: React.FC = () => {
             justifyContent: 'center',
             margin: '0',
             position: 'relative',
-            zIndex: 5
+            zIndex: fromDropdownOpen || toDropdownOpen ? 50 : 5
           }}>
           <ModernSwapButton onSwap={handleSwapCurrencies} disabled={false} />
         </motion.div>

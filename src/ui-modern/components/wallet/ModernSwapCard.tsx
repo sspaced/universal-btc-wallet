@@ -277,7 +277,7 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
           </span>
 
           {/* Balance on the right */}
-          {balance && (
+          {selectedCurrency && balance && (
             <span
               style={{
                 fontSize: '10px',

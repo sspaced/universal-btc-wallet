@@ -181,12 +181,8 @@ export const ModernSwapScreen: React.FC = () => {
     };
   });
 
-  const [toCurrency, setToCurrency] = useState<Currency>({
-    symbol: 'BTC人生',
-    name: 'BTC人生',
-    balance: '0',
-    icon: getAssetIcon('BTC人生', 'BTC人生', 'simplicity')
-  });
+  // Initialize toCurrency with a placeholder - will be updated when tokens load
+  const [toCurrency, setToCurrency] = useState<Currency | null>(null);
 
   // Convert user assets to currencies for the "from" selector - now as state
   const [availableFromCurrencies, setAvailableFromCurrencies] = useState<Currency[]>([]);
@@ -305,6 +301,12 @@ export const ModernSwapScreen: React.FC = () => {
   // Update toCurrency when Simplicity tokens are loaded
   useEffect(() => {
     if (!simplicityLoading && availableToCurrencies.length > 0) {
+      // If toCurrency is null (initial load), set it to the first token (highest volume)
+      if (!toCurrency) {
+        setToCurrency(availableToCurrencies[0]);
+        return;
+      }
+
       // If current toCurrency is not in available currencies, update it
       const currentToExists = availableToCurrencies.some((currency) => currency.symbol === toCurrency.symbol);
 
@@ -312,7 +314,7 @@ export const ModernSwapScreen: React.FC = () => {
         setToCurrency(availableToCurrencies[0]);
       }
     }
-  }, [availableToCurrencies, simplicityLoading, toCurrency.symbol]);
+  }, [availableToCurrencies, simplicityLoading, toCurrency]);
 
   // Fetch price when fromCurrency changes
   useEffect(() => {
@@ -325,7 +327,7 @@ export const ModernSwapScreen: React.FC = () => {
 
   // Fetch price when toCurrency changes
   useEffect(() => {
-    if (toCurrency?.symbol && toCurrency.symbol !== 'BTC') {
+    if (toCurrency && toCurrency.symbol && toCurrency.symbol !== 'BTC') {
       fetchTokenPrice(toCurrency.symbol, 'to');
     } else {
       setToTokenPrice(0);
@@ -433,6 +435,9 @@ export const ModernSwapScreen: React.FC = () => {
   );
 
   const handleSwapCurrencies = () => {
+    // Only swap if both currencies are available
+    if (!toCurrency) return;
+
     // Sauvegarder les valeurs actuelles
     const tempCurrency = fromCurrency;
     const tempAmount = fromAmount;
@@ -513,7 +518,7 @@ export const ModernSwapScreen: React.FC = () => {
 
   // Format rate text with truncation if too long
   const formatRateText = useMemo(() => {
-    if (!realExchangeRate) return '0.000000';
+    if (!realExchangeRate || !toCurrency) return '0.000000';
 
     const rateText = `1 ${fromCurrency.symbol} ≈ ${realExchangeRate} ${toCurrency.symbol}`;
 
@@ -524,7 +529,7 @@ export const ModernSwapScreen: React.FC = () => {
     }
 
     return rateText;
-  }, [realExchangeRate, fromCurrency.symbol, toCurrency.symbol]);
+  }, [realExchangeRate, fromCurrency.symbol, toCurrency]);
 
   // Calculate font size for rate text based on length
   const getRateFontSize = useMemo(() => {
@@ -543,7 +548,7 @@ export const ModernSwapScreen: React.FC = () => {
   }, [formatRateText, realExchangeRate]);
 
   const handleSwap = () => {
-    if (canSwap) {
+    if (canSwap && toCurrency) {
       console.log('Executing swap:', {
         from: { currency: fromCurrency.symbol, amount: fromAmount },
         to: { currency: toCurrency.symbol, amount: toAmount }
@@ -644,7 +649,7 @@ export const ModernSwapScreen: React.FC = () => {
             availableCurrencies={availableToCurrencies}
             label="Buy"
             placeholder="0"
-            balance={toCurrency.balance}
+            balance={toCurrency?.balance}
             onDropdownToggle={setToDropdownOpen}
             btcPrice={coinPrice?.btc || 0}
             tokenPrice={toTokenPrice}

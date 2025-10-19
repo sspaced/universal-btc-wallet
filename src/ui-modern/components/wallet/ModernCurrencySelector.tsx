@@ -153,8 +153,8 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
 
         <motion.button
           whileTap={{ scale: disabled ? 1 : 0.98 }}
-          onClick={() => !disabled && toggleDropdown(!isOpen)}
-          disabled={disabled}
+          onClick={() => !disabled && !loading && toggleDropdown(!isOpen)}
+          disabled={disabled || loading}
           style={{
             width: 'auto',
             background: buttonBg,
@@ -164,12 +164,39 @@ export const ModernCurrencySelector: React.FC<ModernCurrencySelectorProps> = ({
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            cursor: disabled ? 'not-allowed' : 'pointer',
+            cursor: disabled || loading ? 'not-allowed' : 'pointer',
             opacity: disabled ? 0.5 : 1,
             transition: 'all 0.2s ease'
           }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {selectedCurrency ? (
+            {loading && !selectedCurrency ? (
+              // Skeleton loader for button
+              <>
+                <div
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    minWidth: '18px',
+                    borderRadius: '50%',
+                    background:
+                      'linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%)',
+                    backgroundSize: '200% 100%',
+                    animation: 'shimmer 1.5s infinite'
+                  }}
+                />
+                <div
+                  style={{
+                    height: '14px',
+                    width: '60px',
+                    borderRadius: '4px',
+                    background:
+                      'linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%)',
+                    backgroundSize: '200% 100%',
+                    animation: 'shimmer 1.5s infinite'
+                  }}
+                />
+              </>
+            ) : selectedCurrency ? (
               <>
                 <div
                   style={{

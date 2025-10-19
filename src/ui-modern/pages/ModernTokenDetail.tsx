@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import {
-    BlacknodeAddressHistoryItem,
-    BlacknodeTickerInfo,
-    BlacknodeTickerStats,
-    BlacknodeTradingData,
-    simplicityService
+  BlacknodeAddressHistoryItem,
+  BlacknodeTickerInfo,
+  BlacknodeTickerStats,
+  BlacknodeTradingData,
+  simplicityService
 } from '@/background/service/simplicity';
 import { useNavigate } from '@/ui/pages/MainRoute';
+import { usePrice } from '@/ui/provider/PriceProvider';
 import { useCurrentAddress } from '@/ui/state/accounts/hooks';
 
 import { HistoryIcon, PaperPlaneIcon, QRCodeIcon, SwapIcon } from '../components/common/CustomIcons';
@@ -34,9 +35,12 @@ const TokenPriceChart: React.FC<{
   timeframe: TimeFrame;
   tradingData: BlacknodeTradingData[];
   loading: boolean;
-}> = ({ timeframe, tradingData, loading }) => {
-  const [hoveredPoint, setHoveredPoint] = useState<{ x: number; y: number; price: number; timestamp: number } | null>(null);
-  
+  btcPriceUSD?: number;
+}> = ({ timeframe, tradingData, loading, btcPriceUSD = 0 }) => {
+  const [hoveredPoint, setHoveredPoint] = useState<{ x: number; y: number; price: number; timestamp: number } | null>(
+    null
+  );
+
   if (loading) {
     return (
       <div style={{ width: '100%', height: '160px', position: 'relative' }}>
@@ -215,7 +219,7 @@ const TokenPriceChart: React.FC<{
     const svg = e.currentTarget;
     const rect = svg.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
-    
+
     // Convert mouse position to viewBox coordinates
     const viewBoxX = (mouseX / rect.width) * width;
 
@@ -356,8 +360,18 @@ const TokenPriceChart: React.FC<{
             backdropFilter: 'blur(10px)',
             minWidth: '120px'
           }}>
-          <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--modern-accent-primary)', marginBottom: '4px' }}>
-            {hoveredPoint.price.toFixed(8)} BTC
+          <div
+            style={{ fontSize: '14px', fontWeight: '600', color: 'var(--modern-accent-primary)', marginBottom: '4px' }}>
+            {btcPriceUSD > 0
+              ? (() => {
+                  const usdPrice = hoveredPoint.price * btcPriceUSD;
+                  if (usdPrice >= 1) return `$${usdPrice.toFixed(2)}`;
+                  if (usdPrice >= 0.01) return `$${usdPrice.toFixed(4)}`;
+                  if (usdPrice >= 0.0001) return `$${usdPrice.toFixed(6)}`;
+                  if (usdPrice < 0.000001) return `$${usdPrice.toExponential(2)}`;
+                  return `$${usdPrice.toFixed(8)}`;
+                })()
+              : `${hoveredPoint.price.toFixed(8)} BTC`}
           </div>
           <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
             {formatTooltipTime(hoveredPoint.timestamp)}
@@ -458,6 +472,7 @@ export const ModernTokenDetail: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const currentAddress = useCurrentAddress();
+  const { coinPrice } = usePrice();
   const tokenData = location.state as TokenDetailState;
 
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('YTD');
@@ -713,7 +728,12 @@ export const ModernTokenDetail: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             style={{ padding: '0 20px' }}>
-            <TokenPriceChart timeframe={selectedTimeframe} tradingData={tradingData} loading={chartLoading} />
+            <TokenPriceChart
+              timeframe={selectedTimeframe}
+              tradingData={tradingData}
+              loading={chartLoading}
+              btcPriceUSD={coinPrice?.btc || 0}
+            />
           </motion.div>
 
           {/* Timeframe Selector */}

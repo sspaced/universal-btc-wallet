@@ -5,13 +5,12 @@ import { getCurrentLocale } from '@/background/service/i18n';
 import { useWallet } from '@/ui/utils';
 import { LoadingOutlined } from '@ant-design/icons';
 import {
-  BROWSER_TO_APP_LOCALE_MAP,
-  changeLanguage,
-  FALLBACK_LOCALE,
-  getSupportedLocales,
-  initI18n,
-  LOCALE_NAMES,
-  t as translate
+    changeLanguage,
+    FALLBACK_LOCALE,
+    getSupportedLocales,
+    initI18n,
+    LOCALE_NAMES,
+    t as translate
 } from '@unisat/i18n';
 
 interface I18nContextType {
@@ -57,26 +56,9 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const isFirstOpen = await wallet.getIsFirstOpen();
 
             if (isFirstOpen) {
-              const browserLang = navigator.language;
-              log.debug(`New user - Browser language: ${browserLang}`);
-
-              const mappedLocale = BROWSER_TO_APP_LOCALE_MAP[browserLang];
-              if (mappedLocale && getSupportedLocales().includes(mappedLocale)) {
-                localeToUse = mappedLocale;
-                log.debug(`Using mapped browser language: ${mappedLocale}`);
-              } else if (getSupportedLocales().includes(browserLang)) {
-                localeToUse = browserLang;
-                log.debug(`Using browser language: ${browserLang}`);
-              } else {
-                const mainLang = browserLang.split('-')[0];
-                if (getSupportedLocales().includes(mainLang)) {
-                  localeToUse = mainLang;
-                  log.debug(`Using browser main language: ${mainLang}`);
-                } else {
-                  log.debug(`Browser language not supported, using default: ${FALLBACK_LOCALE}`);
-                  localeToUse = FALLBACK_LOCALE;
-                }
-              }
+              // Forcer l'anglais par défaut pour tous les nouveaux utilisateurs
+              log.debug('New user - Using default English instead of browser language');
+              localeToUse = FALLBACK_LOCALE;
             } else {
               log.debug('Existing user - Using default English');
               localeToUse = FALLBACK_LOCALE;
@@ -88,10 +70,12 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
         localStorage.setItem('i18nextLng', localeToUse);
-        await initI18n(localeToUse);
+        
+        // Map zh_CN to zh_TW since @unisat/i18n only supports zh_TW
+        const mappedLocale = localeToUse === 'zh_CN' ? 'zh_TW' : localeToUse;
+        await initI18n(mappedLocale);
 
-        chrome.storage.local.set({ i18nextLng: localeToUse });
-        await initI18n(localeToUse);
+        chrome.storage.local.set({ i18nextLng: mappedLocale });
         const currentLocale = await getCurrentLocale();
 
         setLocale(currentLocale);
@@ -111,13 +95,20 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Change language
   const changeLocale = async (newLocale: string) => {
     try {
-      await changeLanguage(newLocale);
-      setLocale(newLocale);
+      // Map zh_CN to zh_TW since @unisat/i18n only supports zh_TW
+      const mappedLocale = newLocale === 'zh_CN' ? 'zh_TW' : newLocale;
+      
+      await changeLanguage(mappedLocale);
+      setLocale(mappedLocale);
       localStorage.setItem('userSelectedLanguage', 'true');
-      localStorage.setItem('i18nextLng', newLocale);
-      chrome.storage.local.set({ i18nextLng: newLocale });
+      localStorage.setItem('i18nextLng', mappedLocale);
+      chrome.storage.local.set({ i18nextLng: mappedLocale });
+
+      // Notify other parts of the app about language change
+      window.dispatchEvent(new CustomEvent('languageChanged', { detail: mappedLocale }));
     } catch (error) {
       setError(error instanceof Error ? error : new Error('Unknown error'));
+      throw error; // Re-throw to allow error handling in components
     }
   };
 

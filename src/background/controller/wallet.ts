@@ -4,51 +4,52 @@ import { pubkeyInScript } from 'bitcoinjs-lib/src/psbt/psbtutils';
 import bitcore from 'bitcore-lib';
 
 import {
-  contactBookService,
-  keyringService,
-  notificationService,
-  permissionService,
-  preferenceService,
-  sessionService,
-  walletApiService
+    contactBookService,
+    keyringService,
+    notificationService,
+    permissionService,
+    preferenceService,
+    sessionService,
+    simplicityService,
+    walletApiService
 } from '@/background/service';
 import { psbtFromString } from '@/background/utils/psbt-utils';
 import {
-  ADDRESS_TYPES,
-  AddressFlagType,
-  AUTO_LOCK_TIMES,
-  BRAND_ALIAN_TYPE_TEXT,
-  CHAINS_MAP,
-  COIN_NAME,
-  COIN_SYMBOL,
-  DEFAULT_LOCKTIME_ID,
-  EVENTS,
-  KEYRING_TYPES,
-  NETWORK_TYPES
+    ADDRESS_TYPES,
+    AddressFlagType,
+    AUTO_LOCK_TIMES,
+    BRAND_ALIAN_TYPE_TEXT,
+    CHAINS_MAP,
+    COIN_NAME,
+    COIN_SYMBOL,
+    DEFAULT_LOCKTIME_ID,
+    EVENTS,
+    KEYRING_TYPES,
+    NETWORK_TYPES
 } from '@/shared/constant';
 import eventBus from '@/shared/eventBus';
 import { runesUtils } from '@/shared/lib/runes-utils';
 import {
-  Account,
-  AddressUserToSignInput,
-  BitcoinBalance,
-  BRC20HistoryItem,
-  CosmosBalance,
-  CosmosSignDataType,
-  NetworkType,
-  PublicKeyUserToSignInput,
-  SignPsbtOptions,
-  UTXO,
-  WalletKeyring
+    Account,
+    AddressUserToSignInput,
+    BitcoinBalance,
+    BRC20HistoryItem,
+    CosmosBalance,
+    CosmosSignDataType,
+    NetworkType,
+    PublicKeyUserToSignInput,
+    SignPsbtOptions,
+    UTXO,
+    WalletKeyring
 } from '@/shared/types';
 import { getChainInfo } from '@/shared/utils';
 import {
-  BabylonConfigV2,
-  COSMOS_CHAINS_MAP,
-  CosmosChainInfo,
-  CosmosKeyring,
-  DelegationV2StakingState,
-  getDelegationsV2
+    BabylonConfigV2,
+    COSMOS_CHAINS_MAP,
+    CosmosChainInfo,
+    CosmosKeyring,
+    DelegationV2StakingState,
+    getDelegationsV2
 } from '@unisat/babylon-service';
 import { t } from '@unisat/i18n';
 import { ColdWalletKeyring, KeystoneKeyring } from '@unisat/keyring-service';
@@ -57,19 +58,20 @@ import * as txHelpers from '@unisat/tx-helpers';
 import { signMessageOfBIP322Simple, UnspentOutput } from '@unisat/tx-helpers';
 import { CAT_VERSION } from '@unisat/wallet-api';
 import {
-  bitcoin,
-  eccManager,
-  genPsbtOfBIP322Simple,
-  getSignatureFromPsbtOfBIP322Simple,
-  isValidAddress,
-  publicKeyToAddress,
-  scriptPkToAddress,
-  toPsbtNetwork,
-  toXOnly,
-  UTXO_DUST
+    bitcoin,
+    eccManager,
+    genPsbtOfBIP322Simple,
+    getSignatureFromPsbtOfBIP322Simple,
+    isValidAddress,
+    publicKeyToAddress,
+    scriptPkToAddress,
+    toPsbtNetwork,
+    toXOnly,
+    UTXO_DUST
 } from '@unisat/wallet-bitcoin';
 import { AddressType, ChainType } from '@unisat/wallet-types';
 
+import { MIN_TRANSACTION_FEE_SATS } from '../../shared/constant';
 import { ContactBookItem } from '../service/contactBook';
 import { ConnectedSite } from '../service/permission';
 import BaseController from './base';
@@ -475,6 +477,80 @@ export class WalletController extends BaseController {
       this.changeKeyring(nextKeyring);
       return nextKeyring;
     }
+  };
+
+  removeAccount = async (account: Account) => {
+    // Get all wallet keyrings to find the correct one
+    const walletKeyrings = await this.getKeyrings();
+
+    // Find the wallet keyring that contains this account
+    let targetWalletKeyring: WalletKeyring | null = null;
+    let accountToRemove: Account | null = null;
+    for (const wk of walletKeyrings) {
+      const foundAccount = wk.accounts.find((acc) => acc.address === account.address);
+      if (foundAccount) {
+        targetWalletKeyring = wk;
+        accountToRemove = foundAccount;
+        break;
+      }
+    }
+
+    if (!targetWalletKeyring || !accountToRemove) {
+      throw new Error('Account not found in any keyring');
+    }
+
+    // Cannot remove the last account from a keyring
+    if (targetWalletKeyring.accounts.length === 1) {
+      throw new Error('Cannot remove the last account. Please remove the entire wallet instead.');
+    }
+
+    // Get the actual keyring from keyringService
+    const targetKeyring = keyringService.keyrings[targetWalletKeyring.index];
+
+    // Get all pubkeys from the keyring
+    const allPubkeys = await targetKeyring.getAccounts();
+
+    // Find the pubkey that corresponds to this account's address
+    // We need to convert each pubkey to an address and compare
+    const networkType = this.getNetworkType();
+    const addressType = targetWalletKeyring.addressType;
+    let pubkeyToRemove: string | null = null;
+
+    for (const pubkey of allPubkeys) {
+      const addr = publicKeyToAddress(pubkey, addressType, networkType);
+      if (addr === account.address) {
+        pubkeyToRemove = pubkey;
+        break;
+      }
+    }
+
+    if (!pubkeyToRemove) {
+      throw new Error('Public key not found for this account');
+    }
+
+    // Remove the account using the found pubkey
+    // Call the keyring's removeAccount method directly (not through keyringService)
+    // because keyringService.removeAccount expects an address but keyrings expect a pubkey
+    await targetKeyring.removeAccount(pubkeyToRemove);
+
+    // Now persist the changes and update cache (same as keyringService.removeAccount does)
+    await keyringService.persistAllKeyrings();
+    await keyringService._updateMemStoreKeyrings();
+    keyringService.cachedDisplayedKeyring = null;
+    await keyringService.fullUpdate();
+
+    // If we removed the current account, switch to another account
+    const currentAccount = await this.getCurrentAccount();
+    if (currentAccount.address === account.address) {
+      // Reload keyrings and switch to first account of this keyring
+      await this.changeKeyring(targetWalletKeyring, 0);
+    }
+
+    // Clean up preferences
+    preferenceService.removeAddressBalance(account.address);
+    preferenceService.removeAddressHistory(account.address);
+
+    return true;
   };
 
   getKeyringByType = (type: string) => {
@@ -1035,7 +1111,7 @@ export class WalletController extends BaseController {
       memos
     });
 
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   sendAllBTC = async ({
@@ -1069,7 +1145,7 @@ export class WalletController extends BaseController {
       feeRate,
       enableRBF
     });
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   sendOrdinalsInscription = async ({
@@ -1123,7 +1199,7 @@ export class WalletController extends BaseController {
       enableMixed: true
     });
 
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   sendOrdinalsInscriptions = async ({
@@ -1184,7 +1260,7 @@ export class WalletController extends BaseController {
       enableRBF
     });
 
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   splitOrdinalsInscription = async ({
@@ -1990,7 +2066,7 @@ export class WalletController extends BaseController {
       outputValue: outputValue || UTXO_DUST
     });
 
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
 
   getSignedResult = async (psbt: bitcoin.Psbt, toSignInputs: ToSignInput[]) => {
@@ -2004,6 +2080,12 @@ export class WalletController extends BaseController {
     try {
       rawtx = psbt.extractTransaction(true).toHex();
       fee = psbt.getFee();
+
+      // Enforce minimum fee of 206 sats
+      if (fee < MIN_TRANSACTION_FEE_SATS) {
+        console.log(`Fee ${fee} sats is below minimum ${MIN_TRANSACTION_FEE_SATS} sats, adjusting...`);
+        fee = MIN_TRANSACTION_FEE_SATS;
+      }
     } catch (e) {
       // ignore
     }
@@ -2526,7 +2608,7 @@ export class WalletController extends BaseController {
     );
 
     const psbt = bitcoin.Psbt.fromBase64(psbtBase64);
-    return this.getSignedResult(psbt, toSignInputs);
+    return await this.getSignedResult(psbt, toSignInputs);
   };
   // createBabylonDeposit = async (amount: string) => {};
 
@@ -2665,6 +2747,180 @@ export class WalletController extends BaseController {
       total,
       list
     };
+  };
+
+  // Simplicity methods
+  getSimplicityTokensList = async (address: string, cursor: number, size: number) => {
+    try {
+      const tokens = await simplicityService.getAllTokensForAddress(address);
+
+      // Transform the response to match the expected format
+      const list = tokens.map((token) => ({
+        ticker: token.ticker,
+        balance: token.overall_balance,
+        availableBalance: token.available_balance,
+        blockHeight: token.block_height,
+        wallet: token.wallet,
+        pkscript: token.pkscript
+      }));
+
+      return {
+        list,
+        total: tokens.length,
+        hasMore: false // Simplicity API doesn't support pagination in this implementation
+      };
+    } catch (error) {
+      console.error('Error fetching Simplicity tokens:', error);
+      return {
+        list: [],
+        total: 0,
+        hasMore: false
+      };
+    }
+  };
+
+  getSimplicityTokenSummary = async (address: string, ticker: string) => {
+    try {
+      const [balance, tokenInfo] = await Promise.all([
+        simplicityService.getAddressTickerBalance(address, ticker),
+        simplicityService.getTickerInfo(ticker)
+      ]);
+
+      const tokenSummary = {
+        tokenInfo: {
+          ticker: tokenInfo.ticker,
+          name: tokenInfo.ticker,
+          totalSupply: tokenInfo.max_supply,
+          decimals: tokenInfo.decimals,
+          deployTime: tokenInfo.deploy_timestamp,
+          deployHeight: tokenInfo.deploy_block_height,
+          deployer: tokenInfo.creator_address,
+          mintable: tokenInfo.remaining_supply !== '0',
+          holders: tokenInfo.holders,
+          currentSupply: tokenInfo.current_supply,
+          remainingSupply: tokenInfo.remaining_supply
+        },
+        tokenBalance: {
+          ticker: balance.ticker,
+          overallBalance: balance.overall_balance,
+          availableBalance: balance.available_balance,
+          blockHeight: balance.block_height,
+          wallet: balance.wallet,
+          pkscript: balance.pkscript
+        }
+      };
+
+      return tokenSummary;
+    } catch (error) {
+      console.error('Error fetching Simplicity token summary:', error);
+      throw error;
+    }
+  };
+
+  getSimplicityTokenHistory = async (address: string, ticker: string) => {
+    try {
+      const history = await simplicityService.getAddressTickerHistory(address, ticker);
+      return history;
+    } catch (error) {
+      console.error('Error fetching Simplicity token history:', error);
+      throw error;
+    }
+  };
+
+  // Get Simplicity token prices
+  getSimplicitysPrice = async (ticks: string[]) => {
+    return simplicityService.getSimplicityTokensPrice(ticks);
+  };
+
+  // Send Simplicity token using BIP32-compatible PSBT
+  sendSimplicityToken = async ({
+    to,
+    ticker,
+    amount,
+    feeRate,
+    enableRBF,
+    btcUtxos
+  }: {
+    to: string;
+    ticker: string;
+    amount: number;
+    feeRate: number;
+    enableRBF: boolean;
+    btcUtxos?: UnspentOutput[];
+  }) => {
+    const account = preferenceService.getCurrentAccount();
+    if (!account) throw new Error('no current account');
+
+    const networkType = this.getNetworkType();
+
+    if (!btcUtxos) {
+      btcUtxos = await this.getBTCUtxos();
+    }
+
+    // Convertir les UTXOs avec les informations BIP32
+    const utxos = btcUtxos.map((utxo) => ({
+      txid: utxo.txid,
+      vout: utxo.vout,
+      amount: utxo.satoshis,
+      scriptPubKey: utxo.scriptPk,
+      derivationPath: utxo.derivationPath || `m/84'/0'/0'/0/${utxo.vout}`, // Fallback si pas défini
+      publicKey: utxo.pubkey,
+      masterFingerprint: utxo.masterFingerprint || '00000000' // Fallback si pas défini
+    }));
+
+    try {
+      console.log('sendSimplicityToken: Calling API with params:', {
+        sender: account.address,
+        receiver: to,
+        amount: amount,
+        feeRate: feeRate,
+        utxos: utxos,
+        ticker: ticker,
+        changeDerivationPath: account.changeDerivationPath || "m/84'/0'/0'/1/0",
+        changePublicKey: account.changePublicKey || account.pubkey
+      });
+
+      // Appeler votre endpoint externe avec les informations BIP32
+      const transferResult = await simplicityService.createTransferPSBT({
+        sender: account.address,
+        receiver: to,
+        amount: amount,
+        feeRate: feeRate,
+        utxos: utxos,
+        ticker: ticker,
+        changeDerivationPath: account.changeDerivationPath || "m/84'/0'/0'/1/0", // Fallback
+        changePublicKey: account.changePublicKey || account.pubkey // Fallback
+      });
+
+      console.log('API response:', transferResult);
+
+      // Convertir le PSBT base64 en objet bitcoin.Psbt
+      const psbt = bitcoin.Psbt.fromBase64(transferResult.psbtBase64, {
+        network: toPsbtNetwork(networkType)
+      });
+
+      // Utiliser la méthode existante pour formater les inputs
+      // Maintenant que le PSBT contient les dérivations BIP32, cette méthode fonctionne !
+      console.log('Calling formatOptionsToSignInputs...');
+      const toSignInputs = await this.formatOptionsToSignInputs(psbt.toHex(), { autoFinalized: true });
+      console.log('formatOptionsToSignInputs result:', toSignInputs);
+
+      // Utiliser la méthode existante pour signer
+      console.log('Calling getSignedResult...');
+      const result = await this.getSignedResult(psbt, toSignInputs);
+      console.log('getSignedResult result:', result);
+
+      // Utiliser les vraies fees du service Simplicity au lieu de celles recalculées
+      console.log('Simplicity service fee:', transferResult.fee);
+      console.log('PSBT calculated fee:', result.fee);
+      result.fee = transferResult.fee; // Utiliser les fees du service Simplicity
+      console.log('Updated result with Simplicity fees:', result);
+
+      return result;
+    } catch (error) {
+      console.error('Error in sendSimplicityToken:', error);
+      throw new Error(`Failed to create Simplicity transaction: ${error.message}`);
+    }
   };
 }
 export default new WalletController();

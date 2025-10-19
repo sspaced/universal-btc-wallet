@@ -1,0 +1,508 @@
+/* Apple Design System Variables */
+:root {
+  /* Apple System Colors */
+  --apple-blue: var(--modern-accent-primary);
+  --apple-blue-dark: #5dd39a;
+  --apple-green: #34c759;
+  --apple-indigo: #5856d6;
+  --apple-orange: #ff9500;
+  --apple-pink: #ff2d92;
+  --apple-purple: #af52de;
+  --apple-red: #ff3b30;
+  --apple-teal: #5ac8fa;
+  --apple-yellow: #ffcc00;
+  --apple-yellow-light: #fff3cd;
+
+  /* Apple Grays */
+  --apple-gray-1: #8e8e93;
+  --apple-gray-2: #aeaeb2;
+  --apple-gray-3: #c7c7cc;
+  --apple-gray-4: #d1d1d6;
+  --apple-gray-5: #e5e5ea;
+  --apple-gray-6: #f2f2f7;
+
+  /* Apple Text Colors */
+  --apple-label: #000000;
+  --apple-secondary-label: rgba(60, 60, 67, 0.6);
+  --apple-tertiary-label: rgba(60, 60, 67, 0.3);
+  --apple-quaternary-label: rgba(60, 60, 67, 0.18);
+
+  /* Apple Background Colors */
+  --apple-system-background: #ffffff;
+  --apple-secondary-system-background: #f2f2f7;
+  --apple-tertiary-system-background: #ffffff;
+
+  /* Apple Separators */
+  --apple-separator: rgba(60, 60, 67, 0.29);
+  --apple-opaque-separator: #c6c6c8;
+
+  /* Apple Spacing (Apple's 8pt grid system) */
+  --apple-spacing-1: 2px;
+  --apple-spacing-2: 4px;
+  --apple-spacing-3: 8px;
+  --apple-spacing-4: 12px;
+  --apple-spacing-5: 16px;
+  --apple-spacing-6: 20px;
+  --apple-spacing-7: 24px;
+  --apple-spacing-8: 32px;
+  --apple-spacing-9: 40px;
+  --apple-spacing-10: 48px;
+
+  /* Apple Corner Radius */
+  --apple-corner-radius: 8px;
+  --apple-corner-radius-large: 12px;
+  --apple-corner-radius-xl: 16px;
+  --apple-corner-radius-2xl: 20px;
+
+  /* Apple Shadows */
+  --apple-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --apple-shadow-2: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --apple-shadow-3: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Apple Animation */
+  --apple-animation-duration: 0.2s;
+  --apple-animation-easing: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* Custom Dark Theme Colors - Uniform Design System */
+  --modern-bg-primary: #121212; /* Background de page */
+  --modern-bg-secondary: #242424; /* Background d'input */
+  --modern-bg-tertiary: #313131; /* 3ème couche */
+  --modern-border-width: 1px; /* Épaisseur des liserés */
+  --modern-border-color: rgba(255, 255, 255, 0.1);
+  --modern-border-focus: rgba(114, 227, 173, 0.6);
+
+  /* Modern Accent Colors */
+  --modern-accent-primary: #72e4ad; /* Couleur verte principale */
+  --modern-accent-primary-rgb: 114, 228, 173; /* RGB pour rgba() */
+}
+
+/* Apple Dark Mode */
+.dark {
+  /* Apple Dark Text Colors */
+  --apple-label: #ffffff;
+  --apple-secondary-label: rgba(235, 235, 245, 0.6);
+  --apple-tertiary-label: rgba(235, 235, 245, 0.3);
+  --apple-quaternary-label: rgba(235, 235, 245, 0.18);
+
+  /* Apple Dark Background Colors */
+  --apple-system-background: #000000;
+  --apple-secondary-system-background: #1c1c1e;
+  --apple-tertiary-system-background: #2c2c2e;
+
+  /* Apple Dark Grays */
+  --apple-gray-1: #8e8e93;
+  --apple-gray-2: #636366;
+  --apple-gray-3: #48484a;
+  --apple-gray-4: #3a3a3c;
+  --apple-gray-5: #2c2c2e;
+  --apple-gray-6: #1c1c1e;
+
+  /* Apple Dark Separators */
+  --apple-separator: rgba(84, 84, 88, 0.6);
+  --apple-opaque-separator: #38383a;
+
+  /* Override with custom colors */
+  --apple-system-background: var(--modern-bg-primary);
+  --apple-secondary-system-background: var(--modern-bg-secondary);
+  --apple-tertiary-system-background: var(--modern-bg-tertiary);
+
+  /* Ensure modern variables are available in dark mode */
+  --modern-bg-primary: #121212;
+  --modern-bg-secondary: #242424;
+  --modern-bg-tertiary: #313131;
+  --modern-border-width: 1px;
+  --modern-border-color: rgba(255, 255, 255, 0.1);
+  --modern-border-focus: rgba(114, 227, 173, 0.6);
+
+  /* Modern Accent Colors */
+  --modern-accent-primary: #72e4ad;
+  --modern-accent-primary-rgb: 114, 228, 173;
+}
+
+/* Hide scrollbar utility */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-feature-settings: normal;
+  font-feature-settings: normal;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif !important;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Modern UI specific container */
+.modern-ui-container {
+  /* Apple's exact font stack */
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif !important;
+  line-height: 1.47059;
+  font-size: 17px; /* Apple's base font size */
+  font-weight: 400;
+  letter-spacing: -0.022em; /* Apple's letter spacing */
+  background-color: var(--modern-bg-primary);
+  color: var(--apple-label);
+}
+
+/* Apple Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  margin: 0;
+  color: var(--apple-label);
+  letter-spacing: -0.022em;
+}
+
+/* Apple Large Title */
+h1 {
+  font-size: 34px;
+  line-height: 1.176470588;
+  font-weight: 700;
+  letter-spacing: -0.41px;
+}
+
+/* Apple Title 1 */
+h2 {
+  font-size: 28px;
+  line-height: 1.142857143;
+  font-weight: 700;
+  letter-spacing: -0.36px;
+}
+
+/* Apple Title 2 */
+h3 {
+  font-size: 22px;
+  line-height: 1.272727273;
+  font-weight: 700;
+  letter-spacing: -0.26px;
+}
+
+/* Apple Title 3 */
+h4 {
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.45px;
+}
+
+/* Apple Headline */
+h5 {
+  font-size: 17px;
+  line-height: 1.294117647;
+  font-weight: 600;
+  letter-spacing: -0.43px;
+}
+
+/* Apple Body */
+h6 {
+  font-size: 17px;
+  line-height: 1.470588235;
+  font-weight: 400;
+  letter-spacing: -0.43px;
+}
+
+/* Apple Button System */
+.apple-button {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  transition: all var(--apple-animation-duration) var(--apple-animation-easing);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px;
+}
+
+/* Apple Button Primary (Filled) */
+.apple-button-primary {
+  background-color: var(--apple-blue);
+  color: #000000;
+  font-weight: 400;
+  box-shadow: 0 2px 8px rgba(114, 227, 173, 0.25);
+}
+
+.apple-button-primary:hover:not(:disabled) {
+  background-color: #5dd39a;
+  box-shadow: 0 4px 12px rgba(114, 227, 173, 0.35);
+  transform: translateY(-1px);
+}
+
+.apple-button-primary:active:not(:disabled) {
+  background-color: #4bc88a;
+  box-shadow: 0 1px 4px rgba(114, 227, 173, 0.2);
+  transform: translateY(0px) scale(0.98);
+}
+
+.apple-button-primary:focus:not(:disabled) {
+  box-shadow: 0 0 0 4px rgba(114, 227, 173, 0.25), 0 2px 8px rgba(114, 227, 173, 0.25);
+}
+
+/* Apple Button Secondary (Gray) */
+.apple-button-secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-weight: 400;
+  backdrop-filter: blur(10px);
+}
+
+.apple-button-secondary:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.apple-button-secondary:active:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(0px) scale(0.98);
+}
+
+/* Apple Button Tertiary (Tinted) */
+.apple-button-tertiary {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+  backdrop-filter: blur(10px);
+}
+
+.apple-button-tertiary:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  transform: translateY(-1px);
+}
+
+.apple-button-tertiary:active:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.06);
+  transform: translateY(0px) scale(0.98);
+}
+
+/* Apple Button Sizes */
+.apple-button-small {
+  padding: 6px 14px;
+  font-size: 13px;
+  min-height: 32px;
+  border-radius: 6px;
+}
+
+.apple-button-medium {
+  padding: 10px 18px;
+  font-size: 15px;
+  min-height: 40px;
+  border-radius: 8px;
+}
+
+.apple-button-large {
+  padding: 12px 20px;
+  font-size: 16px;
+  min-height: 44px;
+  border-radius: 8px;
+}
+
+/* Apple Card Style */
+.apple-card {
+  background-color: var(--apple-system-background);
+  border-radius: var(--apple-corner-radius-large);
+  box-shadow: var(--apple-shadow-2);
+  border: 1px solid var(--apple-gray-5);
+}
+
+.dark .apple-card {
+  background-color: var(--apple-secondary-system-background);
+  border-color: var(--apple-gray-5);
+}
+
+/* Modern Input System */
+.modern-input {
+  background-color: var(--modern-bg-secondary) !important;
+  border: var(--modern-border-width) solid var(--modern-border-color) !important;
+  border-radius: 10px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.modern-input:focus {
+  border-color: var(--modern-border-focus) !important;
+  background-color: var(--modern-bg-tertiary) !important;
+}
+
+/* Modern Button System */
+.modern-button-secondary {
+  background-color: var(--modern-bg-secondary) !important;
+  border: none !important;
+}
+
+.modern-button-tertiary {
+  background-color: var(--modern-bg-tertiary) !important;
+  border: none !important;
+}
+
+/* Modern Card System */
+.modern-card {
+  background-color: var(--modern-bg-secondary) !important;
+  border: var(--modern-border-width) solid var(--modern-border-color) !important;
+  border-radius: 12px;
+}
+
+.modern-card-elevated {
+  background-color: var(--modern-bg-tertiary) !important;
+  border: var(--modern-border-width) solid var(--modern-border-color) !important;
+}
+
+/* Utility Classes for Consistent Styling */
+.bg-primary {
+  background-color: var(--modern-bg-primary) !important;
+}
+.bg-secondary {
+  background-color: var(--modern-bg-secondary) !important;
+}
+.bg-tertiary {
+  background-color: var(--modern-bg-tertiary) !important;
+}
+
+.border-modern {
+  border: var(--modern-border-width) solid var(--modern-border-color) !important;
+}
+
+.border-focus {
+  border-color: var(--modern-border-focus) !important;
+}
+
+/* Accent Color Utilities */
+.text-accent {
+  color: var(--modern-accent-primary) !important;
+}
+.bg-accent {
+  background-color: var(--modern-accent-primary) !important;
+}
+.border-accent {
+  border-color: var(--modern-accent-primary) !important;
+}
+
+/* Consistent spacing */
+.p-modern {
+  padding: 16px;
+}
+.p-modern-sm {
+  padding: 12px;
+}
+.p-modern-lg {
+  padding: 20px;
+}
+
+.m-modern {
+  margin: 16px;
+}
+.m-modern-sm {
+  margin: 12px;
+}
+.m-modern-lg {
+  margin: 20px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(75, 85, 99, 0.7);
+}
+
+/* Focus styles for accessibility */
+:focus {
+  outline: 2px solid var(--apple-blue);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Apple Loading Animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Security: Prevent text selection on sensitive elements */
+.wallet-balance,
+.private-key,
+.mnemonic-phrase {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide native number input spinners completely */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

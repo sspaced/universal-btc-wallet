@@ -31,7 +31,8 @@ export enum AssetTabKey {
   ATOMICALS = 1, // IGNORED
   RUNES = 2,
   CAT = 3,
-  ALKANES = 4
+  ALKANES = 4,
+  SIMPLICITY = 5
 }
 
 export enum OrdinalsAssetTabKey {

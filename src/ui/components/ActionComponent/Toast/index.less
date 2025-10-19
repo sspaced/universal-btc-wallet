@@ -6,15 +6,15 @@
   right: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   z-index: 1000;
   pointer-events: none;
 }
 
 .toast {
   opacity: 0;
-  margin-bottom: 50px;
-  animation: fade, raise;
+  margin-top: 20px;
+  animation: fade, slideDown;
   animation-duration: 2s, 0.5s;
 
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -37,11 +37,13 @@
   }
 }
 
-@keyframes raise {
+@keyframes slideDown {
   0% {
-    margin-bottom: 20px;
+    margin-top: -50px;
+    transform: translateY(-20px);
   }
   100% {
-    margin-bottom: 50px;
+    margin-top: 20px;
+    transform: translateY(0);
   }
 }

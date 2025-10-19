@@ -1,5 +1,5 @@
 {
-  "appName": { "message": "UniSat Wallet" },
+  "appName": { "message": "universal Wallet" },
   "appDescription": {
     "message": "世界初のオープンソースOrdinals ChromeウォレットでインスクリプションをInscribeして保存しましょう！"
   },
@@ -438,6 +438,9 @@
   "home": {
     "message": "ホーム"
   },
+  "swap": {
+    "message": "スワップ"
+  },
   "discover": {
     "message": "発見"
   },
@@ -838,7 +841,7 @@
     "message": "安全でない可能性があるため、このページへのアクセスはUniSat Walletによって制限されています。"
   },
   "reject_blocked_by_unisat_wallet": {
-    "message": "拒否 (UniSat Walletによりブロック)"
+    "message": "拒否 (universal Walletによりブロック)"
   },
   "warning": {
     "message": "警告"
@@ -847,7 +850,7 @@
     "message": "リスクを承知しています"
   },
   "connect_with_unisat_wallet": {
-    "message": "UniSat Walletに接続"
+    "message": "universal Walletに接続"
   },
   "select_the_account_to_use_on_this_site": {
     "message": "このサイトで使用するアカウントを選択してください"
@@ -1152,8 +1155,8 @@
   "confirm": {
     "message": "確認"
   },
-  "unisat": {
-    "message": "UNISAT"
+  "universal": {
+    "message": "universal"
   },
   "try_again": {
     "message": "再試行"
@@ -1507,13 +1510,16 @@
     "message": "日付"
   },
   "view_on_unisat_explorer": {
-    "message": "UniSat Explorerで表示"
+    "message": "universal Explorerで表示"
   },
   "view_on_okx_explorer": {
     "message": "OKX Explorerで表示"
   },
   "view_on_mempool": {
     "message": "Mempoolで表示"
+  },
+  "view_on_nullpool": {
+    "message": "Nullpoolで表示"
   },
   "from": {
     "message": "送信元"
@@ -1663,7 +1669,7 @@
     "message": "アドレスまたは名前 (.fb)"
   },
   "address_or_name_sats_unisat_etc": {
-    "message": "アドレスまたは名前 (.sats, .unisat, ...)"
+    "message": "アドレスまたは名前 (.sats, .universal, ...)"
   },
   "does_not_exist": {
     "message": "は存在しません"
@@ -2257,7 +2263,7 @@
     "message": "署名完了、結果をスキャン"
   },
   "linked_to_unisat_cold_wallet": {
-    "message": "UniSat コールドウォレットに接続済み"
+    "message": "universal コールドウォレットに接続済み"
   },
   "signature_successful": {
     "message": "署名成功"
@@ -2411,5 +2417,56 @@
   },
   "swap_send": {
     "message": "送信"
+  },
+  "enter_current_password": {
+    "message": "現在のパスワードを入力"
+  },
+  "enter_new_password": {
+    "message": "新しいパスワードを入力"
+  },
+  "confirm_new_password": {
+    "message": "新しいパスワードを確認"
+  },
+  "security_tip": {
+    "message": "セキュリティのヒント"
+  },
+  "password_security_tip": {
+    "message": "数字と特殊文字を含む、少なくとも8文字の強力なパスワードを使用してください。"
+  },
+  "select_network": {
+    "message": "ネットワークを選択"
+  },
+  "search_contacts": {
+    "message": "連絡先を検索"
+  },
+  "add_contact": {
+    "message": "連絡先を追加"
+  },
+  "no_contacts": {
+    "message": "連絡先なし"
+  },
+  "add_first_contact": {
+    "message": "最初の連絡先を追加"
+  },
+  "no_contacts_found": {
+    "message": "連絡先が見つかりません"
+  },
+  "try_different_search": {
+    "message": "別の検索語を試してください"
+  },
+  "all_networks": {
+    "message": "すべてのネットワーク"
+  },
+  "swap_confirmation": {
+    "message": "スワップ確認"
+  },
+  "error_details": {
+    "message": "エラー詳細"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "コールドウォレットのアドレスタイプは変更できません"
+  },
+  "address_type_changed_successfully": {
+    "message": "アドレスタイプが正常に変更されました"
   }
 }

@@ -1,7 +1,7 @@
 {
-  "appName": { "message": "UniSat Wallet" },
+  "appName": { "message": "Universal Wallet" },
   "appDescription": {
-    "message": "Inscrivez et stockez vos inscriptions dans le premier portefeuille Chrome open-source au monde pour les Ordinals !"
+    "message": "Portefeuille Bitcoin sécurisé avec support du protocole OPI Universal. Design minimaliste inspiré d'Apple/Revolut."
   },
   "receive": {
     "message": "Recevoir"
@@ -465,7 +465,7 @@
     "message": "Veuillez sélectionner un fournisseur de services ci-dessous pour acheter"
   },
   "disclaimStr": {
-    "message": "Veuillez noter que vous êtes sur le point d'acheter du Bitcoin via une plateforme tierce. Les services de paiement par carte de crédit sont fournis par nos partenaires. UniSat Wallet agit uniquement en tant que plateforme intermédiaire et n'assume aucune responsabilité pour les pertes ou dommages potentiels pouvant résulter de l'utilisation du service de paiement par carte de crédit."
+    "message": "Veuillez noter que vous êtes sur le point d'acheter du Bitcoin via une plateforme tierce. Les services de paiement par carte de crédit sont fournis par nos partenaires. universal Wallet agit uniquement en tant que plateforme intermédiaire et n'assume aucune responsabilité pour les pertes ou dommages potentiels pouvant résulter de l'utilisation du service de paiement par carte de crédit."
   },
   "additional_transaction_fees": {
     "message": "Des frais de transaction supplémentaires s'appliquent lors de l'achat via des plateformes tierces. Les taux varient selon le pays et le mode de paiement. Veuillez examiner les frais de chaque plateforme avant de procéder aux transactions."
@@ -840,10 +840,10 @@
     "message": "Un comportement malveillant et une activité suspecte ont été détectés."
   },
   "your_access_to_this_page_has_been_restricted_by_un": {
-    "message": "Votre accès à cette page a été restreint par UniSat Wallet car elle pourrait être dangereuse."
+    "message": "Votre accès à cette page a été restreint par universal Wallet car elle pourrait être dangereuse."
   },
   "reject_blocked_by_unisat_wallet": {
-    "message": "Rejeter (bloqué par UniSat Wallet)"
+    "message": "Rejeter (bloqué par universal Wallet)"
   },
   "warning": {
     "message": "Avertissement"
@@ -852,7 +852,7 @@
     "message": "Je suis conscient des risques"
   },
   "connect_with_unisat_wallet": {
-    "message": "Connecter avec UniSat Wallet"
+    "message": "Connecter avec universal Wallet"
   },
   "select_the_account_to_use_on_this_site": {
     "message": "Sélectionnez le compte à utiliser sur ce site"
@@ -1158,8 +1158,8 @@
   "confirm": {
     "message": "Confirmer"
   },
-  "unisat": {
-    "message": "UNISAT"
+  "universal": {
+    "message": "universal"
   },
   "try_again": {
     "message": "Réessayer"
@@ -1357,7 +1357,7 @@
     "message": "Danger ! Site web de phishing potentiel détecté"
   },
   "this_website_has_been_identified_as_malicious_by_unisat_and_may": {
-    "message": "Ce site web a été identifié comme malveillant par UniSat et peut :"
+    "message": "Ce site web a été identifié comme malveillant par universal et peut :"
   },
   "steal_your_private_keys_or_seed_phrases": {
     "message": "Voler vos clés privées ou phrases secrètes"
@@ -1513,13 +1513,16 @@
     "message": "Date"
   },
   "view_on_unisat_explorer": {
-    "message": "Voir sur l'Explorateur UniSat"
+    "message": "Voir sur l'Explorateur universal"
   },
   "view_on_okx_explorer": {
     "message": "Voir sur l'Explorateur OKX"
   },
   "view_on_mempool": {
     "message": "Voir sur Mempool"
+  },
+  "view_on_nullpool": {
+    "message": "Voir sur Nullpool"
   },
   "from": {
     "message": "De"
@@ -1669,7 +1672,7 @@
     "message": "Adresse ou nom (.fb)"
   },
   "address_or_name_sats_unisat_etc": {
-    "message": "Adresse ou nom (.sats, .unisat, ...)"
+    "message": "Adresse ou nom (.sats, .universal, ...)"
   },
   "does_not_exist": {
     "message": "n'existe pas"
@@ -1767,6 +1770,45 @@
   "about_us": {
     "message": "À propos de nous"
   },
+  "about_us_description": {
+    "message": "Le portefeuille Bitcoin le plus populaire pour les Ordinals et inscriptions"
+  },
+  "secure_wallet": {
+    "message": "Portefeuille Sécurisé"
+  },
+  "secure_wallet_desc": {
+    "message": "Vos clés privées sont chiffrées et stockées localement"
+  },
+  "fast_transactions": {
+    "message": "Transactions Rapides"
+  },
+  "fast_transactions_desc": {
+    "message": "Transactions Bitcoin rapides et fiables"
+  },
+  "ordinals_support": {
+    "message": "Support Ordinals"
+  },
+  "ordinals_support_desc": {
+    "message": "Support complet pour les Bitcoin Ordinals et inscriptions"
+  },
+  "multi_network": {
+    "message": "Multi-Réseau"
+  },
+  "multi_network_desc": {
+    "message": "Support pour Bitcoin mainnet et testnet"
+  },
+  "build_info": {
+    "message": "Version 1.7.4"
+  },
+  "latest": {
+    "message": "Dernière"
+  },
+  "made_with_love": {
+    "message": "Fait avec ❤️ pour la communauté Bitcoin"
+  },
+  "all_rights_reserved": {
+    "message": "Tous droits réservés."
+  },
   "seconds": {
     "message": "Secondes"
   },
@@ -1823,6 +1865,18 @@
   },
   "save": {
     "message": "Enregistrer"
+  },
+  "name_required": {
+    "message": "Le nom est requis"
+  },
+  "name_too_short": {
+    "message": "Le nom doit contenir au moins 2 caractères"
+  },
+  "invalid_address_format": {
+    "message": "Format d'adresse invalide"
+  },
+  "network_required": {
+    "message": "Le réseau est requis"
   },
   "new_update_available": {
     "message": "Nouvelle mise à jour disponible"
@@ -2008,7 +2062,7 @@
     "message": "Ne prend pas en charge les opérations de suppression de compte"
   },
   "disclaimStrFb": {
-    "message": "Veuillez noter que vous êtes sur le point de acheter FB via une plateforme tierce. Les services de paiement par carte de crédit sont fournis par nos partenaires. UniSat Wallet agit uniquement comme plateforme intermédiaire et n'assume aucune responsabilité pour les pertes ou les dommages potentiels qui peuvent survenir du fait de l'utilisation du service de paiement par carte de crédit."
+    "message": "Veuillez noter que vous êtes sur le point de acheter FB via une plateforme tierce. Les services de paiement par carte de crédit sont fournis par nos partenaires. universal Wallet agit uniquement comme plateforme intermédiaire et n'assume aucune responsabilité pour les pertes ou les dommages potentiels qui peuvent survenir du fait de l'utilisation du service de paiement par carte de crédit."
   },
   "seconds_ago": {
     "message": "secondes"
@@ -2122,7 +2176,7 @@
     "message": "Ouvrir comme barre latérale"
   },
   "sign_all_transactions_at_once": {
-    "message": "Vous avez la possibilité de signer toutes les transactions en une fois, mais veuillez noter que UniSat Wallet ne vérifiera pas chaque transaction individuellement. Nous vous recommandons d'utiliser uniquement cette fonctionnalité sur des sites web de confiance et familiers pour minimiser le risque de pertes potentielles."
+    "message": "Vous avez la possibilité de signer toutes les transactions en une fois, mais veuillez noter que universal Wallet ne vérifiera pas chaque transaction individuellement. Nous vous recommandons d'utiliser uniquement cette fonctionnalité sur des sites web de confiance et familiers pour minimiser le risque de pertes potentielles."
   },
   "message": {
     "message": "message"
@@ -2260,7 +2314,7 @@
     "message": "J'ai Signé, Scanner le Résultat"
   },
   "linked_to_unisat_cold_wallet": {
-    "message": "Lié au Portefeuille Froid UniSat"
+    "message": "Lié au Portefeuille Froid universal"
   },
   "signature_successful": {
     "message": "Signature Réussie"
@@ -2414,5 +2468,149 @@
   },
   "swap_send": {
     "message": "Envoyer"
+  },
+  "send": {
+    "message": "Envoyer"
+  },
+  "recipient_address_placeholder": {
+    "message": "Entrez l'adresse du destinataire"
+  },
+  "recipient_address": {
+    "message": "Adresse Destinataire"
+  },
+  "available": {
+    "message": "Disponible"
+  },
+  "max": {
+    "message": "Max"
+  },
+  "slow": {
+    "message": "Lent"
+  },
+  "medium": {
+    "message": "Moyen"
+  },
+  "fast": {
+    "message": "Rapide"
+  },
+  "custom": {
+    "message": "Personnalisé"
+  },
+  "rbf": {
+    "message": "RBF"
+  },
+  "replace_by_fee": {
+    "message": "Replace-by-fee"
+  },
+  "cancel": {
+    "message": "Annuler"
+  },
+  "next": {
+    "message": "Suivant"
+  },
+  "select_asset": {
+    "message": "Sélectionner un Actif"
+  },
+  "search": {
+    "message": "Rechercher..."
+  },
+  "close": {
+    "message": "Fermer"
+  },
+  "send_to": {
+    "message": "Envoyer à"
+  },
+  "network_fee": {
+    "message": "Frais de Réseau"
+  },
+  "fee_rate": {
+    "message": "Taux de Frais"
+  },
+  "total": {
+    "message": "Total"
+  },
+  "replace_by_fee_enabled": {
+    "message": "Replace-by-fee activé"
+  },
+  "enter_valid_bitcoin_address": {
+    "message": "Entrez une adresse Bitcoin valide"
+  },
+  "valid_bitcoin_address": {
+    "message": "Adresse Bitcoin valide"
+  },
+  "invalid_bitcoin_address_format": {
+    "message": "Format d'adresse Bitcoin invalide"
+  },
+  "enter_bitcoin_address": {
+    "message": "Entrez l'adresse Bitcoin"
+  },
+  "no_assets_found": {
+    "message": "Aucun actif trouvé"
+  },
+  "assets_will_appear_here": {
+    "message": "Vos actifs apparaîtront ici une fois que vous les recevrez"
+  },
+  "swap": {
+    "message": "Échanger"
+  },
+  "history": {
+    "message": "Historique"
+  },
+  "home": {
+    "message": "Accueil"
+  },
+  "settings": {
+    "message": "Paramètres"
+  },
+  "enter_current_password": {
+    "message": "Entrez votre mot de passe actuel"
+  },
+  "enter_new_password": {
+    "message": "Entrez votre nouveau mot de passe"
+  },
+  "confirm_new_password": {
+    "message": "Confirmez votre nouveau mot de passe"
+  },
+  "security_tip": {
+    "message": "Conseil de sécurité"
+  },
+  "password_security_tip": {
+    "message": "Utilisez un mot de passe fort avec au moins 8 caractères, incluant des chiffres et des caractères spéciaux."
+  },
+  "select_network": {
+    "message": "Sélectionner le réseau"
+  },
+  "search_contacts": {
+    "message": "Rechercher des contacts"
+  },
+  "add_contact": {
+    "message": "Ajouter un contact"
+  },
+  "no_contacts": {
+    "message": "Aucun contact"
+  },
+  "add_first_contact": {
+    "message": "Ajouter votre premier contact"
+  },
+  "no_contacts_found": {
+    "message": "Aucun contact trouvé"
+  },
+  "try_different_search": {
+    "message": "Essayez un terme de recherche différent"
+  },
+  "all_networks": {
+    "message": "Tous les réseaux"
+  },
+  "swap_confirmation": {
+    "message": "Confirmation d'échange"
+  },
+  "error_details": {
+    "message": "Détails de l'erreur"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "Le type d'adresse du portefeuille froid ne peut pas être modifié"
+  },
+  "address_type_changed_successfully": {
+    "message": "Type d'adresse modifié avec succès"
   }
 }

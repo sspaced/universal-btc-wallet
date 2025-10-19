@@ -1,7 +1,7 @@
 {
-  "appName": { "message": "UniSat Wallet" },
+  "appName": { "message": "Universal Wallet" },
   "appDescription": {
-    "message": "Inscribe and store your inscriptions in the world's first open-source Ordinals Chrome wallet!"
+    "message": "Secure Bitcoin wallet with OPI Universal Protocol support. Apple/Revolut-inspired minimalist design."
   },
   "receive": {
     "message": "Receive"
@@ -40,6 +40,15 @@
   "view_on_block_explorer": {
     "message": "View on Block Explorer"
   },
+  "confirm_and_send": {
+    "message": "Confirm and Send"
+  },
+  "confirming": {
+    "message": "Confirming..."
+  },
+  "rbf_enabled": {
+    "message": "Replace-by-fee enabled"
+  },
   "view": {
     "message": "View"
   },
@@ -54,6 +63,27 @@
   },
   "done": {
     "message": "Done"
+  },
+  "confirm_transaction": {
+    "message": "Confirm Transaction"
+  },
+  "transaction_success": {
+    "message": "Transaction Success"
+  },
+  "transaction_failed": {
+    "message": "Transaction Failed"
+  },
+  "transaction_could_not_be_completed": {
+    "message": "The transaction could not be completed"
+  },
+  "transaction_failed_help_text": {
+    "message": "Please check your network connection and try again. If the problem persists, contact support."
+  },
+  "try_again": {
+    "message": "Try Again"
+  },
+  "go_to_home": {
+    "message": "Go to Home"
   },
   "payment_failed": {
     "message": "Payment Failed"
@@ -462,7 +492,7 @@
     "message": "Please select a service provider below to buy"
   },
   "disclaimStr": {
-    "message": "Please note that you are about to buy Bitcoin through a third-party platform. Credit card payment services are provided by our partners. UniSat Wallet acts solely as an intermediary platform and assumes no liability for any potential losses or damages that may arise from using the credit card payment service."
+    "message": "Please note that you are about to buy Bitcoin through a third-party platform. Credit card payment services are provided by our partners. universal Wallet acts solely as an intermediary platform and assumes no liability for any potential losses or damages that may arise from using the credit card payment service."
   },
   "additional_transaction_fees": {
     "message": "Additional transaction fees apply when purchasing through third-party platforms. Rates vary by country and payment method. Please review each platform's fees before proceeding with transactions."
@@ -836,10 +866,10 @@
     "message": "Malicious behavior and suspicious activity have been detected."
   },
   "your_access_to_this_page_has_been_restricted_by_un": {
-    "message": "Your access to this page has been restricted by UniSat Wallet as it might be unsafe."
+    "message": "Your access to this page has been restricted by universal Wallet as it might be unsafe."
   },
   "reject_blocked_by_unisat_wallet": {
-    "message": "Reject (blocked by UniSat Wallet)"
+    "message": "Reject (blocked by universal Wallet)"
   },
   "warning": {
     "message": "Warning"
@@ -848,7 +878,7 @@
     "message": "I am aware of the risks"
   },
   "connect_with_unisat_wallet": {
-    "message": "Connect with UniSat Wallet"
+    "message": "Connect with universal Wallet"
   },
   "select_the_account_to_use_on_this_site": {
     "message": "Select the account to use on this site"
@@ -1154,8 +1184,8 @@
   "confirm": {
     "message": "Confirm"
   },
-  "unisat": {
-    "message": "UNISAT"
+  "universal": {
+    "message": "universal"
   },
   "try_again": {
     "message": "Try again"
@@ -1353,7 +1383,7 @@
     "message": "Danger! Potential phishing website detected"
   },
   "this_website_has_been_identified_as_malicious_by_unisat_and_may": {
-    "message": "This website has been identified as malicious by UniSat and may:"
+    "message": "This website has been identified as malicious by universal and may:"
   },
   "steal_your_private_keys_or_seed_phrases": {
     "message": "Steal your private keys or seed phrases"
@@ -1509,13 +1539,16 @@
     "message": "Date"
   },
   "view_on_unisat_explorer": {
-    "message": "View on UniSat Explorer"
+    "message": "View on universal Explorer"
   },
   "view_on_okx_explorer": {
     "message": "View on OKX Explorer"
   },
   "view_on_mempool": {
     "message": "View on Mempool"
+  },
+  "view_on_nullpool": {
+    "message": "View on Nullpool"
   },
   "from": {
     "message": "From"
@@ -1665,7 +1698,7 @@
     "message": "Address or name (.fb)"
   },
   "address_or_name_sats_unisat_etc": {
-    "message": "Address or name (.sats, .unisat, ...)"
+    "message": "Address or name (.sats, .universal, ...)"
   },
   "does_not_exist": {
     "message": "does not exist"
@@ -1763,6 +1796,45 @@
   "about_us": {
     "message": "About us"
   },
+  "about_us_description": {
+    "message": "The most popular Bitcoin wallet for Ordinals and inscriptions"
+  },
+  "secure_wallet": {
+    "message": "Secure Wallet"
+  },
+  "secure_wallet_desc": {
+    "message": "Your private keys are encrypted and stored locally"
+  },
+  "fast_transactions": {
+    "message": "Fast Transactions"
+  },
+  "fast_transactions_desc": {
+    "message": "Quick and reliable Bitcoin transactions"
+  },
+  "ordinals_support": {
+    "message": "Ordinals Support"
+  },
+  "ordinals_support_desc": {
+    "message": "Full support for Bitcoin Ordinals and inscriptions"
+  },
+  "multi_network": {
+    "message": "Multi-Network"
+  },
+  "multi_network_desc": {
+    "message": "Support for Bitcoin mainnet and testnet"
+  },
+  "build_info": {
+    "message": "Build 1.7.4"
+  },
+  "latest": {
+    "message": "Latest"
+  },
+  "made_with_love": {
+    "message": "Made with ❤️ for the Bitcoin community"
+  },
+  "all_rights_reserved": {
+    "message": "All rights reserved."
+  },
   "seconds": {
     "message": "Seconds"
   },
@@ -1819,6 +1891,18 @@
   },
   "save": {
     "message": "Save"
+  },
+  "name_required": {
+    "message": "Name is required"
+  },
+  "name_too_short": {
+    "message": "Name must be at least 2 characters"
+  },
+  "invalid_address_format": {
+    "message": "Invalid address format"
+  },
+  "network_required": {
+    "message": "Network is required"
   },
   "new_update_available": {
     "message": "New Update Available"
@@ -2013,7 +2097,7 @@
     "message": "does not support account removal operations"
   },
   "disclaimStrFb": {
-    "message": "Please note that you are about to buy FB through a third-party platform. Credit card payment services are provided by our partners. UniSat Wallet acts solely as an intermediary platform and assumes no liability for any potential losses or damages that may arise from using the credit card payment service."
+    "message": "Please note that you are about to buy FB through a third-party platform. Credit card payment services are provided by our partners. universal Wallet acts solely as an intermediary platform and assumes no liability for any potential losses or damages that may arise from using the credit card payment service."
   },
   "seconds_ago": {
     "message": "sec ago"
@@ -2118,7 +2202,7 @@
     "message": "Open as SideBar"
   },
   "sign_all_transactions_at_once": {
-    "message": "You have the option to sign all transactions at once, but please note that UniSat Wallet will not verify each transaction individually. We strongly recommend using it only on trusted and familiar websites to minimize the risk of potential losses."
+    "message": "You have the option to sign all transactions at once, but please note that universal Wallet will not verify each transaction individually. We strongly recommend using it only on trusted and familiar websites to minimize the risk of potential losses."
   },
   "message": {
     "message": "message"
@@ -2172,7 +2256,7 @@
     "message": "Merge failed"
   },
   "create_cold_wallet": {
-    "message": "Link Unisat Cold Wallet"
+    "message": "Link universal Cold Wallet"
   },
   "msg_sign": {
     "message": "Message Signing"
@@ -2262,10 +2346,10 @@
     "message": "I Have Signed, Scan Result"
   },
   "cold_wallet": {
-    "message": "Link UniSat Cold Wallet"
+    "message": "Link universal Cold Wallet"
   },
   "linked_to_unisat_cold_wallet": {
-    "message": "Linked to UniSat Cold Wallet"
+    "message": "Linked to universal Cold Wallet"
   },
   "signature_successful": {
     "message": "Signature Successful"
@@ -2419,5 +2503,149 @@
   },
   "swap_send": {
     "message": "Send"
+  },
+  "send": {
+    "message": "Send"
+  },
+  "recipient_address_placeholder": {
+    "message": "Enter recipient address"
+  },
+  "recipient_address": {
+    "message": "Recipient Address"
+  },
+  "available": {
+    "message": "Available"
+  },
+  "max": {
+    "message": "Max"
+  },
+  "slow": {
+    "message": "Slow"
+  },
+  "medium": {
+    "message": "Medium"
+  },
+  "fast": {
+    "message": "Fast"
+  },
+  "custom": {
+    "message": "Custom"
+  },
+  "rbf": {
+    "message": "RBF"
+  },
+  "replace_by_fee": {
+    "message": "Replace-by-fee"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "next": {
+    "message": "Next"
+  },
+  "select_asset": {
+    "message": "Select Asset"
+  },
+  "search": {
+    "message": "Search..."
+  },
+  "close": {
+    "message": "Close"
+  },
+  "send_to": {
+    "message": "Send to"
+  },
+  "network_fee": {
+    "message": "Network Fee"
+  },
+  "fee_rate": {
+    "message": "Fee Rate"
+  },
+  "total": {
+    "message": "Total"
+  },
+  "replace_by_fee_enabled": {
+    "message": "Replace-by-fee enabled"
+  },
+  "enter_valid_bitcoin_address": {
+    "message": "Enter a valid Bitcoin address"
+  },
+  "valid_bitcoin_address": {
+    "message": "Valid Bitcoin address"
+  },
+  "invalid_bitcoin_address_format": {
+    "message": "Invalid Bitcoin address format"
+  },
+  "enter_bitcoin_address": {
+    "message": "Enter Bitcoin address"
+  },
+  "no_assets_found": {
+    "message": "No assets found"
+  },
+  "assets_will_appear_here": {
+    "message": "Your assets will appear here once you receive them"
+  },
+  "swap": {
+    "message": "Swap"
+  },
+  "history": {
+    "message": "History"
+  },
+  "home": {
+    "message": "Home"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "enter_current_password": {
+    "message": "Enter current password"
+  },
+  "enter_new_password": {
+    "message": "Enter new password"
+  },
+  "confirm_new_password": {
+    "message": "Confirm new password"
+  },
+  "security_tip": {
+    "message": "Security Tip"
+  },
+  "password_security_tip": {
+    "message": "Use a strong password with at least 8 characters, including numbers and special characters."
+  },
+  "select_network": {
+    "message": "Select Network"
+  },
+  "search_contacts": {
+    "message": "Search contacts"
+  },
+  "add_contact": {
+    "message": "Add Contact"
+  },
+  "no_contacts": {
+    "message": "No contacts"
+  },
+  "add_first_contact": {
+    "message": "Add your first contact"
+  },
+  "no_contacts_found": {
+    "message": "No contacts found"
+  },
+  "try_different_search": {
+    "message": "Try a different search term"
+  },
+  "all_networks": {
+    "message": "All Networks"
+  },
+  "swap_confirmation": {
+    "message": "Swap Confirmation"
+  },
+  "error_details": {
+    "message": "Error Details"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "Cold wallet address type cannot be changed"
+  },
+  "address_type_changed_successfully": {
+    "message": "Address type changed successfully"
   }
 }

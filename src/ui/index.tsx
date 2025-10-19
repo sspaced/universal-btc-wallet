@@ -12,6 +12,7 @@ import { Message } from '@/shared/utils';
 import { PriceProvider } from '@/ui/provider/PriceProvider';
 import AccountUpdater from '@/ui/state/accounts/updater';
 import '@/ui/styles/global.less';
+import '@/ui-modern/styles/apple-theme.css';
 
 import { I18nProvider } from './app/contexts/I18nContext';
 import { ActionComponentProvider } from './components/ActionComponent';

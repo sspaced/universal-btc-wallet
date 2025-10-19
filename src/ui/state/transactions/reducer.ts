@@ -56,10 +56,28 @@ export interface RunesTx {
   runeAmount?: string;
 }
 
+export interface SimplicityTx {
+  fromAddress: string;
+  toAddress: string;
+  rawtx: string;
+  txid: string;
+  fee: number;
+  estimateFee: number;
+  changeSatoshis: number;
+  sending: boolean;
+  psbtHex: string;
+  feeRate: number;
+  toDomain: string;
+  enableRBF: boolean;
+  ticker: string;
+  amount: number;
+}
+
 export interface TransactionsState {
   bitcoinTx: BitcoinTx;
   ordinalsTx: OrdinalsTx;
   runesTx: RunesTx;
+  simplicityTx: SimplicityTx;
   utxos: UnspentOutput[];
   spendUnavailableUtxos: UnspentOutput[];
   assetUtxos_inscriptions: UnspentOutput[];
@@ -131,6 +149,22 @@ export const initialState: TransactionsState = {
     toDomain: '',
     outputValue: 10000,
     enableRBF: false
+  },
+  simplicityTx: {
+    fromAddress: '',
+    toAddress: '',
+    rawtx: '',
+    txid: '',
+    fee: 0,
+    estimateFee: 0,
+    changeSatoshis: 0,
+    sending: false,
+    psbtHex: '',
+    feeRate: 5,
+    toDomain: '',
+    enableRBF: false,
+    ticker: '',
+    amount: 0
   },
   utxos: [],
   spendUnavailableUtxos: [],
@@ -215,6 +249,31 @@ const slice = createSlice({
     ) {
       const { payload } = action;
       state.runesTx = Object.assign({}, state.runesTx, payload);
+    },
+
+    updateSimplicityTx(
+      state,
+      action: {
+        payload: {
+          fromAddress?: string;
+          toAddress?: string;
+          changeSatoshis?: number;
+          rawtx?: string;
+          txid?: string;
+          fee?: number;
+          estimateFee?: number;
+          sending?: boolean;
+          psbtHex?: string;
+          feeRate?: number;
+          toDomain?: string;
+          enableRBF?: boolean;
+          ticker?: string;
+          amount?: number;
+        };
+      }
+    ) {
+      const { payload } = action;
+      state.simplicityTx = Object.assign({}, state.simplicityTx, payload);
     },
     setUtxos(state, action: { payload: UnspentOutput[] }) {
       state.utxos = action.payload;

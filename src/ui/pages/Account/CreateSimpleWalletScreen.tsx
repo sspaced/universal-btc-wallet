@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import { ADDRESS_TYPES } from '@/shared/constant';
-import { AddressType } from '@/shared/types';
+import { ADDRESS_TYPES, getRestoreWallets } from '@/shared/constant';
+import { AddressType, RestoreWalletType } from '@/shared/types';
 import { Button, Column, Content, Header, Input, Layout, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
 import { AddressTypeCard } from '@/ui/components/AddressTypeCard';
@@ -43,7 +44,7 @@ function Step1({
 
   const btnClick = async () => {
     try {
-      const _res = await wallet.createTmpKeyringWithPrivateKey(wif, AddressType.P2TR);
+      const _res = await wallet.createTmpKeyringWithPrivateKey(wif, contextData.addressType);
       if (_res.accounts.length == 0) {
         throw new Error(t('invalid_privatekey'));
       }
@@ -225,9 +226,21 @@ interface UpdateContextDataParams {
 }
 
 export default function CreateSimpleWalletScreen() {
+  const { state } = useLocation();
+  const { restoreWalletType } = (state as { restoreWalletType?: RestoreWalletType }) || {};
+
+  // Get the default address type based on the restore wallet type
+  const getDefaultAddressType = (walletType?: RestoreWalletType): AddressType => {
+    if (!walletType) return AddressType.P2WPKH;
+
+    const restoreWallets = getRestoreWallets();
+    const wallet = restoreWallets.find((w) => w.value === walletType);
+    return wallet?.addressTypes[0] || AddressType.P2WPKH;
+  };
+
   const [contextData, setContextData] = useState<ContextData>({
     wif: '',
-    addressType: AddressType.P2WPKH,
+    addressType: getDefaultAddressType(restoreWalletType),
     step1Completed: false,
     tabType: TabType.STEP1
   });

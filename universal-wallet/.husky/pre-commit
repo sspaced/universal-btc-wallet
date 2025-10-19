@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run security checks before commit
+echo "🔍 Running security checks..."
+
+# Check for secrets in staged files
+echo "🔐 Checking for secrets..."
+if git diff --cached --name-only | xargs grep -l "api_key\|secret\|password\|token" 2>/dev/null; then
+  echo "❌ Potential secrets detected in staged files!"
+  echo "Please remove any hardcoded secrets before committing."
+  exit 1
+fi
+
+# Run linting with security rules
+echo "📋 Running ESLint with security rules..."
+npm run lint:security
+
+# Run dependency vulnerability check
+echo "🛡️ Checking for vulnerable dependencies..."
+npm audit --audit-level moderate
+
+# Run tests
+echo "🧪 Running tests..."
+npm run test
+
+echo "✅ Pre-commit checks passed!"

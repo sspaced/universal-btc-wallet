@@ -71,7 +71,7 @@ export function SearchBar() {
 
       if (isTxid(value)) {
         const onSearch = () => {
-          window.open(chain.unisatExplorerUrl + '/tx/' + value);
+          window.open('https://nullpool.space/tx/' + value);
         };
         return {
           searchContent: (

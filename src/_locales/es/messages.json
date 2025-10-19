@@ -1,5 +1,5 @@
 {
-  "appName": { "message": "UniSat Wallet" },
+  "appName": { "message": "universal Wallet" },
   "appDescription": {
     "message": "¡Inscribe y guarda tus inscripciones en la primera billetera Ordinals de código abierto para Chrome del mundo!"
   },
@@ -436,6 +436,9 @@
   "home": {
     "message": "Inicio"
   },
+  "swap": {
+    "message": "Intercambiar"
+  },
   "discover": {
     "message": "Descubrir"
   },
@@ -461,7 +464,7 @@
     "message": "Por favor, selecciona un proveedor de servicios a continuación para comprar"
   },
   "disclaimStr": {
-    "message": "Ten en cuenta que estás a punto de comprar Bitcoin a través de una plataforma de terceros. Los servicios de pago con tarjeta de crédito son proporcionados por nuestros socios. UniSat Wallet actúa únicamente como plataforma intermediaria y no asume ninguna responsabilidad por posibles pérdidas o daños que puedan surgir del uso del servicio de pago con tarjeta de crédito."
+    "message": "Ten en cuenta que estás a punto de comprar Bitcoin a través de una plataforma de terceros. Los servicios de pago con tarjeta de crédito son proporcionados por nuestros socios. universal Wallet actúa únicamente como plataforma intermediaria y no asume ninguna responsabilidad por posibles pérdidas o daños que puedan surgir del uso del servicio de pago con tarjeta de crédito."
   },
   "additional_transaction_fees": {
     "message": "Se aplican tarifas de transacción adicionales al comprar a través de plataformas de terceros. Las tarifas varían según el país y el método de pago. Revisa las tarifas de cada plataforma antes de proceder con las transacciones."
@@ -836,10 +839,10 @@
     "message": "Se ha detectado comportamiento malicioso y actividad sospechosa."
   },
   "your_access_to_this_page_has_been_restricted_by_un": {
-    "message": "Tu acceso a esta página ha sido restringido por UniSat Wallet ya que podría ser inseguro."
+    "message": "Tu acceso a esta página ha sido restringido por universal Wallet ya que podría ser inseguro."
   },
   "reject_blocked_by_unisat_wallet": {
-    "message": "Rechazar (bloqueado por UniSat Wallet)"
+    "message": "Rechazar (bloqueado por universal Wallet)"
   },
   "warning": {
     "message": "Advertencia"
@@ -848,7 +851,7 @@
     "message": "Soy consciente de los riesgos"
   },
   "connect_with_unisat_wallet": {
-    "message": "Conectar con UniSat Wallet"
+    "message": "Conectar con universal Wallet"
   },
   "select_the_account_to_use_on_this_site": {
     "message": "Selecciona la cuenta para usar en este sitio"
@@ -1154,8 +1157,8 @@
   "confirm": {
     "message": "Confirmar"
   },
-  "unisat": {
-    "message": "UNISAT"
+  "universal": {
+    "message": "universal"
   },
   "try_again": {
     "message": "Intentar de nuevo"
@@ -1353,7 +1356,7 @@
     "message": "¡Peligro! Detectado sitio web de phishing potencial"
   },
   "this_website_has_been_identified_as_malicious_by_unisat_and_may": {
-    "message": "Este sitio web ha sido identificado como malicioso por UniSat y puede:"
+    "message": "Este sitio web ha sido identificado como malicioso por universal y puede:"
   },
   "steal_your_private_keys_or_seed_phrases": {
     "message": "Robar tus claves privadas o frases semilla"
@@ -1509,13 +1512,16 @@
     "message": "Fecha"
   },
   "view_on_unisat_explorer": {
-    "message": "Ver en Explorador UniSat"
+    "message": "Ver en Explorador universal"
   },
   "view_on_okx_explorer": {
     "message": "Ver en Explorador OKX"
   },
   "view_on_mempool": {
     "message": "Ver en Mempool"
+  },
+  "view_on_nullpool": {
+    "message": "Ver en Nullpool"
   },
   "from": {
     "message": "De"
@@ -1665,7 +1671,7 @@
     "message": "Dirección o nombre (.fb)"
   },
   "address_or_name_sats_unisat_etc": {
-    "message": "Dirección o nombre (.sats, .unisat, ...)"
+    "message": "Dirección o nombre (.sats, .universal, ...)"
   },
   "does_not_exist": {
     "message": "no existe"
@@ -1992,7 +1998,7 @@
     "message": "No se admiten operaciones de eliminación de cuentas"
   },
   "disclaimStrFb": {
-    "message": "Por favor, tenga en cuenta que está a punto de comprar FB a través de una plataforma de terceros. Los servicios de pago con tarjeta de crédito son proporcionados por nuestros socios. UniSat Wallet actúa únicamente como plataforma intermedia y no asume responsabilidad por cualquier pérdida o daño potencial que pueda surgir del uso del servicio de pago con tarjeta de crédito."
+    "message": "Por favor, tenga en cuenta que está a punto de comprar FB a través de una plataforma de terceros. Los servicios de pago con tarjeta de crédito son proporcionados por nuestros socios. universal Wallet actúa únicamente como plataforma intermedia y no asume responsabilidad por cualquier pérdida o daño potencial que pueda surgir del uso del servicio de pago con tarjeta de crédito."
   },
   "seconds_ago": {
     "message": "segundos"
@@ -2109,7 +2115,7 @@
     "message": "Abrir como barra lateral"
   },
   "sign_all_transactions_at_once": {
-    "message": "Tienes la opción de firmar todas las transacciones a la vez, pero ten en cuenta que UniSat Wallet no verificará cada transacción individualmente. Te recomendamos usarlo solo en sitios web de confianza y familiares para minimizar el riesgo de pérdidas potenciales."
+    "message": "Tienes la opción de firmar todas las transacciones a la vez, pero ten en cuenta que universal Wallet no verificará cada transacción individualmente. Te recomendamos usarlo solo en sitios web de confianza y familiares para minimizar el riesgo de pérdidas potenciales."
   },
   "message": {
     "message": "mensaje"
@@ -2247,7 +2253,7 @@
     "message": "He Firmado, Escanear Resultado"
   },
   "linked_to_unisat_cold_wallet": {
-    "message": "Vinculado a UniSat Cold Wallet"
+    "message": "Vinculado a universal Cold Wallet"
   },
   "signature_successful": {
     "message": "Firma Exitosa"
@@ -2401,5 +2407,56 @@
   },
   "swap_send": {
     "message": "Enviar"
+  },
+  "enter_current_password": {
+    "message": "Ingrese su contraseña actual"
+  },
+  "enter_new_password": {
+    "message": "Ingrese su nueva contraseña"
+  },
+  "confirm_new_password": {
+    "message": "Confirme su nueva contraseña"
+  },
+  "security_tip": {
+    "message": "Consejo de seguridad"
+  },
+  "password_security_tip": {
+    "message": "Use una contraseña fuerte con al menos 8 caracteres, incluyendo números y caracteres especiales."
+  },
+  "select_network": {
+    "message": "Seleccionar red"
+  },
+  "search_contacts": {
+    "message": "Buscar contactos"
+  },
+  "add_contact": {
+    "message": "Agregar contacto"
+  },
+  "no_contacts": {
+    "message": "Sin contactos"
+  },
+  "add_first_contact": {
+    "message": "Agregar tu primer contacto"
+  },
+  "no_contacts_found": {
+    "message": "No se encontraron contactos"
+  },
+  "try_different_search": {
+    "message": "Prueba con un término de búsqueda diferente"
+  },
+  "all_networks": {
+    "message": "Todas las redes"
+  },
+  "swap_confirmation": {
+    "message": "Confirmación de intercambio"
+  },
+  "error_details": {
+    "message": "Detalles del error"
+  },
+  "cold_wallet_address_type_cannot_be_changed": {
+    "message": "El tipo de dirección de billetera fría no se puede cambiar"
+  },
+  "address_type_changed_successfully": {
+    "message": "Tipo de dirección cambiado con éxito"
   }
 }

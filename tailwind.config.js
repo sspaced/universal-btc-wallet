@@ -8,6 +8,9 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx,vue}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      },
       transitionDuration: {
         80: '80ms'
       },

@@ -89,16 +89,24 @@ export const LANGS = [
     label: 'English'
   },
   {
-    value: 'zh_CN',
-    label: 'Chinese'
+    value: 'zh_TW',
+    label: '繁體中文 / 简体中文'
   },
   {
     value: 'ja',
-    label: 'Japanese'
+    label: '日本語'
   },
   {
     value: 'es',
-    label: 'Spanish'
+    label: 'Español'
+  },
+  {
+    value: 'fr',
+    label: 'Français'
+  },
+  {
+    value: 'ru',
+    label: 'Русский'
   }
 ];
 
@@ -246,7 +254,7 @@ export const CHAINS_MAP: { [key: string]: TypeChain } = {
     unisatExplorerUrl: 'https://uniscan.cc',
     okxExplorerUrl: '',
     showPrice: true,
-    defaultExplorer: 'unisat-explorer',
+    defaultExplorer: 'mempool-space',
     enableBrc20Prog: true
   },
   [ChainType.BITCOIN_TESTNET]: {
@@ -513,3 +521,5 @@ export const getAutoLockTimes = () => [
 ];
 
 export const DEFAULT_LOCKTIME_ID = 5;
+
+export const MIN_TRANSACTION_FEE_SATS = 206;

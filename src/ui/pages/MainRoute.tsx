@@ -1,14 +1,45 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { lazy, useCallback, useEffect, useRef } from 'react';
 import { HashRouter, Route, Routes, useNavigate as useNavigateOrigin } from 'react-router-dom';
 
+import { AssetProvider } from '@/ui-modern/providers/AssetProvider';
 import CAT20TokenScreen from '@/ui/pages/CAT20/CAT20TokenScreen';
 import MergeCAT20HistoryScreen from '@/ui/pages/CAT20/MergeCAT20HistoryScreen';
 import MergeCAT20Screen from '@/ui/pages/CAT20/MergeCAT20Screen';
 import SendCAT20Screen from '@/ui/pages/CAT20/SendCAT20Screen';
 import { LoadingOutlined } from '@ant-design/icons';
 
+import { ModernErrorBoundaryWrapper } from '../../ui-modern/components/ModernErrorBoundaryWrapper';
+import { shouldUseModernUI } from '../../ui-modern/config/ui-config';
+import { ModernAboutUsScreen } from '../../ui-modern/pages/ModernAboutUsScreen';
+import { ModernAddAddressScreen } from '../../ui-modern/pages/ModernAddAddressScreen';
+import { ModernAssetSelectionScreen } from '../../ui-modern/pages/ModernAssetSelectionScreen';
+import { ModernBTCDetail } from '../../ui-modern/pages/ModernBTCDetail';
+import { ModernChangePasswordScreen } from '../../ui-modern/pages/ModernChangePasswordScreen';
+import { ModernContactsScreen } from '../../ui-modern/pages/ModernContactsScreen';
+import { ModernCreateAccountScreen } from '../../ui-modern/pages/ModernCreateAccountScreen';
+import { ModernCreateHDWalletScreen } from '../../ui-modern/pages/ModernCreateHDWalletScreen';
+import { ModernCreateSimpleWalletScreen } from '../../ui-modern/pages/ModernCreateSimpleWalletScreen';
+import { ModernDeleteWalletScreen } from '../../ui-modern/pages/ModernDeleteWalletScreen';
+import { ModernExportMnemonicsScreen } from '../../ui-modern/pages/ModernExportMnemonicsScreen';
+import { ModernExportPrivateKeyScreen } from '../../ui-modern/pages/ModernExportPrivateKeyScreen';
+import { ModernForgotPasswordScreen } from '../../ui-modern/pages/ModernForgotPasswordScreen';
+import { ModernHistoryDetail } from '../../ui-modern/pages/ModernHistoryDetail';
+import { ModernHistoryScreen } from '../../ui-modern/pages/ModernHistoryScreen';
+import { ModernLanguageScreen } from '../../ui-modern/pages/ModernLanguageScreen';
+import { ModernLockTimeScreen } from '../../ui-modern/pages/ModernLockTimeScreen';
+import { ModernNetworkTypeScreen } from '../../ui-modern/pages/ModernNetworkTypeScreen';
+import { ModernReceiveScreen } from '../../ui-modern/pages/ModernReceiveScreen';
+import { ModernResetWalletScreen } from '../../ui-modern/pages/ModernResetWalletScreen';
+import { ModernSendScreen } from '../../ui-modern/pages/ModernSendScreen';
+import { ModernSwapConfirmationScreen } from '../../ui-modern/pages/ModernSwapConfirmationScreen';
+import { ModernSwapScreen } from '../../ui-modern/pages/ModernSwapScreen';
+import { ModernTokenDetail } from '../../ui-modern/pages/ModernTokenDetail';
+import { ModernTxConfirmScreen } from '../../ui-modern/pages/ModernTxConfirmScreen';
+import { ModernTxFailScreen } from '../../ui-modern/pages/ModernTxFailScreen';
+import { ModernTxSuccessScreen } from '../../ui-modern/pages/ModernTxSuccessScreen';
+import { ModernUnlockScreen } from '../../ui-modern/pages/ModernUnlockScreen';
+import { ModernWalletSelectionScreen } from '../../ui-modern/pages/ModernWalletSelectionScreen';
 import { Content, Icon } from '../components';
-import { ErrorBoundary } from '../components/ErrorBoundary';
 import { accountActions } from '../state/accounts/reducer';
 import { useIsReady, useIsUnlocked } from '../state/global/hooks';
 import { globalActions } from '../state/global/reducer';
@@ -16,15 +47,11 @@ import { useAppDispatch } from '../state/hooks';
 import { settingsActions } from '../state/settings/reducer';
 import { useWallet } from '../utils';
 import AddKeyringScreen from './Account/AddKeyringScreen';
-import CreateAccountScreen from './Account/CreateAccountScreen';
 import CreateColdWalletScreen from './Account/CreateColdWalletScreen';
-import CreateHDWalletScreen from './Account/CreateHDWalletScreen';
 import CreateKeystoneWalletScreen from './Account/CreateKeystoneWalletScreen';
-import CreatePasswordScreen from './Account/CreatePasswordScreen';
 import CreateSimpleWalletScreen from './Account/CreateSimpleWalletScreen';
 import SwitchAccountScreen from './Account/SwitchAccountScreen';
 import SwitchKeyringScreen from './Account/SwitchKeyringScreen';
-import UnlockScreen from './Account/UnlockScreen';
 import AlkanesCollectionScreen from './Alkanes/AlkanesCollectionScreen';
 import AlkanesNFTScreen from './Alkanes/AlkanesNFTScreen';
 import AlkanesTokenScreen from './Alkanes/AlkanesTokenScreen';
@@ -46,8 +73,6 @@ import AppTabScrren from './Main/AppTabScreen';
 import BoostScreen from './Main/BoostScreen';
 import DiscoverTabScreen from './Main/DiscoverTabScreen';
 import SettingsTabScreen from './Main/SettingsTabScreen';
-import WalletTabScreen from './Main/WalletTabScreen';
-import WelcomeScreen from './Main/WelcomeScreen';
 import OrdinalsInscriptionScreen from './Ordinals/OrdinalsInscriptionScreen';
 import SendOrdinalsInscriptionScreen from './Ordinals/SendOrdinalsInscriptionScreen';
 import SignOrdinalsTransactionScreen from './Ordinals/SignOrdinalsTransactionScreen';
@@ -55,29 +80,45 @@ import SplitOrdinalsInscriptionScreen from './Ordinals/SplitOrdinalsInscriptionS
 import PhishingScreen from './Phishing/PhishingScreen';
 import RunesTokenScreen from './Runes/RunesTokenScreen';
 import SendRunesScreen from './Runes/SendRunesScreen';
-import AboutUsScreen from './Settings/AboutUsScreen';
-import AddressTypeScreen from './Settings/AddressTypeScreen';
 import AdvancedScreen from './Settings/AdvancedScreen';
-import { LockTimePage } from './Settings/AdvancedScreen/LockTimePage';
-import ChangePasswordScreen from './Settings/ChangePasswordScreen';
-import ContactsScreen from './Settings/ContactsScreen';
 import EditAccountNameScreen from './Settings/EditAccountNameScreen';
 import EditContactScreen from './Settings/EditContactScreen';
 import EditWalletNameScreen from './Settings/EditWalletNameScreen';
 import ExportMnemonicsScreen from './Settings/ExportMnemonicsScreen';
 import ExportPrivateKeyScreen from './Settings/ExportPrivateKeyScreen';
-import LanguageScreen from './Settings/LanguageScreen';
-import NetworkTypeScreen from './Settings/NetworkTypeScreen';
 import UpgradeNoticeScreen from './Settings/UpgradeNoticeScreen';
 import CosmosSignDemo from './Test/CosmosSignDemo';
 import TestScreen from './Test/TestScreen';
-import HistoryScreen from './Wallet/HistoryScreen';
-import ReceiveScreen from './Wallet/ReceiveScreen';
-import TxConfirmScreen from './Wallet/TxConfirmScreen';
 import TxCreateScreen from './Wallet/TxCreateScreen';
-import TxFailScreen from './Wallet/TxFailScreen';
-import TxSuccessScreen from './Wallet/TxSuccessScreen';
 import './index.module.less';
+
+// Composant wrapper pour l'évaluation dynamique
+const ExportMnemonicsScreenWrapper = () => {
+  return shouldUseModernUI('ExportMnemonicsScreen') ? <ModernExportMnemonicsScreen /> : <ExportMnemonicsScreen />;
+};
+
+const ExportPrivateKeyScreenWrapper = () => {
+  return shouldUseModernUI('ExportPrivateKeyScreen') ? <ModernExportPrivateKeyScreen /> : <ExportPrivateKeyScreen />;
+};
+
+const ModernWelcomeScreen = lazy(() =>
+  import('../../ui-modern/pages/ModernWelcomeScreen').then((module) => ({ default: module.ModernWelcomeScreen }))
+);
+const ModernCreatePasswordScreen = lazy(() =>
+  import('../../ui-modern/pages/ModernCreatePasswordScreen').then((module) => ({
+    default: module.ModernCreatePasswordScreen
+  }))
+);
+const ModernWalletTabScreen = lazy(() =>
+  import('../../ui-modern/pages/ModernWalletTabScreen').then((module) => ({
+    default: module.ModernWalletTabScreen
+  }))
+);
+const ModernAddressTypeScreen = lazy(() =>
+  import('../../ui-modern/pages/ModernAddressTypeScreen').then((module) => ({
+    default: module.ModernAddressTypeScreen
+  }))
+);
 
 export const routes = {
   BoostScreen: {
@@ -86,11 +127,11 @@ export const routes = {
   },
   WelcomeScreen: {
     path: '/welcome',
-    element: <WelcomeScreen />
+    element: <ModernWelcomeScreen />
   },
   MainScreen: {
     path: '/main',
-    element: <WalletTabScreen />
+    element: <ModernWalletTabScreen />
   },
   DiscoverTabScreen: {
     path: '/discover',
@@ -106,19 +147,35 @@ export const routes = {
   },
   CreateHDWalletScreen: {
     path: '/account/create-hd-wallet',
-    element: <CreateHDWalletScreen />
+    element: <ModernCreateHDWalletScreen />
   },
   CreateAccountScreen: {
     path: '/account/create',
-    element: <CreateAccountScreen />
+    element: <ModernCreateAccountScreen />
+  },
+  WalletSelectionScreen: {
+    path: '/account/wallet-selection',
+    element: <ModernWalletSelectionScreen />
   },
   CreatePasswordScreen: {
     path: '/account/create-password',
-    element: <CreatePasswordScreen />
+    element: <ModernCreatePasswordScreen />
   },
   UnlockScreen: {
     path: '/account/unlock',
-    element: <UnlockScreen />
+    element: <ModernUnlockScreen />
+  },
+  ForgotPasswordScreen: {
+    path: '/account/forgot-password',
+    element: <ModernForgotPasswordScreen />
+  },
+  ResetWalletScreen: {
+    path: '/account/reset-wallet',
+    element: <ModernResetWalletScreen />
+  },
+  DeleteWalletScreen: {
+    path: '/settings/delete-wallet',
+    element: <ModernDeleteWalletScreen />
   },
   SwitchAccountScreen: {
     path: '/account/switch-account',
@@ -126,24 +183,37 @@ export const routes = {
   },
   ReceiveScreen: {
     path: '/wallet/receive',
-    element: <ReceiveScreen />
+    element: <ModernReceiveScreen />
+  },
+  ModernSwapScreen: {
+    path: '/wallet/swap',
+    element: <ModernSwapScreen />
+  },
+  ModernSwapConfirmationScreen: {
+    path: '/wallet/swap/confirmation',
+    element: <ModernSwapConfirmationScreen />
+  },
+
+  ModernAssetSelectionScreen: {
+    path: '/wallet/asset-selection',
+    element: <ModernAssetSelectionScreen />
   },
 
   TxCreateScreen: {
     path: '/wallet/tx/create',
-    element: <TxCreateScreen />
+    element: shouldUseModernUI('TxCreateScreen') ? <ModernSendScreen /> : <TxCreateScreen />
   },
   TxConfirmScreen: {
     path: '/wallet/tx/confirm',
-    element: <TxConfirmScreen />
+    element: <ModernTxConfirmScreen />
   },
   TxSuccessScreen: {
     path: '/wallet/tx/success',
-    element: <TxSuccessScreen />
+    element: <ModernTxSuccessScreen />
   },
   TxFailScreen: {
     path: '/wallet/tx/fail',
-    element: <TxFailScreen />
+    element: <ModernTxFailScreen />
   },
 
   OrdinalsInscriptionScreen: {
@@ -167,19 +237,19 @@ export const routes = {
 
   NetworkTypeScreen: {
     path: '/settings/network-type',
-    element: <NetworkTypeScreen />
+    element: <ModernNetworkTypeScreen />
   },
   ChangePasswordScreen: {
     path: '/settings/password',
-    element: <ChangePasswordScreen />
+    element: <ModernChangePasswordScreen />
   },
   ExportMnemonicsScreen: {
     path: '/settings/export-mnemonics',
-    element: <ExportMnemonicsScreen />
+    element: <ExportMnemonicsScreenWrapper />
   },
   ExportPrivateKeyScreen: {
     path: '/settings/export-privatekey',
-    element: <ExportPrivateKeyScreen />
+    element: <ExportPrivateKeyScreenWrapper />
   },
   AdvancedScreen: {
     path: '/settings/advanced',
@@ -187,15 +257,31 @@ export const routes = {
   },
   LanguageScreen: {
     path: '/settings/language',
-    element: <LanguageScreen />
+    element: <ModernLanguageScreen />
   },
   LockTimePage: {
     path: '/settings/lock-time',
-    element: <LockTimePage />
+    element: <ModernLockTimeScreen />
   },
   HistoryScreen: {
     path: '/wallet/history',
-    element: <HistoryScreen />
+    element: <ModernHistoryScreen />
+  },
+  ModernHistoryScreen: {
+    path: '/wallet/modern-history',
+    element: <ModernHistoryScreen />
+  },
+  ModernHistoryDetail: {
+    path: '/wallet/history/detail',
+    element: <ModernHistoryDetail />
+  },
+  ModernTokenDetail: {
+    path: '/wallet/token/detail',
+    element: <ModernTokenDetail />
+  },
+  ModernBTCDetail: {
+    path: '/wallet/btc/detail',
+    element: <ModernBTCDetail />
   },
   ApprovalScreen: {
     path: '/approval',
@@ -219,7 +305,11 @@ export const routes = {
   },
   CreateSimpleWalletScreen: {
     path: '/account/create-simple-wallet',
-    element: <CreateSimpleWalletScreen />
+    element: shouldUseModernUI('CreateSimpleWalletScreen') ? (
+      <ModernCreateSimpleWalletScreen />
+    ) : (
+      <CreateSimpleWalletScreen />
+    )
   },
   CreateKeystoneWalletScreen: {
     path: '/account/create-keystone-wallet',
@@ -235,11 +325,15 @@ export const routes = {
   },
   AddressTypeScreen: {
     path: '/settings/address-type',
-    element: <AddressTypeScreen />
+    element: <ModernAddressTypeScreen />
   },
   ContactsScreen: {
     path: '/settings/contacts',
-    element: <ContactsScreen />
+    element: <ModernContactsScreen />
+  },
+  AddAddressScreen: {
+    path: '/settings/contacts/add',
+    element: <ModernAddAddressScreen />
   },
   EditContactScreen: {
     path: '/settings/contacts/edit',
@@ -332,7 +426,7 @@ export const routes = {
 
   AboutUsScreen: {
     path: '/settings/about-us',
-    element: <AboutUsScreen />
+    element: <ModernAboutUsScreen />
   },
 
   BRC20SingleStepScreen: {
@@ -545,13 +639,19 @@ const Main = () => {
 
   return (
     <HashRouter>
-      <Routes>
-        {Object.keys(routes)
-          .map((v) => routes[v])
-          .map((v) => (
-            <Route key={v.path} path={v.path} element={<ErrorBoundary>{v.element}</ErrorBoundary>} />
-          ))}
-      </Routes>
+      <AssetProvider>
+        <Routes>
+          {Object.keys(routes)
+            .map((v) => routes[v])
+            .map((v) => (
+              <Route
+                key={v.path}
+                path={v.path}
+                element={<ModernErrorBoundaryWrapper>{v.element}</ModernErrorBoundaryWrapper>}
+              />
+            ))}
+        </Routes>
+      </AssetProvider>
     </HashRouter>
   );
 };

@@ -1,0 +1,95 @@
+{
+  "manifest_version": 3,
+  "name": "Universal Wallet",
+  "version": "1.0.0",
+  "description": "Secure Bitcoin wallet with OPI Universal Protocol support. Apple/Revolut-inspired minimalist design.",
+  "author": "Universal Wallet Team",
+
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Universal Wallet",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+
+  "permissions": [
+    "storage",
+    "activeTab",
+    "alarms",
+    "notifications"
+  ],
+
+  "host_permissions": [
+    "https://blockstream.info/*",
+    "https://mempool.space/*",
+    "https://api.opi.network/*"
+  ],
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src https://blockstream.info https://mempool.space https://api.opi.network; font-src 'self' data:; style-src 'self' 'unsafe-inline';"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "popup.html",
+        "icons/*",
+        "assets/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+
+  "minimum_chrome_version": "100",
+
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...",
+
+  "externally_connectable": {
+    "matches": [
+      "https://universalwallet.com/*",
+      "https://*.universalwallet.com/*"
+    ]
+  },
+
+  "commands": {
+    "toggle-wallet": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+W",
+        "mac": "Command+Shift+W"
+      },
+      "description": "Toggle wallet popup"
+    },
+    "quick-send": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Quick send transaction"
+    }
+  }
+}

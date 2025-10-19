@@ -10,11 +10,11 @@ export enum NetworkType {
 }
 
 export enum RestoreWalletType {
-  UNISAT,
-  SPARROW,
-  XVERSE,
-  OW,
-  OTHERS
+  UNISAT = 1,
+  SPARROW = 2,
+  XVERSE = 3,
+  OW = 4,
+  OTHERS = 5
 }
 
 /**
@@ -767,4 +767,75 @@ export interface BRC20HistoryItem {
   amount: string;
   txid: string;
   blocktime: number;
+}
+
+export interface SimplicityAddressBalance {
+  pkscript: string;
+  ticker: string;
+  wallet: string;
+  overall_balance: string;
+  available_balance: string;
+  block_height: number;
+}
+
+export interface SimplicityBrc20Info {
+  ticker: string;
+  decimals: number;
+  max_supply: string;
+  limit_per_mint: string;
+  actual_deploy_txid_for_api: string;
+  deploy_tx_id: string;
+  deploy_block_height: number;
+  deploy_timestamp: string;
+  creator_address: string;
+  remaining_supply: string;
+  current_supply: string;
+  holders: number;
+}
+
+export interface SimplicityOp {
+  id: number;
+  tx_id: string;
+  txid: string | null;
+  op: 'deploy' | 'mint' | 'transfer';
+  ticker: string;
+  amount_str: string | null;
+  block_height: number;
+  block_hash: string;
+  tx_index: number;
+  timestamp: string;
+  from_address: string | null;
+  to_address: string | null;
+  valid: boolean;
+}
+
+// Types pour l'API BIP32 Simplicity
+export interface SimplicityUTXO {
+  txid: string;
+  vout: number;
+  amount: number;
+  scriptPubKey: string;
+  derivationPath: string;
+  publicKey: string;
+  masterFingerprint: string;
+}
+
+export interface SimplicityTransferPSBTRequest {
+  sender: string;
+  receiver: string;
+  amount: number;
+  feeRate: number;
+  utxos: SimplicityUTXO[];
+  ticker: string;
+  changeDerivationPath: string;
+  changePublicKey: string;
+}
+
+export interface SimplicityTransferResult {
+  psbtBase64: string;
+  estimatedFee: number;
+  changeAmount: number;
+  txBytes: number;
+  txVBytes: number;
+  fee: number;
 }

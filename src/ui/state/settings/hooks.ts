@@ -110,30 +110,15 @@ export function useBTCUnit() {
 }
 
 export function useTxExplorerUrl(txid: string) {
-  const chain = useChain();
-  if (chain.enum === ChainType.BITCOIN_MAINNET) {
-    return `${chain.unisatExplorerUrl}/tx/${txid}`;
-  } else if (chain.defaultExplorer === 'mempool-space') {
-    return `${chain.mempoolSpaceUrl}/tx/${txid}`;
-  } else {
-    return `${chain.unisatExplorerUrl}/tx/${txid}`;
-  }
+  // Redirect to unitool for all transaction viewing
+  return `https://nullpool.space/tx/${txid}`;
 }
 
 export function useGetTxExplorerUrlCallback() {
-  const chain = useChain();
-  return useCallback(
-    (txid: string) => {
-      if (chain.enum === ChainType.BITCOIN_MAINNET) {
-        return `${chain.unisatExplorerUrl}/tx/${txid}`;
-      } else if (chain.defaultExplorer === 'mempool-space') {
-        return `${chain.mempoolSpaceUrl}/tx/${txid}`;
-      } else {
-        return `${chain.unisatExplorerUrl}/tx/${txid}`;
-      }
-    },
-    [chain]
-  );
+  return useCallback((txid: string) => {
+    // Redirect to unitool for all transaction viewing
+    return `https://nullpool.space/tx/${txid}`;
+  }, []);
 }
 
 export function useAddressExplorerUrl(address: string) {

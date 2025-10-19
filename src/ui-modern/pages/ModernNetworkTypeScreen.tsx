@@ -139,7 +139,7 @@ export const ModernNetworkTypeScreen: React.FC = () => {
           maxWidth: '600px',
           margin: '0 auto'
         }}>
-        {CHAINS.map((chain, index) => (
+        {CHAINS.filter((chain) => !chain.isFractal).map((chain, index) => (
           <motion.div key={index} variants={itemVariants}>
             <div
               onClick={() => {

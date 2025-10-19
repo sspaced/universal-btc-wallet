@@ -511,6 +511,37 @@ export const ModernSwapScreen: React.FC = () => {
     return rate.toFixed(6);
   }, [fromAmount, toAmount]);
 
+  // Format rate text with truncation if too long
+  const formatRateText = useMemo(() => {
+    if (!realExchangeRate) return '0.000000';
+
+    const rateText = `1 ${fromCurrency.symbol} ≈ ${realExchangeRate} ${toCurrency.symbol}`;
+
+    // If text is too long, truncate the rate number
+    if (rateText.length > 50) {
+      const truncatedRate = parseFloat(realExchangeRate).toExponential(2);
+      return `1 ${fromCurrency.symbol} ≈ ${truncatedRate} ${toCurrency.symbol}`;
+    }
+
+    return rateText;
+  }, [realExchangeRate, fromCurrency.symbol, toCurrency.symbol]);
+
+  // Calculate font size for rate text based on length
+  const getRateFontSize = useMemo(() => {
+    if (!realExchangeRate) return '10px';
+
+    const length = formatRateText.length;
+    const baseSize = 10;
+
+    // More aggressive scaling for longer text
+    if (length <= 15) return `${baseSize}px`;
+    if (length <= 25) return `${baseSize * 0.85}px`;
+    if (length <= 35) return `${baseSize * 0.75}px`;
+    if (length <= 45) return `${baseSize * 0.65}px`;
+    if (length <= 55) return `${baseSize * 0.55}px`;
+    return `${baseSize * 0.45}px`;
+  }, [formatRateText, realExchangeRate]);
+
   const handleSwap = () => {
     if (canSwap) {
       console.log('Executing swap:', {
@@ -648,10 +679,20 @@ export const ModernSwapScreen: React.FC = () => {
               border: '1px solid rgba(255, 255, 255, 0.1)',
               marginTop: '8px'
             }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', flex: 1, minWidth: 0 }}>
               <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>Rate</span>
-              <span style={{ fontSize: '12px', color: '#ffffff', fontWeight: '500' }}>
-                1 {fromCurrency.symbol} ≈ {realExchangeRate || '0.000000'} {toCurrency.symbol}
+              <span
+                style={{
+                  fontSize: getRateFontSize,
+                  color: 'rgba(255, 255, 255, 0.5)',
+                  letterSpacing: '-0.2px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: '100%'
+                }}
+                title={formatRateText}>
+                {formatRateText}
               </span>
             </div>
             <div style={{ display: 'flex', gap: '12px' }}>

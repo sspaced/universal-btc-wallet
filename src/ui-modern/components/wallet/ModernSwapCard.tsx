@@ -81,16 +81,35 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
     return '0.00';
   }, [amount, selectedCurrency, btcPrice, tokenPrice]);
 
-  // Calculate font size based on amount length
+  // Simple function to get display amount (no formatting, just pass through)
+  const getDisplayAmount = (amountStr: string) => {
+    return amountStr || '0';
+  };
+
+  // Handle input change - pass through directly
+  const handleAmountChange = (value: string) => {
+    // Pass the value directly to allow normal number input
+    onAmountChange(value);
+  };
+
+  // Calculate font size based on amount length with more granular scaling
   const getFontSize = () => {
     const length = amount.length;
     const baseSizePay = 36;
     const baseSizeReceive = 42;
     const baseSize = isPay ? baseSizePay : baseSizeReceive;
 
-    if (length <= 6) return baseSize;
-    if (length <= 10) return baseSize * 0.8;
-    if (length <= 15) return baseSize * 0.65;
+    // More granular scaling for better readability
+    if (length <= 4) return baseSize;
+    if (length <= 6) return baseSize * 0.95;
+    if (length <= 8) return baseSize * 0.9;
+    if (length <= 10) return baseSize * 0.85;
+    if (length <= 12) return baseSize * 0.8;
+    if (length <= 15) return baseSize * 0.75;
+    if (length <= 18) return baseSize * 0.7;
+    if (length <= 22) return baseSize * 0.65;
+    if (length <= 26) return baseSize * 0.6;
+    if (length <= 30) return baseSize * 0.55;
     return baseSize * 0.5;
   };
 
@@ -164,9 +183,9 @@ export const ModernSwapCard: React.FC<ModernSwapCardProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
           {/* Amount Input - Direct input without sub-box */}
           <input
-            type="number"
+            type="text"
             value={amount}
-            onChange={(e) => onAmountChange(e.target.value)}
+            onChange={(e) => handleAmountChange(e.target.value)}
             placeholder={placeholder}
             disabled={disabled}
             style={{

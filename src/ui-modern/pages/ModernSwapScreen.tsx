@@ -332,6 +332,106 @@ export const ModernSwapScreen: React.FC = () => {
     }
   }, [toCurrency, fetchTokenPrice]);
 
+  // Function to calculate quote based on real prices
+  const calculateQuote = useCallback(
+    async (fromAmount: string, fromCurrency: Currency, toCurrency: Currency): Promise<string> => {
+      if (!fromAmount || parseFloat(fromAmount) === 0) return '0';
+
+      const amount = parseFloat(fromAmount);
+      console.log('Calculating quote:', {
+        fromAmount,
+        fromCurrency: fromCurrency.symbol,
+        toCurrency: toCurrency.symbol
+      });
+
+      try {
+        // If both currencies are BTC, return the same amount
+        if (fromCurrency.symbol === 'BTC' && toCurrency.symbol === 'BTC') {
+          return fromAmount;
+        }
+
+        // If fromCurrency is BTC
+        if (fromCurrency.symbol === 'BTC') {
+          const btcPrice = coinPrice?.btc || 0;
+          if (btcPrice === 0) return '0';
+
+          // Calculate USD value of BTC
+          const usdValue = amount * btcPrice;
+
+          // If toCurrency is also BTC, return the same amount
+          if (toCurrency.symbol === 'BTC') {
+            return fromAmount;
+          }
+
+          // If toCurrency is a token, get its price
+          if (toCurrency.symbol !== 'BTC') {
+            const priceMap = await wallet.getSimplicitysPrice([toCurrency.symbol]);
+            const tokenPrice = priceMap[toCurrency.symbol];
+
+            if (tokenPrice && tokenPrice.curPrice > 0) {
+              // Token price in satoshis per token
+              const tokenPriceInSats = tokenPrice.curPrice;
+              // Convert to BTC then to USD
+              const tokenPriceInBTC = tokenPriceInSats / 100000000;
+              const tokenPriceInUSD = tokenPriceInBTC * btcPrice;
+
+              // Calculate number of tokens based on USD value
+              const tokenAmount = usdValue / tokenPriceInUSD;
+              console.log('BTC to Token calculation:', { usdValue, tokenPriceInUSD, tokenAmount });
+              return tokenAmount.toFixed(8);
+            }
+          }
+        }
+
+        // If fromCurrency is a token
+        if (fromCurrency.symbol !== 'BTC') {
+          const priceMap = await wallet.getSimplicitysPrice([fromCurrency.symbol]);
+          const tokenPrice = priceMap[fromCurrency.symbol];
+
+          if (tokenPrice && tokenPrice.curPrice > 0) {
+            const btcPrice = coinPrice?.btc || 0;
+            if (btcPrice === 0) return '0';
+
+            // Calculate USD value of token
+            const tokenPriceInSats = tokenPrice.curPrice;
+            const tokenPriceInBTC = tokenPriceInSats / 100000000;
+            const tokenPriceInUSD = tokenPriceInBTC * btcPrice;
+            const usdValue = amount * tokenPriceInUSD;
+
+            // If toCurrency is BTC
+            if (toCurrency.symbol === 'BTC') {
+              const btcAmount = usdValue / btcPrice;
+              console.log('Token to BTC calculation:', { usdValue, btcPrice, btcAmount });
+              return btcAmount.toFixed(8);
+            }
+
+            // If toCurrency is another token
+            if (toCurrency.symbol !== 'BTC') {
+              const toPriceMap = await wallet.getSimplicitysPrice([toCurrency.symbol]);
+              const toTokenPrice = toPriceMap[toCurrency.symbol];
+
+              if (toTokenPrice && toTokenPrice.curPrice > 0) {
+                const toTokenPriceInSats = toTokenPrice.curPrice;
+                const toTokenPriceInBTC = toTokenPriceInSats / 100000000;
+                const toTokenPriceInUSD = toTokenPriceInBTC * btcPrice;
+
+                const toTokenAmount = usdValue / toTokenPriceInUSD;
+                console.log('Token to Token calculation:', { usdValue, toTokenPriceInUSD, toTokenAmount });
+                return toTokenAmount.toFixed(8);
+              }
+            }
+          }
+        }
+
+        return '0';
+      } catch (error) {
+        console.error('Error calculating quote:', error);
+        return '0';
+      }
+    },
+    [coinPrice, wallet]
+  );
+
   const handleSwapCurrencies = () => {
     // Sauvegarder les valeurs actuelles
     const tempCurrency = fromCurrency;
@@ -352,51 +452,64 @@ export const ModernSwapScreen: React.FC = () => {
     setAvailableToCurrencies(tempFromCurrencies);
   };
 
-  const handleFromAmountChange = (value: string) => {
-    setFromAmount(value);
-    if (value) {
-      // Mock exchange rate - in real app, this would come from an API
-      const mockRate = fromCurrency.symbol === 'BTC' && toCurrency.symbol === 'USDT' ? 45000 : 1;
-      const calculatedAmount = parseFloat(value) * mockRate;
-      setToAmount(calculatedAmount.toString());
-    } else {
-      setToAmount('');
-    }
-  };
+  const handleFromAmountChange = useCallback(
+    async (value: string) => {
+      setFromAmount(value);
+      if (value && fromCurrency && toCurrency) {
+        const calculatedAmount = await calculateQuote(value, fromCurrency, toCurrency);
+        setToAmount(calculatedAmount);
+      } else {
+        setToAmount('');
+      }
+    },
+    [fromCurrency, toCurrency, calculateQuote]
+  );
 
-  const handleToAmountChange = (value: string) => {
-    setToAmount(value);
-    if (value) {
-      // Reverse calculation
-      const mockRate = fromCurrency.symbol === 'BTC' && toCurrency.symbol === 'USDT' ? 45000 : 1;
-      const calculatedAmount = parseFloat(value) / mockRate;
-      setFromAmount(calculatedAmount.toString());
-    } else {
-      setFromAmount('');
-    }
-  };
+  const handleToAmountChange = useCallback(
+    async (value: string) => {
+      setToAmount(value);
+      if (value && fromCurrency && toCurrency) {
+        // For reverse calculation, we swap the currencies
+        const calculatedAmount = await calculateQuote(value, toCurrency, fromCurrency);
+        setFromAmount(calculatedAmount);
+      } else {
+        setFromAmount('');
+      }
+    },
+    [fromCurrency, toCurrency, calculateQuote]
+  );
 
-  const handleFromCurrencySelect = (currency: Currency) => {
-    setFromCurrency(currency);
-    // Recalculate amounts if both are set
-    if (fromAmount) {
-      const mockRate = currency.symbol === 'BTC' && toCurrency.symbol === 'USDT' ? 45000 : 1;
-      const calculatedAmount = parseFloat(fromAmount) * mockRate;
-      setToAmount(calculatedAmount.toString());
-    }
-  };
+  const handleFromCurrencySelect = useCallback(
+    async (currency: Currency) => {
+      setFromCurrency(currency);
+      if (fromAmount && toCurrency) {
+        const calculatedAmount = await calculateQuote(fromAmount, currency, toCurrency);
+        setToAmount(calculatedAmount);
+      }
+    },
+    [fromAmount, toCurrency, calculateQuote]
+  );
 
-  const handleToCurrencySelect = (currency: Currency) => {
-    setToCurrency(currency);
-    // Recalculate amounts if both are set
-    if (fromAmount) {
-      const mockRate = fromCurrency.symbol === 'BTC' && currency.symbol === 'USDT' ? 45000 : 1;
-      const calculatedAmount = parseFloat(fromAmount) * mockRate;
-      setToAmount(calculatedAmount.toString());
-    }
-  };
+  const handleToCurrencySelect = useCallback(
+    async (currency: Currency) => {
+      setToCurrency(currency);
+      if (fromAmount && fromCurrency) {
+        const calculatedAmount = await calculateQuote(fromAmount, fromCurrency, currency);
+        setToAmount(calculatedAmount);
+      }
+    },
+    [fromAmount, fromCurrency, calculateQuote]
+  );
 
   const canSwap = fromAmount && toAmount && parseFloat(fromAmount) > 0;
+
+  // Calculate real exchange rate for display
+  const realExchangeRate = useMemo(() => {
+    if (!fromAmount || !toAmount || parseFloat(fromAmount) === 0) return null;
+
+    const rate = parseFloat(toAmount) / parseFloat(fromAmount);
+    return rate.toFixed(6);
+  }, [fromAmount, toAmount]);
 
   const handleSwap = () => {
     if (canSwap) {
@@ -538,8 +651,7 @@ export const ModernSwapScreen: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
               <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>Rate</span>
               <span style={{ fontSize: '12px', color: '#ffffff', fontWeight: '500' }}>
-                1 {fromCurrency.symbol} ≈{' '}
-                {fromCurrency.symbol === 'BTC' && toCurrency.symbol === 'USDT' ? '45,000' : '1.00'} {toCurrency.symbol}
+                1 {fromCurrency.symbol} ≈ {realExchangeRate || '0.000000'} {toCurrency.symbol}
               </span>
             </div>
             <div style={{ display: 'flex', gap: '12px' }}>

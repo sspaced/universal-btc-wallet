@@ -18,7 +18,7 @@ export const ModernAboutUsScreen: React.FC = () => {
   };
 
   const handleOpenTwitter = () => {
-    window.open('https://x.com/universal_fi', '_blank');
+    window.open('https://x.com/Universal_fi', '_blank');
   };
 
   const handleOpenTelegram = () => {
